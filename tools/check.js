@@ -72,7 +72,8 @@ function checkText(label, s, errs, opts) {
     const display = m.startsWith('$$');
     const body = display ? m.slice(2, -2) : m.slice(1, -1);
     if (!body.trim()) { errs.push(`${label}: 空公式 ${m}`); continue; }
-    const p = texProblem(body, display);
+    // 写入网页时 HTML 实体会先被浏览器解码，再交给 MathJax，这里同样先解码
+    const p = texProblem(body.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'), display);
     if (p) errs.push(`${label}: 公式无法解析「${body.slice(0, 80)}」→ ${p}`);
   }
   const rest = s.replace(MATH, ' ');

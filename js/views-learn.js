@@ -126,6 +126,7 @@
         '<p class="lede">' + L.summary + '</p><div class="head-row">' + freqLine(id) + KY.link('kp-' + id, '考频分析', 'chip') +
         (L.prereq && L.prereq.length ? '<span class="prereq">先修：' + L.prereq.map(function (p) { return KY.meta.lessons[p] ? KY.link('l-' + p, KY.esc(KY.kpById[p].title), 'chip') : '<span class="chip">' + KY.esc(KY.kpById[p].title) + '</span>'; }).join('') + '</span>' : '') +
         '</div></header>';
+      if (KY.meta.status && KY.meta.status.reviewedLessons.indexOf(id) < 0) m += '<p class="draft-note">本篇是作者初稿，还没经过第二人独立审校。读到可疑的地方，可以点那一节右上角的「问 AI」核对。</p>';
       m += L.sections.map(function (s, i) { return sectionHtml(s, i, id); }).join('');
       m += '<div class="lesson-done"><button type="button" class="btn ' + (KY.lessonDone(id) ? '' : 'primary') + '" data-lesson-done>' + (KY.lessonDone(id) ? '已学完（点击取消）' : '这一篇我学完了') + '</button></div>';
       m += relatedHtml(id);

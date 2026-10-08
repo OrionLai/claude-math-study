@@ -131,8 +131,10 @@ for (const id of Object.keys(lessons)) {
   lessonIndex[id] = { title: l.title, summary: l.summary, prereq: l.prereq || [], sections: l.sections.map((s) => ({ kind: s.kind, title: s.title })) };
   fs.writeFileSync(path.join(OUT, 'lessons', `${id}.js`), js('KY_addLesson', l));
 }
+const status = fs.existsSync(path.join(SRC, 'status.json')) ? JSON.parse(fs.readFileSync(path.join(SRC, 'status.json'), 'utf8')) : {};
 const meta = {
   built: new Date().toISOString().slice(0, 10),
+  status: { reviewedYears: status.reviewedYears || [], reviewedLessons: status.reviewedLessons || [] },
   taxonomy: TAX,
   problems: index,
   lessons: lessonIndex,

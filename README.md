@@ -48,6 +48,23 @@ tools/build.js          构建：源文件 → 站点数据与统计
 tools/artifact.js       生成 Claude artifact 版页面
 ```
 
+## 内容完成度与续做
+
+内容按考频从高到低分批补全。随时运行下面的命令，可以看到还差什么：
+
+```bash
+node tools/remaining.js
+```
+
+- `data/src/status.json` 记录哪些年份、哪些讲解已经经过独立审校。网站上，未审校的解析和讲解都有"作者初稿"标注；还没写的讲解显示"讲解整理中"。
+- `tools/workflows/content.workflow.js` 是生成内容用的工作流脚本：每项任务由一个作者撰写，再由一个审校员独立核对，全部使用最强模型。
+
+**额度重置后怎么继续：** 在 Claude Code 里打开这个仓库，对 Claude 说：
+
+> 运行 `node tools/remaining.js --args 3`，用 `tools/workflows/content.workflow.js` 按清单继续补全内容；跑完后更新 `data/src/status.json`，校验、构建、提交，并重新发布网站。
+
+清单已经按优先级排好：先补缺的年份，再写高频考点的讲解，然后审校讲解，最后审校早年的真题。额度不够时，做到哪里算哪里，下次接着做。
+
 ## 修改内容
 
 1. 改 `data/src/` 下的源文件（文本用 `String.raw` 模板，LaTeX 不用转义；格式示例见 `tools/examples/`）。

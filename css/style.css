@@ -449,3 +449,11 @@ body.ai-open .fab { display: none; }
   @keyframes reveal { from { opacity: 0.4; transform: translateY(-2px); } to { opacity: 1; transform: none; } }
   @keyframes slide { from { transform: translateX(24px); opacity: 0.6; } to { transform: none; opacity: 1; } }
 }
+
+/* 初稿标注与完成度 */
+.verify.draft { color: var(--pen); }
+.draft-note { margin-top: 1rem; padding: 0.55rem 0.85rem; border-radius: var(--radius); background: var(--pen-soft); color: var(--ink); font-size: 0.9rem; max-width: 50rem; }
+.progress-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem 2rem; max-width: 52rem; }
+.progress-grid > div { display: grid; gap: 0.3rem; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--radius); padding: 0.85rem 1rem; }
+.progress-grid b { font-family: var(--f-mono); font-size: var(--step-2); font-weight: 500; line-height: 1.2; }
+.progress-grid span { color: var(--ink-2); font-size: var(--step--1); }

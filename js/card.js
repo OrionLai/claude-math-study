@@ -61,6 +61,7 @@
       h += '<p class="verify">' + by + (s.verify.note ? '：' + KY.esc(s.verify.note) : '') + '</p>';
     }
     if (p.flags && p.flags.length) h += '<p class="verify">整理说明：' + p.flags.map(KY.esc).join('；') + '</p>';
+    if (KY.meta.status && KY.meta.status.reviewedYears.indexOf(p.year) < 0) h += '<p class="verify draft">这一年的解析是作者初稿：已用 SymPy 验算、对照过参考答案，但还没经过第二人独立审校。</p>';
     return h;
   }
 

@@ -1,0 +1,251 @@
+// 2012 年数学一 · 高等数学部分（共 13 题）
+// 原卷编排：一、选择题(1)–(8)；二、填空题(9)–(14)；三、解答题(15)–(23)。
+// 其中 (5)(6)(13)(20)(21) 属于线性代数，(7)(8)(14)(22)(23) 属于概率论与数理统计，未收录。
+registerYear(2012, function (R) {
+  return [
+    /* ───────────────────────── 第1题 ───────────────────────── */
+    {
+      id: '2012-1', year: 2012, no: '第1题', type: '选择', score: 4,
+      stem: R`曲线 $y=\dfrac{x^{2}+x}{x^{2}-1}$ 的渐近线的条数为（　　）.`,
+      options: [R`$0$`, R`$1$`, R`$2$`, R`$3$`],
+      answer: 'C',
+      figure: null,
+      kp: ['diff.asym', 'lim.cont'],
+      methods: ['水平、铅直、斜渐近线逐一排查', '因式分解约分识别可去间断点'],
+      difficulty: 1,
+      analysis: R`<p>渐近线的本质是：<b>曲线上的点跑向无穷远时，曲线无限贴近的那条直线</b>。"跑向无穷远"只有两种方式：要么 $x$ 跑向无穷（对应水平渐近线、斜渐近线），要么 $y$ 跑向无穷而 $x$ 停在某个有限值附近（对应铅直渐近线）。所以求渐近线就是三种情况逐一排查，一个都不能漏。</p><p>对于有理函数，铅直渐近线的"候选人"是分母的零点，这里是 $x=\pm1$。但候选人不一定当选：必须真的有 $y\to\infty$ 才算。注意到分子 $x^2+x=x(x+1)$ 和分母 $x^2-1=(x-1)(x+1)$ 有公因式 $x+1$，这是一个强烈信号——$x=-1$ 很可能只是一个"洞"（可去间断点），而不是渐近线。</p>`,
+      solution: R`<p><b>第一步：因式分解，看清函数的真面目。</b></p>$$y=\frac{x(x+1)}{(x-1)(x+1)}=\frac{x}{x-1}\qquad(x\ne\pm1).$$<p>约分只在 $x\ne-1$ 时成立，但求极限时 $x$ 本来就不等于 $-1$，所以求极限可以放心用约分后的式子。</p><p><b>第二步：铅直渐近线（检查两个候选点）。</b></p><ul><li>$x\to1$：分子 $\to1$，分母 $x-1\to0$，所以 $\lim\limits_{x\to1^+}y=+\infty$，$\lim\limits_{x\to1^-}y=-\infty$。$x=1$ <b>是</b>铅直渐近线。</li><li>$x\to-1$：$\lim\limits_{x\to-1}y=\lim\limits_{x\to-1}\dfrac{x}{x-1}=\dfrac{-1}{-2}=\dfrac12$，极限有限。$x=-1$ 只是可去间断点（图像上一个空心点），<b>不是</b>铅直渐近线。</li></ul><p><b>第三步：水平渐近线。</b>分子分母同除以 $x^2$：</p>$$\lim_{x\to\infty}\frac{x^2+x}{x^2-1}=\lim_{x\to\infty}\frac{1+\frac1x}{1-\frac1{x^2}}=1.$$<p>$x\to+\infty$ 与 $x\to-\infty$ 的极限都是 $1$，所以只有一条水平渐近线 $y=1$。</p><p><b>第四步：斜渐近线。</b>斜率 $k=\lim\limits_{x\to\pm\infty}\dfrac{y}{x}=\lim\limits_{x\to\pm\infty}\dfrac{x^2+x}{x(x^2-1)}=0$。$k=0$ 意味着没有"真正倾斜"的渐近线（$k=0$ 的情形就是刚才的水平渐近线）。一般地，在同一个方向（$x\to+\infty$ 或 $x\to-\infty$）上，水平渐近线和斜渐近线不可能同时存在。</p><p><b>结论：</b>共有 $x=1$ 和 $y=1$ 两条渐近线，选 <b>C</b>。</p><p><b>错误选项分析：</b>A（0 条）、B（1 条）都是漏数——常见的是只想到铅直渐近线而忘了水平渐近线；D（3 条）是把分母零点 $x=-1$ 不加检验地也算成了铅直渐近线，这是本题设置的陷阱。</p>`,
+      pitfalls: R`<p>① <b>只看分母为零就认定铅直渐近线</b>。必须求极限验证：分子分母有公因子时，约掉的那个零点往往是可去间断点，函数值在那里趋于有限数，不是渐近线。本题选 D 的同学几乎都错在这里。</p><p>② 水平渐近线要分别看 $x\to+\infty$ 与 $x\to-\infty$：极限相同只算一条（本题）；不同则算两条（例如 $y=\arctan x$ 有 $y=\pm\frac{\pi}{2}$ 两条）。</p><p>③ 斜渐近线也要分两个方向讨论，并且 $k$ 必须是非零有限数，$b=\lim[y-kx]$ 也必须存在。</p>`,
+      summary: R`<p><b>方法要点：</b>渐近线"三查"——查铅直（找使 $y\to\infty$ 的有限点）、查水平（$x\to\pm\infty$ 时 $y$ 的极限）、查斜（$k=\lim\frac yx$，$b=\lim(y-kx)$）。</p><p><b>看到有理函数 $\dfrac{P(x)}{Q(x)}$ 想到：</b></p><ul><li>先因式分解约分，约掉的零点是"洞"，剩下的分母零点才是铅直渐近线；</li><li>分子次数 = 分母次数 → 水平渐近线 $y=$ 首项系数之比；</li><li>分子次数 &lt; 分母次数 → 水平渐近线 $y=0$；</li><li>分子次数 = 分母次数 + 1 → 斜渐近线（做多项式除法即可得到）。</li></ul>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: limit(y, x, ±oo)=1；limit(y, x, 1±)=±oo；limit(y, x, -1)=1/2；cancel(y)=x/(x-1)。共 2 条渐近线' },
+      flags: []
+    },
+
+    /* ───────────────────────── 第2题 ───────────────────────── */
+    {
+      id: '2012-2', year: 2012, no: '第2题', type: '选择', score: 4,
+      stem: R`设函数 $f(x)=(\mathrm{e}^{x}-1)(\mathrm{e}^{2x}-2)\cdots(\mathrm{e}^{nx}-n)$，其中 $n$ 为正整数，则 $f'(0)=$（　　）.`,
+      options: [R`$(-1)^{n-1}(n-1)!$`, R`$(-1)^{n}(n-1)!$`, R`$(-1)^{n-1}n!$`, R`$(-1)^{n}n!$`],
+      answer: 'A',
+      figure: null,
+      kp: ['diff.def', 'diff.calc'],
+      methods: ['导数定义', '零因子技巧：f(x)=φ(x)g(x)，φ(a)=0', '特殊值检验（取 n=1,2）'],
+      difficulty: 2,
+      analysis: R`<p>$f(x)$ 是 $n$ 个因子的连乘。如果硬用乘积求导法则，会得到 $n$ 项之和，每一项又是 $n$ 个因子相乘，非常繁琐。</p><p>但我们只要 <b>一个点</b> 的导数，而在 $x=0$ 处第一个因子 $\mathrm{e}^0-1=0$。这个"零因子"是解题的钥匙：在导数定义 $\dfrac{f(x)-f(0)}{x}$ 中，$f(0)=0$，分子 $f(x)$ 里恰好有一个因子 $\mathrm{e}^x-1$ 可以和分母的 $x$ 配成 $\dfrac{\mathrm{e}^x-1}{x}\to1$，剩下的因子都是连续函数，直接把 $x=0$ 代进去就行。</p><p><b>为什么想到用定义：</b>"只求某一点的导数" + "函数在该点有一个因子为零"，这是用导数定义最舒服的信号——定义法不需要求出 $f'(x)$ 的一般表达式。</p>`,
+      solution: R`<p><b>第一步：算 $f(0)$。</b>第一个因子 $\mathrm{e}^0-1=0$，所以 $f(0)=0$。</p><p><b>第二步：写出导数定义。</b></p>$$f'(0)=\lim_{x\to0}\frac{f(x)-f(0)}{x}=\lim_{x\to0}\frac{\mathrm{e}^x-1}{x}\cdot(\mathrm{e}^{2x}-2)(\mathrm{e}^{3x}-3)\cdots(\mathrm{e}^{nx}-n).$$<p><b>第三步：拆成两个极限的乘积。</b>记 $g(x)=(\mathrm{e}^{2x}-2)\cdots(\mathrm{e}^{nx}-n)$。</p><ul><li>由等价无穷小 $\mathrm{e}^x-1\sim x$，$\lim\limits_{x\to0}\dfrac{\mathrm{e}^x-1}{x}=1$；</li><li>$g$ 是连续函数的乘积，仍连续，所以 $\lim\limits_{x\to0}g(x)=g(0)=(1-2)(1-3)\cdots(1-n)$。</li></ul><p>两个极限都存在，乘积的极限等于极限的乘积，于是 $f'(0)=g(0)$。</p><p><b>第四步：仔细数因子。</b>$g(0)=\prod\limits_{k=2}^{n}(1-k)$，$k$ 从 $2$ 取到 $n$，共 $n-1$ 个因子；每个因子 $1-k=-(k-1)$，所以</p>$$g(0)=(-1)^{n-1}\cdot[1\cdot2\cdots(n-1)]=(-1)^{n-1}(n-1)!.$$<p>选 <b>A</b>。</p><p><b>第五步：用特殊值检验并排除其余选项。</b>取 $n=2$：$f(x)=(\mathrm{e}^x-1)(\mathrm{e}^{2x}-2)$，$f'(0)=1\cdot(1-2)=-1$。四个选项在 $n=2$ 时分别为：A：$(-1)^1\cdot1!=-1$ ✓；B：$(-1)^2\cdot1!=1$ ✗；C：$(-1)^1\cdot2!=-2$ ✗；D：$(-1)^2\cdot2!=2$ ✗。仅 A 正确。</p><p>B、C、D 都是"数错因子个数"的产物：误以为有 $n$ 个负号会得到 $(-1)^n$，误以为绝对值是 $1\cdot2\cdots n$ 会得到 $n!$。</p>`,
+      pitfalls: R`<p>① <b>数错因子个数</b>：$g(0)$ 从 $k=2$ 到 $k=n$ 只有 $n-1$ 个因子，不是 $n$ 个。数成 $n$ 个就会落入 B、C、D 的陷阱。</p><p>② 用乘积法则硬求导时漏项或算乱。其实只要意识到"没有对第一个因子求导的那些项，在 $x=0$ 处都含因子 $\mathrm{e}^0-1=0$"，就只剩一项。</p><p>③ 含参数 $n$ 的选择题不会用特殊值验证。取 $n=1,2$ 往往一步就能排除干扰项。</p>`,
+      summary: R`<p><b>结论（值得记住）：</b>若 $f(x)=\varphi(x)g(x)$，$\varphi(a)=0$，$\varphi'(a)$ 存在，$g$ 在 $a$ 处连续，则</p>$$f'(a)=\varphi'(a)\,g(a).$$<p>（证明就是本题的定义法：$\dfrac{f(x)-f(a)}{x-a}=\dfrac{\varphi(x)-\varphi(a)}{x-a}\cdot g(x)$。）注意这里只要求 $g$ 连续，不要求 $g$ 可导。</p><p><b>看到…想到…：</b>看到"多个因子连乘、只求某一点的导数、且某个因子在该点为零"，想到导数定义 + 把零因子单独拿出来；看到选项里含参数 $n$，想到代 $n=1,2$ 验证。</p>`,
+      alt: R`<p><b>乘积法则：</b>$f'(x)=\sum\limits_{k=1}^{n}k\mathrm{e}^{kx}\prod\limits_{j\ne k}(\mathrm{e}^{jx}-j)$。当 $k\ge2$ 时，第 $k$ 项的连乘里保留了因子 $\mathrm{e}^{x}-1$，在 $x=0$ 处为 $0$；只剩 $k=1$ 这一项：$f'(0)=1\cdot\mathrm{e}^0\cdot\prod\limits_{j=2}^{n}(1-j)=(-1)^{n-1}(n-1)!$。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: 对 n=1..6 逐个求 diff(f,x).subs(x,0)，结果 1,-1,2,-6,24,-120，与 (-1)^(n-1)(n-1)! 一致' },
+      flags: ['OCR 中题干连乘号写作 \\dots，按原卷排版改为 \\cdots']
+    },
+
+    /* ───────────────────────── 第3题 ───────────────────────── */
+    {
+      id: '2012-3', year: 2012, no: '第3题', type: '选择', score: 4,
+      stem: R`如果函数 $f(x,y)$ 在点 $(0,0)$ 处连续，那么下列命题正确的是（　　）.`,
+      options: [
+        R`若极限 $\displaystyle\lim_{\substack{x\to0\\y\to0}}\frac{f(x,y)}{|x|+|y|}$ 存在，则 $f(x,y)$ 在点 $(0,0)$ 处可微`,
+        R`若极限 $\displaystyle\lim_{\substack{x\to0\\y\to0}}\frac{f(x,y)}{x^{2}+y^{2}}$ 存在，则 $f(x,y)$ 在点 $(0,0)$ 处可微`,
+        R`若 $f(x,y)$ 在点 $(0,0)$ 处可微，则极限 $\displaystyle\lim_{\substack{x\to0\\y\to0}}\frac{f(x,y)}{|x|+|y|}$ 存在`,
+        R`若 $f(x,y)$ 在点 $(0,0)$ 处可微，则极限 $\displaystyle\lim_{\substack{x\to0\\y\to0}}\frac{f(x,y)}{x^{2}+y^{2}}$ 存在`
+      ],
+      answer: 'B',
+      figure: null,
+      kp: ['mdiff.diffable', 'mdiff.limit'],
+      methods: ['可微的定义', '分母趋于零且极限存在 ⇒ 分子趋于零', '构造反例排除'],
+      difficulty: 3,
+      analysis: R`<p>本题考<b>可微的定义</b>。$f$ 在 $(0,0)$ 处可微是指：存在常数 $A,B$，使</p>$$f(x,y)-f(0,0)=Ax+By+o(\rho),\qquad \rho=\sqrt{x^2+y^2}\to0.$$<p>直观地说，就是函数在原点附近可以用一个<b>平面</b>（线性函数）近似，误差比到原点的距离 $\rho$ 还要高阶。</p><p>四个选项都在讲"某个比值的极限"和"可微"的关系，所以思路是：<b>把"极限存在"翻译成"$f$ 是几阶小量"，再和 $o(\rho)$ 对比</b>。为此要有"尺度感"：</p><ul><li>$|x|+|y|$ 与 $\rho$ 是<b>同阶</b>的：$\rho\le|x|+|y|\le\sqrt2\,\rho$；</li><li>$x^2+y^2=\rho^2$ 比 $\rho$ <b>高一阶</b>。</li></ul><p>还有一个隐藏信息必须挖出来：分母趋于 $0$ 而比值的极限存在，分子必然趋于 $0$；再结合"$f$ 在原点连续"，就能得到 $f(0,0)=0$。</p>`,
+      solution: R`<p><b>第一步：证明 B 正确。</b>设 $\displaystyle\lim_{(x,y)\to(0,0)}\frac{f(x,y)}{x^2+y^2}=a$（有限数）。</p><p>(1) 求 $f(0,0)$：$f(x,y)=\dfrac{f(x,y)}{x^2+y^2}\cdot(x^2+y^2)\to a\cdot0=0$。又 $f$ 在原点连续，所以 $f(0,0)=\lim f(x,y)=0$。</p><p>(2) 按定义验证可微（取 $A=B=0$）：</p>$$\frac{f(x,y)-f(0,0)-0\cdot x-0\cdot y}{\rho}=\frac{f(x,y)}{\rho^2}\cdot\rho\to a\cdot0=0.$$<p>即 $f(x,y)-f(0,0)=0\cdot x+0\cdot y+o(\rho)$，所以 $f$ 在 $(0,0)$ 处可微，且 $\mathrm{d}f\big|_{(0,0)}=0$。B 正确。</p><p><b>第二步：A 错误，反例 $f(x,y)=|x|+|y|$。</b>它在原点连续，且 $\dfrac{f(x,y)}{|x|+|y|}\equiv1$，极限存在。但 $f(x,0)=|x|$，</p>$$\lim_{x\to0}\frac{f(x,0)-f(0,0)}{x}=\lim_{x\to0}\frac{|x|}{x}$$<p>左极限 $-1$、右极限 $1$，不存在，即 $f_x(0,0)$ 不存在。而可微必可偏导，所以 $f$ 在原点不可微。<br/><i>本质原因：</i>该极限存在只说明 $f$ 与 $|x|+|y|$ 同阶（一阶小量），但"一阶部分"不一定是线性的——$|x|+|y|$ 的图像是一个倒四棱锥，在尖点处没有切平面。</p><p><b>第三步：C 错误，反例 $f(x,y)=x$。</b>线性函数显然可微。但沿 $y=0$：$\dfrac{f(x,0)}{|x|+0}=\dfrac{x}{|x|}$，右侧为 $1$、左侧为 $-1$，二重极限不存在。</p><p><b>第四步：D 错误，仍用 $f(x,y)=x$。</b>沿 $y=0$：$\dfrac{x}{x^2}=\dfrac1x\to\infty$，极限不存在。（更简单的反例是常数 $f\equiv1$：可微，但 $\dfrac{1}{x^2+y^2}\to+\infty$。）</p><p>C、D 错误的根源在于：可微只保证"增量 = 线性部分 + $o(\rho)$"，既不要求 $f(0,0)=0$，也不要求线性部分 $Ax+By$ 为零，所以 $f$ 除以一阶或二阶小量后未必有极限。</p><p>综上，选 <b>B</b>。</p>`,
+      pitfalls: R`<p>① <b>挖不出 $f(0,0)=0$</b>：可微的定义里是 $f(x,y)-f(0,0)$，必须先说明 $f(0,0)=0$ 才能把分子换成 $f(x,y)$。这一步要同时用到"极限存在"和"连续"两个条件。</p><p>② <b>把 $|x|+|y|$ 和 $x^2+y^2$ 看成"差不多的东西"</b>：前者与 $\rho$ 同阶，后者是 $\rho^2$，阶数不同决定了结论不同。</p><p>③ 误以为"偏导数存在就可微"。偏导存在只说明沿两个坐标轴方向"光滑"，可微需要所有方向一起光滑。</p><p>④ 补充：若 A 中的极限值恰好是 $0$，则 $\dfrac{f}{\rho}=\dfrac{f}{|x|+|y|}\cdot\dfrac{|x|+|y|}{\rho}$，后一个因子有界（不超过 $\sqrt2$），所以 $\dfrac f\rho\to0$，此时 $f$ 可微。A 错在"极限存在"不等于"极限为 0"。</p>`,
+      summary: R`<p><b>判断可微的标准三步：</b>① 求 $f(x_0,y_0)$；② 求偏导 $A=f_x(x_0,y_0)$，$B=f_y(x_0,y_0)$（不存在则直接不可微）；③ 检验 $\dfrac{\Delta f-A\Delta x-B\Delta y}{\rho}\to0$ 是否成立。</p><p><b>看到…想到…：</b></p><ul><li>看到 $\lim\dfrac{f}{x^2+y^2}$ 存在 → $f=O(\rho^2)=o(\rho)$ → 可微且全微分为 $0$（原点是驻点）；</li><li>看到 $\lim\dfrac{f}{|x|+|y|}$ 或 $\lim\dfrac{f}{\rho}$ 存在 → 只能得到 $f=O(\rho)$，要看极限值是否为 $0$；</li><li>看到"分母 $\to0$ 且比值极限存在" → 分子 $\to0$。</li></ul><p><b>反例库：</b>$|x|+|y|$、$\sqrt{x^2+y^2}$（连续但偏导不存在）；$\sqrt{|xy|}$（连续、偏导存在但不可微）；$\dfrac{xy}{x^2+y^2}$ 补定义为 $0$（偏导存在但不连续）；$x$ 或常数（可微但除以小量后无极限）。</p>`,
+      verify: { by: 'mixed', ok: true, note: '证明 B 成立（按可微定义）；sympy 验证反例：x/|x| 在 0 处左右极限 -1 与 1 不同（排除 C），沿 y=0 有 x/x²=1/x→∞（排除 D），|x|/x 左右极限不同说明 |x|+|y| 无偏导（排除 A）' },
+      flags: []
+    },
+
+    /* ───────────────────────── 第4题 ───────────────────────── */
+    {
+      id: '2012-4', year: 2012, no: '第4题', type: '选择', score: 4,
+      stem: R`设 $I_{k}=\displaystyle\int_{0}^{k\pi}\mathrm{e}^{x^{2}}\sin x\,\mathrm{d}x\ (k=1,2,3)$，则有（　　）.`,
+      options: [R`$I_{1}<I_{2}<I_{3}$`, R`$I_{3}<I_{2}<I_{1}$`, R`$I_{2}<I_{3}<I_{1}$`, R`$I_{2}<I_{1}<I_{3}$`],
+      answer: 'D',
+      figure: null,
+      kp: ['int.def', 'int.defcalc'],
+      methods: ['区间可加性：作差比较', '定积分的保号性', '平移换元，把两块积分移到同一区间逐点比较'],
+      difficulty: 3,
+      analysis: R`<p>$\mathrm{e}^{x^2}$ 没有初等原函数，所以 $I_k$ 根本算不出来——题目也只问大小关系。<b>比较积分大小的通法是作差</b>：由区间可加性，$I_{k+1}-I_k$ 是一个新区间上的积分，看它的符号即可。</p><p>先建立几何图像：被积函数 = 正的"放大因子" $\mathrm{e}^{x^2}$ × 正负交替的 $\sin x$。所以曲线在 $[0,\pi]$ 上在 $x$ 轴上方，在 $[\pi,2\pi]$ 上在下方，在 $[2\pi,3\pi]$ 上又在上方；又因为 $\mathrm{e}^{x^2}$ 单调递增，这三块"面积块"一块比一块大。</p><svg viewBox="0 0 270 140" width="270" style="max-width:100%;height:auto" xmlns="http://www.w3.org/2000/svg"><title>e^(x^2) sin x 在三个区间上的面积块示意（未按比例）</title><polygon points="15,85 23,80.1 31,75.6 39,72.1 47,69.8 55,69 63,69.8 71,72.1 79,75.6 87,80.1 95,85" fill="currentColor" fill-opacity="0.15" stroke="none"/><polygon points="95,85 103,97.4 111,108.5 119,117.4 127,123 135,125 143,123 151,117.4 159,108.5 167,97.4 175,85" fill="currentColor" fill-opacity="0.3" stroke="none"/><polygon points="175,85 183,63.4 191,43.9 199,28.4 207,18.4 215,15 223,18.4 231,28.4 239,43.9 247,63.4 255,85" fill="currentColor" fill-opacity="0.15" stroke="none"/><line x1="5" y1="85" x2="265" y2="85" stroke="currentColor" stroke-width="1"/><polyline points="15,85 19,82.5 23,80.1 27,77.7 31,75.6 35,73.7 39,72.1 43,70.7 47,69.8 51,69.2 55,69 59,69.2 63,69.8 67,70.7 71,72.1 75,73.7 79,75.6 83,77.7 87,80.1 91,82.5 95,85 99,91.3 103,97.4 107,103.2 111,108.5 115,113.3 119,117.4 123,120.6 127,123 131,124.5 135,125 139,124.5 143,123 147,120.6 151,117.4 155,113.3 159,108.5 163,103.2 167,97.4 171,91.3 175,85 179,74 183,63.4 187,53.2 191,43.9 195,35.5 199,28.4 203,22.6 207,18.4 211,15.9 215,15 219,15.9 223,18.4 227,22.6 231,28.4 235,35.5 239,43.9 243,53.2 247,63.4 251,74 255,85" fill="none" stroke="currentColor" stroke-width="1.6"/><text x="48" y="82" font-size="11" fill="currentColor">a1</text><text x="128" y="104" font-size="11" fill="currentColor">a2</text><text x="208" y="62" font-size="11" fill="currentColor">a3</text><text x="84" y="97" font-size="10" fill="currentColor">π</text><text x="163" y="80" font-size="10" fill="currentColor">2π</text><text x="252" y="98" font-size="10" fill="currentColor">3π</text><text x="11" y="98" font-size="10" fill="currentColor">0</text></svg><p>记三块面积依次为 $a_1\lt a_2\lt a_3$，则 $I_1=a_1$，$I_2=a_1-a_2$，$I_3=a_1-a_2+a_3$。由此立刻看出 $I_2\lt0\lt I_1\lt I_3$。下面把这个直观图像写成严格的论证，关键在于<b>如何严格地比较两块不在同一区间上的面积</b>——办法是平移换元，把它们搬到同一个区间上逐点比较。</p>`,
+      solution: R`<p><b>第一步：比较 $I_1$ 与 $I_2$。</b>由区间可加性，</p>$$I_2-I_1=\int_{\pi}^{2\pi}\mathrm{e}^{x^2}\sin x\,\mathrm{d}x.$$<p>在 $(\pi,2\pi)$ 内 $\sin x\lt0$，$\mathrm{e}^{x^2}\gt0$，被积函数连续且恒负，由定积分的保号性，$I_2-I_1\lt0$，即 $I_2\lt I_1$。</p><p><b>第二步：比较 $I_2$ 与 $I_3$。</b></p>$$I_3-I_2=\int_{2\pi}^{3\pi}\mathrm{e}^{x^2}\sin x\,\mathrm{d}x\gt0,$$<p>因为在 $(2\pi,3\pi)$ 内 $\sin x\gt0$。所以 $I_2\lt I_3$。</p><p>到这里，A（说 $I_1\lt I_2$）和 B（说 $I_3\lt I_2$）已被排除，只剩 C 与 D，它们的区别在于 $I_1$ 与 $I_3$ 谁大。</p><p><b>第三步（关键）：比较 $I_1$ 与 $I_3$。</b></p>$$I_3-I_1=\int_{\pi}^{2\pi}\mathrm{e}^{x^2}\sin x\,\mathrm{d}x+\int_{2\pi}^{3\pi}\mathrm{e}^{x^2}\sin x\,\mathrm{d}x.$$<p>第一项为负、第二项为正，符号取决于哪块更大，必须比较。对第二项令 $x=t+\pi$，把区间 $[2\pi,3\pi]$ 平移到 $[\pi,2\pi]$：$\mathrm{d}x=\mathrm{d}t$，$\sin(t+\pi)=-\sin t$，</p>$$\int_{2\pi}^{3\pi}\mathrm{e}^{x^2}\sin x\,\mathrm{d}x=\int_{\pi}^{2\pi}\mathrm{e}^{(t+\pi)^2}\sin(t+\pi)\,\mathrm{d}t=-\int_{\pi}^{2\pi}\mathrm{e}^{(x+\pi)^2}\sin x\,\mathrm{d}x.$$<p>（定积分的值与积分变量用什么字母无关，最后把 $t$ 换回 $x$。）于是</p>$$I_3-I_1=\int_{\pi}^{2\pi}\Big[\mathrm{e}^{x^2}-\mathrm{e}^{(x+\pi)^2}\Big]\sin x\,\mathrm{d}x.$$<p>在 $(\pi,2\pi)$ 内：$0\lt x\lt x+\pi$，所以 $x^2\lt(x+\pi)^2$，方括号 $\lt0$；同时 $\sin x\lt0$。两个负数相乘为正，故 $I_3-I_1\gt0$，即 $I_1\lt I_3$。</p><p><b>结论：</b>$I_2\lt I_1\lt I_3$，选 <b>D</b>。C 错在它断言 $I_3\lt I_1$。</p>`,
+      pitfalls: R`<p>① <b>试图求原函数</b>：$\mathrm{e}^{x^2}$ 没有初等原函数，这条路走不通。看到"只比较大小"就应转向作差 + 保号性。</p><p>② <b>以为 $I_3-I_1$ 的符号"显然"</b>：$\int_\pi^{3\pi}$ 里一负一正，必须说清哪块大。单凭"后面的块更大"的直觉不够严格，要靠平移换元落实。</p><p>③ 平移换元时漏掉 $\sin(t+\pi)=-\sin t$ 的负号，会把结论弄反。</p>`,
+      summary: R`<p><b>方法要点：</b>比较积分大小 → 作差，化为新区间上的积分 → 用保号性定符号；若差里有正有负，就换元把各块搬到同一区间上逐点比较。</p><p><b>看到…想到…：</b>看到"振荡函数（$\sin x$）× 单调因子"的积分，先画"面积块"示意图：单调递增因子 → 面积块越来越大，部分和像交错级数一样在两侧摆动，且摆幅越来越大。这一图像能让你在 10 秒内猜出答案，再用严格论证确认。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy 数值积分（30 位精度）：I1≈570.44，I2≈-9.14×10^14，I3≈1.08×10^36，确认 I2<I1<I3' },
+      flags: []
+    },
+
+    /* ───────────────────────── 第9题 ───────────────────────── */
+    {
+      id: '2012-9', year: 2012, no: '第9题', type: '填空', score: 4,
+      stem: R`若函数 $f(x)$ 满足方程 $f''(x)+f'(x)-2f(x)=0$ 及 $f''(x)+f(x)=2\mathrm{e}^{x}$，则 $f(x)=$ $\underline{\qquad}$.`,
+      options: null,
+      answer: R`$\mathrm{e}^{x}$`,
+      figure: null,
+      kp: ['ode.const', 'ode.linear'],
+      methods: ['二阶常系数齐次方程的特征根法', '代入另一方程确定任意常数', '线性无关函数比较系数'],
+      difficulty: 2,
+      analysis: R`<p>$f$ 要<b>同时</b>满足两个方程。第一个方程是二阶常系数<b>齐次</b>线性方程，可以完全解出：通解里含两个任意常数 $C_1,C_2$，它代表"所有可能的候选函数"。第二个方程则像两个"附加条件"，从候选者中把真正的 $f$ 筛选出来。</p><p>这比"观察出 $\mathrm{e}^x$ 满足两个方程"更好：观察法只能找到一个解，不能说明答案唯一；而"先写出全体候选，再筛选"能证明 $f$ 只能是 $\mathrm{e}^x$。</p>`,
+      solution: R`<p><b>第一步：解第一个方程。</b>特征方程 $r^2+r-2=0$，即 $(r-1)(r+2)=0$，特征根 $r_1=1$，$r_2=-2$。所以</p>$$f(x)=C_1\mathrm{e}^{x}+C_2\mathrm{e}^{-2x}.$$<p><b>第二步：代入第二个方程。</b>$f''(x)=C_1\mathrm{e}^{x}+4C_2\mathrm{e}^{-2x}$，于是</p>$$f''+f=2C_1\mathrm{e}^{x}+5C_2\mathrm{e}^{-2x}=2\mathrm{e}^{x}\quad\text{对一切 }x\text{ 成立}.$$<p><b>第三步：比较系数。</b>移项得 $(2C_1-2)\mathrm{e}^{x}+5C_2\mathrm{e}^{-2x}\equiv0$。因为 $\mathrm{e}^{x}$ 与 $\mathrm{e}^{-2x}$ 线性无关（它们之比 $\mathrm{e}^{3x}$ 不是常数），两个系数都必须为零。具体地，两边乘以 $\mathrm{e}^{2x}$ 得 $(2C_1-2)\mathrm{e}^{3x}+5C_2\equiv0$，令 $x\to-\infty$ 得 $5C_2=0$，再代回得 $2C_1-2=0$。所以 $C_1=1$，$C_2=0$。</p><p><b>第四步：写出答案并检验。</b>$f(x)=\mathrm{e}^{x}$。检验：$\mathrm{e}^x+\mathrm{e}^x-2\mathrm{e}^x=0$ ✓；$\mathrm{e}^x+\mathrm{e}^x=2\mathrm{e}^x$ ✓。</p>`,
+      pitfalls: R`<p>① 先去解第二个（非齐次）方程，得到 $C_1\cos x+C_2\sin x+\mathrm{e}^x$，再代入第一个方程时要处理三角函数，计算量更大且容易出错。应先解"更容易完全解出"的齐次方程。</p><p>② 特征方程写错符号，如写成 $r^2+r+2=0$。</p><p>③ 只凭观察猜出 $\mathrm{e}^x$ 而不验证两个方程都满足——填空题碰巧能对，但遇到类似的解答题就说不清唯一性。</p>`,
+      summary: R`<p><b>方法要点：</b>多个方程同时成立 → 先解最容易完全解出的那个，得到含任意常数的通解，再代入其余方程定常数。</p><p><b>看到…想到…：</b>看到 $A\mathrm{e}^{\alpha x}+B\mathrm{e}^{\beta x}\equiv0$（$\alpha\ne\beta$）→ $A=B=0$（指数函数线性无关）。看到两个方程有相同的高阶项（这里都有 $f''$）→ 也可以相减消去高阶项降阶（见另解）。</p>`,
+      alt: R`<p><b>相减降阶：</b>两个方程相减，$f''$ 被消去：$f'-3f=-2\mathrm{e}^x$。这是一阶线性方程，乘积分因子 $\mathrm{e}^{-3x}$：$(\mathrm{e}^{-3x}f)'=-2\mathrm{e}^{-2x}$，积分得 $\mathrm{e}^{-3x}f=\mathrm{e}^{-2x}+C$，即 $f=\mathrm{e}^x+C\mathrm{e}^{3x}$。代入第一个方程：$\mathrm{e}^x$ 部分 $1+1-2=0$，$\mathrm{e}^{3x}$ 部分 $(9+3-2)C=10C$，必须为 $0$，故 $C=0$，$f=\mathrm{e}^x$。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: dsolve 第一个方程得 C1·e^(-2x)+C2·e^x，代入第二个方程解出 e^(-2x) 的系数为 0、e^x 的系数为 1；并验证 e^x 同时满足两个方程' },
+      flags: []
+    },
+
+    /* ───────────────────────── 第10题 ───────────────────────── */
+    {
+      id: '2012-10', year: 2012, no: '第10题', type: '填空', score: 4,
+      stem: R`$\displaystyle\int_{0}^{2}x\sqrt{2x-x^{2}}\,\mathrm{d}x=$ $\underline{\qquad}$.`,
+      options: null,
+      answer: R`$\dfrac{\pi}{2}$`,
+      figure: null,
+      kp: ['int.defcalc', 'int.def'],
+      methods: ['配方后平移换元', '奇函数在对称区间上积分为零', '定积分的几何意义（半圆面积）', '区间再现（另解）'],
+      difficulty: 2,
+      analysis: R`<p>根号里是二次多项式，第一反应是<b>配方</b>：$2x-x^2=1-(x-1)^2$。于是 $y=\sqrt{2x-x^2}$ 的图像是以 $(1,0)$ 为圆心、半径为 $1$ 的<b>上半圆</b>，而积分区间 $[0,2]$ 恰好是这个半圆的直径。</p><p>这强烈暗示问题关于直线 $x=1$ 对称。令 $u=x-1$ 把对称中心平移到原点，因子 $x=u+1$ 就拆成"奇函数部分 $u$"和"偶函数部分 $1$"：奇的部分积分为零，偶的部分正好是半圆面积。</p>`,
+      solution: R`<p><b>第一步：配方。</b>$2x-x^2=-(x^2-2x+1)+1=1-(x-1)^2$。</p><p><b>第二步：平移换元。</b>令 $u=x-1$，则 $x=u+1$，$\mathrm{d}x=\mathrm{d}u$；$x=0$ 时 $u=-1$，$x=2$ 时 $u=1$。</p>$$I=\int_{-1}^{1}(u+1)\sqrt{1-u^2}\,\mathrm{d}u=\int_{-1}^{1}u\sqrt{1-u^2}\,\mathrm{d}u+\int_{-1}^{1}\sqrt{1-u^2}\,\mathrm{d}u.$$<p><b>第三步：奇函数部分为零。</b>$h(u)=u\sqrt{1-u^2}$ 满足 $h(-u)=-h(u)$，是奇函数，在对称区间 $[-1,1]$ 上的积分为 $0$（正负两半面积相互抵消）。</p><p><b>第四步：偶函数部分用几何意义。</b>$\displaystyle\int_{-1}^{1}\sqrt{1-u^2}\,\mathrm{d}u$ 是单位圆上半部分的面积，等于 $\dfrac{\pi}{2}$。（也可以令 $u=\sin\theta$ 算：$\displaystyle\int_{-\pi/2}^{\pi/2}\cos^2\theta\,\mathrm{d}\theta=\frac{\pi}{2}$。）</p><p><b>结论：</b>$I=0+\dfrac{\pi}{2}=\dfrac{\pi}{2}$。</p>`,
+      pitfalls: R`<p>① 换元后忘记同时换积分上下限。</p><p>② 把 $\displaystyle\int_{-1}^{1}\sqrt{1-u^2}\,\mathrm{d}u$ 当成整个圆的面积 $\pi$，或者当成四分之一圆 $\frac{\pi}{4}$——要想清楚 $u$ 从 $-1$ 到 $1$、$y\ge0$ 对应的是上半圆。</p><p>③ 不配方而直接三角代换 $x=1+\sin\theta$ 也能做，但如果不利用对称性，就得硬算 $\int(1+\sin\theta)\cos^2\theta\,\mathrm{d}\theta$，计算量更大、更容易出错。</p>`,
+      summary: R`<p><b>方法要点：</b>根号内是二次式 → 配方 → 平移 → 三角代换或几何意义。</p><p><b>看到…想到…：</b></p><ul><li>看到 $\sqrt{a^2-(x-b)^2}$ → 想到半圆，积分可能就是圆面积的一部分；</li><li>看到积分区间关于 $x=b$ 对称 → 平移到原点，把被积函数拆成奇 + 偶；</li><li>看到 $\displaystyle\int_0^{2b}x\,g(x)\,\mathrm{d}x$ 且 $g(2b-x)=g(x)$ → 区间再现，结果等于 $b\displaystyle\int_0^{2b}g(x)\,\mathrm{d}x$。</li></ul>`,
+      alt: R`<p><b>区间再现：</b>记 $g(x)=\sqrt{2x-x^2}$，令 $x=2-t$，验证 $g(2-t)=\sqrt{2(2-t)-(2-t)^2}=\sqrt{2t-t^2}=g(t)$，所以</p>$$I=\int_0^2(2-t)g(t)\,\mathrm{d}t=2\int_0^2g(t)\,\mathrm{d}t-I\ \Longrightarrow\ I=\int_0^2\sqrt{2x-x^2}\,\mathrm{d}x=\frac{\pi}{2}.$$<p>最后一个积分是半径为 $1$ 的上半圆面积。直观上，$x$ 在对称区间上的"平均值"是中点 $1$，所以 $I=1\times$ 半圆面积。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: integrate(x*sqrt(2*x-x**2), (x,0,2)) = pi/2' },
+      flags: []
+    },
+
+    /* ───────────────────────── 第11题 ───────────────────────── */
+    {
+      id: '2012-11', year: 2012, no: '第11题', type: '填空', score: 4,
+      stem: R`$\mathbf{grad}\left(xy+\dfrac{z}{y}\right)\bigg|_{(2,1,1)}=$ $\underline{\qquad}$.`,
+      options: null,
+      answer: R`$\mathbf{i}+\mathbf{j}+\mathbf{k}$（即 $(1,1,1)$）`,
+      figure: null,
+      kp: ['mdiff.dir'],
+      methods: ['梯度的定义：三个偏导数组成的向量'],
+      difficulty: 1,
+      analysis: R`<p>梯度的定义：$\mathbf{grad}\,u=\left(\dfrac{\partial u}{\partial x},\dfrac{\partial u}{\partial y},\dfrac{\partial u}{\partial z}\right)$。所以只需求三个偏导数再代入点 $(2,1,1)$。</p><p>理解梯度的意义很重要：它是一个<b>向量</b>，指向函数增长最快的方向，它的模就是最大的方向导数。题目本身是送分题，关键是求偏导时"其余变量都当常数"，尤其是 $\dfrac zy$ 对 $y$ 求偏导时不要漏掉负号。</p>`,
+      solution: R`<p>记 $u=xy+\dfrac{z}{y}$。</p><p><b>第一步：对 $x$ 求偏导</b>（$y,z$ 看成常数）：$u_x=y$（$\dfrac zy$ 不含 $x$，导数为 $0$）。</p><p><b>第二步：对 $y$ 求偏导</b>（$x,z$ 看成常数）：$xy$ 的导数是 $x$；$\dfrac zy=z\,y^{-1}$ 的导数是 $-z\,y^{-2}$。所以 $u_y=x-\dfrac{z}{y^2}$。</p><p><b>第三步：对 $z$ 求偏导</b>（$x,y$ 看成常数）：$u_z=\dfrac1y$。</p><p><b>第四步：代入 $(2,1,1)$。</b>$u_x=1$，$u_y=2-\dfrac11=1$，$u_z=1$。所以</p>$$\mathbf{grad}\,u\Big|_{(2,1,1)}=(1,1,1)=\mathbf{i}+\mathbf{j}+\mathbf{k}.$$<p><b>几何意义：</b>在点 $(2,1,1)$ 处，$u$ 沿方向 $\frac{1}{\sqrt3}(1,1,1)$ 增长最快，最大方向导数为 $|\mathbf{grad}\,u|=\sqrt3$。</p>`,
+      pitfalls: R`<p>① $\dfrac zy$ 对 $y$ 求偏导时漏掉负号或平方，写成 $\dfrac{z}{y}$ 或 $-\dfrac zy$。</p><p>② 把梯度写成一个数（如 $3$ 或 $\sqrt3$）。梯度是向量；它的模才是数。</p><p>③ 与方向导数混淆：方向导数 $=\mathbf{grad}\,u\cdot\mathbf{e}_l$（$\mathbf{e}_l$ 为单位方向向量），是梯度在某方向上的投影。</p>`,
+      summary: R`<p><b>方法要点：</b>梯度 = 偏导数按顺序排成的向量；方向导数 = 梯度 · 单位方向向量（函数可微时）；最大方向导数 = 梯度的模，方向即梯度方向。</p><p><b>看到…想到…：</b>看到 $\mathbf{grad}$ → 逐个求偏导再代点；看到"沿哪个方向增长最快 / 最大方向导数" → 梯度方向 / 梯度的模。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: [diff(x*y+z/y, v).subs({x:2,y:1,z:1}) for v in (x,y,z)] = [1,1,1]' },
+      flags: []
+    },
+
+    /* ───────────────────────── 第12题 ───────────────────────── */
+    {
+      id: '2012-12', year: 2012, no: '第12题', type: '填空', score: 4,
+      stem: R`设 $\Sigma=\{(x,y,z)\mid x+y+z=1,\ x\geqslant 0,\ y\geqslant 0,\ z\geqslant 0\}$，则 $\displaystyle\iint_{\Sigma}y^{2}\,\mathrm{d}S=$ $\underline{\qquad}$.`,
+      options: null,
+      answer: R`$\dfrac{\sqrt{3}}{12}$`,
+      figure: null,
+      kp: ['mint.surf1', 'mint.double'],
+      methods: ['投影到坐标面化为二重积分（一投二代三换）', '平面上的面积元 dS 为常数倍 dxdy', '累次积分'],
+      difficulty: 2,
+      analysis: R`<p>$\mathrm{d}S$ 是面积元，所以这是<b>第一类曲面积分</b>（对面积的曲面积分），没有方向的问题。标准方法是"<b>一投、二代、三换</b>"：</p><ul><li><b>投</b>：把曲面投影到某个坐标面（要求投影是一一对应的），得到平面区域 $D$；</li><li><b>代</b>：把曲面方程代入被积函数，消去一个变量；</li><li><b>换</b>：把 $\mathrm{d}S$ 换成 $\sqrt{1+z_x^2+z_y^2}\,\mathrm{d}x\mathrm{d}y$。</li></ul><p>这里 $\Sigma$ 是平面 $x+y+z=1$ 在第一卦限的那块三角形，可以写成显式 $z=1-x-y$，投影到 $xOy$ 面是三角形 $D$。被积函数 $y^2$ 本来就不含 $z$，"代"这一步都省了。</p><p><b>为什么 $\mathrm{d}S$ 是 $\mathrm{d}x\mathrm{d}y$ 的常数倍？</b>倾斜的平面块投影到 $xOy$ 面上会"缩小"，缩小的比例是两平面夹角的余弦 $\cos\gamma$。平面的法向量为 $(1,1,1)$，与 $z$ 轴夹角满足 $\cos\gamma=\dfrac{1}{\sqrt3}$，所以 $\mathrm{d}S=\dfrac{\mathrm{d}x\mathrm{d}y}{\cos\gamma}=\sqrt3\,\mathrm{d}x\mathrm{d}y$。</p>`,
+      solution: R`<p><b>第一步：投影。</b>$\Sigma:\ z=1-x-y$，条件 $z\ge0$ 等价于 $x+y\le1$，所以投影区域 $D=\{(x,y)\mid x\ge0,\ y\ge0,\ x+y\le1\}$（直角边为 $1$ 的三角形）。</p><p><b>第二步：面积元。</b>$z_x=-1$，$z_y=-1$，</p>$$\mathrm{d}S=\sqrt{1+z_x^2+z_y^2}\,\mathrm{d}x\mathrm{d}y=\sqrt{3}\,\mathrm{d}x\mathrm{d}y.$$<p><b>第三步：化为二重积分。</b></p>$$\iint_{\Sigma}y^2\,\mathrm{d}S=\sqrt3\iint_D y^2\,\mathrm{d}x\mathrm{d}y.$$<p><b>第四步：化为累次积分（先 $x$ 后 $y$）。</b>对固定的 $y\in[0,1]$，$x$ 从 $0$ 到 $1-y$：</p>$$\sqrt3\int_0^1y^2\,\mathrm{d}y\int_0^{1-y}\mathrm{d}x=\sqrt3\int_0^1y^2(1-y)\,\mathrm{d}y=\sqrt3\left(\frac13-\frac14\right)=\frac{\sqrt3}{12}.$$<p><b>自检：</b>若被积函数换成 $1$，得到 $\Sigma$ 的面积 $\sqrt3\times\frac12=\frac{\sqrt3}{2}$；而 $\Sigma$ 是边长为 $\sqrt2$ 的正三角形，面积 $\frac{\sqrt3}{4}(\sqrt2)^2=\frac{\sqrt3}{2}$，吻合，说明 $\mathrm{d}S$ 的换算正确。</p>`,
+      pitfalls: R`<p>① <b>忘乘 $\sqrt3$</b>，直接当成二重积分 $\iint_Dy^2\,\mathrm{d}x\mathrm{d}y=\frac1{12}$。第一类曲面积分与投影区域上的二重积分相差面积元的放大因子。</p><p>② 投影区域写错，例如把 $D$ 写成正方形 $[0,1]\times[0,1]$。$D$ 的边界来自 $z=0$ 与曲面的交线 $x+y=1$。</p><p>③ 与第二类曲面积分混淆，凭空加上正负号。第一类曲面积分没有方向，结果与曲面的侧无关。</p>`,
+      summary: R`<p><b>方法要点：</b>第一类曲面积分"一投二代三换"；对于平面 $ax+by+cz=d$（$c\ne0$），投影到 $xOy$ 面时 $\mathrm{d}S=\dfrac{\sqrt{a^2+b^2+c^2}}{|c|}\,\mathrm{d}x\mathrm{d}y$，是常数倍。</p><p><b>看到…想到…：</b>看到 $\mathrm{d}S$ → 第一类曲面积分，先选投影面；看到曲面是平面的一块 → 面积元是常数倍，积分化为普通二重积分；看到 $x,y,z$ 地位对称的曲面（如本题）→ 有轮换对称性，$\iint x^2\,\mathrm{d}S=\iint y^2\,\mathrm{d}S=\iint z^2\,\mathrm{d}S$，可用来简化或检验。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: sqrt(3)*integrate(integrate(y**2,(x,0,1-y)),(y,0,1)) = sqrt(3)/12' },
+      flags: []
+    },
+
+    /* ───────────────────────── 第15题 ───────────────────────── */
+    {
+      id: '2012-15', year: 2012, no: '第15题', type: '解答', score: 10,
+      stem: R`证明：$x\ln\dfrac{1+x}{1-x}+\cos x\geqslant 1+\dfrac{x^{2}}{2}\quad(-1<x<1)$.`,
+      options: null,
+      answer: R`证明见详细解答。核心：令 $f(x)=x\ln\dfrac{1+x}{1-x}+\cos x-1-\dfrac{x^2}{2}$，则 $f(0)=f'(0)=0$，$f''(x)=\dfrac{4}{(1-x^2)^2}-1-\cos x\geqslant2\gt0$，故 $x=0$ 是 $f$ 在 $(-1,1)$ 上的最小值点，$f(x)\geqslant f(0)=0$。`,
+      figure: null,
+      kp: ['diff.ineq', 'diff.mono', 'diff.taylor'],
+      methods: ['移项作差构造辅助函数', '逐级求导确定单调性（最值法）', '放缩法（另解）'],
+      difficulty: 3,
+      analysis: R`<p>这是<b>函数不等式</b>的证明。通法是"移项作差"：令 $f(x)=$ 左边 $-$ 右边，问题化为证明 $f(x)\ge0$。</p><p><b>先找等号在哪里成立。</b>代入 $x=0$：左边 $=0+1=1$，右边 $=1$，恰好相等。所以 $f(0)=0$，要证的其实是"<b>$f$ 在 $x=0$ 处取到它在 $(-1,1)$ 上的最小值</b>"。</p><p>证明某点是最小值点的标准办法：说明 $f'$ 在该点左边为负、右边为正，即 $f$ 先减后增。于是需要知道 $f'$ 的符号。但 $f'$ 中 $\ln$、分式、$\sin x$ 混在一起，符号看不出来，<b>于是再求一次导</b>。到 $f''$ 时会出现 $\dfrac{4}{(1-x^2)^2}$ 这样"至少为 4"的大项，以及 $1+\cos x$ 这样"至多为 2"的有界项，一比就知道 $f''\gt0$。然后"逐级回推"：$f''\gt0$ 与 $f'(0)=0$ 确定 $f'$ 的符号，再由 $f'$ 的符号与 $f(0)=0$ 得到 $f\ge0$。</p>`,
+      solution: R`<p><b>第一步：构造辅助函数。</b>令</p>$$f(x)=x\ln\frac{1+x}{1-x}+\cos x-1-\frac{x^2}{2},\qquad -1\lt x\lt1.$$<p>则 $f(0)=0+1-1-0=0$。只需证明 $f(x)\ge0$。</p><p><b>第二步：求一阶导数。</b>先把对数拆开：$\ln\dfrac{1+x}{1-x}=\ln(1+x)-\ln(1-x)$，它的导数是</p>$$\frac{1}{1+x}-\frac{-1}{1-x}=\frac{1}{1+x}+\frac{1}{1-x}=\frac{2}{1-x^2}.$$<p>对第一项用乘积法则，得</p>$$f'(x)=\ln\frac{1+x}{1-x}+\frac{2x}{1-x^2}-\sin x-x,\qquad f'(0)=0.$$<p><b>第三步：求二阶导数。</b>先算 $\left(\dfrac{2x}{1-x^2}\right)'=\dfrac{2(1-x^2)-2x\cdot(-2x)}{(1-x^2)^2}=\dfrac{2+2x^2}{(1-x^2)^2}$，于是</p>$$f''(x)=\frac{2}{1-x^2}+\frac{2+2x^2}{(1-x^2)^2}-\cos x-1=\frac{2(1-x^2)+2+2x^2}{(1-x^2)^2}-1-\cos x=\frac{4}{(1-x^2)^2}-1-\cos x.$$<p><b>第四步：判断 $f''$ 的符号。</b>当 $-1\lt x\lt1$ 时，$0\lt1-x^2\le1$，所以 $(1-x^2)^2\le1$，从而 $\dfrac{4}{(1-x^2)^2}\ge4$；又 $1+\cos x\le2$。因此</p>$$f''(x)\ge4-2=2\gt0,\qquad -1\lt x\lt1.$$<p><b>第五步：由 $f''$ 推 $f'$ 的符号。</b>$f''\gt0$ 说明 $f'$ 在 $(-1,1)$ 上严格单调递增；又 $f'(0)=0$，所以</p><ul><li>当 $-1\lt x\lt0$ 时，$f'(x)\lt f'(0)=0$；</li><li>当 $0\lt x\lt1$ 时，$f'(x)\gt f'(0)=0$。</li></ul><p><b>第六步：由 $f'$ 推 $f$ 的符号。</b>$f$ 在 $(-1,0]$ 上单调递减，在 $[0,1)$ 上单调递增，所以 $x=0$ 是 $f$ 在 $(-1,1)$ 上的最小值点：</p>$$f(x)\ge f(0)=0,\qquad -1\lt x\lt1.$$<p>即 $x\ln\dfrac{1+x}{1-x}+\cos x\ge1+\dfrac{x^2}{2}$，且等号仅在 $x=0$ 时成立。证毕。</p>`,
+      pitfalls: R`<p>① <b>对数求导出错</b>：直接对 $\ln\dfrac{1+x}{1-x}$ 用复合函数求导容易乱，先拆成 $\ln(1+x)-\ln(1-x)$ 最稳；注意 $[\ln(1-x)]'=-\dfrac{1}{1-x}$，减去它变成加号。</p><p>② <b>只求一阶导就卡住</b>：$f'$ 的符号不能直接看出时，要继续求导，直到符号明显为止。</p><p>③ <b>逻辑链不完整</b>：$f''\gt0$ 只说明 $f'$ 单调递增，必须结合 $f'(0)=0$ 才能得到 $f'$ 的符号；同理 $f$ 的符号要结合 $f(0)=0$。只写"$f''\gt0$，所以 $f\ge0$"是要扣分的。</p><p>④ 只讨论 $0\le x\lt1$ 而忘了 $x$ 可以取负值。若想只讨论半区间，必须先证明 $f$ 是偶函数：$(-x)\ln\dfrac{1-x}{1+x}=x\ln\dfrac{1+x}{1-x}$，且 $\cos x$、$x^2$ 都是偶函数。</p>`,
+      summary: R`<p><b>方法要点（函数不等式的"最值法"）：</b>① 作差构造 $f$；② 找等号成立点 $x_0$（常是 $0$ 或端点），算 $f(x_0)$；③ 求导，若 $f'$ 符号不明就继续求导，直到某阶导数符号确定；④ "逐级回推"：用高阶导的符号 + 低阶导在 $x_0$ 处的值，依次确定低阶导的符号，最终得到 $f\ge f(x_0)$。</p><p><b>看到…想到…：</b></p><ul><li>看到不等式两边在某点相等 → 该点是辅助函数的最值点，证明它是最小（大）值点；</li><li>看到 $\ln\dfrac{1+x}{1-x}$ → 想到它的导数 $\dfrac{2}{1-x^2}$ 和展开式 $2\left(x+\dfrac{x^3}{3}+\dfrac{x^5}{5}+\cdots\right)$；</li><li>看到偶函数 → 可以只讨论半个区间，但要先说明奇偶性。</li></ul>`,
+      alt: R`<p><b>放缩法（分别比较）：</b>把左边两部分分别放缩，再相加。</p><p>(1) 证 $x\ln\dfrac{1+x}{1-x}\ge2x^2$。令 $h(x)=\ln\dfrac{1+x}{1-x}-2x$，则 $h(0)=0$，$h'(x)=\dfrac{2}{1-x^2}-2=\dfrac{2x^2}{1-x^2}\ge0$，$h$ 单调递增。所以 $x\ge0$ 时 $h(x)\ge0$，$x\le0$ 时 $h(x)\le0$，总有 $x\,h(x)\ge0$，即 $x\ln\dfrac{1+x}{1-x}\ge2x^2$。</p><p>(2) 证 $\cos x\ge1-\dfrac{x^2}{2}$。令 $g(x)=\cos x-1+\dfrac{x^2}{2}$，$g(0)=0$，$g'(x)=x-\sin x\ge0$（$x\ge0$），所以 $x\ge0$ 时 $g(x)\ge0$；$g$ 是偶函数，故对一切 $x$ 有 $g(x)\ge0$。</p><p>(3) 相加：左边 $\ge2x^2+1-\dfrac{x^2}{2}=1+\dfrac{3x^2}{2}\ge1+\dfrac{x^2}{2}$。证毕。</p><p>这个方法还揭示了不等式其实"很松"：由泰勒展开，左边 $-$ 右边 $=x^2+\dfrac{17}{24}x^4+\cdots$，在 $x=0$ 附近大约是 $x^2$。</p>`,
+      verify: { by: 'mixed', ok: true, note: 'sympy 化简确认 f\'\'(x)-[4/(1-x²)²-1-cos x]=0，f(0)=f\'(0)=0，f 的泰勒展开为 x²+17x⁴/24+…；在 (-0.999,0.999) 上 20001 个格点数值检验 min f=0（在 x=0 处）；证明逐步人工核对' },
+      flags: []
+    },
+
+    /* ───────────────────────── 第16题 ───────────────────────── */
+    {
+      id: '2012-16', year: 2012, no: '第16题', type: '解答', score: 10,
+      stem: R`求函数 $f(x,y)=x\mathrm{e}^{-\frac{x^{2}+y^{2}}{2}}$ 的极值.`,
+      options: null,
+      answer: R`极大值 $f(1,0)=\mathrm{e}^{-\frac12}$，极小值 $f(-1,0)=-\mathrm{e}^{-\frac12}$.`,
+      figure: null,
+      kp: ['mdiff.extreme'],
+      methods: ['求驻点：一阶偏导同时为零', '二阶充分条件（AC−B² 判别法）', '提出恒正的指数因子'],
+      difficulty: 2,
+      analysis: R`<p>这是标准的<b>二元函数无条件极值</b>问题，流程固定：① 解 $f_x=0,\ f_y=0$ 求驻点（还要看有没有偏导不存在的点——本题 $f$ 处处可微，没有）；② 在每个驻点处计算 $A=f_{xx}$、$B=f_{xy}$、$C=f_{yy}$；③ 用 $AC-B^2$ 判别。</p><p><b>技巧：</b>每个偏导数里都会带着因子 $\mathrm{e}^{-\frac{x^2+y^2}{2}}$，它恒大于 $0$，解方程、判断符号时都可以把它提出来"约掉"，只看剩下的多项式部分。</p><p><b>直观图像：</b>$\mathrm{e}^{-\frac{x^2+y^2}{2}}$ 是一座以原点为中心的"钟形山"，乘以 $x$ 后，$x\gt0$ 的半边被抬成山峰，$x\lt0$ 的半边被压成山谷。又因为 $f(-x,y)=-f(x,y)$，峰和谷关于 $yOz$ 平面反对称，所以极大值和极小值互为相反数——这可以用来检验答案。</p>`,
+      solution: R`<p>记 $E=\mathrm{e}^{-\frac{x^2+y^2}{2}}\gt0$，则 $E_x=-xE$，$E_y=-yE$。</p><p><b>第一步：求一阶偏导。</b></p>$$f_x=E+x\cdot(-xE)=(1-x^2)E,\qquad f_y=x\cdot(-yE)=-xyE.$$<p><b>第二步：求驻点。</b>因为 $E\gt0$，方程组化为 $1-x^2=0$ 且 $xy=0$。由第一式 $x=\pm1\ne0$，代入第二式得 $y=0$。驻点为 $(1,0)$ 与 $(-1,0)$。</p><p><b>第三步：求二阶偏导。</b></p>$$f_{xx}=\frac{\partial}{\partial x}\big[(1-x^2)E\big]=-2xE+(1-x^2)(-xE)=(x^3-3x)E,$$$$f_{xy}=\frac{\partial}{\partial y}\big[(1-x^2)E\big]=(1-x^2)(-yE)=(x^2-1)yE,$$$$f_{yy}=\frac{\partial}{\partial y}\big[-xyE\big]=-xE+(-xy)(-yE)=x(y^2-1)E.$$<p><b>第四步：判别驻点 $(1,0)$。</b>此处 $E=\mathrm{e}^{-\frac12}$，</p>$$A=-2\mathrm{e}^{-\frac12},\quad B=0,\quad C=-\mathrm{e}^{-\frac12},\quad AC-B^2=2\mathrm{e}^{-1}\gt0,\quad A\lt0,$$<p>所以 $(1,0)$ 是极大值点，极大值 $f(1,0)=\mathrm{e}^{-\frac12}$。</p><p><b>第五步：判别驻点 $(-1,0)$。</b></p>$$A=2\mathrm{e}^{-\frac12},\quad B=0,\quad C=\mathrm{e}^{-\frac12},\quad AC-B^2=2\mathrm{e}^{-1}\gt0,\quad A\gt0,$$<p>所以 $(-1,0)$ 是极小值点，极小值 $f(-1,0)=-\mathrm{e}^{-\frac12}$。</p><p><b>补充（加深理解）：</b>由于 $|f(x,y)|\le|x|\mathrm{e}^{-\frac{x^2}{2}}$，而一元函数 $t\mathrm{e}^{-t^2/2}$（$t\ge0$）在 $t=1$ 处取最大值 $\mathrm{e}^{-\frac12}$，所以 $|f|\le\mathrm{e}^{-\frac12}$。这说明两个极值同时也是 $f$ 在整个平面上的最大值和最小值。</p>`,
+      pitfalls: R`<p>① 求 $f_x$ 时漏掉"指数部分对 $x$ 求导"那一项，写成 $f_x=E$，于是找不到驻点。</p><p>② 由 $xy=0$ 得到"$x=0$ 或 $y=0$"后，没有与 $1-x^2=0$ 联立，误把 $(0,y)$ 当成驻点。两个方程必须<b>同时</b>满足。</p><p>③ 记反判别法：$A\lt0$ 是极大（类比一元函数 $f''\lt0$ 时图像上凸、是极大），$A\gt0$ 是极小。</p><p>④ 只写"极值点为 $(1,0)$"而没有写出极值 $\mathrm{e}^{-\frac12}$。题目问的是极值（函数值）。</p>`,
+      summary: R`<p><b>方法要点（无条件极值四步）：</b>求驻点 → 求二阶偏导 → 逐个驻点算 $A,B,C$ → 判别并写出极值。</p><p><b>判别口诀：</b>"$AC-B^2$ 大于零有极值，$A$ 负极大、$A$ 正极小；小于零无极值；等于零另想办法（用定义或沿特殊路径分析）。"</p><p><b>看到…想到…：</b>看到"多项式 × $\mathrm{e}^{\text{二次式}}$" → 指数因子恒正，求驻点和判断符号时把它提出来；看到 $f(-x,y)=-f(x,y)$ 这类对称性 → 极大值与极小值互为相反数，可用来检验。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: solve([f_x,f_y]) 得驻点 (±1,0)；(1,0) 处 A=-2e^(-1/2)，B=0，C=-e^(-1/2)，AC-B²=2/e，f=e^(-1/2)；(-1,0) 处 A=2e^(-1/2)，C=e^(-1/2)，f=-e^(-1/2)' },
+      flags: ['OCR 题干末尾缺句号，已补']
+    },
+
+    /* ───────────────────────── 第17题 ───────────────────────── */
+    {
+      id: '2012-17', year: 2012, no: '第17题', type: '解答', score: 10,
+      stem: R`求幂级数 $\displaystyle\sum_{n=0}^{\infty}\frac{4n^{2}+4n+3}{2n+1}x^{2n}$ 的收敛域及和函数.`,
+      options: null,
+      answer: R`收敛域为 $(-1,1)$；和函数 $S(x)=\begin{cases}\dfrac{1+x^{2}}{(1-x^{2})^{2}}+\dfrac{1}{x}\ln\dfrac{1+x}{1-x}, & 0<|x|<1,\\ 3, & x=0.\end{cases}$`,
+      figure: null,
+      kp: ['series.sum', 'series.power'],
+      methods: ['比值法求缺项幂级数的收敛半径', '多项式除法拆分系数', '逐项求导', '逐项积分'],
+      difficulty: 3,
+      analysis: R`<p>题目要两样东西：收敛域、和函数。</p><p><b>收敛域：</b>级数只含偶次幂 $x^{2n}$，是"缺项"幂级数，不能机械地套用 $R=\lim\left|\dfrac{a_n}{a_{n+1}}\right|$（那个公式是为 $\sum a_nx^n$ 设计的）。稳妥的做法是：把整个通项 $u_n(x)$ 看作数项级数的一般项，对 $|u_n(x)|$ 用比值判别法。端点要单独判断。</p><p><b>和函数：</b>系数 $\dfrac{4n^2+4n+3}{2n+1}$ 是一个"假分式"（分子次数高于分母），先做多项式除法：$4n^2+4n+3=(2n+1)^2+2$，所以</p>$$\frac{4n^2+4n+3}{2n+1}=(2n+1)+\frac{2}{2n+1}.$$<p>两部分分别处理，原则是"<b>系数在分子上，用求导消；系数在分母上，用积分消</b>"：</p><ul><li>$(2n+1)x^{2n}$ 正好是 $x^{2n+1}$ 的导数 → 先求和、再求导；</li><li>$\dfrac{x^{2n}}{2n+1}$ 的分母 $2n+1$ 正好是 $\int x^{2n}\,\mathrm{d}x=\dfrac{x^{2n+1}}{2n+1}$ 产生的 → 先乘 $x$，再逐项积分。</li></ul><p>两条路最终都回到最基本的几何级数 $\sum\limits_{n=0}^\infty x^{2n}=\dfrac{1}{1-x^2}$。</p>`,
+      solution: R`<p>记 $a_n=\dfrac{4n^2+4n+3}{2n+1}$。</p><p><b>第一步：求收敛半径。</b>对通项 $u_n(x)=a_nx^{2n}$（$x\ne0$）用比值法：</p>$$\lim_{n\to\infty}\left|\frac{u_{n+1}(x)}{u_n(x)}\right|=\lim_{n\to\infty}\frac{a_{n+1}}{a_n}\,x^2=x^2,$$<p>这里 $\dfrac{a_{n+1}}{a_n}\to1$，因为 $a_n$ 与 $2n$ 同阶。所以 $x^2\lt1$ 时级数绝对收敛，$x^2\gt1$ 时发散（通项不趋于 $0$），收敛半径 $R=1$。</p><p><b>第二步：判断端点。</b>$x=\pm1$ 时 $x^{2n}=1$，级数变成 $\sum a_n$，而 $a_n\to\infty$，不满足收敛的必要条件"通项趋于零"，故发散。收敛域为 $(-1,1)$。</p><p><b>第三步：拆分系数。</b>由 $4n^2+4n+3=(2n+1)^2+2$ 得 $a_n=(2n+1)+\dfrac{2}{2n+1}$。在 $(-1,1)$ 内，$\sum(2n+1)x^{2n}$ 与 $\sum\dfrac{x^{2n}}{2n+1}$ 都收敛（收敛半径都是 $1$），所以可以拆开：</p>$$S(x)=\underbrace{\sum_{n=0}^{\infty}(2n+1)x^{2n}}_{S_1(x)}+2\underbrace{\sum_{n=0}^{\infty}\frac{x^{2n}}{2n+1}}_{S_2(x)}.$$<p><b>第四步：求 $S_1$（先求和，再求导）。</b>因为 $(x^{2n+1})'=(2n+1)x^{2n}$，而幂级数在收敛区间内可以逐项求导，</p>$$S_1(x)=\left(\sum_{n=0}^{\infty}x^{2n+1}\right)'=\left(\frac{x}{1-x^2}\right)'=\frac{(1-x^2)-x\cdot(-2x)}{(1-x^2)^2}=\frac{1+x^2}{(1-x^2)^2}.$$<p>其中 $\sum\limits_{n=0}^{\infty}x^{2n+1}=x\sum\limits_{n=0}^{\infty}(x^2)^n=\dfrac{x}{1-x^2}$（公比为 $x^2$ 的几何级数，$|x|\lt1$）。</p><p><b>第五步：求 $S_2$（先乘 $x$，再逐项积分）。</b>$x=0$ 时只有 $n=0$ 项，$S_2(0)=1$。当 $0\lt|x|\lt1$ 时，</p>$$xS_2(x)=\sum_{n=0}^{\infty}\frac{x^{2n+1}}{2n+1}=\sum_{n=0}^{\infty}\int_0^xt^{2n}\,\mathrm{d}t=\int_0^x\sum_{n=0}^{\infty}t^{2n}\,\mathrm{d}t=\int_0^x\frac{\mathrm{d}t}{1-t^2}.$$<p>（幂级数在收敛区间内可以逐项积分，所以求和与积分可以交换。）再用 $\dfrac{1}{1-t^2}=\dfrac12\left(\dfrac{1}{1+t}+\dfrac{1}{1-t}\right)$：</p>$$\int_0^x\frac{\mathrm{d}t}{1-t^2}=\frac12\Big[\ln(1+t)-\ln(1-t)\Big]_0^x=\frac12\ln\frac{1+x}{1-x}.$$<p>所以 $S_2(x)=\dfrac{1}{2x}\ln\dfrac{1+x}{1-x}$（$0\lt|x|\lt1$）。</p><p><b>第六步：合并。</b></p>$$S(x)=S_1(x)+2S_2(x)=\begin{cases}\dfrac{1+x^2}{(1-x^2)^2}+\dfrac1x\ln\dfrac{1+x}{1-x}, & 0\lt|x|\lt1,\\ 3, & x=0.\end{cases}$$<p>$S(0)$ 就是首项系数 $a_0=3$。<b>检验：</b>$x\to0$ 时 $\dfrac1x\ln\dfrac{1+x}{1-x}\to2$，$S_1\to1$，合计 $\to3=S(0)$，和函数在 $0$ 处连续，符合幂级数和函数的性质。</p>`,
+      pitfalls: R`<p>① <b>缺项幂级数套错公式</b>：对 $\sum a_nx^{2n}$，若 $\dfrac{a_{n+1}}{a_n}\to\rho$，正确结论是 $x^2\rho\lt1$，即 $R=\dfrac{1}{\sqrt\rho}$，而不是 $\dfrac1\rho$。本题 $\rho=1$，两者碰巧相等，但方法错了在别的题上就会出错。</p><p>② 忘记判断端点，或误以为"端点处是 $\sum a_n$，用比值法判断"——比值为 $1$ 时比值法失效，应该用"通项不趋于零"。</p><p>③ 在 $S_2$ 中除以 $x$ 时没有单独讨论 $x=0$，和函数漏写分段。</p><p>④ $\left(\dfrac{x}{1-x^2}\right)'$ 求导出错，常见的是分子写成 $1-x^2-2x^2$（漏了负负得正）。</p>`,
+      summary: R`<p><b>方法要点（幂级数求和"三板斧"：拆、导、积）：</b></p><ul><li><b>拆</b>：系数是假分式就做多项式除法，拆成"整式 + 真分式"，或拆成部分分式；</li><li><b>导</b>：系数是 $n$ 的多项式（在分子上）→ 把 $x^n$ 看成某个幂的导数，"先积后导"或"先求和再求导"；</li><li><b>积</b>：系数在分母上（如 $\frac1n$、$\frac1{2n+1}$）→ 把 $\frac{x^{k}}{k}$ 看成积分的结果，"先导后积"；</li><li>最终都要回到几何级数 $\sum x^n=\dfrac1{1-x}$。</li></ul><p><b>看到…想到…：</b>看到 $x^{2n}$ 缺项 → 对整个通项用比值法求半径；看到 $\dfrac{x^{2n+1}}{2n+1}$ → $\dfrac12\ln\dfrac{1+x}{1-x}$；看到 $(2n+1)x^{2n}$ → $\left(\dfrac{x}{1-x^2}\right)'$；和函数中出现 $\dfrac1x$ → 必须单独写出 $x=0$ 处的值。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: 和函数 S(x) 的麦克劳林展开前 6 项 3+11x²/3+27x⁴/5+51x⁶/7+83x⁸/9+123x¹⁰/11 与原级数系数逐项一致；x=1/2 处 S=4.41944679955844 与 200 项部分和一致；limit(S,x,0)=3；系数 a_n→∞ 说明端点发散' },
+      flags: []
+    },
+
+    /* ───────────────────────── 第18题 ───────────────────────── */
+    {
+      id: '2012-18', year: 2012, no: '第18题', type: '解答', score: 10,
+      stem: R`已知曲线 $L:\begin{cases}x=f(t),\\ y=\cos t,\end{cases}$ 其中函数 $f(t)$ 具有连续导数，且 $f(0)=0$，$f'(t)>0\ \left(0<t<\dfrac{\pi}{2}\right)$．若曲线 $L$ 的切线与 $x$ 轴的交点到切点的距离恒为 $1$，求函数 $f(t)$ 的表达式，并求以曲线 $L$ 及 $x$ 轴和 $y$ 轴为边界的区域的面积.`,
+      options: null,
+      answer: R`$f(t)=\ln(\sec t+\tan t)-\sin t\ \left(0\leqslant t<\dfrac{\pi}{2}\right)$；所求区域面积为 $\dfrac{\pi}{4}$.`,
+      figure: null,
+      kp: ['ode.app', 'int.app', 'diff.calc'],
+      methods: ['参数方程求切线斜率', '几何条件列出关于 f′(t) 的方程', '∫sec t dt 的计算', '参数方程下的面积（无界区域的反常积分换元）'],
+      difficulty: 3,
+      analysis: R`<p>题目分两问，各有一个关键的"翻译"动作。</p><p><b>第一问：把几何条件翻译成方程。</b>"切线与 $x$ 轴的交点到切点的距离恒为 1"，要用到切线，而切线需要斜率。曲线是参数方程，斜率为 $\dfrac{\mathrm{d}y}{\mathrm{d}x}=\dfrac{y'(t)}{x'(t)}=\dfrac{-\sin t}{f'(t)}$。写出切线、求出与 $x$ 轴交点、用距离公式，就得到关于 $f'(t)$ 的方程，解出 $f'(t)$ 再积分。</p><p>更直观的看法：切点 $P$ 到 $x$ 轴的竖直距离是 $y=\cos t$，切线段 $PT$ 的长是 $1$，二者构成直角三角形，水平边就是 $\sqrt{1-\cos^2t}=\sin t$。斜率的绝对值 = 竖直边 / 水平边 $=\dfrac{\cos t}{\sin t}$。这样一眼就能得到 $f'(t)$。</p><p><b>物理图像：</b>这条曲线叫"<b>曳物线</b>"。想象一个人从原点出发沿 $x$ 轴正向走，手里用一根长为 $1$ 的绳子拖着一个原来位于 $(0,1)$ 的小物体，物体始终被绳子沿绳子方向拖动，所以绳子总是曲线的切线，切线段长恒为 $1$。人越走越远，物体越来越贴近 $x$ 轴但永远到不了——$x$ 轴是它的渐近线。</p><svg viewBox="0 0 330 135" width="330" style="max-width:100%;height:auto" xmlns="http://www.w3.org/2000/svg"><title>曳物线 L、切线段 PT 与所求面积区域示意</title><polygon points="25,30 25,30.4 25.2,31.6 25.6,33.2 26.4,35.6 27.5,38 29.7,42 32.5,46 35.7,50 39.5,54 43.9,58 48.9,62 54.6,66 61.1,70 68.5,74 77,78 86.9,82 98.6,86 112.6,90 130,94 147.6,97.2 164,99.6 184.9,102 202.6,103.6 219.2,104.8 240.2,106 240.2,110 25,110" fill="currentColor" fill-opacity="0.13" stroke="none"/><line x1="10" y1="110" x2="325" y2="110" stroke="currentColor" stroke-width="1"/><line x1="25" y1="128" x2="25" y2="12" stroke="currentColor" stroke-width="1"/><polyline points="25,30 25,30.4 25.2,31.6 25.6,33.2 26.4,35.6 27.5,38 29.7,42 32.5,46 35.7,50 39.5,54 43.9,58 48.9,62 54.6,66 61.1,70 68.5,74 77,78 86.9,82 98.6,86 112.6,90 130,94 147.6,97.2 164,99.6 184.9,102 202.6,103.6 219.2,104.8 240.2,106" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="240.2,106 270,107.2 300,108.1 318,108.5" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4,4"/><line x1="46.6" y1="60.3" x2="109.3" y2="110" stroke="currentColor" stroke-width="1.6"/><line x1="46.6" y1="60.3" x2="46.6" y2="110" stroke="currentColor" stroke-width="1" stroke-dasharray="3,3"/><circle cx="46.6" cy="60.3" r="2.5" fill="currentColor"/><circle cx="109.3" cy="110" r="2.5" fill="currentColor"/><text x="38" y="56" font-size="12" fill="currentColor">P</text><text x="106" y="125" font-size="12" fill="currentColor">T</text><text x="30" y="26" font-size="11" fill="currentColor">(0,1)</text><text x="13" y="124" font-size="11" fill="currentColor">O</text><text x="49" y="104" font-size="10" fill="currentColor">cos t</text><text x="66" y="124" font-size="10" fill="currentColor">sin t</text><text x="60" y="86" font-size="11" fill="currentColor">1</text><text x="150" y="90" font-size="12" fill="currentColor">L</text><text x="316" y="124" font-size="11" fill="currentColor">x</text><text x="30" y="16" font-size="11" fill="currentColor">y</text></svg><p><small>图：切点 $P$ 与切线和 $x$ 轴的交点 $T$ 之间的距离恒为 $1$；竖直边为 $\cos t$，水平边为 $\sin t$。阴影是所求的无界区域。</small></p><p><b>第二问：面积。</b>曲线向右无限延伸并以 $x$ 轴为渐近线，所以区域是<b>无界</b>的，面积是反常积分 $\displaystyle\int_0^{+\infty}y\,\mathrm{d}x$。用参数换元 $x=f(t)$，它会变成关于 $t$ 的普通定积分。</p>`,
+      solution: R`<p><b>第一步：求切线斜率。</b>当 $0\lt t\lt\dfrac\pi2$ 时，$\dfrac{\mathrm{d}x}{\mathrm{d}t}=f'(t)\gt0$，$\dfrac{\mathrm{d}y}{\mathrm{d}t}=-\sin t$，所以切线斜率</p>$$k=\frac{\mathrm{d}y/\mathrm{d}t}{\mathrm{d}x/\mathrm{d}t}=-\frac{\sin t}{f'(t)}.$$<p><b>第二步：写切线方程，求它与 $x$ 轴的交点。</b>切点 $P(f(t),\cos t)$，切线方程</p>$$Y-\cos t=-\frac{\sin t}{f'(t)}\big(X-f(t)\big).$$<p>令 $Y=0$，解得 $X=f(t)+\dfrac{f'(t)\cos t}{\sin t}$，即交点 $T\left(f(t)+\dfrac{f'(t)\cos t}{\sin t},\ 0\right)$。</p><p><b>第三步：由距离条件列方程。</b></p>$$|PT|^2=\left(\frac{f'(t)\cos t}{\sin t}\right)^2+\cos^2t=1\ \Longrightarrow\ \frac{f'^2(t)\cos^2t}{\sin^2t}=1-\cos^2t=\sin^2t\ \Longrightarrow\ f'^2(t)=\frac{\sin^4t}{\cos^2t}.$$<p>因为 $f'(t)\gt0$ 且在 $\left(0,\frac\pi2\right)$ 内 $\cos t\gt0$，开方取正：</p>$$f'(t)=\frac{\sin^2t}{\cos t}=\frac{1-\cos^2t}{\cos t}=\sec t-\cos t.$$<p><b>第四步：求 $\int\sec t\,\mathrm{d}t$。</b>分子分母同乘 $\cos t$，再凑微分：</p>$$\int\sec t\,\mathrm{d}t=\int\frac{\cos t}{\cos^2t}\,\mathrm{d}t=\int\frac{\mathrm{d}(\sin t)}{1-\sin^2t}=\frac12\ln\frac{1+\sin t}{1-\sin t}+C.$$<p>又 $\dfrac{1+\sin t}{1-\sin t}=\dfrac{(1+\sin t)^2}{1-\sin^2t}=\left(\dfrac{1+\sin t}{\cos t}\right)^2$，所以 $\dfrac12\ln\dfrac{1+\sin t}{1-\sin t}=\ln\dfrac{1+\sin t}{\cos t}=\ln(\sec t+\tan t)$。</p><p><b>第五步：积分并定常数。</b>$f$ 有连续导数，由牛顿—莱布尼茨公式，对 $0\le t\lt\dfrac\pi2$，</p>$$f(t)=f(0)+\int_0^t(\sec s-\cos s)\,\mathrm{d}s=0+\Big[\ln(\sec s+\tan s)-\sin s\Big]_0^t=\ln(\sec t+\tan t)-\sin t.$$<p>（$s=0$ 时 $\ln(1+0)-0=0$。）</p><p><b>第六步：弄清区域的形状。</b>$t=0$ 时曲线在点 $(0,1)$，位于 $y$ 轴上；$t$ 从 $0$ 增加到 $\dfrac\pi2$ 时，$x=f(t)$ 严格递增，且 $t\to\dfrac{\pi}{2}^-$ 时 $\sec t+\tan t\to+\infty$，故 $x\to+\infty$；同时 $y=\cos t$ 从 $1$ 减小并趋于 $0$。所以区域为 $\{(x,y)\mid 0\le x\lt+\infty,\ 0\le y\le y(x)\}$，向右无界。</p><p><b>第七步：计算面积。</b></p>$$A=\int_0^{+\infty}y\,\mathrm{d}x.$$<p>令 $x=f(t)$：$x$ 从 $0$ 到 $+\infty$ 对应 $t$ 从 $0$ 到 $\dfrac\pi2$，$\mathrm{d}x=f'(t)\,\mathrm{d}t$，$y=\cos t$，于是</p>$$A=\int_0^{\frac\pi2}\cos t\cdot\frac{\sin^2t}{\cos t}\,\mathrm{d}t=\int_0^{\frac\pi2}\sin^2t\,\mathrm{d}t=\int_0^{\frac\pi2}\frac{1-\cos2t}{2}\,\mathrm{d}t=\frac\pi4.$$<p>换元后是普通的定积分，说明原反常积分收敛，所求面积为 $\dfrac\pi4$。</p>`,
+      pitfalls: R`<p>① <b>参数方程求导上下颠倒</b>：$\dfrac{\mathrm{d}y}{\mathrm{d}x}=\dfrac{y'(t)}{x'(t)}$，"$y$ 的导数在上"。</p><p>② <b>开方时不定号</b>：$f'^2=\dfrac{\sin^4t}{\cos^2t}$ 开方后有正负两种可能，必须用题设 $f'(t)\gt0$ 选正号——这正是题目给这个条件的用意。</p><p>③ <b>不会积 $\sec t$</b>：要么记住 $\int\sec t\,\mathrm{d}t=\ln|\sec t+\tan t|+C$，要么会用"同乘 $\cos t$ 凑 $\mathrm{d}(\sin t)$"现场推导。</p><p>④ 忘记用 $f(0)=0$ 确定常数。</p><p>⑤ <b>面积换元时上下限写错</b>：$x\to+\infty$ 对应 $t\to\dfrac\pi2$，而不是 $t\to+\infty$；另外要意识到区域无界、面积是反常积分（尽管结果有限）。</p>`,
+      summary: R`<p><b>方法要点：</b></p><ul><li>参数曲线的切线问题：斜率 $=\dfrac{y'(t)}{x'(t)}$ → 写切线方程 → 求截距或交点 → 代入几何条件，得到关于未知函数导数的方程（往往是一个可以直接积分的微分方程）。</li><li>参数方程下的面积：$\displaystyle\int y\,\mathrm{d}x=\int y(t)\,x'(t)\,\mathrm{d}t$，积分限换成对应的参数值。</li><li>无界区域的面积是反常积分，换元后可能变成常义积分。</li></ul><p><b>看到…想到…：</b>看到"切线段长恒为常数" → 曳物线；看到"切线与坐标轴所截线段""法线长""切线截距"等条件 → 画直角三角形，用斜率表示边长；看到 $\dfrac{1}{\cos t}$ 的积分 → $\ln(\sec t+\tan t)$。</p>`,
+      alt: R`<p><b>几何法直接求 $f'(t)$：</b>在直角三角形中，竖直边 $=\cos t$，斜边 $=|PT|=1$，所以水平边 $=\sin t$，切线斜率的绝对值 $=\dfrac{\cos t}{\sin t}$。而斜率绝对值又等于 $\dfrac{\sin t}{f'(t)}$，所以 $\dfrac{\sin t}{f'(t)}=\dfrac{\cos t}{\sin t}$，立即得到 $f'(t)=\dfrac{\sin^2t}{\cos t}$。</p><p><b>面积的另一种算法：</b>按 $y$ 积分，$A=\displaystyle\int_0^1x\,\mathrm{d}y=\int_0^{\frac\pi2}f(t)\sin t\,\mathrm{d}t$，分部积分得 $\Big[-f(t)\cos t\Big]_0^{\frac\pi2}+\displaystyle\int_0^{\frac\pi2}f'(t)\cos t\,\mathrm{d}t$。其中边界项在 $t\to\frac\pi2$ 时 $f(t)\cos t\to0$（对数增长比不过 $\cos t$ 趋于零），剩下的正是 $\displaystyle\int_0^{\frac\pi2}\sin^2t\,\mathrm{d}t=\frac\pi4$，结果一致。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: diff(ln(sec t+tan t)-sin t) 化简为 sin²t/cos t；以该 f 代入，切点到切线与 x 轴交点距离的平方化简为 1；f(0)=0，t→π/2⁻ 时 f→+∞；面积 integrate(cos t·f\'(t),(t,0,pi/2))=pi/4' },
+      flags: ['OCR 中 "f\'(t)>0（0<t<π/2)" 的括号与空格错乱，已整理；部分版本原卷在曲线 L 的参数方程后还标注了参数范围 0≤t<π/2，本 OCR 稿中没有，题面按 OCR 稿保留，解答中按 0≤t<π/2 处理（由 f\'(t)>0 的范围与 y=cos t>0 可知）']
+    },
+
+    /* ───────────────────────── 第19题 ───────────────────────── */
+    {
+      id: '2012-19', year: 2012, no: '第19题', type: '解答', score: 10,
+      stem: R`已知 $L$ 是第一象限中从点 $(0,0)$ 沿圆周 $x^{2}+y^{2}=2x$ 到点 $(2,0)$，再沿圆周 $x^{2}+y^{2}=4$ 到点 $(0,2)$ 的曲线段，计算曲线积分 $I=\displaystyle\int_{L}3x^{2}y\,\mathrm{d}x+(x^{3}+x-2y)\,\mathrm{d}y$.`,
+      options: null,
+      answer: R`$I=\dfrac{\pi}{2}-4$`,
+      figure: null,
+      kp: ['mint.line2'],
+      methods: ['补线后用格林公式', '补线段上的积分直接计算', '凑全微分（另解）'],
+      difficulty: 3,
+      analysis: R`<p>这是<b>第二类曲线积分</b>（对坐标的曲线积分），路径由两段圆弧组成且不封闭。如果直接参数化，$3x^2y\,\mathrm{d}x$ 在圆上会变成高次三角函数的积分，很繁琐。</p><p><b>第一反应：先算 $\dfrac{\partial Q}{\partial x}-\dfrac{\partial P}{\partial y}$。</b>这里 $P=3x^2y$，$Q=x^3+x-2y$，</p>$$\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}=(3x^2+1)-3x^2=1,$$<p>是常数！这意味着若路径封闭，由格林公式积分就等于所围区域的面积。于是思路是：<b>补一段简单的路径使之封闭</b>，用格林公式算闭路积分，再减去补线上的积分。</p><p><b>补哪条线？</b>选 $y$ 轴上从 $(0,2)$ 到 $(0,0)$ 的线段 $L_0$：在 $y$ 轴上 $x=0$、$\mathrm{d}x=0$，被积式大大简化。还要注意方向：$L+L_0$ 必须是区域边界的<b>正向</b>（沿边界走时区域在左手边），否则要加负号。</p><svg viewBox="0 0 230 200" width="230" style="max-width:100%;height:auto" xmlns="http://www.w3.org/2000/svg"><title>路径 L（两段圆弧）与补线 L0 围成的区域 D</title><path d="M40,170 A60,60 0 0 1 160,170 A120,120 0 0 0 40,50 Z" fill="currentColor" fill-opacity="0.13" stroke="none"/><line x1="15" y1="170" x2="220" y2="170" stroke="currentColor" stroke-width="1"/><line x1="40" y1="192" x2="40" y2="12" stroke="currentColor" stroke-width="1"/><path d="M40,170 A60,60 0 0 1 160,170 A120,120 0 0 0 40,50" fill="none" stroke="currentColor" stroke-width="2"/><line x1="40" y1="50" x2="40" y2="170" stroke="currentColor" stroke-width="2" stroke-dasharray="5,4"/><polygon points="106,110 97,105.5 97,114.5" fill="currentColor"/><polygon points="121.3,81.6 130.5,85.2 124.9,90.8" fill="currentColor"/><polygon points="40,117 35.5,108 44.5,108" fill="currentColor"/><text x="27" y="184" font-size="12" fill="currentColor">O</text><text x="156" y="185" font-size="12" fill="currentColor">2</text><text x="28" y="54" font-size="12" fill="currentColor">2</text><text x="96" y="185" font-size="12" fill="currentColor">1</text><text x="150" y="98" font-size="12" fill="currentColor">L</text><text x="80" y="102" font-size="12" fill="currentColor">L</text><text x="14" y="114" font-size="12" fill="currentColor">L₀</text><text x="78" y="78" font-size="13" fill="currentColor">D</text><text x="212" y="184" font-size="11" fill="currentColor">x</text><text x="46" y="18" font-size="11" fill="currentColor">y</text></svg><p><small>图：$L$ 先沿小圆 $(x-1)^2+y^2=1$ 的上半周从原点到 $(2,0)$，再沿大圆逆时针到 $(0,2)$；虚线为补线 $L_0$。</small></p>`,
+      solution: R`<p><b>第一步：计算格林公式中的被积函数。</b>$P=3x^2y$，$Q=x^3+x-2y$，$\dfrac{\partial Q}{\partial x}=3x^2+1$，$\dfrac{\partial P}{\partial y}=3x^2$，差为 $1$。$P,Q$ 是多项式，在全平面有连续偏导，格林公式的条件满足。</p><p><b>第二步：补线，确定区域与方向。</b>记 $L_0$ 为 $y$ 轴上从 $(0,2)$ 到 $(0,0)$ 的有向线段。$L+L_0$ 围成区域</p>$$D=\{(x,y)\mid x\ge0,\ y\ge0,\ x^2+y^2\le4,\ (x-1)^2+y^2\ge1\},$$<p>即四分之一大圆盘挖去上半个小圆盘。沿 $L+L_0$ 前进：在小圆弧的最高点 $(1,1)$ 处向右走，左手边是上方（小圆外、属于 $D$）；在大圆弧上逆时针走，左手边是圆内（属于 $D$）；在 $L_0$ 上向下走，左手边是 $x\gt0$ 一侧（属于 $D$）。所以 $L+L_0$ 是 $D$ 的<b>正向</b>边界。</p><p><b>第三步：用格林公式计算闭路积分。</b></p>$$\oint_{L+L_0}P\,\mathrm{d}x+Q\,\mathrm{d}y=\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\mathrm{d}\sigma=\iint_D1\,\mathrm{d}\sigma=\frac14\pi\cdot2^2-\frac12\pi\cdot1^2=\frac\pi2.$$<p><b>第四步：计算补线上的积分。</b>$L_0$ 上 $x=0$，$\mathrm{d}x=0$，$y$ 从 $2$ 变到 $0$：</p>$$\int_{L_0}P\,\mathrm{d}x+Q\,\mathrm{d}y=\int_2^0(0+0-2y)\,\mathrm{d}y=\Big[-y^2\Big]_2^0=0-(-4)=4.$$<p><b>第五步：相减。</b></p>$$I=\oint_{L+L_0}-\int_{L_0}=\frac\pi2-4.$$`,
+      pitfalls: R`<p>① <b>方向判断错误</b>：若误把 $L+L_0$ 当成顺时针（负向），会得到 $-\dfrac\pi2-4$。判断方法：沿边界走，区域始终在左手边就是正向。</p><p>② <b>补线积分的上下限</b>：第二类曲线积分的下限对应起点、上限对应终点。$L_0$ 从 $(0,2)$ 到 $(0,0)$，所以是 $\displaystyle\int_2^0$，不是 $\displaystyle\int_0^2$。</p><p>③ <b>区域面积算错</b>：大圆部分是四分之一圆（面积 $\pi$），小圆部分是上半圆（面积 $\frac\pi2$），差为 $\frac\pi2$。</p><p>④ 算完闭路积分忘了减去补线上的积分，直接写 $I=\dfrac\pi2$。</p><p>⑤ 用格林公式前不检查 $P,Q$ 在 $D$ 内是否有奇点（如分母为零的点）。本题是多项式，没有问题，但养成检查的习惯很重要。</p>`,
+      summary: R`<p><b>第二类平面曲线积分的决策流程：</b>先算 $\dfrac{\partial Q}{\partial x}-\dfrac{\partial P}{\partial y}$——</p><ul><li>$=0$（且区域单连通、无奇点）→ 积分与路径无关：换一条简单路径（如折线），或求出原函数直接代端点；</li><li>$=$ 常数或简单函数 → 补线成闭路，用格林公式；</li><li>都不好用 → 直接参数化计算。</li></ul><p><b>补线法公式：</b>$\displaystyle\int_L=\oint_{L+L_0}-\int_{L_0}$。补线优先选平行于坐标轴的线段（$\mathrm{d}x=0$ 或 $\mathrm{d}y=0$）。</p><p><b>看到…想到…：</b>看到 $Q_x-P_y$ 为常数 → 格林公式把积分变成面积；看到不封闭的圆弧 → 补线段使之封闭，并检查方向。</p>`,
+      alt: R`<p><b>凑全微分，看清"非保守部分"：</b>把被积式重新分组：</p>$$3x^2y\,\mathrm{d}x+(x^3+x-2y)\,\mathrm{d}y=\underbrace{(3x^2y\,\mathrm{d}x+x^3\,\mathrm{d}y)-2y\,\mathrm{d}y}_{\mathrm{d}(x^3y-y^2)}+x\,\mathrm{d}y.$$<p>全微分部分与路径无关，等于终点值减起点值：$\Big[x^3y-y^2\Big]_{(0,0)}^{(0,2)}=-4$。剩下的 $\displaystyle\int_Lx\,\mathrm{d}y$：补上 $L_0$（其上 $x=0$，对 $\int x\,\mathrm{d}y$ 无贡献），由格林公式 $\displaystyle\oint x\,\mathrm{d}y=\iint_D1\,\mathrm{d}\sigma=\frac\pi2$。所以 $I=-4+\dfrac\pi2$。</p><p>这个分解也解释了为什么 $Q_x-P_y=1$：整个被积式中唯一"不保守"的部分是 $x\,\mathrm{d}y$。也可以直接参数化验证：小圆弧 $x=1+\cos\theta,\ y=\sin\theta$（$\theta$ 从 $\pi$ 到 $0$）上 $\int x\,\mathrm{d}y=-\dfrac\pi2$，大圆弧 $x=2\cos\theta,\ y=2\sin\theta$（$\theta$ 从 $0$ 到 $\frac\pi2$）上 $\int x\,\mathrm{d}y=\pi$，合计 $\dfrac\pi2$。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy 直接参数化：小圆弧 x=1+cosθ, y=sinθ（θ: π→0），大圆弧 x=2cosθ, y=2sinθ（θ: 0→π/2），两段积分之和化简为 π/2-4，与格林公式结果一致' },
+      flags: []
+    }
+  ];
+});

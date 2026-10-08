@@ -71,6 +71,12 @@
         KY.meter(KY.tally(list)) + '</div>';
     }).join('') + '</div></section>';
 
+    var st = M.status || { reviewedYears: [], reviewedLessons: [] };
+    var lessonsTotal = KY.tax.kps.length;
+    h += '<section class="section"><h2>内容完成度</h2><div class="progress-grid">' +
+      '<div><b>' + S.years.length + ' / 39</b><span>年真题已收录</span>' + KY.meter({ ok: st.reviewedYears.length, bad: 0, n: S.years.length }, '已独立审校') + '</div>' +
+      '<div><b>' + lessonsReady + ' / ' + lessonsTotal + '</b><span>篇基础讲解已写好</span>' + KY.meter({ ok: st.reviewedLessons.length, bad: 0, n: lessonsReady }, '已独立审校') + '</div>' +
+      '</div><p class="note">内容按考频从高到低分批补全。还没写好的讲解在「基础讲解」里标着"讲解整理中"；未经独立审校的解析和讲解，页面上都有标注。</p></section>';
     h += '<section class="section ai-intro"><h2>看不懂？问 AI</h2><p class="note">每道题、每一节讲解旁边都有「问 AI」。它会带着这道题或这一节的内容，先问清你卡在哪里，再一步步讲，不会一上来就甩完整答案。在 Claude 里打开本页时直接可用（用的是你自己的 Claude 额度，第一次会请你确认）；单独部署时可以填自己的 API Key，或者一键复制问题发给任意 AI。</p>' +
       '<button type="button" class="btn" data-ai-open>打开 AI 辅导</button></section>';
 
