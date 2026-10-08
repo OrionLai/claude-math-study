@@ -1,0 +1,657 @@
+// 1988 年数学一 · 高等数学部分（共 14 题；二(4)、三(5)、七、八为线性代数，十、十一为概率论，未收录）
+registerYear(1988, function (R) {
+  return [
+    /* ───────────── 一(1) 幂级数收敛域 ───────────── */
+    {
+      id: '1988-1-1', year: 1988, no: '一(1)', type: '解答', score: 5,
+      stem: R`求幂级数 $\displaystyle\sum_{n=1}^{\infty}\frac{(x-3)^n}{n\cdot 3^n}$ 的收敛域.`,
+      options: null,
+      answer: R`收敛域为 $[0,6)$.`,
+      figure: null,
+      kp: ['series.power', 'series.alt'],
+      methods: ['比值法求收敛半径', '端点代入单独判别', '莱布尼茨判别法', 'p 级数'],
+      difficulty: 2,
+      analysis: R`<p><b>这题考什么：</b>幂级数的收敛域。"收敛域"指使级数收敛的<b>全部</b> $x$ 组成的集合，它等于"收敛区间（一个开区间）"再并上两个端点中收敛的那些。</p>
+<p><b>从题目特征想到方法：</b>级数按 $(x-3)$ 的幂排列，说明展开中心是 $x_0=3$，收敛区间一定是以 $3$ 为中心的对称区间 $(3-R,\,3+R)$，关键是求半径 $R$。系数 $a_n=\dfrac{1}{n\cdot 3^n}$ 是"$n$ 的幂 × 指数"的乘积型，相邻两项一除就能大量约掉，所以用<b>比值法</b>最省事。</p>
+<p><b>为什么端点还要单独判断：</b>阿贝尔定理只告诉我们：$|x-3|< R$ 时绝对收敛，$|x-3|>R$ 时发散；恰好在 $|x-3|=R$ 的两个端点上，比值法算出的极限正好等于 $1$，判别法失效，定理"什么也不说"。所以端点必须代回原级数，变成具体的数项级数，用数项级数的判别法逐个判断。</p>`,
+      solution: R`<p><b>第一步：换元看清结构。</b>令 $t=x-3$，级数化为标准形式 $\displaystyle\sum_{n=1}^{\infty}a_nt^n$，其中 $a_n=\dfrac{1}{n\cdot 3^n}$。</p>
+<p><b>第二步：求收敛半径。</b>用系数的比值：</p>
+$$\rho=\lim_{n\to\infty}\left|\frac{a_{n+1}}{a_n}\right|=\lim_{n\to\infty}\frac{n\cdot 3^n}{(n+1)\cdot 3^{n+1}}=\lim_{n\to\infty}\frac13\cdot\frac{n}{n+1}=\frac13,$$
+<p>所以 $R=\dfrac1\rho=3$。</p>
+<p>也可以直接对一般项 $u_n(x)=\dfrac{(x-3)^n}{n\cdot3^n}$ 的绝对值用比值判别法：$\lim\limits_{n\to\infty}\left|\dfrac{u_{n+1}(x)}{u_n(x)}\right|=\dfrac{|x-3|}{3}\cdot\lim\limits_{n\to\infty}\dfrac{n}{n+1}=\dfrac{|x-3|}{3}$，令它 $< 1$ 得 $|x-3|< 3$。两种写法本质相同。</p>
+<p><b>第三步：写出收敛区间。</b>$|x-3|< 3$ 即 $0< x< 6$，收敛区间为 $(0,6)$。在这个开区间内级数绝对收敛；当 $|x-3|>3$ 时一般项不趋于 $0$，级数发散。</p>
+<p><b>第四步：检查右端点 $x=6$。</b>此时 $t=3$，级数为</p>
+$$\sum_{n=1}^{\infty}\frac{3^n}{n\cdot 3^n}=\sum_{n=1}^{\infty}\frac1n,$$
+<p>这是调和级数（$p=1$ 的 $p$ 级数），发散。</p>
+<p><b>第五步：检查左端点 $x=0$。</b>此时 $t=-3$，级数为</p>
+$$\sum_{n=1}^{\infty}\frac{(-3)^n}{n\cdot 3^n}=\sum_{n=1}^{\infty}\frac{(-1)^n}{n}.$$
+<p>这是交错级数，$u_n=\dfrac1n$ 满足：① 单调递减 $\dfrac1{n+1}< \dfrac1n$；② $\lim\limits_{n\to\infty}\dfrac1n=0$。由莱布尼茨判别法，它收敛（又因 $\sum\frac1n$ 发散，所以是条件收敛）。</p>
+<p><b>结论：</b>把收敛的左端点并进来、发散的右端点排除，收敛域为 $[0,6)$。</p>`,
+      pitfalls: R`<ul>
+<li><b>中心搞错：</b>写成 $(-3,3)$。级数是 $(x-3)$ 的幂，中心在 $3$，区间必须以 $3$ 为中心。</li>
+<li><b>在端点处用比值法：</b>端点处比值极限恰为 $1$，比值法失效。必须代入后用调和级数、莱布尼茨判别法等具体判断。</li>
+<li><b>端点结论弄反：</b>$x=6$ 给出全正的调和级数（发散），$x=0$ 给出交错调和级数（收敛）。不要凭感觉写成 $(0,6]$。</li>
+<li><b>混淆"收敛区间"和"收敛域"：</b>题目问的是收敛域，只答 $(0,6)$ 会丢分。</li>
+</ul>`,
+      summary: R`<p><b>求幂级数收敛域三步法：</b>① 用比值（或根值）求 $R$；② 写出开区间 $(x_0-R,\,x_0+R)$；③ 两个端点分别代入，化成数项级数单独判别。</p>
+<p><b>看到…想到…：</b></p>
+<ul>
+<li>看到 $(x-x_0)^n$ → 中心是 $x_0$，收敛区间关于 $x_0$ 对称。</li>
+<li>看到系数里的 $n$、$\frac1n$、$n^2$ 这类多项式因子 → 它们不影响 $R$（因为 $\sqrt[n]{n}\to1$），$R$ 只由 $3^n$ 这样的指数因子决定。可用来快速心算核对：这里 $R=3$。</li>
+<li>看到端点级数是 $\sum\frac1n$ 型 → 全正发散、交错收敛，收敛域常常"一开一闭"。</li>
+</ul>`,
+      alt: R`<p><b>根值法求半径：</b>$\displaystyle\lim_{n\to\infty}\sqrt[n]{|a_n|}=\lim_{n\to\infty}\frac{1}{3\sqrt[n]{n}}=\frac13$（用到 $\sqrt[n]{n}\to1$），同样得 $R=3$。根值法在系数是"某个式子的 $n$ 次方"时尤其方便。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：系数比值极限 limit(a_{n+1}/a_n)=1/3，R=3；summation((-1)^n/n, n=1..∞) = -log 2（x=0 处收敛），summation(1/n) = oo（x=6 处发散）。收敛域 [0,6) 与参考解析一致。' },
+      flags: []
+    },
+
+    /* ───────────── 一(2) 复合函数 ───────────── */
+    {
+      id: '1988-1-2', year: 1988, no: '一(2)', type: '解答', score: 5,
+      stem: R`已知 $f(x)=\mathrm{e}^{x^2}$，$f[\varphi(x)]=1-x$，且 $\varphi(x)\geqslant 0$，求 $\varphi(x)$，并写出其定义域.`,
+      options: null,
+      answer: R`$\varphi(x)=\sqrt{\ln(1-x)}$，定义域为 $(-\infty,0]$.`,
+      figure: null,
+      kp: ['lim.func'],
+      methods: ['复合函数的代入', '逐层取反函数', '定义域求解'],
+      difficulty: 1,
+      analysis: R`<p><b>这题考什么：</b>复合函数的概念和定义域。$f[\varphi(x)]$ 的意思是"先算 $\varphi(x)$，再把结果当作 $f$ 的输入"。</p>
+<p><b>为什么这样想：</b>$f$ 的对应法则是"输入 $u$ → 输出 $\mathrm{e}^{u^2}$"，把 $u$ 换成 $\varphi(x)$ 就得到关于未知函数 $\varphi(x)$ 的方程。解这个方程的办法是<b>按相反的顺序逐层"剥皮"</b>：最外层是指数函数，就取对数；里面是平方，就开方。开方会出现正负两个结果，题目给的 $\varphi(x)\geqslant0$ 正是用来选符号的。</p>
+<p><b>定义域：</b>题目没有另外限定，定义域就是"使表达式有意义的所有 $x$"，每一层运算的要求都要满足，最后取交集。</p>`,
+      solution: R`<p><b>第一步：按复合函数的定义代入。</b>把 $\varphi(x)$ 当作 $f$ 的自变量：</p>
+$$f[\varphi(x)]=\mathrm{e}^{[\varphi(x)]^2}.$$
+<p>于是已知条件变成方程 $\mathrm{e}^{\varphi^2(x)}=1-x$。</p>
+<p><b>第二步：剥掉最外层——两边取自然对数。</b>指数函数与自然对数互为反函数，$\ln\mathrm{e}^{A}=A$，所以</p>
+$$\varphi^2(x)=\ln(1-x).$$
+<p><b>第三步：剥掉平方——开方并按条件选符号。</b>由上式得 $\varphi(x)=\pm\sqrt{\ln(1-x)}$。题目要求 $\varphi(x)\geqslant0$，只能取正号：</p>
+$$\varphi(x)=\sqrt{\ln(1-x)}.$$
+<p><b>第四步：求定义域。</b>表达式 $\sqrt{\ln(1-x)}$ 有意义，需要两层条件同时成立：</p>
+<ul>
+<li>对数的真数为正：$1-x>0$，即 $x< 1$；</li>
+<li>根号下非负：$\ln(1-x)\geqslant0=\ln1$，由 $\ln$ 单调递增得 $1-x\geqslant1$，即 $x\leqslant0$。</li>
+</ul>
+<p>两者取交集得 $x\leqslant0$，所以定义域为 $(-\infty,0]$。</p>
+<p><b>第五步：从值域角度再理解一次（第一性原理）。</b>不管输入是什么，都有 $\mathrm{e}^{u^2}\geqslant\mathrm{e}^0=1$，即 $f$ 的值域是 $[1,+\infty)$。等式 $f[\varphi(x)]=1-x$ 要成立，右边 $1-x$ 必须落在这个值域里，即 $1-x\geqslant1$，$x\leqslant0$。这和第四步的结论完全一致——定义域的限制并不是人为规定的，而是由外层函数 $f$ 的值域决定的。</p>
+<p><b>第六步：代值验证。</b>取 $x=1-\mathrm{e}$（它小于 $0$），则 $\varphi(x)=\sqrt{\ln\mathrm{e}}=1$，$f(1)=\mathrm{e}=1-x$，等式成立。</p>`,
+      pitfalls: R`<ul>
+<li><b>忘记用 $\varphi(x)\geqslant0$ 选符号：</b>写成 $\varphi(x)=\pm\sqrt{\ln(1-x)}$，那就不是一个函数了。</li>
+<li><b>定义域只考虑了对数：</b>写成 $x< 1$，漏了根号下 $\ln(1-x)\geqslant0$ 这一层要求。</li>
+<li><b>把 $\geqslant$ 写成 $>$：</b>$\ln(1-x)>0$ 会把 $x=0$ 排除掉，但 $x=0$ 时 $\varphi(0)=0$ 完全有意义，题目也允许 $\varphi=0$。</li>
+<li><b>把复合顺序弄反：</b>$f[\varphi(x)]$ 是 $\varphi$ 在里、$f$ 在外，不要写成 $\varphi(\mathrm{e}^{x^2})$。</li>
+</ul>`,
+      summary: R`<p><b>方法要点：</b>已知 $f$ 和 $f\circ\varphi$ 求 $\varphi$：先把 $\varphi(x)$ 代进 $f$ 的表达式，再从外到内逐层用反函数"剥皮"；定义域 = 每一层运算都有意义的 $x$ 的交集。</p>
+<p><b>看到…想到…：</b></p>
+<ul>
+<li>看到 $f[\varphi(x)]=$ 已知式 → 把 $\varphi(x)$ 当成整体代入 $f$ 的法则。</li>
+<li>看到"且 $\varphi(x)\geqslant0$"之类的附加条件 → 它一定是用来在开方、取反三角等多值运算中选分支的。</li>
+<li>看到外层函数的值域有限制（如 $\mathrm{e}^{u^2}\geqslant1$）→ 右边表达式必须落在值域内，可以直接用来求定义域。</li>
+</ul>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：simplify(exp(sqrt(log(1-x))^2)-(1-x)) = 0；solve_univariate_inequality(log(1-x)>=0) 得 x<=0。与参考解析一致。' },
+      flags: []
+    },
+
+    /* ───────────── 一(3) 高斯公式 ───────────── */
+    {
+      id: '1988-1-3', year: 1988, no: '一(3)', type: '解答', score: 5,
+      stem: R`设 $S$ 为曲面 $x^2+y^2+z^2=1$ 的外侧，计算曲面积分 $I=\displaystyle\iint_{S}x^3\,\mathrm{d}y\,\mathrm{d}z+y^3\,\mathrm{d}z\,\mathrm{d}x+z^3\,\mathrm{d}x\,\mathrm{d}y$.`,
+      options: null,
+      answer: R`$I=\dfrac{12\pi}{5}$`,
+      figure: null,
+      kp: ['mint.surf2', 'mint.triple'],
+      methods: ['高斯公式', '球面坐标计算三重积分'],
+      difficulty: 2,
+      analysis: R`<p><b>这题考什么：</b>第二类曲面积分（对坐标的曲面积分）的计算，核心工具是高斯公式。</p>
+<p><b>从题目特征想到方法：</b>三个信号同时出现——① 曲面是<b>封闭</b>的球面；② 取<b>外侧</b>；③ $P=x^3,Q=y^3,R=z^3$ 是多项式，在球内处处光滑，没有奇点。这正是高斯公式的全部条件，它能把一个要分三块、每块还要分上下两片的曲面积分，一步变成一个三重积分。</p>
+<p><b>接下来选坐标：</b>散度 $\dfrac{\partial P}{\partial x}+\dfrac{\partial Q}{\partial y}+\dfrac{\partial R}{\partial z}=3(x^2+y^2+z^2)$，被积函数和积分区域（球）都只与"到原点的距离"有关，用球面坐标三个变量会完全分离，计算最简单。</p>
+<p><b>物理直观：</b>高斯公式说的是"穿出闭曲面的总通量 = 内部所有'源'的强度之和"。散度就是每一点"源"的强度。</p>`,
+      solution: R`<p><b>第一步：核对高斯公式的条件。</b>记 $P=x^3,\ Q=y^3,\ R=z^3$。$S$ 是封闭曲面，围成单位球体 $\Omega:\ x^2+y^2+z^2\leqslant1$；取外侧，正是高斯公式要求的方向；$P,Q,R$ 在 $\Omega$ 上有连续的一阶偏导数。条件全部满足。</p>
+<p><b>第二步：用高斯公式化为三重积分。</b></p>
+$$I=\iiint_{\Omega}\left(\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}+\frac{\partial R}{\partial z}\right)\mathrm{d}v=\iiint_{\Omega}(3x^2+3y^2+3z^2)\,\mathrm{d}v=3\iiint_{\Omega}(x^2+y^2+z^2)\,\mathrm{d}v.$$
+<p><b>第三步：换成球面坐标。</b>令 $x=r\sin\varphi\cos\theta,\ y=r\sin\varphi\sin\theta,\ z=r\cos\varphi$，则 $x^2+y^2+z^2=r^2$，体积元 $\mathrm{d}v=r^2\sin\varphi\,\mathrm{d}r\,\mathrm{d}\varphi\,\mathrm{d}\theta$。单位球对应 $0\leqslant r\leqslant1,\ 0\leqslant\varphi\leqslant\pi,\ 0\leqslant\theta\leqslant2\pi$（$\varphi$ 是与 $z$ 轴正向的夹角，从北极 $0$ 到南极 $\pi$）。</p>
+<p><b>第四步：计算。</b>被积函数 $r^2$ 乘上体积元里的 $r^2\sin\varphi$，三个变量分离：</p>
+$$I=3\int_0^{2\pi}\mathrm{d}\theta\int_0^{\pi}\sin\varphi\,\mathrm{d}\varphi\int_0^1r^4\,\mathrm{d}r=3\cdot2\pi\cdot2\cdot\frac15=\frac{12\pi}{5},$$
+<p>其中 $\displaystyle\int_0^{\pi}\sin\varphi\,\mathrm{d}\varphi=[-\cos\varphi]_0^{\pi}=2$，$\displaystyle\int_0^1r^4\,\mathrm{d}r=\frac15$。</p>`,
+      pitfalls: R`<ul>
+<li><b>在三重积分里把 $x^2+y^2+z^2$ 换成 $1$：</b>这是最典型的错误，会得到 $3\cdot\frac43\pi=4\pi$。$x^2+y^2+z^2=1$ 只在球<b>面</b>上成立；用高斯公式后积分在球<b>体</b>内进行，内部的点满足 $x^2+y^2+z^2< 1$，不能代入。口诀："曲面积分可代入，体积分不可代入"。</li>
+<li><b>漏掉体积元里的 $r^2$：</b>球面坐标的雅可比因子是 $r^2\sin\varphi$，少了 $r^2$ 会算成 $3\cdot2\pi\cdot2\cdot\frac13=4\pi$。</li>
+<li><b>$\varphi$ 的范围写成 $[0,2\pi]$：</b>$\varphi$ 只需从 $0$ 到 $\pi$ 就扫遍整个球。</li>
+<li><b>方向：</b>高斯公式默认外侧为正；若题目给内侧，结果要变号。</li>
+</ul>`,
+      summary: R`<p><b>方法要点：</b>封闭曲面上的第二类曲面积分，先查"封闭、外侧、无奇点"三个条件，满足就直接用高斯公式；不封闭就补面再用高斯。</p>
+<p><b>看到…想到…：</b></p>
+<ul>
+<li>看到"闭曲面 + 外侧 + $P\,\mathrm{d}y\mathrm{d}z+Q\,\mathrm{d}z\mathrm{d}x+R\,\mathrm{d}x\mathrm{d}y$" → 高斯公式。</li>
+<li>看到积分区域是球、被积函数含 $x^2+y^2+z^2$ → 球面坐标，$\mathrm{d}v=r^2\sin\varphi\,\mathrm{d}r\mathrm{d}\varphi\mathrm{d}\theta$。</li>
+<li>看到曲面方程 → 只有在曲面上积分时才能把方程代入被积函数化简。</li>
+</ul>`,
+      alt: R`<p><b>化为第一类曲面积分 + 对称性：</b>单位球面上外法向量的方向余弦是 $(\cos\alpha,\cos\beta,\cos\gamma)=(x,y,z)$，由两类曲面积分的关系</p>
+$$I=\iint_S(x^3\cdot x+y^3\cdot y+z^3\cdot z)\,\mathrm{d}S=\iint_S(x^4+y^4+z^4)\,\mathrm{d}S.$$
+<p>球面关于 $x,y,z$ 轮换对称，所以三项积分相等，$I=3\iint_Sz^4\,\mathrm{d}S$。在单位球面上 $z=\cos\varphi$，$\mathrm{d}S=\sin\varphi\,\mathrm{d}\varphi\,\mathrm{d}\theta$：</p>
+$$I=3\int_0^{2\pi}\mathrm{d}\theta\int_0^{\pi}\cos^4\varphi\sin\varphi\,\mathrm{d}\varphi=3\cdot2\pi\cdot\frac25=\frac{12\pi}{5}.$$
+<p>这里因为是在曲面上积分，才可以使用 $x^2+y^2+z^2=1$ 带来的简化（方向余弦就是坐标本身）。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：球坐标 3∫∫∫r^4 sinφ = 12π/5；另用球面参数化直接计算通量 ∬F·(r_u×r_v) 也得 12π/5（并验证法向朝外）；第一类曲面积分另解 3∫∫cos^4φ sinφ = 12π/5。与参考解析一致。' },
+      flags: []
+    },
+
+    /* ───────────── 二(1) 含参极限 + 求导 ───────────── */
+    {
+      id: '1988-2-1', year: 1988, no: '二(1)', type: '填空', score: 3,
+      stem: R`设 $f(t)=\lim\limits_{x\to\infty}t\left(1+\dfrac1x\right)^{2tx}$，则 $f'(t)=$______.`,
+      options: null,
+      answer: R`$(1+2t)\mathrm{e}^{2t}$`,
+      figure: null,
+      kp: ['lim.compute', 'lim.rules', 'diff.calc'],
+      methods: ['1^∞ 型重要极限', '含参极限：参数视为常数', '乘积求导'],
+      difficulty: 2,
+      analysis: R`<p><b>这题考什么：</b>"用极限定义的函数"。$f(t)$ 是通过一个关于 $x$ 的极限给出的，必须先把极限算出来，得到 $f(t)$ 的明确表达式，才能求导。</p>
+<p><b>关键意识：谁是变量？</b>极限过程是 $x\to\infty$，在这个过程中 $t$ 固定不动，是<b>常数</b>。求出极限后，结果是 $t$ 的函数，这时 $t$ 才"活"过来成为自变量。</p>
+<p><b>为什么想到重要极限：</b>当 $x\to\infty$ 时底数 $1+\frac1x\to1$、指数 $2tx\to\infty$，是典型的 $1^\infty$ 型未定式，它的"标准答案"就是第二个重要极限 $\lim\limits_{x\to\infty}\left(1+\frac1x\right)^x=\mathrm{e}$。</p>`,
+      solution: R`<p><b>第一步：把 $t$ 当常数，求极限。</b>把指数拆成 $x$ 与 $2t$ 的乘积：</p>
+$$\left(1+\frac1x\right)^{2tx}=\left[\left(1+\frac1x\right)^{x}\right]^{2t}.$$
+<p>当 $x\to\infty$（无论 $+\infty$ 还是 $-\infty$）时，方括号内趋于 $\mathrm{e}$；幂函数 $u\mapsto u^{2t}$ 在 $u=\mathrm{e}>0$ 处连续，所以可以把极限"穿进去"：</p>
+$$\lim_{x\to\infty}\left(1+\frac1x\right)^{2tx}=\mathrm{e}^{2t},\qquad f(t)=t\,\mathrm{e}^{2t}.$$
+<p>（$t=0$ 时原式为 $\lim 0\cdot1=0$，公式同样给出 $0$，不必单独讨论。）</p>
+<p><b>第二步：对 $t$ 求导。</b>用乘积法则 $(uv)'=u'v+uv'$，以及 $(\mathrm{e}^{2t})'=2\mathrm{e}^{2t}$：</p>
+$$f'(t)=1\cdot\mathrm{e}^{2t}+t\cdot2\mathrm{e}^{2t}=(1+2t)\mathrm{e}^{2t}.$$`,
+      pitfalls: R`<ul>
+<li><b>弄错谁是变量：</b>在求极限前就对 $t$ 求导，或在极限中把 $t$ 也当成变化的量。</li>
+<li><b>丢掉指数里的 $t$：</b>把 $\left(1+\frac1x\right)^{2tx}$ 的极限写成 $\mathrm{e}^2$。</li>
+<li><b>漏掉前面的因子 $t$：</b>得到 $f(t)=\mathrm{e}^{2t}$，导数就错成 $2\mathrm{e}^{2t}$。</li>
+<li><b>求导漏项：</b>$t\mathrm{e}^{2t}$ 是乘积，两项都要求导。</li>
+</ul>`,
+      summary: R`<p><b>方法要点：</b>含参数的极限定义函数——先固定参数求极限，得到函数表达式，再做求导、讨论连续性等后续工作。</p>
+<p><b>$1^\infty$ 型的万能公式：</b>若 $u\to1,\ v\to\infty$，则 $\lim u^{v}=\mathrm{e}^{\lim v(u-1)}$。本题 $v(u-1)=2tx\cdot\frac1x=2t$，立得 $\mathrm{e}^{2t}$。</p>
+<p><b>看到…想到…：</b>看到"$f(t)=\lim\limits_{x\to\cdots}(\cdots)$"→ 先算极限，参数当常数；看到"底数趋于 $1$、指数趋于 $\infty$"→ 凑 $\mathrm{e}$ 或用 $\mathrm{e}^{\lim v(u-1)}$。</p>`,
+      alt: R`<p><b>取对数法：</b>令 $y=\left(1+\frac1x\right)^{2tx}$，则 $\ln y=2tx\ln\left(1+\frac1x\right)$。由于 $x\to\infty$ 时 $\ln\left(1+\frac1x\right)\sim\frac1x$，所以 $\ln y\to2t$，$y\to\mathrm{e}^{2t}$。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：limit(t*(1+1/x)^(2tx), x→∞) = t*exp(2t)；diff 后 factor 得 (2t+1)exp(2t)。与参考解析一致。' },
+      flags: []
+    },
+
+    /* ───────────── 二(2) 傅里叶级数收敛定理 ───────────── */
+    {
+      id: '1988-2-2', year: 1988, no: '二(2)', type: '填空', score: 3,
+      stem: R`设 $f(x)$ 是周期为 $2$ 的周期函数，它在区间 $(-1,1]$ 上的表达式为 $f(x)=\begin{cases}2, & -1< x\leqslant 0,\\ x^3, & 0< x\leqslant 1,\end{cases}$ 则 $f(x)$ 的傅里叶级数在 $x=1$ 处收敛于______.`,
+      options: null,
+      answer: R`$\dfrac32$`,
+      figure: null,
+      kp: ['series.fourier'],
+      methods: ['狄利克雷收敛定理', '周期延拓求单侧极限'],
+      difficulty: 2,
+      analysis: R`<p><b>这题考什么：</b>傅里叶级数的<b>和函数</b>在某点的值，用狄利克雷收敛定理，<b>完全不需要算傅里叶系数</b>。</p>
+<p><b>为什么不能直接答 $f(1)$：</b>傅里叶级数的和 $S(x)$ 与 $f(x)$ 不一定处处相等。狄利克雷定理说：在 $f$ 的连续点 $S(x)=f(x)$；在间断点 $S(x)$ 等于左右极限的平均值 $\dfrac{f(x-0)+f(x+0)}{2}$。所以关键是判断 $x=1$ 是不是间断点。</p>
+<p><b>为什么要用周期性：</b>$x=1$ 是给定区间 $(-1,1]$ 的右端点，它的左边属于 $x^3$ 那一段，右边却已经跑出了给定区间——要靠"周期为 $2$"把右边的点平移回 $(-1,1]$ 里，这时它落在 $-1$ 的右侧，即常数 $2$ 那一段。画一下周期延拓后的图像就一目了然（见解答中的图）。</p>`,
+      solution: R`<p><b>第一步：回忆狄利克雷收敛定理。</b>若周期函数 $f$ 在一个周期内连续或只有有限个第一类间断点，且只有有限个极值点，则其傅里叶级数处处收敛，和函数</p>
+$$S(x)=\frac{f(x-0)+f(x+0)}{2}.$$
+<p>在连续点处它就等于 $f(x)$。本题 $f$ 在一个周期内是分段的常数与三次函数，条件满足。</p>
+<p><b>第二步：求左极限 $f(1-0)$。</b>当 $x$ 从左侧趋于 $1$ 时，$x\in(0,1)$，用 $x^3$ 那一段：</p>
+$$f(1-0)=\lim_{x\to1^-}x^3=1.$$
+<p><b>第三步：用周期性求右极限 $f(1+0)$。</b>设 $h>0$ 很小，$f(1+h)=f(1+h-2)=f(-1+h)$。而 $-1+h\in(-1,0]$，用常数段，所以 $f(1+h)=2$：</p>
+$$f(1+0)=\lim_{h\to0^+}f(-1+h)=2.$$
+<div><svg viewBox="0 0 360 150" width="360" height="150" role="img" aria-label="周期延拓图像"><title>f(x) 的周期延拓：x=1 处左极限 1、右极限 2，级数收敛于 3/2</title>
+<line x1="10" y1="120" x2="350" y2="120" stroke="currentColor" stroke-width="1"/>
+<line x1="180" y1="10" x2="180" y2="140" stroke="currentColor" stroke-width="1"/>
+<line x1="30" y1="40" x2="80" y2="40" stroke="#2f7dd1" stroke-width="2.5"/>
+<line x1="130" y1="40" x2="180" y2="40" stroke="#2f7dd1" stroke-width="2.5"/>
+<line x1="230" y1="40" x2="280" y2="40" stroke="#2f7dd1" stroke-width="2.5"/>
+<polyline points="80,120 92.5,119.4 105,115 117.5,103.1 130,80" fill="none" stroke="#2f7dd1" stroke-width="2.5"/>
+<polyline points="180,120 192.5,119.4 205,115 217.5,103.1 230,80" fill="none" stroke="#2f7dd1" stroke-width="2.5"/>
+<polyline points="280,120 292.5,119.4 305,115 317.5,103.1 330,80" fill="none" stroke="#2f7dd1" stroke-width="2.5"/>
+<circle cx="230" cy="80" r="3.5" fill="#2f7dd1"/>
+<circle cx="230" cy="40" r="3.5" fill="none" stroke="#2f7dd1" stroke-width="1.5"/>
+<circle cx="230" cy="60" r="4" fill="#d9480f"/>
+<line x1="230" y1="40" x2="230" y2="120" stroke="currentColor" stroke-width="0.6" stroke-dasharray="3,3"/>
+<text x="238" y="64" font-size="12" fill="#d9480f">S(1)=3/2</text>
+<text x="226" y="135" font-size="11" fill="currentColor">1</text>
+<text x="120" y="135" font-size="11" fill="currentColor">-1</text>
+<text x="168" y="44" font-size="11" fill="currentColor">2</text>
+<text x="168" y="84" font-size="11" fill="currentColor">1</text>
+<text x="340" y="135" font-size="11" fill="currentColor">x</text>
+</svg></div>
+<p><b>第四步：取平均。</b>$x=1$ 处左右极限不相等（$1\ne2$），是跳跃间断点，所以</p>
+$$S(1)=\frac{f(1-0)+f(1+0)}{2}=\frac{1+2}{2}=\frac32.$$
+<p>注意 $f(1)=1^3=1$，但傅里叶级数在这里收敛于 $\dfrac32$，二者不相等——这正是本题想考的点。</p>`,
+      pitfalls: R`<ul>
+<li><b>直接答 $f(1)=1$：</b>忽略了 $x=1$ 是间断点，傅里叶级数在间断点不收敛到函数值。</li>
+<li><b>右极限也用 $x^3$：</b>以为 $x=1$ 两侧都是 $x^3$，于是答 $1$。右侧必须用周期性平移到 $-1$ 的右侧去看。</li>
+<li><b>平移方向搞错：</b>$f(1+h)=f(-1+h)$ 落在 $(-1,0]$ 段，不是 $(0,1]$ 段。</li>
+<li><b>动手算系数：</b>完全不必要，而且费时易错。</li>
+</ul>`,
+      summary: R`<p><b>方法要点：</b>问"傅里叶级数在某点收敛于什么"→ 直接用狄利克雷定理求左右极限的平均。</p>
+<p><b>看到…想到…：</b></p>
+<ul>
+<li>看到问的是给定区间<b>端点</b> $x=\pm l$ → 几乎一定是间断点，$S(\pm l)=\dfrac{f(-l+0)+f(l-0)}{2}$（一端取右极限、另一端取左极限，借助周期性拼起来）。</li>
+<li>看到分段点（如本题 $x=0$）→ 同样取两侧极限的平均，例如 $S(0)=\dfrac{2+0}{2}=1$。</li>
+<li>看到连续点 → 直接等于 $f(x)$。</li>
+</ul>`,
+      verify: { by: 'mixed', ok: true, note: '手工按狄利克雷定理得 3/2；sympy 计算前 40 项傅里叶部分和在 x=1 处约为 1.4925，随项数增加趋于 1.5。与参考解析一致。' },
+      flags: ['OCR 原文分段写作「2, -1≤x≤0；x^3, 0小于x小于1」，与题干「区间 (-1,1]」自相矛盾；按通行原卷修正为「2, -1小于x≤0；x^3, 0小于x≤1」。答案 3/2 不受影响。']
+    },
+
+    /* ───────────── 二(3) 变限积分求导 ───────────── */
+    {
+      id: '1988-2-3', year: 1988, no: '二(3)', type: '填空', score: 3,
+      stem: R`设 $f(x)$ 是连续函数，且 $\displaystyle\int_0^{x^3-1}f(t)\,\mathrm{d}t=x$，则 $f(7)=$______.`,
+      options: null,
+      answer: R`$\dfrac1{12}$`,
+      figure: null,
+      kp: ['int.ftc'],
+      methods: ['变限积分求导', '复合函数链式法则', '恒等式两边求导'],
+      difficulty: 1,
+      analysis: R`<p><b>这题考什么：</b>积分上限函数的求导（微积分基本定理）+ 复合函数链式法则。</p>
+<p><b>从题目特征想到方法：</b>未知函数 $f$ 藏在积分号里，而等式右边是简单的 $x$。要把 $f$ "解放"出来，最直接的办法就是<b>两边对 $x$ 求导</b>——变限积分求导后被积函数就"掉"出来了。</p>
+<p><b>为什么要乘上限的导数：</b>上限是 $x^3-1$ 而不是 $x$，$\int_0^{x^3-1}f(t)\,\mathrm{d}t$ 是 $F(u)=\int_0^uf(t)\,\mathrm{d}t$ 与 $u=x^3-1$ 的复合，按链式法则要乘 $u'=3x^2$。</p>
+<p><b>最后怎么得到 $f(7)$：</b>求导后得到的是 $f(x^3-1)$，令 $x^3-1=7$ 反解出 $x=2$ 即可。</p>`,
+      solution: R`<p><b>第一步：两边对 $x$ 求导。</b>记 $F(u)=\displaystyle\int_0^uf(t)\,\mathrm{d}t$，因为 $f$ 连续，由微积分基本定理 $F'(u)=f(u)$。左边是 $F(x^3-1)$，由链式法则：</p>
+$$\frac{\mathrm{d}}{\mathrm{d}x}\int_0^{x^3-1}f(t)\,\mathrm{d}t=F'(x^3-1)\cdot(x^3-1)'=3x^2f(x^3-1).$$
+<p>右边 $(x)'=1$。所以</p>
+$$3x^2f(x^3-1)=1.$$
+<p><b>第二步：选取合适的 $x$。</b>要求 $f(7)$，令 $x^3-1=7$，得 $x=2$。代入：</p>
+$$3\cdot2^2\cdot f(7)=1\ \Longrightarrow\ f(7)=\frac1{12}.$$`,
+      pitfalls: R`<ul>
+<li><b>忘乘上限的导数：</b>写成 $f(x^3-1)=1$，得到错误答案 $f(7)=1$。</li>
+<li><b>直接代 $x=7$：</b>那求的是 $f(7^3-1)=f(342)$，不是 $f(7)$。要令<b>上限</b>等于 $7$ 反解 $x$。</li>
+<li><b>想先求出 $f$ 的表达式再代值：</b>没有必要，只需要一个点的值。</li>
+<li><b>一个值得深思的细节：</b>若题设等式对<b>所有</b> $x$ 成立，令 $x=1$ 会得到左边 $\int_0^0=0$、右边 $=1$，矛盾。所以这个等式只能理解为在 $x=2$ 附近成立（这已足够在 $x=2$ 处求导）。这是原题表述不够严谨之处，不影响答案 $\dfrac1{12}$。</li>
+</ul>`,
+      summary: R`<p><b>方法要点：</b>变限积分求导公式 $\dfrac{\mathrm{d}}{\mathrm{d}x}\displaystyle\int_{a}^{\varphi(x)}f(t)\,\mathrm{d}t=f(\varphi(x))\,\varphi'(x)$（要求 $f$ 连续、$\varphi$ 可导）。</p>
+<p><b>看到…想到…：</b></p>
+<ul>
+<li>看到"含未知函数的变限积分 = 已知函数"→ 两边求导，把 $f$ 从积分号里解放出来。</li>
+<li>看到"求 $f$ 在某点的值"→ 令"$f$ 括号里的式子"等于该点，反解自变量。</li>
+</ul>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：diff(Integral(f(t),(t,0,x^3-1)),x) = 3x^2 f(x^3-1)；令 x=2 得 12 f(7)=1，f(7)=1/12。与参考解析一致。' },
+      flags: ['题设恒等式在 x=1 处给出 0=1，不可能对所有 x 成立，应理解为在 x=2 附近成立；答案 1/12 不受影响，已在易错点中说明。']
+    },
+
+    /* ───────────── 三(1) 微分与无穷小比较 ───────────── */
+    {
+      id: '1988-3-1', year: 1988, no: '三(1)', type: '选择', score: 3,
+      stem: R`若函数 $y=f(x)$ 可导，且 $f'(x_0)=\dfrac12$，则当 $\Delta x\to0$ 时，函数 $f(x)$ 在 $x=x_0$ 处的微分 $\mathrm{d}y$ 是（　　）.`,
+      options: [R`与 $\Delta x$ 等价的无穷小`, R`与 $\Delta x$ 同阶的无穷小`, R`比 $\Delta x$ 低阶的无穷小`, R`比 $\Delta x$ 高阶的无穷小`],
+      answer: 'B',
+      figure: null,
+      kp: ['diff.def', 'lim.inf'],
+      methods: ['微分的定义', '无穷小的比较（求比值极限）'],
+      difficulty: 1,
+      analysis: R`<p><b>这题考什么：</b>两个基本概念的结合——① 微分 $\mathrm{d}y=f'(x_0)\Delta x$；② 无穷小的比较：比较两个无穷小，就是求它们<b>比值的极限</b>。</p>
+<p><b>为什么这样想：</b>"同阶、等价、高阶、低阶"全部是用比值极限定义的：极限为 $0$ 是高阶，为 $\infty$ 是低阶，为非零常数是同阶，为 $1$ 是等价。所以只要写出 $\mathrm{d}y$，算 $\lim\dfrac{\mathrm{d}y}{\Delta x}$ 即可。</p>`,
+      solution: R`<p><b>第一步：写出微分。</b>$f$ 在 $x_0$ 处可导，所以可微，且</p>
+$$\mathrm{d}y=f'(x_0)\Delta x=\frac12\Delta x.$$
+<p><b>第二步：求比值极限。</b></p>
+$$\lim_{\Delta x\to0}\frac{\mathrm{d}y}{\Delta x}=\lim_{\Delta x\to0}\frac{\frac12\Delta x}{\Delta x}=\frac12.$$
+<p>极限是非零常数 $\dfrac12$，所以 $\mathrm{d}y$ 与 $\Delta x$ 是同阶无穷小，选 <b>B</b>。</p>
+<p><b>逐项排除：</b></p>
+<ul>
+<li>A 错：等价要求比值极限为 $1$，这里是 $\dfrac12$。（若 $f'(x_0)=1$，A 才对。）</li>
+<li>C 错：低阶要求比值极限为 $\infty$。</li>
+<li>D 错：高阶要求比值极限为 $0$。真正比 $\Delta x$ 高阶的是 $\Delta y-\mathrm{d}y=o(\Delta x)$，不是 $\mathrm{d}y$ 本身。</li>
+</ul>`,
+      pitfalls: R`<ul>
+<li><b>把 $\mathrm{d}y$ 与 $\Delta y-\mathrm{d}y$ 混淆：</b>微分定义 $\Delta y=A\Delta x+o(\Delta x)$ 中，"$o(\Delta x)$"才是高阶无穷小，$\mathrm{d}y=A\Delta x$ 是线性主部。误选 D 的同学多半混了这两者。</li>
+<li><b>"同阶"与"等价"分不清：</b>等价是同阶中比值恰为 $1$ 的特殊情形；比值为 $\frac12$ 只能说同阶。</li>
+</ul>`,
+      summary: R`<p><b>方法要点：</b>无穷小比较 = 求比值极限：$0$ → 高阶；$\infty$ → 低阶；$c\ne0$ → 同阶；$1$ → 等价。</p>
+<p><b>结论记忆：</b>$f'(x_0)\ne0$ 时，$\mathrm{d}y$ 与 $\Delta x$ 同阶；$f'(x_0)=1$ 时等价；而 $\Delta y-\mathrm{d}y$ 永远是比 $\Delta x$ 高阶的无穷小（这就是"微分是增量的线性主部"的含义）。</p>
+<p><b>看到…想到…：</b>看到"……是……的什么无穷小"→ 立刻写出两者的比值求极限。</p>`,
+      verify: { by: 'manual', ok: true, note: '手工：dy=Δx/2，lim dy/Δx = 1/2，非零且不等于 1，故同阶不等价，选 B。与参考解析一致。' },
+      flags: ['OCR 原文微分写作 \\mathrm{dy}，已规范为 \\mathrm{d}y。']
+    },
+
+    /* ───────────── 三(2) 微分方程 + 极值 ───────────── */
+    {
+      id: '1988-3-2', year: 1988, no: '三(2)', type: '选择', score: 3,
+      stem: R`设 $y=f(x)$ 是微分方程 $y''-2y'+4y=0$ 的一个解，若 $f(x_0)>0$ 且 $f'(x_0)=0$，则函数 $f(x)$ 在 $x=x_0$ 处（　　）.`,
+      options: [R`取得极大值`, R`取得极小值`, R`某邻域内单调增加`, R`某邻域内单调减少`],
+      answer: 'A',
+      figure: null,
+      kp: ['diff.mono', 'ode.basic'],
+      methods: ['把点代入微分方程', '极值的第二充分条件'],
+      difficulty: 2,
+      analysis: R`<p><b>这题考什么：</b>极值的第二充分条件。表面上是微分方程题，其实<b>根本不需要解方程</b>。</p>
+<p><b>从题目特征想到方法：</b>$f'(x_0)=0$ 说明 $x_0$ 是驻点；驻点是不是极值、是极大还是极小，看二阶导数 $f''(x_0)$ 的符号。而微分方程恰好把 $f''$ 用 $f$ 和 $f'$ 表示出来——把 $x=x_0$ 代进去，$f''(x_0)$ 的符号就出来了。</p>
+<p><b>为什么不解方程：</b>特征根是 $1\pm\sqrt3\,\mathrm{i}$，通解是 $\mathrm{e}^x(C_1\cos\sqrt3x+C_2\sin\sqrt3x)$，带着两个任意常数去找驻点、判断符号非常麻烦。题目给的条件全在一个点上，用"在该点代入方程"最直接。</p>`,
+      solution: R`<p><b>第一步：方程在每一点都成立，特别是在 $x_0$ 处。</b>$f$ 是方程的解，意味着对一切 $x$ 有 $f''(x)-2f'(x)+4f(x)=0$。取 $x=x_0$：</p>
+$$f''(x_0)-2f'(x_0)+4f(x_0)=0.$$
+<p><b>第二步：代入已知条件。</b>$f'(x_0)=0$，所以</p>
+$$f''(x_0)=-4f(x_0)< 0\quad(\text{因为 }f(x_0)>0).$$
+<p><b>第三步：用极值的第二充分条件。</b>$f'(x_0)=0$ 且 $f''(x_0)< 0$，所以 $f$ 在 $x_0$ 处取得（严格）极大值，选 <b>A</b>。</p>
+<p>这个判别法为什么成立？$f''(x_0)=\lim\limits_{x\to x_0}\dfrac{f'(x)-f'(x_0)}{x-x_0}=\lim\limits_{x\to x_0}\dfrac{f'(x)}{x-x_0}< 0$，由极限的保号性，在 $x_0$ 附近 $\dfrac{f'(x)}{x-x_0}< 0$：左侧 $f'>0$（上升），右侧 $f'< 0$（下降），所以 $x_0$ 是"山顶"。</p>
+<p><b>逐项排除：</b></p>
+<ul>
+<li>B 错：极小值需要 $f''(x_0)>0$。</li>
+<li>C、D 错：刚才看到 $f$ 在 $x_0$ 左侧增、右侧减，在任何邻域内都不单调。</li>
+</ul>
+<p><b>具体例子：</b>$f(x)=\mathrm{e}^x\cos\sqrt3x$ 是方程的解，取 $x_0=\dfrac{\pi}{6\sqrt3}$，则 $f'(x_0)=\mathrm{e}^{x_0}(\cos\frac\pi6-\sqrt3\sin\frac\pi6)=0$，$f(x_0)=\frac{\sqrt3}{2}\mathrm{e}^{x_0}>0$，$f''(x_0)=-2\sqrt3\,\mathrm{e}^{x_0}=-4f(x_0)< 0$，确为极大值点。</p>`,
+      pitfalls: R`<ul>
+<li><b>去解微分方程：</b>方向没错但极其费时，而且带任意常数很难下结论。</li>
+<li><b>移项符号错：</b>$f''=2f'-4f$，代入 $f'=0$ 得 $f''=-4f$，不是 $4f$。</li>
+<li><b>忘记 $f$ 是方程的解意味着"在每一点都满足方程"：</b>正是这一点允许我们把 $x_0$ 代进去。</li>
+</ul>`,
+      summary: R`<p><b>方法要点：</b>抽象函数满足某个微分方程，问它在某点的极值性质 → 把该点代入方程，求出 $f''(x_0)$ 的符号，再用第二充分条件。</p>
+<p><b>看到…想到…：</b>看到"$f'(x_0)=0$"→ 驻点，下一步看 $f''(x_0)$；看到"$f$ 是某方程的解"且条件都在同一点 → 直接在该点代入方程，而不是解方程。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：dsolve 得通解 e^x(C1 sin√3x + C2 cos√3x)；对例子 f=e^x cos√3x、x0=π/(6√3) 验证 f\'(x0)=0、f(x0)=(√3/2)e^{x0}>0、f\'\'(x0)=-4f(x0)。选 A，与参考解析一致。' },
+      flags: []
+    },
+
+    /* ───────────── 三(3) 三重积分对称性 ───────────── */
+    {
+      id: '1988-3-3', year: 1988, no: '三(3)', type: '选择', score: 3,
+      stem: R`设空间区域 $\Omega_1:\ x^2+y^2+z^2\leqslant R^2\ (z\geqslant0)$；$\Omega_2:\ x^2+y^2+z^2\leqslant R^2\ (x\geqslant0,\ y\geqslant0,\ z\geqslant0)$，则（　　）.`,
+      options: [
+        R`$\displaystyle\iiint_{\Omega_1}x\,\mathrm{d}v=4\iiint_{\Omega_2}x\,\mathrm{d}v$`,
+        R`$\displaystyle\iiint_{\Omega_1}y\,\mathrm{d}v=4\iiint_{\Omega_2}y\,\mathrm{d}v$`,
+        R`$\displaystyle\iiint_{\Omega_1}z\,\mathrm{d}v=4\iiint_{\Omega_2}z\,\mathrm{d}v$`,
+        R`$\displaystyle\iiint_{\Omega_1}xyz\,\mathrm{d}v=4\iiint_{\Omega_2}xyz\,\mathrm{d}v$`
+      ],
+      answer: 'C',
+      figure: null,
+      kp: ['mint.triple'],
+      methods: ['积分区域对称性', '被积函数奇偶性（奇零偶倍）'],
+      difficulty: 2,
+      analysis: R`<p><b>这题考什么：</b>三重积分的对称性。</p>
+<p><b>先看区域：</b>$\Omega_1$ 是上半球体，$\Omega_2$ 是它在第一卦限的部分。用两个坐标面 $x=0$ 和 $y=0$ 把上半球切开，正好得到四块全等的"四分之一上半球"，$\Omega_2$ 是其中 $x\geqslant0,y\geqslant0$ 的那块。</p>
+<p><b>关键想法：</b>"区域是 4 块全等"并<b>不</b>意味着"积分是 4 倍"。只有被积函数在这四块上"长得一样"——即关于 $x$ 是偶函数、关于 $y$ 也是偶函数——积分才会是 4 倍；若被积函数关于 $x$（或 $y$）是奇函数，正负两半互相抵消，积分为 $0$。这就是"奇零偶倍"。</p>`,
+      solution: R`<p><b>第一步：对称性原理。</b>若区域 $\Omega$ 关于 $yOz$ 面（$x=0$）对称，记 $\Omega'$ 为其中 $x\geqslant0$ 的部分，则</p>
+$$\iiint_{\Omega}f\,\mathrm{d}v=\begin{cases}0, & f(-x,y,z)=-f(x,y,z),\\ 2\displaystyle\iiint_{\Omega'}f\,\mathrm{d}v, & f(-x,y,z)=f(x,y,z).\end{cases}$$
+<p>理由：作代换 $x\to-x$，$x\leqslant0$ 的一半被映成 $x\geqslant0$ 的一半，体积元不变，被积函数变成 $\mp f$，两半相加即得。关于 $xOz$ 面（$y=0$）同理。</p>
+<p><b>第二步：$\Omega_1$ 关于 $x=0$ 和 $y=0$ 两个平面都对称。</b>所以若 $f$ 关于 $x$ 偶、关于 $y$ 也偶，则先对 $x$ 用"偶倍"、再对 $y$ 用"偶倍"，得 $\iiint_{\Omega_1}f\,\mathrm{d}v=4\iiint_{\Omega_2}f\,\mathrm{d}v$。</p>
+<p><b>第三步：逐项判断。</b></p>
+<ul>
+<li><b>A：</b>$f=x$ 关于 $x$ 是奇函数，所以 $\iiint_{\Omega_1}x\,\mathrm{d}v=0$；而在 $\Omega_2$ 内部 $x>0$，$4\iiint_{\Omega_2}x\,\mathrm{d}v>0$（实际等于 $\frac{\pi R^4}{4}$）。两边不等，A 错。</li>
+<li><b>B：</b>同理，$y$ 关于 $y$ 是奇函数，左边 $=0$，右边 $>0$，B 错。</li>
+<li><b>C：</b>$f=z$ 与 $x,y$ 无关，关于 $x$、$y$ 都是偶函数，所以 $\iiint_{\Omega_1}z\,\mathrm{d}v=4\iiint_{\Omega_2}z\,\mathrm{d}v$，C 对。（两边都等于 $\frac{\pi R^4}{4}$。）</li>
+<li><b>D：</b>$xyz$ 关于 $x$ 是奇函数，左边 $=0$；右边在 $\Omega_2$ 内 $xyz>0$，$4\iiint_{\Omega_2}xyz\,\mathrm{d}v=\frac{R^6}{12}>0$，D 错。</li>
+</ul>
+<p>答案选 <b>C</b>。</p>`,
+      pitfalls: R`<ul>
+<li><b>只看区域不看函数：</b>"$\Omega_1$ 是 4 个 $\Omega_2$，所以四个选项都对"——忽略了被积函数的奇偶性。</li>
+<li><b>D 选项的迷惑性：</b>$xyz$ 在 $\Omega_2$ 上恒正，容易误以为整体也是正的；但在 $\Omega_1$ 中 $x$ 正负对称，正负抵消为 $0$。</li>
+<li><b>对称性的两个条件缺一不可：</b>区域关于某坐标面对称 + 被积函数关于相应变量有奇偶性。</li>
+</ul>`,
+      summary: R`<p><b>口诀：</b>区域关于哪个坐标面对称，就看被积函数关于垂直于该面的那个变量的奇偶性——"奇零偶倍"。</p>
+<p><b>看到…想到…：</b>看到积分区域是球、半球、圆柱等对称区域 → 先用对称性消去奇函数项、合并偶函数项，再动手计算；看到选择题里"等于 $k$ 倍"→ 检查被积函数在每块上是否"长得一样"。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy 球坐标逐一计算：∭_{Ω1} x = ∭_{Ω1} y = ∭_{Ω1} xyz = 0，4∭_{Ω2} x = 4∭_{Ω2} y = πR^4/4，4∭_{Ω2} xyz = R^6/12；∭_{Ω1} z = 4∭_{Ω2} z = πR^4/4。选 C，与参考解析一致。' },
+      flags: []
+    },
+
+    /* ───────────── 三(4) 阿贝尔定理 ───────────── */
+    {
+      id: '1988-3-4', year: 1988, no: '三(4)', type: '选择', score: 3,
+      stem: R`若级数 $\displaystyle\sum_{n=0}^{\infty}a_n(x-1)^n$ 在 $x=-1$ 处收敛，则该级数在 $x=2$ 处（　　）.`,
+      options: [R`条件收敛`, R`绝对收敛`, R`发散`, R`收敛性不确定`],
+      answer: 'B',
+      figure: null,
+      kp: ['series.power', 'series.alt'],
+      methods: ['阿贝尔定理', '比较两点到展开中心的距离'],
+      difficulty: 2,
+      analysis: R`<p><b>这题考什么：</b>阿贝尔定理——幂级数收敛性的"传递"规律。</p>
+<p><b>从题目特征想到方法：</b>题目只告诉我们"在某一点收敛"，问"另一点"的情况，没有任何系数信息。能把一点的信息传到另一点的工具只有阿贝尔定理：<b>在一点收敛，则在离中心更近的所有点都绝对收敛</b>。</p>
+<p><b>关键是距离要从中心量起：</b>级数是 $(x-1)$ 的幂，中心是 $x_0=1$，不是 $0$。$x=-1$ 到中心的距离是 $2$，$x=2$ 到中心的距离是 $1$，后者更近。</p>`,
+      solution: R`<p><b>第一步：换元看清中心。</b>令 $t=x-1$，级数为 $\sum a_nt^n$。$x=-1$ 对应 $t=-2$，$x=2$ 对应 $t=1$。</p>
+<p><b>第二步：阿贝尔定理。</b>若 $\sum a_nt_1^n$ 收敛（$t_1\ne0$），则对一切 $|t|< |t_1|$，$\sum a_nt^n$ 绝对收敛。</p>
+<p>证明思路很直观：$\sum a_nt_1^n$ 收敛 ⇒ 一般项趋于 $0$ ⇒ 有界，$|a_nt_1^n|\leqslant M$。于是</p>
+$$|a_nt^n|=|a_nt_1^n|\cdot\left|\frac{t}{t_1}\right|^n\leqslant M\left|\frac{t}{t_1}\right|^n,$$
+<p>右边是公比小于 $1$ 的几何级数，由比较判别法 $\sum|a_nt^n|$ 收敛。</p>
+<p><b>第三步：应用。</b>$t_1=-2$，而 $|1|< |-2|$，所以级数在 $t=1$ 即 $x=2$ 处绝对收敛，选 <b>B</b>。（等价地说：收敛半径 $R\geqslant2$，而 $x=2$ 在收敛区间 $(1-R,1+R)\supseteq(-1,3)$ 的内部。）</p>
+<p><b>逐项排除：</b></p>
+<ul>
+<li>A 错：已经绝对收敛，不可能是条件收敛（条件收敛要求绝对值级数发散）。</li>
+<li>C 错：绝对收敛当然收敛。</li>
+<li>D 错：阿贝尔定理给出了确定结论。只有当待判断的点到中心的距离<b>大于或等于</b> $2$ 时（如 $x=3$）才"不确定"：例如 $a_n=\frac1{n2^n}$ 在 $x=3$ 处为 $\sum\frac1n$ 发散，而 $a_n=\frac1{n^22^n}$ 在 $x=3$ 处为 $\sum\frac1{n^2}$ 收敛，两者在 $x=-1$ 处都收敛。</li>
+</ul>`,
+      pitfalls: R`<ul>
+<li><b>以 $0$ 为中心量距离：</b>$x=-1$ 离 $0$ 是 $1$，$x=2$ 离 $0$ 是 $2$，就会误判成"更远所以不确定"，错选 D。</li>
+<li><b>以为收敛半径恰好是 $2$：</b>在 $x=-1$ 收敛只能推出 $R\geqslant2$，不能推出 $R=2$。</li>
+</ul>`,
+      summary: R`<p><b>阿贝尔定理的三个推论（题型识别规则）：</b></p>
+<ul>
+<li>在点 $x_1$ 收敛 → $R\geqslant|x_1-x_0|$，更近的点绝对收敛。</li>
+<li>在点 $x_1$ 发散 → $R\leqslant|x_1-x_0|$，更远的点都发散。</li>
+<li>在点 $x_1$ 条件收敛 → $R=|x_1-x_0|$ 恰好，$x_1$ 是端点。</li>
+</ul>
+<p><b>看到…想到…：</b>看到"幂级数在某点收敛/发散，问另一点"→ 阿贝尔定理，比较两点到<b>展开中心</b>的距离。</p>`,
+      verify: { by: 'mixed', ok: true, note: '依阿贝尔定理手工推理；sympy 验证排除 D 时所举例子：a_n=1/(n2^n) 时 x=-1 处和为 -log2（收敛）、x=2 处和为 log2（收敛）、x=3 处为调和级数发散；a_n=1/(n^2 2^n) 在 x=3 处和为 π²/6。选 B，与参考解析一致。' },
+      flags: []
+    },
+
+    /* ───────────── 四 抽象复合函数二阶偏导 ───────────── */
+    {
+      id: '1988-4', year: 1988, no: '四', type: '解答', score: 6,
+      stem: R`设 $u=yf\left(\dfrac xy\right)+xg\left(\dfrac yx\right)$，其中 $f,g$ 具有二阶连续导数，求 $x\dfrac{\partial^2u}{\partial x^2}+y\dfrac{\partial^2u}{\partial x\partial y}$.`,
+      options: null,
+      answer: R`$x\dfrac{\partial^2u}{\partial x^2}+y\dfrac{\partial^2u}{\partial x\partial y}=0$`,
+      figure: null,
+      kp: ['mdiff.chain', 'mdiff.diffable'],
+      methods: ['多元复合函数链式法则', '抽象函数的二阶偏导', '欧拉齐次函数定理'],
+      difficulty: 3,
+      analysis: R`<p><b>这题考什么：</b>抽象复合函数的二阶偏导数。$f,g$ 都是一元函数，但它们的自变量 $\dfrac xy$、$\dfrac yx$ 是 $x,y$ 的函数。</p>
+<p><b>核心难点：</b>求出一阶偏导后，里面会出现 $f'\left(\frac xy\right)$、$g'\left(\frac yx\right)$——它们<b>仍然是 $x,y$ 的复合函数</b>，再求导时还要继续用链式法则，而不能把 $f'$ 当常数。很多同学错就错在这里。</p>
+<p><b>怎么组织计算：</b>先把中间变量 $s=\dfrac xy$、$w=\dfrac yx$ 对 $x,y$ 的四个偏导算好备用，然后一项一项求导，每项都写清楚"外层导数 × 内层偏导"。</p>
+<p><b>结果为 $0$ 背后的原因：</b>$u$ 是一次齐次函数（$x,y$ 同时放大 $\lambda$ 倍，$u$ 也放大 $\lambda$ 倍），由欧拉齐次函数定理可以直接看出答案为 $0$（见另解）。这也是一个检验计算是否正确的好办法。</p>`,
+      solution: R`<p><b>第一步：准备中间变量的偏导。</b>令 $s=\dfrac xy$，$w=\dfrac yx$，则</p>
+$$\frac{\partial s}{\partial x}=\frac1y,\quad\frac{\partial s}{\partial y}=-\frac{x}{y^2},\quad\frac{\partial w}{\partial x}=-\frac{y}{x^2},\quad\frac{\partial w}{\partial y}=\frac1x.$$
+<p><b>第二步：求一阶偏导 $\dfrac{\partial u}{\partial x}$。</b>第一项 $yf(s)$ 中 $y$ 对 $x$ 是常数；第二项 $xg(w)$ 是乘积，要用乘积法则：</p>
+$$\frac{\partial u}{\partial x}=y\,f'(s)\cdot\frac1y+\Big[g(w)+x\,g'(w)\cdot\Big(-\frac{y}{x^2}\Big)\Big]=f'(s)+g(w)-\frac yx\,g'(w).$$
+<p><b>第三步：求 $\dfrac{\partial^2u}{\partial x^2}$。</b>对上式三项分别关于 $x$ 求导（注意 $f'(s)$、$g(w)$、$g'(w)$ 都要再链一次）：</p>
+<ul>
+<li>$\dfrac{\partial}{\partial x}f'(s)=f''(s)\cdot\dfrac1y$；</li>
+<li>$\dfrac{\partial}{\partial x}g(w)=g'(w)\cdot\Big(-\dfrac{y}{x^2}\Big)$；</li>
+<li>$\dfrac{\partial}{\partial x}\Big[-\dfrac yx\,g'(w)\Big]=\dfrac{y}{x^2}g'(w)-\dfrac yx\,g''(w)\cdot\Big(-\dfrac{y}{x^2}\Big)=\dfrac{y}{x^2}g'(w)+\dfrac{y^2}{x^3}g''(w)$。</li>
+</ul>
+<p>相加，两个 $g'$ 项恰好抵消：</p>
+$$\frac{\partial^2u}{\partial x^2}=\frac1y f''(s)+\frac{y^2}{x^3}g''(w).$$
+<p><b>第四步：求 $\dfrac{\partial^2u}{\partial x\partial y}$。</b>把 $\dfrac{\partial u}{\partial x}$ 的三项分别关于 $y$ 求导：</p>
+<ul>
+<li>$\dfrac{\partial}{\partial y}f'(s)=f''(s)\cdot\Big(-\dfrac{x}{y^2}\Big)$；</li>
+<li>$\dfrac{\partial}{\partial y}g(w)=g'(w)\cdot\dfrac1x$；</li>
+<li>$\dfrac{\partial}{\partial y}\Big[-\dfrac yx\,g'(w)\Big]=-\dfrac1x g'(w)-\dfrac yx\,g''(w)\cdot\dfrac1x=-\dfrac1xg'(w)-\dfrac{y}{x^2}g''(w)$。</li>
+</ul>
+<p>相加，$g'$ 项再次抵消：</p>
+$$\frac{\partial^2u}{\partial x\partial y}=-\frac{x}{y^2}f''(s)-\frac{y}{x^2}g''(w).$$
+<p><b>第五步：组合。</b></p>
+$$x\frac{\partial^2u}{\partial x^2}+y\frac{\partial^2u}{\partial x\partial y}=\frac xy f''(s)+\frac{y^2}{x^2}g''(w)-\frac xy f''(s)-\frac{y^2}{x^2}g''(w)=0.$$`,
+      pitfalls: R`<ul>
+<li><b>把 $f'\left(\frac xy\right)$ 当成常数：</b>二阶求导时漏掉 $f''\cdot\frac1y$ 这类项。</li>
+<li><b>漏用乘积法则：</b>$xg\left(\frac yx\right)$ 和 $-\frac yxg'\left(\frac yx\right)$ 都是乘积，两个因子都含 $x$。</li>
+<li><b>符号错误：</b>$\frac{\partial}{\partial x}\left(\frac yx\right)=-\frac{y}{x^2}$ 带负号，连续两次出现时尤其容易弄错。</li>
+<li><b>$f$ 与 $g$ 的自变量弄混：</b>$f$ 的自变量是 $\frac xy$，$g$ 的是 $\frac yx$，对 $x$ 求偏导时内层导数完全不同。</li>
+</ul>`,
+      summary: R`<p><b>方法要点：</b>抽象复合函数求高阶偏导——① 先设中间变量并算好它们的偏导；② 一阶偏导中出现的 $f'(\cdot)$、$g'(\cdot)$ 仍是同样结构的复合函数，再求导时继续链式法则；③ 每一项都写成"外层导数 × 内层偏导"，不跳步。</p>
+<p><b>看到…想到…：</b></p>
+<ul>
+<li>看到 $f\left(\frac xy\right)$、$g\left(\frac yx\right)$ 这类齐次组合，又要求 $x(\cdots)+y(\cdots)$ → 想到欧拉齐次函数定理，答案往往是 $0$ 或 $u$ 的倍数，可用来检验。</li>
+<li>看到"$f,g$ 具有二阶连续导数"→ 保证混合偏导与次序无关，也提示要求二阶偏导。</li>
+</ul>`,
+      alt: R`<p><b>欧拉齐次函数定理（第一性原理视角）：</b>对任意 $\lambda>0$，</p>
+$$u(\lambda x,\lambda y)=\lambda y f\left(\frac xy\right)+\lambda x g\left(\frac yx\right)=\lambda\,u(x,y),$$
+<p>即 $u$ 是一次齐次函数。两边对 $x$ 求偏导：$\lambda\,u_x(\lambda x,\lambda y)=\lambda\,u_x(x,y)$，即 $u_x(\lambda x,\lambda y)=u_x(x,y)$——$u_x$ 是零次齐次函数（只依赖于比值 $\frac xy$）。再对 $\lambda$ 求导并令 $\lambda=1$：</p>
+$$x\,u_{xx}(x,y)+y\,u_{xy}(x,y)=0.$$
+<p>一般地，$k$ 次齐次函数 $F$ 满足 $xF_x+yF_y=kF$；把它用到 $F=u_x$（$k=0$）上，就得到本题的结论。这不仅给出答案，还解释了为什么计算中那么多项都会抵消。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：以抽象函数 f、g 构造 u=y f(x/y)+x g(y/x)，simplify(x*u_xx + y*u_xy) = 0；u_xx = f\'\'/y + y²g\'\'/x³，u_xy = -x f\'\'/y² - y g\'\'/x²；另取 f=sin、g=exp 具体验证亦为 0。与参考解析一致。' },
+      flags: []
+    },
+
+    /* ───────────── 五 二阶常系数非齐次方程 ───────────── */
+    {
+      id: '1988-5', year: 1988, no: '五', type: '解答', score: 8,
+      stem: R`设函数 $y=y(x)$ 满足微分方程 $y''-3y'+2y=2\mathrm{e}^{x}$，且其图形在点 $(0,1)$ 处的切线与曲线 $y=x^2-x+1$ 在该点的切线重合，求函数 $y=y(x)$.`,
+      options: null,
+      answer: R`$y=(1-2x)\mathrm{e}^{x}$`,
+      figure: null,
+      kp: ['ode.const', 'ode.linear', 'diff.def'],
+      methods: ['特征方程法', '待定系数法求特解', '切线重合转化为初始条件'],
+      difficulty: 3,
+      analysis: R`<p><b>这题考什么：</b>二阶常系数线性非齐次微分方程的求解 + 用几何条件确定任意常数。</p>
+<p><b>解的结构：</b>非齐次方程的通解 = 对应齐次方程的通解 + 非齐次方程的一个特解。所以分三步：求齐次通解（特征方程），求特解（待定系数），用条件定常数。</p>
+<p><b>特解为什么设成 $Ax\mathrm{e}^x$ 而不是 $A\mathrm{e}^x$：</b>自由项是 $2\mathrm{e}^{x}$，指数 $1$ 恰好是特征方程的单根，$\mathrm{e}^x$ 本身就是齐次方程的解，代进左边只能得到 $0$，不可能等于 $2\mathrm{e}^x$。这种"共振"情形要乘一个 $x$。</p>
+<p><b>"切线重合"翻译成什么：</b>两条切线重合 ⇔ 过同一点且斜率相同。所以 $y(0)=1$，$y'(0)$ 等于曲线 $y=x^2-x+1$ 在 $x=0$ 处的导数 $-1$。这两个条件正好确定两个任意常数。</p>`,
+      solution: R`<p><b>第一步：齐次方程的通解。</b>特征方程 $r^2-3r+2=0$，即 $(r-1)(r-2)=0$，特征根 $r_1=1,\ r_2=2$（两个不同实根），所以</p>
+$$Y=C_1\mathrm{e}^{x}+C_2\mathrm{e}^{2x}.$$
+<p><b>第二步：设特解的形式。</b>自由项 $f(x)=2\mathrm{e}^{x}$，形如 $P_0(x)\mathrm{e}^{\lambda x}$，其中 $\lambda=1$、$P_0$ 是零次多项式（常数）。$\lambda=1$ 是特征方程的<b>单根</b>，所以设</p>
+$$y^*=Ax\mathrm{e}^{x}.$$
+<p><b>第三步：代入求 $A$。</b>由乘积法则</p>
+$$y^{*\prime}=A(1+x)\mathrm{e}^{x},\qquad y^{*\prime\prime}=A(2+x)\mathrm{e}^{x}.$$
+<p>代入左边：</p>
+$$y^{*\prime\prime}-3y^{*\prime}+2y^*=A\mathrm{e}^{x}\big[(2+x)-3(1+x)+2x\big]=A\mathrm{e}^x\cdot(-1)=-A\mathrm{e}^{x}.$$
+<p>注意含 $x$ 的项 $x-3x+2x=0$ 自动消失——这正是"单根乘 $x$"设法正确的标志。令 $-A\mathrm{e}^x=2\mathrm{e}^x$，得 $A=-2$，$y^*=-2x\mathrm{e}^{x}$。</p>
+<p><b>第四步：写出通解。</b></p>
+$$y=C_1\mathrm{e}^{x}+C_2\mathrm{e}^{2x}-2x\mathrm{e}^{x}.$$
+<p><b>第五步：把几何条件翻译成初始条件。</b>曲线 $y=x^2-x+1$ 在 $(0,1)$ 处的斜率为 $(2x-1)\big|_{x=0}=-1$，切线为 $y=1-x$。所求曲线在该点的切线与之重合，需要：过点 $(0,1)$，即 $y(0)=1$；斜率相同，即 $y'(0)=-1$。</p>
+<p><b>第六步：定常数。</b>由通解，$y'=C_1\mathrm{e}^{x}+2C_2\mathrm{e}^{2x}-2(1+x)\mathrm{e}^{x}$。于是</p>
+$$y(0)=C_1+C_2=1,\qquad y'(0)=C_1+2C_2-2=-1\ \Rightarrow\ C_1+2C_2=1.$$
+<p>两式相减得 $C_2=0$，进而 $C_1=1$。</p>
+<p><b>第七步：结论与检验。</b>$y=\mathrm{e}^x-2x\mathrm{e}^x=(1-2x)\mathrm{e}^{x}$。检验：$y'=(-1-2x)\mathrm{e}^x$，$y''=(-3-2x)\mathrm{e}^x$，$y''-3y'+2y=\mathrm{e}^x[(-3-2x)+(3+6x)+(2-4x)]=2\mathrm{e}^x$ ✓；$y(0)=1$，$y'(0)=-1$ ✓。</p>`,
+      pitfalls: R`<ul>
+<li><b>特解设成 $A\mathrm{e}^{x}$：</b>代入后左边恒为 $0$，求不出 $A$。这是"共振"情形，必须乘 $x$。</li>
+<li><b>求导出错：</b>$(x\mathrm{e}^x)'=(1+x)\mathrm{e}^x$，$(x\mathrm{e}^x)''=(2+x)\mathrm{e}^x$，要熟记。</li>
+<li><b>只用了"过点 $(0,1)$"：</b>"切线重合"包含两个信息——同一点、同斜率，缺一个就定不出两个常数。</li>
+<li><b>求 $y'(0)$ 时漏掉特解项的导数：</b>$(-2x\mathrm{e}^x)'\big|_{x=0}=-2$，漏掉会得到 $C_1+2C_2=-1$ 的错误方程。</li>
+</ul>`,
+      summary: R`<p><b>方法要点：</b>二阶常系数非齐次方程 = "齐通 + 非齐特"。自由项为 $P_m(x)\mathrm{e}^{\lambda x}$ 时，特解设为 $x^kQ_m(x)\mathrm{e}^{\lambda x}$，其中 $k$ 是 $\lambda$ 作为特征根的重数：不是根 $k=0$，单根 $k=1$，重根 $k=2$。</p>
+<p><b>看到…想到…：</b></p>
+<ul>
+<li>看到自由项 $\mathrm{e}^{\lambda x}$ → 先查 $\lambda$ 是不是特征根，决定乘几个 $x$。</li>
+<li>看到"切线重合""在某点相切"→ 函数值相等 + 导数值相等，即两个初始条件。</li>
+<li>代入特解后含 $x$ 的项应当自动消掉，若消不掉说明设错或算错。</li>
+</ul>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：dsolve(y\'\'-3y\'+2y=2e^x, ics y(0)=1, y\'(0)=-1) = (1-2x)e^x；曲线 x²-x+1 在 0 处导数为 -1。与参考解析一致。' },
+      flags: []
+    },
+
+    /* ───────────── 六 引力做功（曲线积分与路径无关） ───────────── */
+    {
+      id: '1988-6', year: 1988, no: '六', type: '解答', score: 9,
+      stem: R`设位于点 $(0,1)$ 的质点 $A$ 对质点 $M$ 的引力大小为 $\dfrac{k}{r^2}$（$k>0$ 为常数，$r$ 为质点 $A$ 与质点 $M$ 之间的距离），质点 $M$ 沿曲线 $y=\sqrt{2x-x^2}$ 从点 $B(2,0)$ 运动到点 $O(0,0)$，求此运动过程中质点 $A$ 对质点 $M$ 的引力所做的功.`,
+      options: null,
+      answer: R`$W=k\left(1-\dfrac{1}{\sqrt5}\right)$`,
+      figure: null,
+      kp: ['mint.line2', 'mint.field'],
+      methods: ['建立变力的向量表达式', '第二类曲线积分求功', '曲线积分与路径无关（换路径）', '势函数'],
+      difficulty: 4,
+      analysis: R`<p><b>这题考什么：</b>变力沿曲线做功——第二类曲线积分的物理应用，以及"曲线积分与路径无关"的判定和利用。</p>
+<p><b>第一个难点：把力写成向量。</b>题目只给了力的<b>大小</b> $\dfrac{k}{r^2}$，做功要用力的<b>向量</b>。引力的方向是从 $M$ 指向 $A$，所以 $\mathbf{F}=\text{大小}\times\text{单位方向向量}=\dfrac{k}{r^2}\cdot\dfrac{\overrightarrow{MA}}{r}$。</p>
+<p><b>第二个难点：路径是半圆，直接算很繁。</b>$y=\sqrt{2x-x^2}$ 平方整理得 $(x-1)^2+y^2=1\ (y\geqslant0)$，是以 $(1,0)$ 为圆心的上半圆。直接参数化代入会得到很难积的式子。但引力是<b>中心力</b>，物理上我们知道它是保守力，做功只与起点终点有关——数学上就是检验 $\dfrac{\partial Q}{\partial x}=\dfrac{\partial P}{\partial y}$，然后把路径换成最简单的直线段 $BO$。</p>
+<p><b>第三个细节：奇点。</b>力场在 $A(0,1)$ 处没有定义。换路径前要确认半圆与线段 $BO$ 围成的区域不包含 $A$，否则格林公式不能用。</p>`,
+      solution: R`<p><b>第一步：建立力的向量表达式。</b>设 $M(x,y)$，则 $\overrightarrow{MA}=(0-x,\ 1-y)=(-x,\ 1-y)$，距离 $r=|\overrightarrow{MA}|=\sqrt{x^2+(y-1)^2}$。引力沿 $\overrightarrow{MA}$ 方向、大小为 $\frac{k}{r^2}$：</p>
+$$\mathbf{F}=\frac{k}{r^2}\cdot\frac{\overrightarrow{MA}}{r}=\frac{k}{r^3}(-x,\ 1-y).$$
+<p>记 $P=-\dfrac{kx}{r^3}$，$Q=\dfrac{k(1-y)}{r^3}$。</p>
+<div><svg viewBox="0 0 200 175" width="200" height="175" role="img" aria-label="质点运动路径示意图"><title>上半圆 (x-1)^2+y^2=1 从 B(2,0) 到 O(0,0)，A(0,1) 在圆外</title>
+<line x1="15" y1="150" x2="195" y2="150" stroke="currentColor" stroke-width="1"/>
+<line x1="40" y1="170" x2="40" y2="20" stroke="currentColor" stroke-width="1"/>
+<path d="M160,150 A60,60 0 0 0 40,150" fill="none" stroke="#2f7dd1" stroke-width="2.5"/>
+<polygon points="94,90 103,85.5 103,94.5" fill="#2f7dd1"/>
+<line x1="160" y1="150" x2="40" y2="150" stroke="#d9480f" stroke-width="2" stroke-dasharray="5,3"/>
+<circle cx="40" cy="90" r="4" fill="#d9480f"/>
+<circle cx="130" cy="98" r="3" fill="currentColor"/>
+<line x1="130" y1="98" x2="44" y2="90.4" stroke="currentColor" stroke-width="0.8" stroke-dasharray="2,2"/>
+<text x="46" y="84" font-size="11" fill="#d9480f">A(0,1)</text>
+<text x="150" y="166" font-size="11" fill="currentColor">B(2,0)</text>
+<text x="28" y="164" font-size="11" fill="currentColor">O</text>
+<text x="134" y="94" font-size="11" fill="currentColor">M</text>
+<text x="188" y="164" font-size="11" fill="currentColor">x</text>
+<text x="44" y="28" font-size="11" fill="currentColor">y</text>
+</svg></div>
+<p><b>第二步：写出功的曲线积分。</b>记 $L$ 为上半圆 $(x-1)^2+y^2=1\ (y\geqslant0)$ 从 $B(2,0)$ 到 $O(0,0)$ 的有向弧（图中蓝色）。功 = 力沿路径的切向累积：</p>
+$$W=\int_L\mathbf{F}\cdot\mathrm{d}\mathbf{r}=\int_LP\,\mathrm{d}x+Q\,\mathrm{d}y=k\int_L\frac{-x\,\mathrm{d}x+(1-y)\,\mathrm{d}y}{\left[x^2+(y-1)^2\right]^{3/2}}.$$
+<p><b>第三步：验证与路径无关的条件。</b>记 $\rho=x^2+(y-1)^2$（$r^3=\rho^{3/2}$）。</p>
+$$\frac{\partial P}{\partial y}=-kx\cdot\Big(-\frac32\Big)\rho^{-5/2}\cdot2(y-1)=\frac{3kx(y-1)}{r^5},$$
+$$\frac{\partial Q}{\partial x}=k(1-y)\cdot\Big(-\frac32\Big)\rho^{-5/2}\cdot2x=\frac{-3kx(1-y)}{r^5}=\frac{3kx(y-1)}{r^5}.$$
+<p>所以在除 $A$ 以外的地方都有 $\dfrac{\partial Q}{\partial x}=\dfrac{\partial P}{\partial y}$。</p>
+<p><b>第四步：确认奇点不在围成的区域内。</b>弧 $L$ 与线段 $\overline{BO}$ 围成上半圆盘 $D$。$A(0,1)$ 到圆心 $(1,0)$ 的距离为 $\sqrt2>1$，所以 $A\notin D$，$P,Q$ 在 $D$ 上有连续偏导数。由格林公式，沿 $L$ 与沿直线段 $\overline{BO}$（同样从 $B$ 到 $O$）的积分相等。</p>
+<p><b>第五步：沿直线段计算。</b>在 $\overline{BO}$ 上 $y=0$，$\mathrm{d}y=0$，$x$ 从 $2$ 变到 $0$：</p>
+$$W=k\int_2^0\frac{-x}{(x^2+1)^{3/2}}\,\mathrm{d}x=k\Big[(x^2+1)^{-1/2}\Big]_2^0=k\left(1-\frac{1}{\sqrt5}\right).$$
+<p>这里用到 $\dfrac{\mathrm{d}}{\mathrm{d}x}(x^2+1)^{-1/2}=-x(x^2+1)^{-3/2}$。</p>
+<p><b>第六步：物理检验。</b>$M$ 从距 $A$ 为 $|AB|=\sqrt5$ 的位置移到距 $A$ 为 $|AO|=1$ 的位置，离吸引中心更近了，引力做正功，与 $W>0$ 相符。</p>`,
+      pitfalls: R`<ul>
+<li><b>力的方向反了：</b>写成 $\overrightarrow{AM}=(x,y-1)$ 方向，那是斥力，结果会差一个负号。引力从 $M$ 指向 $A$。</li>
+<li><b>忘记单位化：</b>写成 $\mathbf{F}=\frac{k}{r^2}(-x,1-y)$，这个向量的大小是 $\frac{k}{r}$ 而不是 $\frac{k}{r^2}$。正确的分母是 $r^3$。</li>
+<li><b>不检查奇点就换路径：</b>本题奇点 $A$ 恰好在区域外，所以没问题；但若吸引中心落在所围区域内，就不能直接换路径。</li>
+<li><b>积分方向：</b>从 $B$ 到 $O$，$x$ 是从 $2$ 积到 $0$，上下限不能颠倒。</li>
+<li><b>认错曲线：</b>$y=\sqrt{2x-x^2}$ 是圆心 $(1,0)$、半径 $1$ 的上半圆，不是以原点为圆心。</li>
+</ul>`,
+      summary: R`<p><b>方法要点：</b>变力沿曲线做功 $W=\int_L\mathbf{F}\cdot\mathrm{d}\mathbf{r}=\int_LP\,\mathrm{d}x+Q\,\mathrm{d}y$。先由"大小 × 单位方向向量"写出 $\mathbf{F}$；路径复杂时检查 $\frac{\partial Q}{\partial x}=\frac{\partial P}{\partial y}$，成立且奇点不被包围就换成折线或直线段，或直接找势函数。</p>
+<p><b>看到…想到…：</b></p>
+<ul>
+<li>看到"引力""中心力""与距离有关的力"→ 一定是保守场，做功 = 势函数之差，与路径无关。</li>
+<li>看到路径是圆弧、被积式复杂 → 先验证路径无关，再换成沿坐标轴的线段。</li>
+<li>看到被积式分母在某点为零 → 画图确认这个奇点在不在所围区域内。</li>
+</ul>`,
+      alt: R`<p><b>势函数法（物理直观）：</b>令 $\Phi(x,y)=\dfrac{k}{r}=\dfrac{k}{\sqrt{x^2+(y-1)^2}}$，则</p>
+$$\frac{\partial\Phi}{\partial x}=-\frac{kx}{r^3}=P,\qquad\frac{\partial\Phi}{\partial y}=-\frac{k(y-1)}{r^3}=\frac{k(1-y)}{r^3}=Q,$$
+<p>即 $\mathbf{F}=\nabla\Phi$，$P\,\mathrm{d}x+Q\,\mathrm{d}y=\mathrm{d}\Phi$ 是全微分。于是（在不经过 $A$ 的任何路径上）</p>
+$$W=\Phi(O)-\Phi(B)=\frac{k}{1}-\frac{k}{\sqrt5}=k\left(1-\frac1{\sqrt5}\right).$$
+<p>这正是物理中"引力做功 = 引力势能的减少量"（势能为 $-\frac{k}{r}$）。也可以看成只有径向位移做功：$W=-\displaystyle\int_{\sqrt5}^{1}\frac{k}{r^2}\,\mathrm{d}r=k\left(1-\frac1{\sqrt5}\right)$。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：验证 ∂Q/∂x-∂P/∂y=0、∇(1/r)=F/k；沿上半圆参数化 x=1+cos t, y=sin t (t:0→π) 数值积分得 0.5527864045（k=1），与 1-1/√5 精确吻合；直线段积分得 1-√5/5。与参考解析一致。' },
+      flags: ['参考解析由 ∂Q/∂x=∂P/∂y 直接断言路径无关，未说明奇点 A(0,1) 不在半圆盘内；本讲解已补充这一步。']
+    },
+
+    /* ───────────── 九 存在唯一性证明 ───────────── */
+    {
+      id: '1988-9', year: 1988, no: '九', type: '解答', score: 9,
+      stem: R`设函数 $f(x)$ 在区间 $[a,b]$ 上连续，且在 $(a,b)$ 内有 $f'(x)>0$。证明：在 $(a,b)$ 内存在唯一的 $\xi$，使曲线 $y=f(x)$ 与两直线 $y=f(\xi)$，$x=a$ 所围成的平面图形的面积 $S_1$ 是曲线 $y=f(x)$ 与两直线 $y=f(\xi)$，$x=b$ 所围成平面图形面积 $S_2$ 的 $3$ 倍.`,
+      options: null,
+      answer: R`证明见详细解答：令 $\varphi(x)=\displaystyle\int_a^x[f(x)-f(t)]\,\mathrm{d}t-3\int_x^b[f(t)-f(x)]\,\mathrm{d}t$，由零点定理得存在性，由 $\varphi$ 严格单调递增得唯一性.`,
+      figure: null,
+      kp: ['int.proof', 'lim.closed', 'diff.mono'],
+      methods: ['用变限积分表示面积', '构造辅助函数', '零点定理证存在', '单调性证唯一', '拉格朗日中值定理'],
+      difficulty: 4,
+      analysis: R`<p><b>这题考什么：</b>"存在唯一"型证明，用变限积分构造辅助函数。</p>
+<p><b>"存在唯一"的标准拆法：</b>存在性 + 唯一性。存在性常用零点定理（闭区间连续函数端点异号）；唯一性常用单调性（严格单调的函数至多一个零点）。</p>
+<p><b>怎么把几何问题变成函数问题：</b>$f'>0$ 说明 $f$ 严格递增，水平线 $y=f(\xi)$ 把曲线分成两段：在 $[a,\xi]$ 上曲线在直线<b>下方</b>，在 $[\xi,b]$ 上曲线在直线<b>上方</b>（见下图）。于是两块面积都能写成积分，而且都是 $\xi$ 的函数。把要找的 $\xi$ 换成变量 $x$，问题就变成"函数 $\varphi(x)=S_1(x)-3S_2(x)$ 在 $(a,b)$ 内恰有一个零点"。</p>
+<div><svg viewBox="0 0 280 185" width="280" height="185" role="img" aria-label="面积 S1 与 S2 示意图"><title>递增曲线 y=f(x) 被水平线 y=f(ξ) 分成左侧面积 S1 与右侧面积 S2</title>
+<line x1="20" y1="165" x2="270" y2="165" stroke="currentColor" stroke-width="1"/>
+<polygon points="40,97 40,150 60,148.9 80,145.6 100,140.1 120,132.4 140,122.5 160,110.4 179,97" fill="#2f7dd1" fill-opacity="0.35"/>
+<polygon points="179,97 180,96.1 200,79.6 220,60.9 240,40 240,97" fill="#d9480f" fill-opacity="0.35"/>
+<polyline points="40,150 60,148.9 80,145.6 100,140.1 120,132.4 140,122.5 160,110.4 180,96.1 200,79.6 220,60.9 240,40" fill="none" stroke="currentColor" stroke-width="2"/>
+<line x1="30" y1="97" x2="255" y2="97" stroke="currentColor" stroke-width="1" stroke-dasharray="5,3"/>
+<line x1="40" y1="30" x2="40" y2="165" stroke="currentColor" stroke-width="1"/>
+<line x1="240" y1="30" x2="240" y2="165" stroke="currentColor" stroke-width="1"/>
+<line x1="179" y1="97" x2="179" y2="165" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2,2"/>
+<text x="70" y="126" font-size="13" fill="#2f7dd1">S₁</text>
+<text x="218" y="88" font-size="13" fill="#d9480f">S₂</text>
+<text x="36" y="179" font-size="11" fill="currentColor">a</text>
+<text x="175" y="179" font-size="11" fill="currentColor">ξ</text>
+<text x="236" y="179" font-size="11" fill="currentColor">b</text>
+<text x="186" y="112" font-size="11" fill="currentColor">y=f(ξ)</text>
+<text x="196" y="40" font-size="11" fill="currentColor">y=f(x)</text>
+</svg></div>
+<p><b>直观上为什么成立：</b>当 $x$ 从 $a$ 向右移到 $b$，$S_1$ 从 $0$ 单调增大，$S_2$ 从正数单调缩小到 $0$，比值 $\frac{S_1}{S_2}$ 从 $0$ 连续地增到 $+\infty$，中途必然恰好经过 $3$ 一次。</p>`,
+      solution: R`<p><b>第一步：$f$ 在 $[a,b]$ 上严格递增。</b>任取 $a\leqslant x_1< x_2\leqslant b$，$f$ 在 $[x_1,x_2]$ 上连续、在 $(x_1,x_2)\subseteq(a,b)$ 内可导，由拉格朗日中值定理，存在 $\eta\in(x_1,x_2)$ 使</p>
+$$f(x_2)-f(x_1)=f'(\eta)(x_2-x_1)>0.$$
+<p>（注意题目只在开区间内给了 $f'>0$，正是靠 $f$ 在端点连续，单调性才能延伸到闭区间。）</p>
+<p><b>第二步：用积分表示面积，构造辅助函数。</b>对 $x\in[a,b]$，在 $[a,x]$ 上 $f(t)\leqslant f(x)$，在 $[x,b]$ 上 $f(t)\geqslant f(x)$，所以两块面积分别是（"上减下"）</p>
+$$S_1(x)=\int_a^x[f(x)-f(t)]\,\mathrm{d}t,\qquad S_2(x)=\int_x^b[f(t)-f(x)]\,\mathrm{d}t.$$
+<p>令 $\varphi(x)=S_1(x)-3S_2(x)$，$x\in[a,b]$。为了看清它的连续性和可导性，把与积分变量 $t$ 无关的 $f(x)$ 提到积分号外：</p>
+$$\varphi(x)=(x-a)f(x)-\int_a^xf(t)\,\mathrm{d}t-3\int_x^bf(t)\,\mathrm{d}t+3(b-x)f(x).$$
+<p>其中每一项都是连续函数（$f$ 连续，变限积分连续），所以 $\varphi$ 在 $[a,b]$ 上连续。</p>
+<p><b>第三步：端点异号（存在性）。</b></p>
+$$\varphi(a)=0-3\int_a^b[f(t)-f(a)]\,\mathrm{d}t,\qquad\varphi(b)=\int_a^b[f(b)-f(t)]\,\mathrm{d}t-0.$$
+<p>由第一步，被积函数 $f(t)-f(a)$ 在 $[a,b]$ 上连续、非负，且在 $(a,b]$ 上严格为正，所以积分严格大于 $0$（连续、非负且不恒为零的函数积分为正：例如在 $\left[\frac{a+b}{2},b\right]$ 上 $f(t)-f(a)\geqslant f\left(\frac{a+b}2\right)-f(a)>0$）。因此 $\varphi(a)< 0$。同理 $\varphi(b)>0$。</p>
+<p>由闭区间上连续函数的零点定理，存在 $\xi\in(a,b)$ 使 $\varphi(\xi)=0$，即 $S_1(\xi)=3S_2(\xi)$。</p>
+<p><b>第四步：严格单调（唯一性）。</b>当 $x\in(a,b)$ 时 $f$ 可导，由变限积分求导公式：</p>
+$$\varphi'(x)=\big[f(x)+(x-a)f'(x)\big]-f(x)+3f(x)+\big[-3f(x)+3(b-x)f'(x)\big]=f'(x)\big[(x-a)+3(b-x)\big].$$
+<p>这里 $-3\int_x^bf(t)\,\mathrm{d}t$ 对 $x$ 的导数是 $+3f(x)$（下限求导带负号），$3(b-x)f(x)$ 的导数是 $-3f(x)+3(b-x)f'(x)$。</p>
+<p>对 $x\in(a,b)$，$f'(x)>0$，且 $x-a>0$、$b-x>0$，所以 $\varphi'(x)>0$。$\varphi$ 在 $[a,b]$ 上连续、在 $(a,b)$ 内导数为正，故在 $[a,b]$ 上严格递增，至多有一个零点。</p>
+<p><b>第五步：结论。</b>综合第三、四步，在 $(a,b)$ 内存在唯一的 $\xi$，使 $S_1=3S_2$。证毕。</p>`,
+      pitfalls: R`<ul>
+<li><b>面积写反了符号：</b>写成 $S_1=\int_a^\xi[f(t)-f(\xi)]\,\mathrm{d}t$，这是负数。面积永远是"上方曲线减下方曲线"，要先判断谁在上。</li>
+<li><b>只证存在、忘证唯一：</b>题目说"存在唯一"，两部分各占分。</li>
+<li><b>对含 $x$ 的被积函数直接用变限积分求导公式：</b>$\int_a^x[f(x)-f(t)]\,\mathrm{d}t$ 的被积函数含有 $x$，必须先把 $f(x)$ 提出来，再用乘积法则与变限积分求导。</li>
+<li><b>端点处的严格不等号缺少理由：</b>"$\varphi(a)< 0$"需要说明被积函数非负、连续且不恒为零。</li>
+<li><b>在端点处使用 $f'$：</b>题目只保证 $(a,b)$ 内可导，单调性要靠拉格朗日中值定理 + 端点连续来得到。</li>
+</ul>`,
+      summary: R`<p><b>方法要点：</b>"证明存在唯一的 $\xi$ 使某等式成立"→ 把 $\xi$ 换成 $x$，移项构造 $\varphi(x)$；零点定理证存在，单调性证唯一。</p>
+<p><b>看到…想到…：</b></p>
+<ul>
+<li>看到"面积""体积"与某个点 $\xi$ 有关 → 用变限积分把它写成 $\xi$ 的函数。</li>
+<li>看到被积函数里含有积分上下限的变量 → 先把它提到积分号外，再求导。</li>
+<li>看到"存在唯一"→ 存在（零点定理 / 罗尔）+ 唯一（单调性 / 反证法）。</li>
+</ul>`,
+      alt: R`<p><b>不求导的唯一性证明（几何直观版）：</b>直接证明 $S_1(x)$ 严格递增、$S_2(x)$ 严格递减。任取 $a\leqslant x_1< x_2\leqslant b$：</p>
+$$S_1(x_2)=\int_a^{x_2}[f(x_2)-f(t)]\,\mathrm{d}t=\int_a^{x_1}[f(x_2)-f(t)]\,\mathrm{d}t+\int_{x_1}^{x_2}[f(x_2)-f(t)]\,\mathrm{d}t.$$
+<p>第一项中 $f(x_2)>f(x_1)$，所以它 $\geqslant\int_a^{x_1}[f(x_1)-f(t)]\,\mathrm{d}t=S_1(x_1)$；第二项被积函数在 $[x_1,x_2)$ 上为正，所以第二项 $>0$。故 $S_1(x_2)>S_1(x_1)$。同理 $S_2(x_2)< S_2(x_1)$。于是 $\varphi=S_1-3S_2$ 严格递增，至多一个零点。这个证法只用到 $f$ 严格递增，更贴近"水平线往上移，左块变大、右块变小"的几何图像。</p>`,
+      verify: { by: 'proof', ok: true, note: '严格证明；另用 sympy 以 f=x²+1 [0,1]、f=e^x [0,2]、f=x³+x [-1,2] 三例验证 φ(x)=S1-3S2 的导数等于 f\'(x)[(x-a)+3(b-x)] 且在区间内恰有一个零点（约 0.694、1.406、1.252）。与参考解析思路一致。' },
+      flags: []
+    }
+  ];
+});

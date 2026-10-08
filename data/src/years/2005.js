@@ -1,0 +1,245 @@
+// 2005 年数学一 · 高等数学部分（共 13 题：一(1)–(4)，二(7)–(10)，三(15)–(19)）
+registerYear(2005, function (R) {
+  return [
+    /* ───────────── 第1题 斜渐近线 ───────────── */
+    {
+      id: '2005-1', year: 2005, no: '第1题', type: '填空', score: 4,
+      stem: R`曲线 $y=\frac{x^2}{2x+1}$ 的斜渐近线方程为______.`,
+      options: null,
+      answer: R`$y=\dfrac12x-\dfrac14$`,
+      figure: null,
+      kp: ['diff.asym'],
+      methods: ['斜渐近线的两个极限公式', '多项式除法'],
+      difficulty: 1,
+      analysis: R`<p>本题考查<b>斜渐近线</b>。先回到定义：若 $\lim\limits_{x\to\infty}[f(x)-(kx+b)]=0$，就称直线 $y=kx+b$ 是曲线 $y=f(x)$ 的斜渐近线。直观地说，$x$ 很大时曲线和这条直线"贴在一起"。</p><p>$k$、$b$ 怎么求？从定义出发"倒推"即可：既然 $f(x)=kx+b+o(1)$，两边同除以 $x$ 再令 $x\to\infty$，$\frac bx$ 和 $\frac{o(1)}{x}$ 都趋于 0，只剩 $k=\lim\frac{f(x)}{x}$；知道 $k$ 以后把 $kx$ 移到左边，剩下的就是 $b=\lim[f(x)-kx]$。这两个公式不必死记，随时可以从定义推出来。</p><p>另外，本题是有理分式，分子次数（2）恰好比分母次数（1）高 1，这是"存在斜渐近线"的典型信号，也可以直接做多项式除法，商就是渐近线（见另解）。</p>`,
+      solution: R`<p><b>第一步：求斜率 $k$。</b></p>$$k=\lim_{x\to\infty}\frac{y}{x}=\lim_{x\to\infty}\frac{x^2}{x(2x+1)}=\lim_{x\to\infty}\frac{x}{2x+1}=\lim_{x\to\infty}\frac{1}{2+\frac1x}=\frac12.$$<p>（分子分母同除以 $x$，再用 $\frac1x\to0$。）</p><p><b>第二步：求截距 $b$。</b>先把 $\frac12x$ 减掉并通分：</p>$$y-\frac12x=\frac{x^2}{2x+1}-\frac{x}{2}=\frac{2x^2-x(2x+1)}{2(2x+1)}=\frac{-x}{2(2x+1)},$$$$b=\lim_{x\to\infty}\frac{-x}{2(2x+1)}=\lim_{x\to\infty}\frac{-1}{2\left(2+\frac1x\right)}=-\frac14.$$<p><b>第三步：两侧都要看。</b>上面两个极限在 $x\to+\infty$ 和 $x\to-\infty$ 时结果相同（式子里只用到 $\frac1x\to0$），所以两侧是同一条斜渐近线。</p><p><b>结论：</b>斜渐近线方程为 $y=\dfrac12x-\dfrac14$。</p><p>（顺带一提：$x=-\frac12$ 处分母为 0 而分子不为 0，$y\to\infty$，所以 $x=-\frac12$ 是铅直渐近线，但本题只问斜渐近线。）</p>`,
+      pitfalls: R`<p>1. 只求了 $k$ 就写 $y=\frac12x$，漏掉截距 $b$。斜渐近线一般不过原点。</p><p>2. 求 $b$ 时通分出错，例如把 $\frac{x^2}{2x+1}-\frac x2$ 的分子算成 $x$ 而不是 $-x$，得到 $b=\frac14$。</p><p>3. 做多项式除法时商写错。可以用"商 × 除式 + 余数 = 被除式"回代检查：$(2x+1)\left(\frac12x-\frac14\right)+\frac14=x^2$。</p><p>4. 对一般函数必须分别考虑 $x\to+\infty$ 与 $x\to-\infty$，两侧的渐近线可能不同，例如 $y=\sqrt{x^2+1}$ 两侧分别是 $y=x$ 和 $y=-x$。</p>`,
+      summary: R`<p><b>方法要点：</b>斜渐近线 $y=kx+b$ 中，$k=\lim\limits_{x\to\infty}\frac{f(x)}{x}$（存在且不为 0），$b=\lim\limits_{x\to\infty}[f(x)-kx]$（存在）。两个极限缺一不可。</p><p><b>题型识别：</b></p><ul><li>看到"斜渐近线"→ 先 $k$ 后 $b$ 两个极限，并分 $x\to+\infty$、$x\to-\infty$ 两侧讨论。</li><li>看到有理分式且分子比分母高一次 → 多项式除法，商就是斜渐近线。</li><li>看到"渐近线的条数"→ 三类都要找：铅直（无定义点、分母零点）、水平、斜；同一侧有水平渐近线就不会再有斜渐近线。</li></ul>`,
+      alt: R`<p><b>另解（多项式除法）：</b>由 $x^2=(2x+1)\left(\frac12x-\frac14\right)+\frac14$ 得</p>$$y=\frac{x^2}{2x+1}=\frac12x-\frac14+\frac{1}{4(2x+1)}.$$<p>当 $x\to\pm\infty$ 时最后一项趋于 0，按定义立即得到斜渐近线 $y=\frac12x-\frac14$。这种写法还顺便看出：$x\to+\infty$ 时曲线在渐近线上方，$x\to-\infty$ 时在下方。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：limit(f/x, x→±∞)=1/2，limit(f−x/2, x→±∞)=−1/4；apart 得 x/2−1/4+1/(4(2x+1))' },
+      flags: []
+    },
+
+    /* ───────────── 第2题 一阶线性微分方程 ───────────── */
+    {
+      id: '2005-2', year: 2005, no: '第2题', type: '填空', score: 4,
+      stem: R`微分方程 $xy'+2y=x\ln x$ 满足 $y(1)=-\frac19$ 的解为______.`,
+      options: null,
+      answer: R`$y=\dfrac{x\ln x}{3}-\dfrac x9$`,
+      figure: null,
+      kp: ['ode.first'],
+      methods: ['一阶线性微分方程', '积分因子法', '分部积分'],
+      difficulty: 2,
+      analysis: R`<p>先给方程"归类"：$y$ 与 $y'$ 都只以一次方出现，没有 $yy'$、$y^2$ 之类的项，所以这是<b>一阶线性微分方程</b>。化成标准形 $y'+P(x)y=Q(x)$：两边除以 $x$（初值在 $x=1$ 处，在 $x>0$ 上讨论），得</p>$$y'+\frac2xy=\ln x.$$<p>一阶线性方程的解法本质上只有一个想法：<b>乘一个"积分因子" $\mu(x)$，让左边变成一个乘积的导数 $(\mu y)'$，然后直接积分。</b>因为 $(\mu y)'=\mu y'+\mu' y$，要它等于 $\mu\left(y'+\frac2xy\right)$，只需 $\mu'=\frac2x\mu$，解得 $\mu=x^2$。所以标准形乘 $x^2$（也就是原方程乘 $x$），左边恰好是 $(x^2y)'$。课本上的通解公式 $y=e^{-\int P\,dx}\left(\int Qe^{\int P\,dx}dx+C\right)$ 正是这个想法的一般结果。</p>`,
+      solution: R`<p><b>第一步：凑成乘积的导数。</b>原方程 $xy'+2y=x\ln x$ 两边同乘 $x$：</p>$$x^2y'+2xy=x^2\ln x.$$<p>左边恰好是 $(x^2y)'=x^2y'+2xy$，于是方程变为</p>$$(x^2y)'=x^2\ln x.$$<p><b>第二步：两边积分。</b>右边用分部积分，取 $u=\ln x$，$dv=x^2dx$：</p>$$\int x^2\ln x\,dx=\frac{x^3}{3}\ln x-\int\frac{x^3}{3}\cdot\frac1x\,dx=\frac{x^3}{3}\ln x-\frac{x^3}{9}+C.$$<p>所以 $x^2y=\frac{x^3}{3}\ln x-\frac{x^3}{9}+C$，两边除以 $x^2$ 得通解</p>$$y=\frac{x\ln x}{3}-\frac x9+\frac{C}{x^2}.$$<p><b>第三步：代入初值定常数。</b>$x=1$ 时 $\ln1=0$，$y(1)=0-\frac19+C=-\frac19$，所以 $C=0$。</p><p><b>第四步：回代检验。</b>$y=\frac{x\ln x}{3}-\frac x9$，则 $y'=\frac{\ln x}{3}+\frac13-\frac19=\frac{\ln x}{3}+\frac29$，于是</p>$$xy'+2y=\left(\frac{x\ln x}{3}+\frac{2x}{9}\right)+\left(\frac{2x\ln x}{3}-\frac{2x}{9}\right)=x\ln x.$$<p>满足方程。<b>答案：</b>$y=\dfrac{x\ln x}{3}-\dfrac x9$（$x>0$）。</p>`,
+      pitfalls: R`<p>1. 不先化成标准形就套公式，把 $P(x)$ 当成 $2$ 而不是 $\frac2x$、把 $Q(x)$ 当成 $x\ln x$ 而不是 $\ln x$。套公式前一定要让 $y'$ 的系数为 1。</p><p>2. 公式里 $e^{\int P\,dx}$ 与 $e^{-\int P\,dx}$ 的位置记反。记不清时就用"乘积分因子、凑 $(\mu y)'$"的思路现推，不会出错。</p><p>3. $\int x^2\ln x\,dx$ 分部积分时漏掉 $-\frac{x^3}{9}$，或者忘了写常数 $C$ 就去代初值，结果无法确定特解。</p><p>4. 积分因子 $e^{\int\frac2xdx}=e^{2\ln|x|}=x^2$，绝对值平方后自然消失，不必纠结正负。</p>`,
+      summary: R`<p><b>方法要点：</b>一阶线性方程 $y'+P(x)y=Q(x)$ 的通解为 $y=e^{-\int P\,dx}\left(\int Q\,e^{\int P\,dx}dx+C\right)$，其本质是乘积分因子 $\mu=e^{\int P\,dx}$，使左边成为 $(\mu y)'$。</p><p><b>题型识别：</b></p><ul><li>看到 $y$、$y'$ 都是一次 → 一阶线性，先化标准形。</li><li>看到 $xy'+ky$ 这种组合 → 乘 $x^{k-1}$ 凑成 $(x^ky)'$，比套公式更快。</li><li>求特解的填空题 → 最后一定回代检验，几秒钟就能发现计算错误。</li></ul>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy dsolve(x·y′+2y=x·ln x, y(1)=−1/9) 得 y=x(3ln x−1)/9，与答案一致' },
+      flags: []
+    },
+
+    /* ───────────── 第3题 方向导数 ───────────── */
+    {
+      id: '2005-3', year: 2005, no: '第3题', type: '填空', score: 4,
+      stem: R`设函数 $u(x,y,z)=1+\frac{x^2}{6}+\frac{y^2}{12}+\frac{z^2}{18}$，单位向量 $\mathbf{n}=\frac{1}{\sqrt3}(1,1,1)$，则 $\left.\frac{\partial u}{\partial\mathbf{n}}\right|_{(1,2,3)}=$______.`,
+      options: null,
+      answer: R`$\dfrac{\sqrt3}{3}$`,
+      figure: null,
+      kp: ['mdiff.dir'],
+      methods: ['方向导数计算公式', '梯度'],
+      difficulty: 1,
+      analysis: R`<p>本题考查<b>方向导数</b>。$\frac{\partial u}{\partial\mathbf{n}}$ 的含义是：从该点出发沿方向 $\mathbf{n}$ 每走单位长度，函数值变化多少（变化率）。</p><p>为什么可以用"梯度点乘方向"来算？因为 $u$ 可微时 $\Delta u\approx u_x\Delta x+u_y\Delta y+u_z\Delta z$。沿单位向量 $\mathbf{n}=(\cos\alpha,\cos\beta,\cos\gamma)$ 走长度 $t$，有 $\Delta x=t\cos\alpha$，$\Delta y=t\cos\beta$，$\Delta z=t\cos\gamma$，代入后除以 $t$ 并令 $t\to0^+$，得</p>$$\frac{\partial u}{\partial\mathbf{n}}=u_x\cos\alpha+u_y\cos\beta+u_z\cos\gamma=\operatorname{grad}u\cdot\mathbf{n}.$$<p>本题 $u$ 是多项式，处处可微，直接用这个公式。另外检查一下方向向量：$|\mathbf{n}|=\frac{1}{\sqrt3}\sqrt{1+1+1}=1$，已经是单位向量。</p>`,
+      solution: R`<p><b>第一步：求偏导数。</b></p>$$\frac{\partial u}{\partial x}=\frac{2x}{6}=\frac x3,\qquad\frac{\partial u}{\partial y}=\frac{2y}{12}=\frac y6,\qquad\frac{\partial u}{\partial z}=\frac{2z}{18}=\frac z9.$$<p><b>第二步：求点 $(1,2,3)$ 处的梯度。</b></p>$$\operatorname{grad}u\big|_{(1,2,3)}=\left(\frac13,\ \frac26,\ \frac39\right)=\left(\frac13,\frac13,\frac13\right).$$<p><b>第三步：与单位方向向量做点积。</b></p>$$\left.\frac{\partial u}{\partial\mathbf{n}}\right|_{(1,2,3)}=\frac13\cdot\frac1{\sqrt3}+\frac13\cdot\frac1{\sqrt3}+\frac13\cdot\frac1{\sqrt3}=\frac{1}{\sqrt3}=\frac{\sqrt3}{3}.$$<p><b>补充理解：</b>这里梯度 $\left(\frac13,\frac13,\frac13\right)$ 恰好与 $\mathbf{n}$ 同向，所以这个方向导数也正是该点所有方向导数中的最大值，等于 $|\operatorname{grad}u|=\frac{\sqrt3}{3}$。</p>`,
+      pitfalls: R`<p>1. 方向向量不单位化就直接点乘。本题已经单位化，但若题目给的是 $\mathbf{l}=(1,1,1)$，必须先除以模长 $\sqrt3$。</p><p>2. 偏导数算错，例如把 $\frac{y^2}{12}$ 的偏导写成 $\frac{y}{12}$。</p><p>3. 混淆梯度与方向导数：梯度是向量，方向导数是一个数。</p>`,
+      summary: R`<p><b>方法要点：</b>$u$ 可微时 $\frac{\partial u}{\partial\mathbf{l}}=\operatorname{grad}u\cdot\mathbf{e}_l$（$\mathbf{e}_l$ 为单位向量）。梯度方向是函数增长最快的方向，最大方向导数为 $|\operatorname{grad}u|$。</p><p><b>题型识别：</b></p><ul><li>看到 $\frac{\partial u}{\partial\mathbf{l}}$ 且函数可微 → 求梯度，再与单位方向向量点乘。</li><li>看到"沿哪个方向方向导数最大、最大值是多少"→ 梯度方向、梯度的模。</li><li>函数在该点不可微（如 $\sqrt{x^2+y^2}$ 在原点）→ 只能回到定义 $\lim\limits_{t\to0^+}\frac{u(P_0+t\mathbf{e})-u(P_0)}{t}$。</li></ul>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：(1,2,3) 处梯度为 (1/3,1/3,1/3)，与 (1,1,1)/√3 点积为 √3/3' },
+      flags: ['OCR 中的粗体 n（boldsymbol）按格式要求改为 mathbf']
+    },
+
+    /* ───────────── 第4题 高斯公式 ───────────── */
+    {
+      id: '2005-4', year: 2005, no: '第4题', type: '填空', score: 4,
+      stem: R`设 $\Omega$ 是由锥面 $z=\sqrt{x^2+y^2}$ 与半球面 $z=\sqrt{R^2-x^2-y^2}$ 围成的空间区域，$\Sigma$ 是 $\Omega$ 的整个边界的外侧，则 $\iint_\Sigma x\,\mathrm{d}y\,\mathrm{d}z+y\,\mathrm{d}z\,\mathrm{d}x+z\,\mathrm{d}x\,\mathrm{d}y=$______.`,
+      options: null,
+      answer: R`$(2-\sqrt2)\pi R^3$`,
+      figure: null,
+      kp: ['mint.surf2', 'mint.triple'],
+      methods: ['高斯公式', '球面坐标计算三重积分'],
+      difficulty: 2,
+      analysis: R`<p>抓三个特征：① 这是第二类（对坐标的）曲面积分；② $\Sigma$ 是闭区域 $\Omega$ 的<b>整个边界</b>，取<b>外侧</b>；③ $P=x$，$Q=y$，$R=z$ 非常简单，偏导数都是常数。三者合在一起，就是高斯公式的"标准信号"：</p>$$\iint_\Sigma P\,dydz+Q\,dzdx+R\,dxdy=\iiint_\Omega\left(\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}+\frac{\partial R}{\partial z}\right)dv.$$<p>这里散度 $=1+1+1=3$，曲面积分立刻变成"3 倍的 $\Omega$ 的体积"。</p><p>$\Omega$ 形如"冰淇淋筒"：下面是顶点在原点、半顶角为 $\frac\pi4$ 的锥面，上面盖着半径为 $R$ 的球面。锥面在球面坐标里就是 $\varphi=\frac\pi4$，球面就是 $r=R$，两个边界都是坐标面，所以用<b>球面坐标</b>最自然。</p>`,
+      solution: R`<p><b>第一步：验证条件，用高斯公式。</b>$\Sigma$ 是封闭曲面且取外侧，$P=x,Q=y,R=z$ 在 $\Omega$ 上有连续偏导数，所以</p>$$\iint_\Sigma x\,dydz+y\,dzdx+z\,dxdy=\iiint_\Omega(1+1+1)\,dv=3V,$$<p>其中 $V$ 为 $\Omega$ 的体积。</p><p><b>第二步：用球面坐标描述 $\Omega$。</b>令 $x=r\sin\varphi\cos\theta$，$y=r\sin\varphi\sin\theta$，$z=r\cos\varphi$。锥面 $z=\sqrt{x^2+y^2}$ 化为 $r\cos\varphi=r\sin\varphi$，即 $\varphi=\frac\pi4$；"在锥面上方"即 $z\geqslant\sqrt{x^2+y^2}$，对应 $\cos\varphi\geqslant\sin\varphi$，即 $0\leqslant\varphi\leqslant\frac\pi4$。球面对应 $r=R$。于是</p>$$\Omega:\ 0\leqslant\theta\leqslant2\pi,\quad0\leqslant\varphi\leqslant\frac\pi4,\quad0\leqslant r\leqslant R.$$<p><b>第三步：计算体积。</b>球面坐标的体积元是 $dv=r^2\sin\varphi\,dr\,d\varphi\,d\theta$；三个变量的上下限都是常数，积分可以分离：</p>$$V=\int_0^{2\pi}d\theta\int_0^{\frac\pi4}\sin\varphi\,d\varphi\int_0^Rr^2dr=2\pi\cdot\left(1-\cos\frac\pi4\right)\cdot\frac{R^3}{3}=\frac{2\pi R^3}{3}\left(1-\frac{\sqrt2}{2}\right).$$<p><b>第四步：得结果。</b></p>$$3V=2\pi R^3\left(1-\frac{\sqrt2}{2}\right)=(2-\sqrt2)\pi R^3.$$`,
+      pitfalls: R`<p>1. 球面坐标的体积元漏掉 $r^2\sin\varphi$，或把 $\varphi$ 的范围写成 $\left[0,\frac\pi2\right]$。锥面 $z=\sqrt{x^2+y^2}$ 的半顶角是 $\frac\pi4$；若是 $z=\sqrt{3(x^2+y^2)}$ 则是 $\frac\pi6$，要由 $\tan\varphi=\frac{\sqrt{x^2+y^2}}{z}$ 现算。</p><p>2. 用了高斯公式后忘记乘散度 3，只写体积。</p><p>3. 方向问题：高斯公式对应外侧；若曲面取内侧，结果要变号。</p><p>4. 不用高斯公式而把锥面、球面分开硬算，计算量大且容易出错。</p>`,
+      summary: R`<p><b>方法要点：</b>封闭曲面上的第二类曲面积分首选高斯公式；向量场 $(x,y,z)$ 的散度为 3，它穿过闭曲面的通量等于 3 倍体积。</p><p><b>题型识别：</b></p><ul><li>看到"封闭曲面 + 外侧/内侧 + 第二类曲面积分"→ 高斯公式（内侧加负号）。</li><li>曲面不封闭 → 补一块简单的面（通常是平面）凑成封闭，再减去补面上的积分。</li><li>区域由球面与锥面围成 → 球面坐标；由旋转抛物面、圆柱面围成 → 柱面坐标。</li></ul>`,
+      alt: R`<p><b>另解一（柱面坐标求体积）：</b>两曲面交线满足 $\sqrt{x^2+y^2}=\sqrt{R^2-x^2-y^2}$，即 $x^2+y^2=\frac{R^2}{2}$，所以 $\Omega$ 在 $xOy$ 面上的投影为 $\rho\leqslant\frac{R}{\sqrt2}$：</p>$$V=\int_0^{2\pi}d\theta\int_0^{\frac{R}{\sqrt2}}\left(\sqrt{R^2-\rho^2}-\rho\right)\rho\,d\rho=2\pi\left[-\frac13(R^2-\rho^2)^{\frac32}-\frac{\rho^3}{3}\right]_0^{\frac{R}{\sqrt2}}=\frac{2\pi R^3}{3}\left(1-\frac{\sqrt2}{2}\right),$$<p>与球面坐标结果一致。</p><p><b>另解二（几何直观）：</b>该积分等于 $\iint_\Sigma\mathbf{r}\cdot\mathbf{n}\,dS$，其中 $\mathbf{r}=(x,y,z)$，$\mathbf{n}$ 是外法向单位向量。锥面由过原点的射线组成，位置向量 $\mathbf{r}$ 躺在锥面的切平面内，所以锥面上 $\mathbf{r}\cdot\mathbf{n}=0$；球面上 $\mathbf{n}=\frac{\mathbf{r}}{R}$，$\mathbf{r}\cdot\mathbf{n}=R$。因此积分 $=R\times$ 球冠面积。球冠高 $h=R-R\cos\frac\pi4=R\left(1-\frac{\sqrt2}{2}\right)$，面积为 $2\pi Rh$，结果为 $2\pi R^3\left(1-\frac{\sqrt2}{2}\right)=(2-\sqrt2)\pi R^3$。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：3×球面坐标体积 =(2−√2)πR³；柱面坐标体积复核一致' },
+      flags: ['OCR 中的 mathrm{~d} 已整理为 mathrm{d}；Σ 为封闭曲面，原卷积分号可能印作封闭曲面积分号 ∯，因 MathJax 宏限制按 OCR 保留二重积分号']
+    },
+
+    /* ───────────── 第7题 极限定义的函数的可导性 ───────────── */
+    {
+      id: '2005-7', year: 2005, no: '第7题', type: '选择', score: 4,
+      stem: R`设函数 $f(x)=\lim\limits_{n\to\infty}\sqrt[n]{1+|x|^{3n}}$，则 $f(x)$ 在 $(-\infty,+\infty)$ 内（　　）`,
+      options: [R`处处可导.`, R`恰有一个不可导点.`, R`恰有两个不可导点.`, R`至少有三个不可导点.`],
+      answer: 'C',
+      figure: null,
+      kp: ['diff.def', 'lim.rules'],
+      methods: ['夹逼准则', '求出分段函数表达式', '左右导数定义'],
+      difficulty: 3,
+      analysis: R`<p>$f(x)$ 是用一个<b>关于 $n$ 的极限</b>定义的，表面上看不出它长什么样。处理这类题的第一原则是：<b>先把极限算出来，得到 $f(x)$ 的明确表达式（通常是分段函数），再讨论连续性、可导性。</b></p><p>怎么算 $\sqrt[n]{1+|x|^{3n}}$？关键直觉是"<b>大的说了算</b>"：$\sqrt[n]{a^n+b^n}$（$a,b\geqslant0$）当 $n\to\infty$ 时趋于 $\max\{a,b\}$。这里 $1=1^n$，$|x|^{3n}=(|x|^3)^n$，比较的是 $1$ 与 $|x|^3$ 谁大，自然按 $|x|\leqslant1$ 与 $|x|>1$ 分段，严格推导用夹逼准则。</p><p>得到分段函数后，每一段内部都是初等函数，可导；只需在"分段点"用左右导数的定义检查。</p>`,
+      solution: R`<p><b>第一步：求出 $f(x)$。</b></p><p>当 $|x|\leqslant1$ 时，$0\leqslant|x|^{3n}\leqslant1$，所以</p>$$1\leqslant\sqrt[n]{1+|x|^{3n}}\leqslant\sqrt[n]{2}\to1,$$<p>由夹逼准则 $f(x)=1$。</p><p>当 $|x|>1$ 时，$1 < |x|^{3n}$，所以</p>$$|x|^3=\sqrt[n]{|x|^{3n}}\leqslant\sqrt[n]{1+|x|^{3n}}\leqslant\sqrt[n]{2|x|^{3n}}=\sqrt[n]2\,|x|^3\to|x|^3,$$<p>由夹逼准则 $f(x)=|x|^3$。于是</p>$$f(x)=\begin{cases}1,&|x|\leqslant1,\\|x|^3,&|x|>1,\end{cases}\qquad\text{即 }f(x)=\max\{1,|x|^3\}.$$<p><b>第二步：找可疑点。</b>在 $(-1,1)$ 内 $f\equiv1$；$x>1$ 时 $f=x^3$；$x < -1$ 时 $f=-x^3$。各段内部都可导，可疑点只有分段点 $x=\pm1$。（$x=0$ 不可疑：它附近 $f\equiv1$。）</p><p><b>第三步：检查 $x=1$。</b>$f(1)=1$，</p>$$f'_-(1)=\lim_{x\to1^-}\frac{1-1}{x-1}=0,\qquad f'_+(1)=\lim_{x\to1^+}\frac{x^3-1}{x-1}=\lim_{x\to1^+}(x^2+x+1)=3.$$<p>左右导数不相等，$f$ 在 $x=1$ 不可导（但连续：两侧极限都是 1）。</p><p><b>第四步：检查 $x=-1$。</b>$f(-1)=1$，</p>$$f'_+(-1)=\lim_{x\to-1^+}\frac{1-1}{x+1}=0,\qquad f'_-(-1)=\lim_{x\to-1^-}\frac{-x^3-1}{x+1}=\lim_{x\to-1^-}\left[-(x^2-x+1)\right]=-3.$$<p>同样不可导（也可由 $f$ 是偶函数直接对称得到）。</p><p><b>第五步：下结论并排除其余选项。</b>$f$ 恰有 $x=\pm1$ 两个不可导点，选 <b>C</b>。</p><ul><li>A 错：$x=\pm1$ 处左右导数不相等。</li><li>B 错：只看到 $x=1$，忽略了对称的 $x=-1$。</li><li>D 错：看到 $|x|$ 容易以为 $x=0$ 也不可导，但 $x=0$ 附近 $f\equiv1$；即便单看 $|x|^3$，它在 0 处的导数 $\lim\limits_{x\to0}\frac{|x|^3}{x}=0$，也是可导的。</li></ul>`,
+      pitfalls: R`<p>1. 不先求出极限就讨论可导性，无从下手。</p><p>2. 误以为 $|x|=1$ 时极限是 2：此时 $\sqrt[n]{1+1}=\sqrt[n]2\to1$。</p><p>3. 看到绝对值就认为 $x=0$ 不可导。$|x|$ 在 0 不可导，但 $|x|^3$、$x|x|$ 在 0 都可导；而本题 0 附近函数是常数。</p><p>4. 只讨论 $x>0$ 一侧，漏掉 $x=-1$。</p>`,
+      summary: R`<p><b>方法要点：</b>$\lim\limits_{n\to\infty}\sqrt[n]{a_1^n+a_2^n+\cdots+a_k^n}=\max\{a_1,\dots,a_k\}$（$a_i\geqslant0$），证明用夹逼：$\max\leqslant\sqrt[n]{\cdots}\leqslant\sqrt[n]k\cdot\max$。</p><p><b>题型识别：</b></p><ul><li>看到"$f(x)=\lim\limits_{n\to\infty}(\cdots x^n\cdots)$"→ 先按 $|x| < 1$、$|x|=1$、$|x|>1$ 分段求出表达式。</li><li>看到"分段函数的可导性"→ 段内用求导公式，分段点用左右导数定义。</li><li>口诀："$n$ 次根号下求和，最大的项说了算"。</li></ul>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：x=1/2,1,2,−3 处极限分别为 1,1,8,27，符合 max{1,|x|³}；x=1 处左右导数 0、3，x=−1 处左右导数 −3、0' },
+      flags: []
+    },
+
+    /* ───────────── 第8题 原函数的性质 ───────────── */
+    {
+      id: '2005-8', year: 2005, no: '第8题', type: '选择', score: 4,
+      stem: R`设 $F(x)$ 是连续函数 $f(x)$ 的一个原函数，“$M\Leftrightarrow N$”表示“$M$ 的充分必要条件是 $N$”，则必有（　　）`,
+      options: [R`$F(x)$ 是偶函数 $\Leftrightarrow$ $f(x)$ 是奇函数`, R`$F(x)$ 是奇函数 $\Leftrightarrow$ $f(x)$ 是偶函数`, R`$F(x)$ 是周期函数 $\Leftrightarrow$ $f(x)$ 是周期函数`, R`$F(x)$ 是单调函数 $\Leftrightarrow$ $f(x)$ 是单调函数`],
+      answer: 'A',
+      figure: null,
+      kp: ['int.concept', 'int.ftc', 'lim.func'],
+      methods: ['原函数的一般表达式', '变限积分换元', '举反例'],
+      difficulty: 3,
+      analysis: R`<p>本题考查原函数 $F$ 与被积函数 $f$ 之间性质的"传递"。最关键的事实是：连续函数 $f$ 的<b>所有</b>原函数都可以写成</p>$$F(x)=\int_0^xf(t)\,dt+C,\qquad C=F(0).$$<p>于是要分两个方向看：</p><ul><li><b>从 $F$ 推 $f$（求导方向）：</b>$f=F'$。求导是"干净"的运算：偶函数的导数是奇函数，奇函数的导数是偶函数，周期函数的导数仍是周期函数，这个方向总成立。</li><li><b>从 $f$ 推 $F$（积分方向）：</b>积分会多出任意常数 $C$，还会"累积"，可能破坏奇性和周期性。</li></ul><p>每个选项都是"$\Leftrightarrow$"，两个方向都成立才对；只要有一个方向能举出反例，选项就错。</p>`,
+      solution: R`<p><b>第一步：验证 A 的"$\Rightarrow$"。</b>设 $F$ 为偶函数：$F(-x)=F(x)$。两边对 $x$ 求导（左边用复合函数求导法则）：$-F'(-x)=F'(x)$，即 $-f(-x)=f(x)$，所以 $f$ 是奇函数。</p><p><b>第二步：验证 A 的"$\Leftarrow$"。</b>设 $f$ 为奇函数，令 $G(x)=\int_0^xf(t)\,dt$。在 $G(-x)$ 中换元 $t=-u$（$dt=-du$，$t$ 从 0 到 $-x$ 对应 $u$ 从 0 到 $x$）：</p>$$G(-x)=\int_0^{-x}f(t)\,dt=\int_0^xf(-u)\,(-du)=\int_0^xf(u)\,du=G(x),$$<p>其中用了 $f(-u)=-f(u)$。所以 $G$ 是偶函数，而 $F=G+C$，偶函数加常数仍是偶函数，故 $F$ 为偶函数。A 的两个方向都成立，<b>选 A</b>。</p><p><b>第三步：排除 B。</b>"$F$ 奇 $\Rightarrow$ $f$ 偶"成立（求导方向），但反过来不成立：取 $f(x)=1$（偶函数），$F(x)=x+1$ 是它的一个原函数，$F(0)=1\neq0$，而奇函数必须满足 $F(0)=0$，所以 $F$ 不是奇函数。偶函数的原函数中只有 $C=0$ 的那一个 $\int_0^xf(t)\,dt$ 是奇函数。</p><p><b>第四步：排除 C。</b>"$F$ 周期 $\Rightarrow$ $f$ 周期"成立（对 $F(x+T)=F(x)$ 求导），但反过来不成立：取 $f(x)=1+\cos x$，以 $2\pi$ 为周期，其原函数 $F(x)=x+\sin x$ 满足 $F(x+2\pi)-F(x)=2\pi\neq0$，不是周期函数。一般地 $F(x+T)-F(x)=\int_x^{x+T}f(t)\,dt=\int_0^Tf(t)\,dt$，只有一个周期上的积分为 0 时 $F$ 才是周期函数。</p><p><b>第五步：排除 D。</b>两个方向都不成立：$f(x)=x$ 单调递增，但原函数 $F(x)=\frac{x^2}{2}$ 不单调；反过来 $F(x)=x^3$ 单调递增，但 $f(x)=3x^2$ 不单调。$F$ 的单调性取决于 $f$ 的<b>符号</b>，与 $f$ 自身是否单调无关。</p>`,
+      pitfalls: R`<p>1. 只验证一个方向。B、C 的"$F\Rightarrow f$"方向都是对的，只看这一个方向就会误选。</p><p>2. 忘记原函数有无穷多个、彼此相差常数 $C$；"$F$ 是 $f$ 的<b>一个</b>原函数"意味着 $C$ 可以任意。</p><p>3. 把"$F$ 单调"误当成"$f$ 单调"。$F$ 单调对应的是 $f$ 不变号。</p>`,
+      summary: R`<p><b>方法要点（建议记住这张表）：</b></p><ul><li>$f$ 奇 $\Leftrightarrow$ $f$ 的<b>所有</b>原函数都是偶函数。</li><li>$f$ 偶 $\Rightarrow$ 只有 $\int_0^xf(t)\,dt$ 是奇函数；$F$ 奇 $\Rightarrow$ $f$ 偶。</li><li>$f$ 以 $T$ 为周期时：$F$ 是周期函数 $\Leftrightarrow$ $\int_0^Tf(t)\,dt=0$；$F$ 周期 $\Rightarrow$ $f$ 周期。</li><li>单调性在 $f$ 与 $F$ 之间没有对应关系。</li></ul><p><b>题型识别：</b>看到"$f$ 与原函数（变限积分）的奇偶性、周期性"→ 写出 $F(x)=\int_0^xf(t)\,dt+C$，奇偶性用换元 $t=-u$，周期性看 $\int_0^Tf$；选择题用 $1$、$x$、$\cos x$、$1+\cos x$ 这类简单函数举反例最快。</p>`,
+      verify: { by: 'mixed', ok: true, note: 'sympy：取奇函数 f=x³−sin x 验证 G(−x)−G(x)=0；F=x+sin x 满足 F(x+2π)−F(x)=2π；其余反例（f=1,F=x+1；f=x,F=x²/2；F=x³,f=3x²）人工核验' },
+      flags: []
+    },
+
+    /* ───────────── 第9题 抽象复合函数与变限积分的二阶偏导 ───────────── */
+    {
+      id: '2005-9', year: 2005, no: '第9题', type: '选择', score: 4,
+      stem: R`设函数 $u(x,y)=\varphi(x+y)+\varphi(x-y)+\int_{x-y}^{x+y}\psi(t)\,\mathrm{d}t$，其中函数 $\varphi$ 具有二阶导数，$\psi$ 具有一阶导数，则必有（　　）`,
+      options: [R`$\frac{\partial^2u}{\partial x^2}=-\frac{\partial^2u}{\partial y^2}$.`, R`$\frac{\partial^2u}{\partial x^2}=\frac{\partial^2u}{\partial y^2}$.`, R`$\frac{\partial^2u}{\partial x\partial y}=\frac{\partial^2u}{\partial y^2}$.`, R`$\frac{\partial^2u}{\partial x\partial y}=\frac{\partial^2u}{\partial x^2}$.`],
+      answer: 'B',
+      figure: null,
+      kp: ['mdiff.chain', 'int.ftc'],
+      methods: ['复合函数链式法则', '变限积分求导', '特殊函数排除法'],
+      difficulty: 2,
+      analysis: R`<p>$u$ 由两部分组成：抽象复合函数 $\varphi(x\pm y)$ 和一个上下限都含 $x,y$ 的变限积分。四个选项都是二阶偏导之间的关系，最稳妥的办法就是把 $u_{xx}$、$u_{yy}$、$u_{xy}$ 老老实实求出来比较。</p><p>处理变限积分的一个好习惯：设 $\Psi$ 是 $\psi$ 的一个原函数（$\psi$ 可导，所以连续，原函数存在），则 $\int_{x-y}^{x+y}\psi(t)\,dt=\Psi(x+y)-\Psi(x-y)$。这样 $u$ 全部变成"一元函数复合 $x+y$ 或 $x-y$"，求导只剩链式法则：对 $x$ 求导时两个内层函数的偏导都是 $1$；对 $y$ 求导时 $x+y$ 给出 $+1$，$x-y$ 给出 $-1$。</p><p>背景：$\varphi(x+y)+\varphi(x-y)$ 加上这个积分，正是一维波动方程 $u_{xx}=u_{yy}$ 的达朗贝尔解的形式，所以可以预期答案是 B。</p>`,
+      solution: R`<p><b>第一步：改写。</b>设 $\Psi'=\psi$，则 $u=\varphi(x+y)+\varphi(x-y)+\Psi(x+y)-\Psi(x-y)$。</p><p><b>第二步：对 $x$ 求两次偏导。</b>因为 $\frac{\partial(x+y)}{\partial x}=\frac{\partial(x-y)}{\partial x}=1$，</p>$$u_x=\varphi'(x+y)+\varphi'(x-y)+\psi(x+y)-\psi(x-y),$$$$u_{xx}=\varphi''(x+y)+\varphi''(x-y)+\psi'(x+y)-\psi'(x-y).$$<p><b>第三步：对 $y$ 求两次偏导。</b>$\frac{\partial(x+y)}{\partial y}=1$，$\frac{\partial(x-y)}{\partial y}=-1$。逐项看：$\varphi(x-y)$ 求导得 $\varphi'(x-y)\cdot(-1)$；$-\Psi(x-y)$ 求导得 $-\psi(x-y)\cdot(-1)=+\psi(x-y)$。所以</p>$$u_y=\varphi'(x+y)-\varphi'(x-y)+\psi(x+y)+\psi(x-y).$$<p>再对 $y$ 求导：$-\varphi'(x-y)$ 求导得 $-\varphi''(x-y)\cdot(-1)=+\varphi''(x-y)$；$\psi(x-y)$ 求导得 $\psi'(x-y)\cdot(-1)=-\psi'(x-y)$。所以</p>$$u_{yy}=\varphi''(x+y)+\varphi''(x-y)+\psi'(x+y)-\psi'(x-y).$$<p><b>第四步：比较。</b>$u_{xx}=u_{yy}$，选 <b>B</b>。</p><p><b>第五步：排除其他选项。</b>另求 $u_{xy}=\frac{\partial}{\partial y}u_x=\varphi''(x+y)-\varphi''(x-y)+\psi'(x+y)+\psi'(x-y)$，它一般不等于 $u_{xx}$ 或 $u_{yy}$。用具体函数最直观：取 $\varphi(t)=t^2$、$\psi\equiv0$，则 $u=(x+y)^2+(x-y)^2=2x^2+2y^2$，$u_{xx}=4$，$u_{yy}=4$，$u_{xy}=0$。A 要求 $4=-4$，C 要求 $0=4$，D 要求 $0=4$，都不成立。</p>`,
+      pitfalls: R`<p>1. 对 $y$ 求导时忘记内层函数 $x-y$ 的偏导是 $-1$，或两次 $-1$ 相乘时符号处理错。逐项写成"外层导数 × 内层偏导"就不会错。</p><p>2. 变限积分求导公式用错：$\frac{d}{dy}\int_{a(y)}^{b(y)}\psi(t)\,dt=\psi(b(y))\,b'(y)-\psi(a(y))\,a'(y)$，下限那一项前面带负号。</p><p>3. 算出了 $\psi''$：题目只给 $\psi$ 一阶可导，二阶偏导中只会出现 $\psi'$，出现 $\psi''$ 说明多求了一次导。</p>`,
+      summary: R`<p><b>方法要点：</b>抽象复合函数求偏导 = 外层导数 × 内层偏导；变限积分先看成"原函数之差"再求导。</p><p><b>题型识别：</b></p><ul><li>看到 $f(x+y)$、$f(x-y)$、$f(xy)$ 等抽象复合 → 链式法则，逐项写出内层偏导。</li><li>看到 $\varphi(x+at)+\varphi(x-at)$ 结构 → 联想波动方程 $u_{tt}=a^2u_{xx}$。</li><li>选择题判断偏导关系式 → 先用 $\varphi(t)=t^2$ 等具体函数快速排除。</li></ul>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy 用抽象函数 phi、psi 求导：simplify(u_xx−u_yy)=0；u_xx+u_yy 与 u_xy−u_yy 不恒为 0' },
+      flags: []
+    },
+
+    /* ───────────── 第10题 隐函数存在定理 ───────────── */
+    {
+      id: '2005-10', year: 2005, no: '第10题', type: '选择', score: 4,
+      stem: R`设有三元方程 $xy-z\ln y+\mathrm{e}^{xz}=1$，根据隐函数存在定理，存在点 $(0,1,1)$ 的一个邻域，在此邻域内该方程（　　）`,
+      options: [R`只能确定一个具有连续偏导数的隐函数 $z=z(x,y)$.`, R`可确定两个具有连续偏导数的隐函数 $y=y(x,z)$ 和 $z=z(x,y)$.`, R`可确定两个具有连续偏导数的隐函数 $x=x(y,z)$ 和 $z=z(x,y)$.`, R`可确定两个具有连续偏导数的隐函数 $x=x(y,z)$ 和 $y=y(x,z)$.`],
+      answer: 'D',
+      figure: null,
+      kp: ['mdiff.implicit'],
+      methods: ['隐函数存在定理', '偏导数计算'],
+      difficulty: 2,
+      analysis: R`<p><b>隐函数存在定理</b>（一个方程、三个变量）：设 $F(x,y,z)$ 在点 $P_0(x_0,y_0,z_0)$ 的某邻域内有连续偏导数，$F(P_0)=0$，且 $F_z(P_0)\neq0$，则方程 $F=0$ 在 $P_0$ 附近唯一确定一个具有连续偏导数的函数 $z=z(x,y)$，满足 $z_0=z(x_0,y_0)$。把 $z$ 换成 $x$ 或 $y$，结论同理。</p><p>一句话：<b>对哪个变量的偏导数不为零，就能把哪个变量解成其余变量的函数。</b>几何上，$F_z(P_0)\neq0$ 表示曲面 $F=0$ 在 $P_0$ 处的法向量 $(F_x,F_y,F_z)$ 不是水平的，曲面在这里不"竖直"，因此局部可以看成 $xOy$ 面上的一张图像 $z=z(x,y)$。求隐函数偏导的公式 $\frac{\partial z}{\partial x}=-\frac{F_x}{F_z}$ 中 $F_z$ 在分母上，也说明了为什么需要它不为零。</p><p>所以本题只要算出 $F_x,F_y,F_z$ 在 $(0,1,1)$ 处的值，看哪些不为零。</p>`,
+      solution: R`<p><b>第一步：写成 $F=0$ 并检验条件。</b>令 $F(x,y,z)=xy-z\ln y+e^{xz}-1$。在 $(0,1,1)$ 附近 $y>0$，$F$ 有连续偏导数，且 $F(0,1,1)=0-1\cdot\ln1+e^0-1=0$。</p><p><b>第二步：求三个偏导数并代值。</b></p>$$F_x=y+ze^{xz}\Big|_{(0,1,1)}=1+1=2,$$$$F_y=x-\frac zy\Big|_{(0,1,1)}=0-1=-1,$$$$F_z=-\ln y+xe^{xz}\Big|_{(0,1,1)}=0+0=0.$$<p><b>第三步：对照定理。</b>$F_x\neq0$，可确定 $x=x(y,z)$；$F_y\neq0$，可确定 $y=y(x,z)$；$F_z=0$，定理不能保证确定 $z=z(x,y)$。选 <b>D</b>。</p><p><b>第四步（加深理解）：$z=z(x,y)$ 确实不存在。</b>$F_z=0$ 本身只是说定理"不保证"，但本题还能直接看出它真的不行：在平面 $x=0$ 上，方程化为 $-z\ln y+1=1$，即 $z\ln y=0$。在 $(0,1,1)$ 附近 $z$ 接近 1、不为 0，所以必须 $y=1$。也就是说，对 $x=0$、$y\neq1$（但离 1 很近）的点，找不到接近 1 的 $z$ 满足方程，$z$ 无法在 $(0,1)$ 的整个邻域上定义成 $(x,y)$ 的函数。因此含有 $z=z(x,y)$ 的 A、B、C 都错。</p>`,
+      pitfalls: R`<p>1. 把条件与结论的对应关系弄反，以为"$F_z\neq0$ 能确定 $x$ 和 $y$"。正确的是：哪个偏导不为零，哪个变量当因变量。</p><p>2. 构造 $F$ 时忘记把右边的 1 移过来，得到 $F(P_0)\neq0$，不符合定理条件的表述。</p><p>3. 把 $-z\ln y$ 对 $y$ 的偏导漏乘 $z$，写成 $F_y=x-\frac1y$。本题在该点碰巧数值相同，换一个点就会出错。</p>`,
+      summary: R`<p><b>方法要点：</b>$F$ 连续可偏导、$F(P_0)=0$ 时，"对谁的偏导不为零，谁就能当因变量"。</p><p><b>题型识别：</b>看到"根据隐函数存在定理，方程在某点附近能确定哪些隐函数"→ 构造 $F$（右边移到左边），算三个偏导在该点的值，非零的那几个变量可以被解出来。若是方程组 $F=0,G=0$ 确定两个函数，则看相应的雅可比行列式是否为零。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：F(0,1,1)=0，(F_x,F_y,F_z)(0,1,1)=(2,−1,0)' },
+      flags: []
+    },
+
+    /* ───────────── 第15题 含取整函数的二重积分 ───────────── */
+    {
+      id: '2005-15', year: 2005, no: '第15题', type: '解答', score: 11,
+      stem: R`设 $D=\{(x,y)\mid x^2+y^2\leqslant\sqrt2,\ x\geqslant0,\ y\geqslant0\}$，$[1+x^2+y^2]$ 表示不超过 $1+x^2+y^2$ 的最大整数，计算二重积分 $\iint_Dxy[1+x^2+y^2]\,\mathrm{d}x\,\mathrm{d}y$.`,
+      options: null,
+      answer: R`$\dfrac38$`,
+      figure: null,
+      kp: ['mint.double', 'lim.func'],
+      methods: ['按取整函数的取值分割区域', '极坐标计算二重积分'],
+      difficulty: 3,
+      analysis: R`<p>被积函数里有取整函数 $[1+x^2+y^2]$，它是一个"台阶函数"：在一块块区域上取常数，但整体不能直接积分。处理这类函数（取整、绝对值、$\max/\min$、符号函数）的统一思路是：<b>先找出它在哪里改变取值，用这些分界线把积分区域切开；在每一块上它就变成普通的常数或初等函数。</b></p><p>本题 $1+x^2+y^2$ 只依赖于 $r^2=x^2+y^2$。在 $D$ 上 $0\leqslant r^2\leqslant\sqrt2\approx1.414$，所以 $1+r^2\in[1,\,1+\sqrt2]$，而 $1+\sqrt2\approx2.414 < 3$，取整后只能是 1 或 2，分界线是圆 $r=1$。</p><p>区域是圆的一部分（四分之一圆盘），被积函数又只与 $r$ 和角度有关，自然用<b>极坐标</b>。</p>`,
+      solution: R`<p><b>第一步：确定取整函数的值。</b>记 $r^2=x^2+y^2$。</p><ul><li>当 $0\leqslant r^2 < 1$ 时，$1\leqslant1+r^2 < 2$，$[1+r^2]=1$；</li><li>当 $1\leqslant r^2\leqslant\sqrt2$ 时，$2\leqslant1+r^2\leqslant1+\sqrt2 < 3$，$[1+r^2]=2$。</li></ul><p>相应地把 $D$ 分成两块：$D_1=\{(x,y)\in D\mid x^2+y^2 < 1\}$，$D_2=\{(x,y)\in D\mid 1\leqslant x^2+y^2\leqslant\sqrt2\}$。（分界圆弧 $r=1$ 的面积为零，归到哪一块都不影响积分值。）</p><p><b>第二步：拆分积分。</b></p>$$I=\iint_{D_1}xy\cdot1\,d\sigma+\iint_{D_2}xy\cdot2\,d\sigma.$$<p><b>第三步：化为极坐标。</b>令 $x=r\cos\theta$，$y=r\sin\theta$，面积元 $d\sigma=r\,dr\,d\theta$，所以 $xy\,d\sigma=r^3\sin\theta\cos\theta\,dr\,d\theta$。$D$ 在第一象限，$0\leqslant\theta\leqslant\frac\pi2$；外边界 $r^2=\sqrt2$，即 $r=\sqrt[4]2$。</p><p><b>第四步：分别计算。</b>两块的角度部分相同：</p>$$\int_0^{\frac\pi2}\sin\theta\cos\theta\,d\theta=\left[\frac{\sin^2\theta}{2}\right]_0^{\frac\pi2}=\frac12.$$<p>径向部分：</p>$$\int_0^1r^3\,dr=\frac14,\qquad\int_1^{\sqrt[4]2}r^3\,dr=\left[\frac{r^4}{4}\right]_1^{\sqrt[4]2}=\frac{2-1}{4}=\frac14.$$<p><b>第五步：合并。</b></p>$$I=\frac12\cdot\frac14+2\cdot\frac12\cdot\frac14=\frac18+\frac14=\frac38.$$`,
+      pitfalls: R`<p>1. 半径看错：$x^2+y^2\leqslant\sqrt2$ 表示半径为 $\sqrt[4]2$ 的圆，不是半径 $\sqrt2$。若误用 $\sqrt2$，会得到 $r^2$ 最大为 2，取整的分段也随之出错。</p><p>2. 极坐标漏掉面积元里的 $r$，把 $xy\,d\sigma$ 写成 $r^2\sin\theta\cos\theta\,dr\,d\theta$。</p><p>3. 忘记 $D_2$ 上被积函数要乘 2。</p><p>4. 不分块，直接把 $[1+x^2+y^2]$ 当成 $1+x^2+y^2$ 去积分。</p>`,
+      summary: R`<p><b>方法要点：</b>被积函数含取整、绝对值、$\max/\min$ → 先找分界线、分块，块内去掉"特殊符号"再积分；区域为圆、扇形、圆环，或被积函数含 $x^2+y^2$ → 极坐标。</p><p><b>题型识别：</b></p><ul><li>看到 $[\,\cdot\,]$ → 估计括号内表达式的取值范围，列出所有可能的整数值及对应分界线。</li><li>看到 $\max\{x^2,y^2\}$、$|x-y|$ → 分界线是 $y=\pm x$。</li><li>看到 $\sqrt[4]2$ 这类"奇怪"的半径 → 往往是为了让 $r^4$ 算得干净，代入前先想想 $r^4$ 等于多少。</li></ul>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy 极坐标分块积分得 3/8；另用 1200×1200 网格数值积分得 0.375004，一致' },
+      flags: []
+    },
+
+    /* ───────────── 第16题 幂级数的收敛区间与和函数 ───────────── */
+    {
+      id: '2005-16', year: 2005, no: '第16题', type: '解答', score: 12,
+      stem: R`求幂级数 $\sum\limits_{n=1}^{\infty}(-1)^{n-1}\left[1+\frac{1}{n(2n-1)}\right]x^{2n}$ 的收敛区间与和函数 $f(x)$.`,
+      options: null,
+      answer: R`收敛区间为 $(-1,1)$；和函数 $f(x)=\dfrac{x^2}{1+x^2}+2x\arctan x-\ln(1+x^2)$，$x\in(-1,1)$.`,
+      figure: null,
+      kp: ['series.sum', 'series.power', 'series.expand'],
+      methods: ['比值判别法求收敛半径', '拆项', '部分分式', '利用已知展开式求和', '逐项求导与逐项积分'],
+      difficulty: 3,
+      analysis: R`<p>两问：收敛区间、和函数。</p><p><b>收敛区间：</b>这是"缺项"幂级数（只有偶次幂 $x^{2n}$），不能机械地套"$R=\lim\left|\frac{a_n}{a_{n+1}}\right|$"（那个公式默认 $x$ 的每个幂次都出现）。最根本的做法是把通项 $u_n(x)$ 整体当作数项级数的项，用比值判别法求出 $x$ 满足什么条件时收敛。</p><p><b>和函数：</b>系数 $1+\frac{1}{n(2n-1)}$ 是两部分之和，自然把级数拆成两个：</p><ul><li>$\sum(-1)^{n-1}x^{2n}$：等比级数，直接求和；</li><li>$\sum(-1)^{n-1}\frac{x^{2n}}{n(2n-1)}$：分母是两个一次因式之积。思路一：<b>部分分式</b>拆开，分别对应 $\ln(1+t)$ 与 $\arctan x$ 的展开式；思路二：注意到 $(x^{2n})''=2n(2n-1)x^{2n-2}$，<b>求两次导数恰好把分母消掉</b>，变成等比级数，再积分回来（见另解）。</li></ul><p>两种思路的核心是同一个：<b>把陌生的级数改造成已知和的标准级数。</b></p>`,
+      solution: R`<p><b>第一步：求收敛区间。</b>记 $a_n=1+\frac{1}{n(2n-1)}$，$u_n(x)=(-1)^{n-1}a_nx^{2n}$。对 $x\neq0$，</p>$$\lim_{n\to\infty}\left|\frac{u_{n+1}(x)}{u_n(x)}\right|=\lim_{n\to\infty}\frac{a_{n+1}}{a_n}\,x^2=x^2\qquad(\text{因为 }a_n\to1).$$<p>由比值判别法：$x^2 < 1$ 时级数绝对收敛，$x^2>1$ 时发散。所以收敛半径 $R=1$，收敛区间为 $(-1,1)$。（再看端点：$x=\pm1$ 时通项为 $(-1)^{n-1}a_n$，其绝对值 $a_n\to1\neq0$，不满足收敛的必要条件，发散，所以收敛域也是 $(-1,1)$。）</p><p><b>第二步：拆成两个级数。</b>当 $|x| < 1$ 时下面两个级数都收敛，因此可以拆开：</p>$$f(x)=\underbrace{\sum_{n=1}^{\infty}(-1)^{n-1}x^{2n}}_{S_1(x)}+\underbrace{\sum_{n=1}^{\infty}(-1)^{n-1}\frac{x^{2n}}{n(2n-1)}}_{S_2(x)}.$$<p><b>第三步：求 $S_1$。</b>它是首项为 $x^2$、公比为 $-x^2$ 的等比级数（$|-x^2| < 1$）：</p>$$S_1(x)=\frac{x^2}{1-(-x^2)}=\frac{x^2}{1+x^2}.$$<p><b>第四步：把 $S_2$ 的系数拆成部分分式。</b>设 $\frac{1}{n(2n-1)}=\frac{A}{2n-1}+\frac{B}{n}$，去分母得 $1=An+B(2n-1)$；令 $n=0$ 得 $B=-1$，令 $n=\frac12$ 得 $A=2$。验证：$\frac{2}{2n-1}-\frac1n=\frac{2n-(2n-1)}{n(2n-1)}=\frac{1}{n(2n-1)}$。于是</p>$$S_2(x)=2x\sum_{n=1}^{\infty}(-1)^{n-1}\frac{x^{2n-1}}{2n-1}-\sum_{n=1}^{\infty}(-1)^{n-1}\frac{(x^2)^n}{n}.$$<p>（第一个和式提出一个 $x$，把 $x^{2n}$ 写成 $x\cdot x^{2n-1}$，是为了凑出 $\arctan x$ 展开式的样子。）</p><p><b>第五步：识别两个标准展开式。</b></p><ul><li>$\arctan x=\int_0^x\frac{dt}{1+t^2}=\int_0^x\sum_{n=1}^{\infty}(-t^2)^{n-1}dt=\sum_{n=1}^{\infty}(-1)^{n-1}\frac{x^{2n-1}}{2n-1}$，$|x| < 1$；</li><li>$\ln(1+s)=\sum_{n=1}^{\infty}(-1)^{n-1}\frac{s^n}{n}$（$-1 < s\leqslant1$），取 $s=x^2$ 得 $\sum_{n=1}^{\infty}(-1)^{n-1}\frac{x^{2n}}{n}=\ln(1+x^2)$。</li></ul><p>所以 $S_2(x)=2x\arctan x-\ln(1+x^2)$。</p><p><b>第六步：合并并检验。</b></p>$$f(x)=\frac{x^2}{1+x^2}+2x\arctan x-\ln(1+x^2),\qquad x\in(-1,1).$$<p>检验 $x^2$ 的系数：$\frac{x^2}{1+x^2}=x^2-\cdots$，$2x\arctan x=2x^2-\cdots$，$\ln(1+x^2)=x^2-\cdots$，合计 $1+2-1=2$；而原级数 $n=1$ 项的系数为 $1+\frac{1}{1\cdot1}=2$。一致。</p>`,
+      pitfalls: R`<p>1. 混淆"收敛区间"与"收敛域"：收敛区间指开区间 $(-R,R)$，收敛域还要讨论端点。本题两者恰好相同，但概念要分清。</p><p>2. 对缺项级数直接套系数公式。本题碰巧不出错，但像 $\sum\frac{x^{2n}}{4^n}$，若把 $\frac{1}{4^n}$ 当成 $x^n$ 的系数会得到 $R=4$，正确答案是 $R=2$。</p><p>3. 等比级数首项弄错：$\sum_{n=1}^\infty(-1)^{n-1}x^{2n}$ 的首项是 $x^2$，和为 $\frac{x^2}{1+x^2}$，不是 $\frac{1}{1+x^2}$。</p><p>4. 用逐项求导法时忘记用 $S(0)=0$、$S'(0)=0$ 确定积分常数。</p>`,
+      summary: R`<p><b>方法要点：</b>求和函数 = 把级数改造成已知和的标准级数，如 $\frac{1}{1-t}$、$\ln(1+t)$、$\arctan x$、$e^x$；改造手段是"拆系数、提因子、逐项求导、逐项积分"。</p><p><b>题型识别：</b></p><ul><li>系数分母含 $n$、$2n-1$、$n+1$ 等 → 逐项<b>求导</b>消去分母，或部分分式拆成已知级数。</li><li>系数分子含 $n$、$n^2$ → 逐项<b>积分</b>消去分子。</li><li>只有偶次幂（或奇次幂）的缺项级数 → 对整个通项用比值判别法求收敛范围。</li><li>求出和函数后，用前一两项系数回代检验。</li></ul>`,
+      alt: R`<p><b>另解（逐项求导两次）：</b>令 $S(x)=\sum_{n=1}^{\infty}(-1)^{n-1}\frac{x^{2n}}{n(2n-1)}=2\sum_{n=1}^{\infty}(-1)^{n-1}\frac{x^{2n}}{2n(2n-1)}$，$|x| < 1$。幂级数在收敛区间内可以逐项求导：</p>$$S'(x)=2\sum_{n=1}^{\infty}(-1)^{n-1}\frac{x^{2n-1}}{2n-1},\qquad S''(x)=2\sum_{n=1}^{\infty}(-1)^{n-1}x^{2n-2}=\frac{2}{1+x^2}.$$<p>由 $S'(0)=0$ 得 $S'(x)=\int_0^x\frac{2}{1+t^2}dt=2\arctan x$；由 $S(0)=0$ 得</p>$$S(x)=\int_0^x2\arctan t\,dt=2x\arctan x-\int_0^x\frac{2t}{1+t^2}dt=2x\arctan x-\ln(1+x^2).$$<p>再加上 $S_1(x)=\frac{x^2}{1+x^2}$，结果与正解一致。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：和函数的麦克劳林展开前 7 项系数与 (−1)^(n−1)[1+1/(n(2n−1))] 一致；系数比值极限为 1；x=0.7 处部分和与和函数数值相同（0.785099…）；部分分式 1/(n(2n−1))=2/(2n−1)−1/n 验证为恒等式' },
+      flags: []
+    },
+
+    /* ───────────── 第17题 看图 + 分部积分 ───────────── */
+    {
+      id: '2005-17', year: 2005, no: '第17题', type: '解答', score: 11,
+      stem: R`如图，曲线 $C$ 的方程为 $y=f(x)$，点 $(3,2)$ 是它的一个拐点，直线 $l_1$ 与 $l_2$ 分别是曲线 $C$ 在点 $(0,0)$ 与 $(3,2)$ 处的切线，其交点为 $(2,4)$. 设函数 $f(x)$ 具有三阶连续导数，计算定积分$$\int_0^3(x^2+x)f'''(x)\,\mathrm{d}x.$$`,
+      options: null,
+      answer: R`$20$`,
+      figure: {
+        file: 'papers/images/2005年考研数学(一)真题/7c2bcc0e2dcb5f03746b2233cfda8d0ac73ff90c63028e1a77482f6bc5a6d378.jpg',
+        desc: R`直角坐标系中：直线 $l_1$ 过原点 $(0,0)$ 与点 $(2,4)$（斜率 2）；直线 $l_2$ 过点 $(2,4)$、$(3,2)$ 与 $(4,0)$（斜率 $-2$）。曲线 $C:y=f(x)$ 从原点出发，在原点与 $l_1$ 相切，先上升，在 $x$ 约 2.3 处达到最高（纵坐标约 2.8），然后下降；在 $[0,3]$ 上曲线向上凸，位于两条切线下方；在点 $(3,2)$ 处与 $l_2$ 相切并从 $l_2$ 下方穿到上方（拐点），此后改为向下凸，继续下降并逐渐变平（$x$ 约 3.7 处纵坐标约 1.3）。`
+      },
+      kp: ['int.defcalc', 'diff.convex', 'diff.def'],
+      methods: ['多次分部积分', '导数的几何意义（切线斜率）', '拐点的必要条件', '看图读取条件'],
+      difficulty: 3,
+      analysis: R`<p>被积函数是"多项式 × 三阶导数 $f'''$"，而题目对 $f$ 的全部信息都集中在端点 $x=0$ 与 $x=3$ 处的函数值和导数值（来自切线与拐点）。这提示：<b>用分部积分把 $f'''$ 的阶数一次次降下来</b>。每降一次，多项式 $x^2+x$ 就被求导一次（$x^2+x\to2x+1\to2\to0$），最后只剩端点值和一个很容易的积分。</p><p>为什么分部积分正好"对得上"条件？因为分部积分产生的边界项就是 $f''$、$f'$、$f$ 在端点处的值，而这些恰好是图形能告诉我们的：</p><ul><li>切线 → 函数值与导数值（导数 = 切线斜率）；</li><li>拐点 → 二阶导数为 0（在 $f''$ 连续的前提下）。</li></ul><p>还有一处巧妙设计：$x^2+x$ 在 $x=0$ 处为 0，所以用不到题目没给的 $f''(0)$。</p>`,
+      solution: R`<p><b>第一步：从图中读出条件。</b></p><ul><li>$l_1$ 过 $(0,0)$ 和 $(2,4)$，斜率 $\frac{4-0}{2-0}=2$。它是 $C$ 在原点的切线，所以 $f(0)=0$，$f'(0)=2$。</li><li>$l_2$ 过 $(3,2)$ 和 $(2,4)$，斜率 $\frac{4-2}{2-3}=-2$。它是 $C$ 在 $(3,2)$ 处的切线，所以 $f(3)=2$，$f'(3)=-2$。</li><li>$(3,2)$ 是拐点，且 $f''$ 连续（$f$ 有三阶连续导数），所以 $f''(3)=0$。理由：若 $f''(3)>0$，由连续性 $f''$ 在 $x=3$ 的某邻域内恒正，曲线在该点两侧都向下凸，不可能是拐点；$f''(3) < 0$ 同理。</li></ul><p><b>第二步：第一次分部积分。</b>取 $u=x^2+x$，$dv=f'''(x)\,dx$：</p>$$\int_0^3(x^2+x)f'''(x)\,dx=\Big[(x^2+x)f''(x)\Big]_0^3-\int_0^3(2x+1)f''(x)\,dx.$$<p>边界项为 $12f''(3)-0\cdot f''(0)=0$（$f''(3)=0$，而 $x=0$ 处系数为 0）。所以</p>$$\text{原式}=-\int_0^3(2x+1)f''(x)\,dx.$$<p><b>第三步：第二次分部积分。</b></p>$$\int_0^3(2x+1)f''(x)\,dx=\Big[(2x+1)f'(x)\Big]_0^3-2\int_0^3f'(x)\,dx=\big[7f'(3)-f'(0)\big]-2\big[f(3)-f(0)\big].$$<p>代入数据：$7\times(-2)-2-2\times(2-0)=-14-2-4=-20$。</p><p><b>第四步：得结果。</b></p>$$\int_0^3(x^2+x)f'''(x)\,dx=-(-20)=20.$$`,
+      pitfalls: R`<p>1. $l_2$ 的斜率符号弄错：从 $(2,4)$ 到 $(3,2)$ 是下降的，斜率为 $-2$ 而不是 $2$。</p><p>2. 不会把"拐点"翻译成 $f''(3)=0$，或没意识到这一步依赖 $f''$ 的连续性。</p><p>3. 分部积分符号出错，尤其第二次分部积分前面还挂着一个负号。建议每一步把边界项与剩余积分分开写清楚。</p><p>4. 以为需要 $f''(0)$ 而卡住：其实它前面的系数 $x^2+x$ 在 0 处为零。</p>`,
+      summary: R`<p><b>方法要点：</b>"多项式 × 高阶导数"的积分 → 反复分部积分，把导数从 $f$ 转移到多项式上，直到多项式被求导成常数或零。</p><p><b>题型识别：</b></p><ul><li>看到 $\int P(x)f^{(n)}(x)\,dx$ 且已知端点处的 $f,f',\dots$ → 分部积分降阶。</li><li>看图题的"翻译表"：切线 → $f$ 与 $f'$；拐点 → $f''=0$（需二阶导连续）；极值点 → $f'=0$；渐近线 → 无穷远处的极限。</li></ul>`,
+      alt: R`<p><b>另解（表格法，一次写出）：</b>反复分部积分的通式为</p>$$\int_a^bu\,v'''\,dx=\Big[u\,v''-u'\,v'+u''\,v\Big]_a^b-\int_a^bu'''\,v\,dx.$$<p>取 $u=x^2+x$（$u'=2x+1$，$u''=2$，$u'''=0$），$v=f$：</p>$$\text{原式}=\Big[(x^2+x)f''-(2x+1)f'+2f\Big]_0^3=\big[12\cdot0-7\cdot(-2)+2\cdot2\big]-\big[0-1\cdot2+0\big]=18-(-2)=20.$$`,
+      verify: { by: 'sympy', ok: true, note: 'sympy：构造满足 f(0)=0, f′(0)=2, f(3)=2, f′(3)=−2, f″(3)=0 且含两个自由参数的 6 次多项式，积分恒为 20；两条切线斜率 2 与 −2 由图中坐标算出' },
+      flags: ['参考解析（OCR）第一行把被积函数中的三阶导数误识别为二阶导数，后续计算与结论 20 无误']
+    },
+
+    /* ───────────── 第18题 零点定理 + 两次拉格朗日 ───────────── */
+    {
+      id: '2005-18', year: 2005, no: '第18题', type: '解答', score: 12,
+      stem: R`已知函数 $f(x)$ 在 $[0,1]$ 上连续，在 $(0,1)$ 内可导，且 $f(0)=0$，$f(1)=1$. 证明：<br>（Ⅰ）存在 $\xi\in(0,1)$，使得 $f(\xi)=1-\xi$；<br>（Ⅱ）存在两个不同的点 $\eta,\zeta\in(0,1)$，使得 $f'(\eta)f'(\zeta)=1$.`,
+      options: null,
+      answer: R`证明见详细解答。要点：（Ⅰ）对 $g(x)=f(x)+x-1$ 用零点定理；（Ⅱ）以（Ⅰ）中的 $\xi$ 为分点，在 $[0,\xi]$ 与 $[\xi,1]$ 上分别用拉格朗日中值定理，得 $f'(\eta)=\frac{1-\xi}{\xi}$，$f'(\zeta)=\frac{\xi}{1-\xi}$，二者之积为 1.`,
+      figure: null,
+      kp: ['diff.mvt', 'lim.closed'],
+      methods: ['零点定理', '拉格朗日中值定理', '分区间两次使用中值定理', '由结论倒推分点'],
+      difficulty: 4,
+      analysis: R`<p><b>（Ⅰ）</b>要证的式子 $f(\xi)=1-\xi$ 里没有导数，只有函数值。"存在一点使某个函数等式成立"且不含导数，首选<b>零点定理</b>：把等式移项成 $g(\xi)=0$，令 $g(x)=f(x)-(1-x)$，检查端点符号即可。几何上，就是证明曲线 $y=f(x)$ 与直线 $y=1-x$ 在 $(0,1)$ 内相交：曲线从 $(0,0)$ 连续地走到 $(1,1)$，直线从 $(0,1)$ 走到 $(1,0)$，一个由下到上、一个由上到下，必然相交。</p><p><b>（Ⅱ）</b>要两个<b>不同</b>的点 $\eta,\zeta$，各带一个导数值。一次拉格朗日中值定理只能产生一个点；要两个不同的点，就把 $[0,1]$ 在某个分点 $c$ 处切成两段，各用一次拉格朗日中值定理，两个点分别落在两段里，自然不同。</p><p>分点 $c$ 怎么选？<b>从结论倒推</b>：在 $[0,c]$ 与 $[c,1]$ 上分别得到</p>$$f'(\eta)=\frac{f(c)-0}{c},\qquad f'(\zeta)=\frac{1-f(c)}{1-c}.$$<p>要乘积为 1，需要 $f(c)\,[1-f(c)]=c(1-c)$。观察可知只要 $f(c)=1-c$ 就成立（此时左边 $=(1-c)\cdot c$）。这恰好是第（Ⅰ）问给出的点！所以取 $c=\xi$。这就是"第一问为第二问铺路"的典型命题设计。</p><p>（$f(c)=c$ 也能让等式成立，但这样的内点未必存在，例如 $f(x)=x^2$ 在 $(0,1)$ 内没有满足 $f(c)=c$ 的点，所以只能用 $f(c)=1-c$。）</p>`,
+      solution: R`<p><b>（Ⅰ）第一步：构造辅助函数。</b>令 $g(x)=f(x)+x-1$，它是连续函数之和，在 $[0,1]$ 上连续。</p><p><b>第二步：检查端点符号。</b>$g(0)=f(0)+0-1=-1 < 0$，$g(1)=f(1)+1-1=1>0$。</p><p><b>第三步：用零点定理。</b>由零点定理，存在 $\xi\in(0,1)$ 使 $g(\xi)=0$，即 $f(\xi)=1-\xi$。</p><p><b>（Ⅱ）第四步：在 $[0,\xi]$ 上用拉格朗日中值定理。</b>$f$ 在 $[0,\xi]$ 上连续、在 $(0,\xi)$ 内可导（因为 $[0,\xi]\subset[0,1]$，$(0,\xi)\subset(0,1)$），所以存在 $\eta\in(0,\xi)$，使</p>$$f'(\eta)=\frac{f(\xi)-f(0)}{\xi-0}=\frac{1-\xi}{\xi}.$$<p><b>第五步：在 $[\xi,1]$ 上用拉格朗日中值定理。</b>同理，存在 $\zeta\in(\xi,1)$，使</p>$$f'(\zeta)=\frac{f(1)-f(\xi)}{1-\xi}=\frac{1-(1-\xi)}{1-\xi}=\frac{\xi}{1-\xi}.$$<p><b>第六步：相乘，并说明两点不同。</b>因为 $0 < \xi < 1$，分母 $\xi$ 与 $1-\xi$ 都不为零，</p>$$f'(\eta)f'(\zeta)=\frac{1-\xi}{\xi}\cdot\frac{\xi}{1-\xi}=1.$$<p>又 $0 < \eta < \xi < \zeta < 1$，所以 $\eta,\zeta$ 是 $(0,1)$ 内两个不同的点。证毕。</p>`,
+      pitfalls: R`<p>1. 在整个 $[0,1]$ 上只用一次拉格朗日中值定理得到 $f'(\eta)=1$，再令 $\zeta=\eta$，得 $f'(\eta)f'(\zeta)=1$。这违反了"两个不同的点"的要求，是零分做法。</p><p>2. 分点随便取，比如 $c=\frac12$，得到 $f'(\eta)f'(\zeta)=4f\left(\frac12\right)\left[1-f\left(\frac12\right)\right]$，无法化为 1。分点必须由结论倒推。</p><p>3. 零点定理要求函数在<b>闭区间</b>上连续且端点值<b>异号</b>；只写"$g(0)g(1) < 0$"而不交代连续性会扣分。</p><p>4. 忘记说明 $\eta\neq\zeta$。本证明中它由 $\eta < \xi < \zeta$ 自动保证，但要写出来。</p>`,
+      summary: R`<p><b>方法要点：</b></p><ul><li>结论只含函数值、不含导数 → 零点定理（或介值定理）。</li><li>结论含两个不同点处的导数（且不含分点本身）→ 找一个分点把区间切成两段，<b>两次</b>拉格朗日；分点常常就是上一问的 $\xi$，或由结论倒推。</li><li>倒推的操作：先设分点为 $c$，写出两个差商，看 $c$ 需要满足什么等式，再去证明这样的 $c$ 存在。</li></ul><p><b>题型识别：</b>看到"存在两个不同的点 $\eta,\zeta$"→ 分区间两次中值定理；看到第（Ⅰ）问求出了一个特殊点 → 第（Ⅱ）问多半要用它当分点。</p>`,
+      verify: { by: 'mixed', ok: true, note: '证明逐步人工核对；sympy 用 f(x)=x² 检验：ξ=(√5−1)/2 满足 f(ξ)=1−ξ，η=(1−ξ)/(2ξ)≈0.309∈(0,ξ)，ζ=ξ/(2(1−ξ))≈0.809∈(ξ,1)，f′(η)f′(ζ)=1' },
+      flags: ['参考解析（Ⅱ）写作 η∈(0,c)、ζ∈(c,1)，其中 c 应为（Ⅰ）中的 ξ，属参考解析笔误']
+    },
+
+    /* ───────────── 第19题 奇点型曲线积分 ───────────── */
+    {
+      id: '2005-19', year: 2005, no: '第19题', type: '解答', score: 12,
+      stem: R`设函数 $\varphi(y)$ 具有连续导数，在围绕原点的任意分段光滑简单闭曲线 $L$ 上，曲线积分 $\oint_L\frac{\varphi(y)\,\mathrm{d}x+2xy\,\mathrm{d}y}{2x^2+y^4}$ 的值恒为同一常数.<br>（Ⅰ）证明：对右半平面 $x>0$ 内的任意分段光滑简单闭曲线 $C$，有$$\oint_C\frac{\varphi(y)\,\mathrm{d}x+2xy\,\mathrm{d}y}{2x^2+y^4}=0;$$（Ⅱ）求函数 $\varphi(y)$ 的表达式.`,
+      options: null,
+      answer: R`（Ⅰ）证明见详细解答；（Ⅱ）$\varphi(y)=-y^2$.`,
+      figure: null,
+      kp: ['mint.line2'],
+      methods: ['曲线拼接、积分相减', '格林公式', '曲线积分与路径无关的条件', '比较系数法'],
+      difficulty: 5,
+      analysis: R`<p>先看清被积式的"病灶"：$P=\frac{\varphi(y)}{2x^2+y^4}$，$Q=\frac{2xy}{2x^2+y^4}$，分母在原点为 0，原点是<b>奇点</b>。题目条件"绕原点的任意闭曲线上积分都等于同一个常数"——这类题的套路都围绕这个奇点展开。</p><p><b>（Ⅰ）</b>要证不绕原点的闭曲线（右半平面内的）积分为 0。能不能直接用格林公式？<b>不能</b>：格林公式需要 $\frac{\partial Q}{\partial x}=\frac{\partial P}{\partial y}$，而 $\varphi$ 未知，这个等式恰恰是第（Ⅱ）问要从（Ⅰ）推出来的。所以只能用题目唯一给的条件："绕原点的积分都相等"。</p><p>第一性原理的想法：<b>两个相等的量相减等于 0</b>。设法造出两条绕原点的闭曲线，让它们共用一段路径 $L_3$，而不共用的部分恰好拼成 $C$。两个积分都等于同一常数，相减后共用部分抵消，剩下的正是 $\oint_C$，于是 $\oint_C=0$。</p><p><b>（Ⅱ）</b>右半平面 $x>0$ 是单连通区域，不含奇点，$P,Q$ 在其中有连续偏导数。由（Ⅰ），其中任意闭曲线上积分为 0，这等价于 $\frac{\partial Q}{\partial x}=\frac{\partial P}{\partial y}$ 在 $x>0$ 内恒成立。这给出一个含 $\varphi,\varphi'$ 的恒等式，它对所有 $x>0$ 都成立，于是按 $x$ 的幂比较系数，就能解出 $\varphi$。</p>`,
+      solution: R`<p>下面用 $\int$ 表示被积式 $\frac{\varphi(y)\,dx+2xy\,dy}{2x^2+y^4}$ 的曲线积分。</p><p><b>（Ⅰ）第一步：在 $C$ 上取两点，把它分成两段。</b>$C$ 是有界闭集，其上的纵坐标 $y$ 能取到最小值和最大值，分别在点 $A$、点 $B$ 处取到（$A$ 最低、$B$ 最高，$y_A < y_B$）。$A,B$ 把 $C$ 分成两段弧，记为 $L_1$、$L_2$，都规定方向为从 $A$ 到 $B$。于是（取 $C$ 的某一定向）</p>$$\oint_C=\int_{L_1}-\int_{L_2}.$$<p>所以只需证明 $\int_{L_1}=\int_{L_2}$。</p><p><b>第二步：作一条绕过原点的辅助折线 $L_3$。</b>取正数 $h$，使 $h>y_B$ 且 $-h < y_A$。令 $L_3$ 为从 $B$ 出发的折线：先竖直向上到高度 $h$，再水平向左走到直线 $x=-1$，再竖直向下到高度 $-h$，再水平向右走到 $A$ 的正下方，最后竖直向上回到 $A$。</p><div style="text-align:center"><svg viewBox="0 0 280 200" width="280" height="200" role="img" aria-label="辅助折线示意图"><line x1="20" y1="100" x2="270" y2="100" stroke="currentColor" stroke-width="1" opacity="0.5"/><line x1="120" y1="190" x2="120" y2="10" stroke="currentColor" stroke-width="1" opacity="0.5"/><ellipse cx="200" cy="95" rx="38" ry="42" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="200,53 200,25 50,25 50,175 200,175 200,137" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4"/><circle cx="120" cy="100" r="2.5" fill="currentColor"/><circle cx="200" cy="53" r="3" fill="currentColor"/><circle cx="200" cy="137" r="3" fill="currentColor"/><text x="106" y="114" font-size="12" fill="currentColor">O</text><text x="206" y="50" font-size="12" fill="currentColor">B</text><text x="206" y="152" font-size="12" fill="currentColor">A</text><text x="242" y="99" font-size="12" fill="currentColor">L<tspan font-size="9" dy="3">1</tspan></text><text x="140" y="82" font-size="12" fill="currentColor">L<tspan font-size="9" dy="3">2</tspan></text><text x="58" y="45" font-size="12" fill="currentColor">L<tspan font-size="9" dy="3">3</tspan></text><text x="54" y="122" font-size="10" fill="currentColor">x=−1</text><text x="262" y="93" font-size="12" fill="currentColor">x</text><text x="126" y="18" font-size="12" fill="currentColor">y</text></svg></div><p><small>示意图：实线椭圆为右半平面内的闭曲线 $C$，$A$、$B$ 为其最低点和最高点；虚线为辅助折线 $L_3$，其左侧竖直段在直线 $x=-1$ 上。</small></p><p>$L_3$ 与 $C$ 只交于 $A$、$B$ 两点：$B$ 上方的竖直段纵坐标大于 $y_B$（$C$ 上的最大纵坐标），$A$ 下方的竖直段纵坐标小于 $y_A$，两条水平段的纵坐标 $\pm h$ 都在 $C$ 的纵坐标范围之外，左侧竖直段在 $x=-1 < 0$ 上，而 $C$ 位于 $x>0$ 内。</p><p><b>第三步：拼出两条绕原点的闭曲线。</b>令 $\Gamma_1=L_1+L_3$，$\Gamma_2=L_2+L_3$（都是先沿弧从 $A$ 到 $B$，再沿 $L_3$ 从 $B$ 回到 $A$）。它们都是分段光滑的简单闭曲线，并且都围绕原点：从原点出发沿 $x$ 轴负方向的射线只与 $L_3$ 的左侧竖直段相交一次（因为 $-h < 0 < h$），与 $L_1,L_2$ 不相交（它们在 $x>0$ 内），所以原点在 $\Gamma_1$、$\Gamma_2$ 内部。又因为两者都沿左侧竖直段自上而下行进，绕原点的方向相同（都是逆时针）。由题设，</p>$$\oint_{\Gamma_1}=\int_{L_1}+\int_{L_3}=K,\qquad\oint_{\Gamma_2}=\int_{L_2}+\int_{L_3}=K,$$<p>其中 $K$ 是题设中的常数。</p><p><b>第四步：相减。</b>两式相减，$L_3$ 上的积分抵消，得 $\int_{L_1}-\int_{L_2}=0$，所以 $\oint_C=0$。（若 $C$ 取相反方向，积分变号，仍为 0。）</p><p><b>（Ⅱ）第五步：把（Ⅰ）翻译成偏导数条件。</b>在右半平面 $D=\{(x,y)\mid x>0\}$ 内 $2x^2+y^4>0$，又 $\varphi'$ 连续，故 $P,Q$ 在 $D$ 内有连续偏导数。断言：在 $D$ 内 $\frac{\partial Q}{\partial x}\equiv\frac{\partial P}{\partial y}$。用反证法：若某点 $M_0\in D$ 处 $\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\neq0$，不妨设大于 0，由连续性它在以 $M_0$ 为圆心的某个小圆盘 $U\subset D$ 上恒正。对 $U$ 的边界（逆时针）用格林公式：</p>$$\oint_{\partial U}P\,dx+Q\,dy=\iint_U\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)d\sigma>0,$$<p>与（Ⅰ）矛盾。</p><p><b>第六步：计算两个偏导数。</b>记 $W=2x^2+y^4$，用商的求导法则：</p>$$\frac{\partial Q}{\partial x}=\frac{2y\cdot W-2xy\cdot4x}{W^2}=\frac{2y^5-4x^2y}{W^2},$$$$\frac{\partial P}{\partial y}=\frac{\varphi'(y)\cdot W-\varphi(y)\cdot4y^3}{W^2}=\frac{2x^2\varphi'(y)+y^4\varphi'(y)-4y^3\varphi(y)}{W^2}.$$<p><b>第七步：比较系数。</b>令两者相等，去分母并按 $x$ 的幂整理：</p>$$x^2\big[2\varphi'(y)+4y\big]+\big[y^4\varphi'(y)-4y^3\varphi(y)-2y^5\big]=0,\quad\text{对一切 }x>0\text{ 及一切 }y\text{ 成立}.$$<p>固定 $y$，左边是关于 $x^2$ 的一次式，却对无穷多个 $x$ 值都等于 0，所以两个系数都必须为 0：</p>$$\varphi'(y)=-2y,\qquad y^4\varphi'(y)-4y^3\varphi(y)=2y^5.$$<p><b>第八步：解出 $\varphi$。</b>由第一式积分得 $\varphi(y)=-y^2+C$。代入第二式：$y^4(-2y)-4y^3(-y^2+C)=2y^5-4Cy^3$，它要对一切 $y$ 等于 $2y^5$，所以 $C=0$。因此</p>$$\varphi(y)=-y^2.$$<p><b>第九步：检验。</b>$\varphi=-y^2$ 时，$\frac{\partial P}{\partial y}=\frac{-2y\cdot W+y^2\cdot4y^3}{W^2}=\frac{-4x^2y-2y^5+4y^5}{W^2}=\frac{2y^5-4x^2y}{W^2}=\frac{\partial Q}{\partial x}$，正确。</p>`,
+      pitfalls: R`<p>1. （Ⅰ）直接用格林公式，说"因为 $\frac{\partial Q}{\partial x}=\frac{\partial P}{\partial y}$，所以积分为 0"——这是循环论证，$\varphi$ 未知时这个等式还没有任何根据。</p><p>2. 构造辅助曲线时不检查"两条闭曲线都绕原点、方向相同"，结果两个积分一个是 $K$ 一个是 $-K$，相减得不到 0。</p><p>3. （Ⅱ）在包含原点的区域上用格林公式或"路径无关"——原点是奇点，只能在不含原点的单连通区域（如右半平面）上用。</p><p>4. 比较系数时不交代理由：要指出等式对所有 $x>0$ 成立，才能把它看成关于 $x^2$ 的多项式恒等式。</p><p>5. 只用了 $\varphi'(y)=-2y$ 就写 $\varphi=-y^2+C$，忘记用第二个方程确定 $C=0$。</p>`,
+      summary: R`<p><b>方法要点（"奇点型"曲线积分三件套）：</b></p><ol><li>不绕奇点的闭曲线积分为 0：用"两条绕奇点的曲线共用一段、相减抵消"的拼接法证明。</li><li>在不含奇点的单连通区域内：闭路积分为 0 $\Leftrightarrow$ 积分与路径无关 $\Leftrightarrow$ $\frac{\partial Q}{\partial x}=\frac{\partial P}{\partial y}$ $\Leftrightarrow$ $P\,dx+Q\,dy$ 是某个函数的全微分。</li><li>绕奇点的闭曲线积分：换成一条让分母变简单的特殊曲线来算（挖洞法）。例如本题取曲线 $2x^2+y^4=1$，其上分母为 1，积分化为 $\oint(-y^2dx+2xy\,dy)$，再对这个没有奇点的被积式用格林公式，得 $\iint_{2x^2+y^4\leqslant1}4y\,d\sigma=0$（区域关于 $x$ 轴对称），可见题设中的常数其实是 0。</li></ol><p><b>题型识别：</b>看到"绕原点的任意闭曲线积分为常数"、分母形如 $x^2+y^2$、$4x^2+y^2$、$2x^2+y^4$ → 原点是奇点，想到拼接法与挖洞法；看到"未知函数 + 积分与路径无关"→ 由 $Q_x=P_y$ 列方程，比较系数或解微分方程。</p>`,
+      verify: { by: 'mixed', ok: true, note: 'sympy：(Q_x−P_y)·W² 展开为 −4x²y−2x²φ′−y⁴φ′+2y⁵+4y³φ，比较系数得 φ=−y²；代回后 Q_x−P_y 化简为 0；单位圆上数值积分为 0、Green 化简得常数为 0。（Ⅰ）为构造性证明，人工核验' },
+      flags: []
+    }
+  ];
+});

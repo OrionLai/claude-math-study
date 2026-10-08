@@ -55,7 +55,7 @@
 
     var top = topKps(10);
     h += '<section class="section"><h2>最该优先掌握的 10 个考点<span class="eyebrow">按考频指数</span></h2>' +
-      '<p class="note">考频指数把每一次出现按年份衰减加权（越近年权重越大，解答题算两次），用来衡量"现在还在常考"的程度。' + KY.link('stats', '完整分析与预测', 'chip') + '</p>' +
+      '<p class="note">考频指数把每一次出现按年份衰减加权（每过 10 年权重减半；解答题算两次；只作为辅助考点出现时算半次），衡量这个考点"现在还在常考"的程度。' + KY.link('stats', '完整分析与预测', 'chip') + '</p>' +
       hbars(top.map(function (k) {
         var K = S.byKp[k.id];
         return { label: k.title, value: K.index, note: '共 ' + K.count + ' 次 · 最近 ' + K.last, go: 'kp-' + k.id, tip: k.title + '：考频指数 ' + K.index + '，' + S.years.length + ' 年共出现 ' + K.count + ' 次，最近 ' + K.last + ' 年' };

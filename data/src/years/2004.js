@@ -1,0 +1,258 @@
+// 2004 年全国硕士研究生招生考试 数学（一）· 高等数学部分
+// 共 13 题：第 1–4 题（填空）、第 7–10 题（选择）、第 15–19 题（解答）。
+// 第 5、11、12、20、21 题为线性代数，第 6、13、14、22、23 题为概率统计，不收录。
+registerYear(2004, function (R) {
+  return [
+    /* ───────────── 第 1 题 ───────────── */
+    {
+      id: '2004-1', year: 2004, no: '第1题', type: '填空', score: 4,
+      stem: R`曲线 $y=\ln x$ 上与直线 $x+y=1$ 垂直的切线方程为 ______.`,
+      options: null,
+      answer: R`$y=x-1$`,
+      figure: null,
+      kp: ['diff.def'],
+      methods: ['导数的几何意义', '两直线垂直的斜率关系', '点斜式'],
+      difficulty: 1,
+      analysis: R`<p>这题考<b>导数的几何意义</b>：曲线 $y=f(x)$ 在 $x_0$ 处切线的斜率就是 $f'(x_0)$。</p><p>写出一条直线需要两样东西：<b>一个点</b>和<b>一个斜率</b>。题目没告诉切点，只告诉了"与已知直线垂直"——这是一个关于<b>斜率</b>的条件。所以思路是倒过来走：先由垂直关系定出切线斜率 $k$，再解方程 $f'(x_0)=k$ 反求切点，最后写点斜式。</p>`,
+      solution: R`<p><b>第一步：求已知直线的斜率。</b>把 $x+y=1$ 写成斜截式 $y=-x+1$，斜率 $k_1=-1$。</p><p><b>第二步：由垂直关系求切线斜率。</b>两条都不平行于坐标轴的直线互相垂直，当且仅当斜率之积为 $-1$。设切线斜率为 $k$，则 $k\cdot(-1)=-1$，得 $k=1$。</p><p><b>第三步：由导数求切点。</b>$y=\ln x$ 的导数是 $y'=\dfrac1x$（$x>0$）。设切点为 $(x_0,\ln x_0)$，该点切线斜率为 $\dfrac1{x_0}$。令 $\dfrac1{x_0}=1$，得 $x_0=1$，切点为 $(1,\ln1)=(1,0)$。</p><p><b>第四步：写切线方程。</b>由点斜式 $y-y_0=k(x-x_0)$：</p>$$y-0=1\cdot(x-1),\qquad\text{即}\quad y=x-1.$$<p><b>检验：</b>$y=x-1$ 的斜率 $1$ 与已知直线斜率 $-1$ 之积为 $-1$，确实垂直；点 $(1,0)$ 确实在曲线 $y=\ln x$ 上。</p>`,
+      pitfalls: R`<p>① 把"垂直"误读成"平行"：得到斜率 $-1$，再由 $\dfrac1{x_0}=-1$ 解出 $x_0=-1$，不在定义域 $x>0$ 内。解出的切点不在定义域里，往往说明条件读错了。</p><p>② 混淆函数值和导数值：把切线斜率写成 $\ln x_0$（这是函数值），而斜率应当是导数值 $\dfrac1{x_0}$。</p>`,
+      summary: R`<p><b>切线问题 = 切点 + 斜率</b>：切点 $(x_0,f(x_0))$，斜率 $f'(x_0)$，切线 $y-f(x_0)=f'(x_0)(x-x_0)$。</p><p><b>看到</b>"与某直线平行 / 垂直的切线"，<b>想到</b>先把条件翻译成斜率：平行时 $k=k_1$，垂直时 $k=-\dfrac1{k_1}$；再解 $f'(x_0)=k$ 求切点。</p><p><b>看到</b>"过曲线外一点作切线"，<b>想到</b>设切点 $(x_0,f(x_0))$，让切线方程过该点，列方程解 $x_0$。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: diff(log(x),x)=1/x，solve(1/x=1) 得 x=1，切线 y=x-1；斜率之积 1·(-1)=-1' },
+      flags: ['OCR 题末缺填空横线，已补"______"']
+    },
+
+    /* ───────────── 第 2 题 ───────────── */
+    {
+      id: '2004-2', year: 2004, no: '第2题', type: '填空', score: 4,
+      stem: R`已知 $f'(\mathrm{e}^{x})=x\mathrm{e}^{-x}$，且 $f(1)=0$，则 $f(x)=$ ______.`,
+      options: null,
+      answer: R`$\dfrac12(\ln x)^2$`,
+      figure: null,
+      kp: ['int.indef', 'lim.func'],
+      methods: ['换元求函数表达式', '凑微分法', '初值定常数'],
+      difficulty: 2,
+      analysis: R`<p>本题考<b>复合函数记号的理解</b>与<b>不定积分</b>。</p><p>条件 $f'(\mathrm e^x)=x\mathrm e^{-x}$ 说的是：导函数 $f'$ 在"$\mathrm e^x$ 这个位置"上的值等于 $x\mathrm e^{-x}$。它没有直接给出 $f'$ 的表达式。函数记号 $f'(\square)$ 只认括号里的整体，所以自然的动作是：<b>把括号里的整体 $\mathrm e^x$ 换成一个新字母 $u$</b>，再把右边全部用 $u$ 表示，就得到 $f'(u)$。有了导函数，积分一次、用 $f(1)=0$ 定常数即可。</p>`,
+      solution: R`<p><b>第一步：换元，求出 $f'$ 的表达式。</b>令 $u=\mathrm e^x$，则 $u>0$，$x=\ln u$，$\mathrm e^{-x}=\dfrac{1}{\mathrm e^x}=\dfrac1u$。代入条件得</p>$$f'(u)=\ln u\cdot\frac1u=\frac{\ln u}{u},\qquad u>0.$$<p>函数关系与自变量用什么字母表示无关，所以 $f'(x)=\dfrac{\ln x}{x}$（$x>0$）。注意：因为 $\mathrm e^x$ 只取正值，条件只告诉了 $f'$ 在 $(0,+\infty)$ 上的信息，这与 $\ln x$ 的定义域一致。</p><p><b>第二步：积分。</b>注意到 $\dfrac1x\,\mathrm dx=\mathrm d(\ln x)$，用凑微分法：</p>$$f(x)=\int\frac{\ln x}{x}\,\mathrm dx=\int\ln x\,\mathrm d(\ln x)=\frac12(\ln x)^2+C.$$<p>（把 $\ln x$ 看成一个整体 $w$，就是 $\int w\,\mathrm dw=\frac{w^2}{2}+C$。）</p><p><b>第三步：由初值定常数。</b>$f(1)=\frac12(\ln1)^2+C=C$，而 $f(1)=0$，故 $C=0$。所以</p>$$f(x)=\frac12(\ln x)^2.$$<p><b>检验：</b>$f'(x)=\ln x\cdot\dfrac1x$，于是 $f'(\mathrm e^x)=\dfrac{\ln\mathrm e^x}{\mathrm e^x}=\dfrac{x}{\mathrm e^x}=x\mathrm e^{-x}$，与条件一致。</p>`,
+      pitfalls: R`<p>① 直接对 $x\mathrm e^{-x}$ 关于 $x$ 积分。这样得到的是 $\int f'(\mathrm e^x)\,\mathrm dx$，它既不是 $f(x)$，也不是 $f(\mathrm e^x)$——由链式法则 $\dfrac{\mathrm d}{\mathrm dx}f(\mathrm e^x)=f'(\mathrm e^x)\cdot\mathrm e^x$，还差一个因子 $\mathrm e^x$。</p><p>② 忘记用 $f(1)=0$ 确定常数，填成 $\frac12(\ln x)^2+C$。</p><p>③ 把 $(\ln x)^2$ 写成 $\ln x^2$。两者不同：$\ln x^2=2\ln x$。</p>`,
+      summary: R`<p><b>看到</b> $f(g(x))=h(x)$ 或 $f'(g(x))=h(x)$ 要求 $f$，<b>想到</b>令 $u=g(x)$，反解出 $x$，把右边全部写成 $u$ 的函数，先得到 $f(u)$ 或 $f'(u)$。</p><p>求出导函数后"积分 + 初值定常数"。常用凑微分：$\dfrac1x\mathrm dx=\mathrm d(\ln x)$，$\mathrm e^x\mathrm dx=\mathrm d(\mathrm e^x)$，$\cos x\,\mathrm dx=\mathrm d(\sin x)$。</p>`,
+      alt: R`<p><b>不换元的做法：</b>令 $F(x)=f(\mathrm e^x)$，由链式法则</p>$$F'(x)=f'(\mathrm e^x)\cdot\mathrm e^x=x\mathrm e^{-x}\cdot\mathrm e^x=x,$$<p>所以 $F(x)=\dfrac{x^2}{2}+C$。又 $F(0)=f(\mathrm e^0)=f(1)=0$，得 $C=0$，即 $f(\mathrm e^x)=\dfrac{x^2}{2}$。最后令 $u=\mathrm e^x$（$x=\ln u$），得 $f(u)=\dfrac12(\ln u)^2$。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: integrate(log(x)/x)=log(x)**2/2，在 x=1 处为 0；并验证 diff(log(x)**2/2) 在 x=e^t 处化简为 t·e^(-t)' },
+      flags: []
+    },
+
+    /* ───────────── 第 3 题 ───────────── */
+    {
+      id: '2004-3', year: 2004, no: '第3题', type: '填空', score: 4,
+      stem: R`设 $L$ 为正向圆周 $x^2+y^2=2$ 在第一象限中的部分，则曲线积分 $\displaystyle\int_L x\,\mathrm{d}y-2y\,\mathrm{d}x$ 的值为 ______.`,
+      options: null,
+      answer: R`$\dfrac{3\pi}{2}$`,
+      figure: null,
+      kp: ['mint.line2'],
+      methods: ['参数化化为定积分', '补线用格林公式'],
+      difficulty: 2,
+      analysis: R`<p>这是<b>对坐标的（第二类）曲线积分</b>。积分路径是圆 $x^2+y^2=2$（半径 $\sqrt2$）在第一象限的四分之一弧；"正向圆周"指<b>逆时针方向</b>，所以这段弧从 $A(\sqrt2,0)$ 走到 $B(0,\sqrt2)$。</p><div style="text-align:center"><svg viewBox="0 0 200 160" width="200" height="160" style="max-width:100%"><line x1="20" y1="130" x2="190" y2="130" stroke="currentColor" stroke-width="1"/><line x1="50" y1="155" x2="50" y2="10" stroke="currentColor" stroke-width="1"/><path d="M 150 130 A 100 100 0 0 0 50 30" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="115,53.6 127,58.6 120,65.6" fill="currentColor"/><text x="148" y="146" font-size="12" fill="currentColor">A</text><text x="36" y="30" font-size="12" fill="currentColor">B</text><text x="38" y="146" font-size="12" fill="currentColor">O</text><text x="128" y="45" font-size="12" fill="currentColor">L</text></svg></div><p>两条思路：</p><ul><li><b>参数化直接算</b>：圆弧最自然的参数是极角 $\theta$，代入后变成定积分，下限对应起点、上限对应终点。</li><li><b>补线用格林公式</b>：$P=-2y$，$Q=x$，$\dfrac{\partial Q}{\partial x}-\dfrac{\partial P}{\partial y}=1-(-2)=3$ 是常数，一旦围成闭区域，二重积分就是"3 倍面积"。路径不封闭，就沿坐标轴补两条线段；坐标轴上 $\mathrm dx=0$ 或 $\mathrm dy=0$，补线上的积分很好算。</li></ul>`,
+      solution: R`<p><b>第一步：写出参数方程并确定参数范围。</b>圆 $x^2+y^2=2$ 的参数方程为 $x=\sqrt2\cos\theta$，$y=\sqrt2\sin\theta$。逆时针走第一象限的弧：起点 $A(\sqrt2,0)$ 对应 $\theta=0$，终点 $B(0,\sqrt2)$ 对应 $\theta=\dfrac\pi2$。</p><p><b>第二步：求微分并代入。</b>$\mathrm dx=-\sqrt2\sin\theta\,\mathrm d\theta$，$\mathrm dy=\sqrt2\cos\theta\,\mathrm d\theta$，于是</p>$$x\,\mathrm dy-2y\,\mathrm dx=\sqrt2\cos\theta\cdot\sqrt2\cos\theta\,\mathrm d\theta-2\sqrt2\sin\theta\cdot(-\sqrt2\sin\theta)\,\mathrm d\theta=(2\cos^2\theta+4\sin^2\theta)\,\mathrm d\theta.$$<p>利用 $\cos^2\theta=1-\sin^2\theta$，化为 $(2+2\sin^2\theta)\,\mathrm d\theta$。</p><p><b>第三步：化为定积分计算。</b>第二类曲线积分化定积分时，<b>下限是起点的参数值，上限是终点的参数值</b>（不要求下限小于上限）：</p>$$\int_L x\,\mathrm dy-2y\,\mathrm dx=\int_0^{\frac\pi2}(2+2\sin^2\theta)\,\mathrm d\theta=2\cdot\frac\pi2+2\int_0^{\frac\pi2}\sin^2\theta\,\mathrm d\theta.$$<p>而</p>$$\int_0^{\frac\pi2}\sin^2\theta\,\mathrm d\theta=\int_0^{\frac\pi2}\frac{1-\cos2\theta}{2}\,\mathrm d\theta=\frac\pi4,$$<p>所以原积分 $=\pi+2\cdot\dfrac\pi4=\dfrac{3\pi}{2}$。</p>`,
+      pitfalls: R`<p>① <b>方向搞反</b>：若按顺时针参数化（$\theta$ 从 $\frac\pi2$ 到 $0$），结果变成 $-\dfrac{3\pi}{2}$。"正向圆周"是逆时针；第二类曲线积分改变方向要变号。</p><p>② <b>不封闭就直接用格林公式</b>：格林公式只对闭曲线成立。补线后必须减去补线上的积分（本题恰好为 0，但要说明理由）。</p><p>③ <b>混淆两类曲线积分</b>：第二类积分代入的是 $\mathrm dx,\mathrm dy$，不要再乘弧长元素 $\mathrm ds=\sqrt2\,\mathrm d\theta$。</p>`,
+      summary: R`<p>第二类曲线积分的两条主路：</p><ul><li><b>参数法</b>：$\displaystyle\int_LP\,\mathrm dx+Q\,\mathrm dy=\int_{\alpha}^{\beta}\big[P\,x'(t)+Q\,y'(t)\big]\,\mathrm dt$，$\alpha$ 对应起点，$\beta$ 对应终点。</li><li><b>格林公式</b>：$\displaystyle\oint_{\partial D^{+}}P\,\mathrm dx+Q\,\mathrm dy=\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\mathrm d\sigma$。</li></ul><p><b>看到</b>曲线不封闭、但 $Q_x-P_y$ 很简单（常数或 0），<b>想到</b>补线用格林公式，补线优先选平行于坐标轴的线段。<b>看到</b>积分路径是圆或圆弧，<b>想到</b>三角参数化。</p>`,
+      alt: R`<p><b>补线 + 格林公式。</b>记 $O$ 为原点。补上有向线段 $\overline{BO}$（沿 $y$ 轴从 $B$ 到 $O$）和 $\overline{OA}$（沿 $x$ 轴从 $O$ 到 $A$），则 $L+\overline{BO}+\overline{OA}$ 是四分之一圆盘 $D$ 的边界，且为逆时针方向（走的时候区域始终在左手边），正是格林公式要求的正向。由格林公式，</p>$$\oint_{L+\overline{BO}+\overline{OA}}x\,\mathrm dy-2y\,\mathrm dx=\iint_D\left(\frac{\partial x}{\partial x}-\frac{\partial(-2y)}{\partial y}\right)\mathrm dx\,\mathrm dy=3\iint_D\mathrm dx\,\mathrm dy=3\cdot\frac14\pi(\sqrt2)^2=\frac{3\pi}{2}.$$<p>在 $\overline{BO}$ 上 $x=0$ 且 $\mathrm dx=0$，被积式 $x\,\mathrm dy-2y\,\mathrm dx=0$；在 $\overline{OA}$ 上 $y=0$ 且 $\mathrm dy=0$，被积式也为 0。所以 $\displaystyle\int_L=\frac{3\pi}{2}-0-0=\frac{3\pi}{2}$。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: 以 x=√2cosθ, y=√2sinθ 代入，integrate(x·dy/dθ−2y·dx/dθ, θ:0→π/2)=3π/2；格林公式 3×(四分之一圆面积 π/2)=3π/2 一致' },
+      flags: ['OCR 题末缺填空横线，已补"______"；去掉了 OCR 在微分符号 d 前产生的多余空格']
+    },
+
+    /* ───────────── 第 4 题 ───────────── */
+    {
+      id: '2004-4', year: 2004, no: '第4题', type: '填空', score: 4,
+      stem: R`欧拉方程 $x^{2}\dfrac{\mathrm{d}^{2}y}{\mathrm{d}x^{2}}+4x\dfrac{\mathrm{d}y}{\mathrm{d}x}+2y=0\ (x>0)$ 的通解为 ______.`,
+      options: null,
+      answer: R`$y=\dfrac{C_1}{x}+\dfrac{C_2}{x^2}$（$C_1,C_2$ 为任意常数）`,
+      figure: null,
+      kp: ['ode.euler', 'ode.const'],
+      methods: ['欧拉方程变换 x=e^t', '常系数齐次线性方程的特征方程'],
+      difficulty: 2,
+      analysis: R`<p>本题考<b>欧拉方程</b>。它的标志是：每一项中 $x$ 的幂次恰好等于 $y$ 的求导阶数（$x^2y''$、$x\,y'$、$x^0y$）。这是变系数方程，不能直接写特征方程。</p><p>为什么想到令 $x=\mathrm e^t$？因为算子"$x\dfrac{\mathrm d}{\mathrm dx}$"在这个代换下恰好变成 $\dfrac{\mathrm d}{\mathrm dt}$：$t=\ln x$，$\dfrac{\mathrm dt}{\mathrm dx}=\dfrac1x$，所以 $x\dfrac{\mathrm dy}{\mathrm dx}=x\cdot\dfrac{\mathrm dy}{\mathrm dt}\cdot\dfrac1x=\dfrac{\mathrm dy}{\mathrm dt}$。"$x$ 乘以对 $x$ 求导"变成了"对 $t$ 求导"，系数里的 $x$ 就消失了，方程化为常系数线性方程。</p>`,
+      solution: R`<p><b>第一步：作代换 $x=\mathrm e^t$（即 $t=\ln x$），把导数换成对 $t$ 的导数。</b>记 $\dot y=\dfrac{\mathrm dy}{\mathrm dt}$，$\ddot y=\dfrac{\mathrm d^2y}{\mathrm dt^2}$。由链式法则</p>$$\frac{\mathrm dy}{\mathrm dx}=\frac{\mathrm dy}{\mathrm dt}\cdot\frac{\mathrm dt}{\mathrm dx}=\frac1x\,\dot y\quad\Longrightarrow\quad x\frac{\mathrm dy}{\mathrm dx}=\dot y.$$<p>再对 $x$ 求一次导。用乘积法则；注意 $\dot y$ 是 $t$ 的函数，对 $x$ 求导时还要乘 $\dfrac{\mathrm dt}{\mathrm dx}=\dfrac1x$：</p>$$\frac{\mathrm d^2y}{\mathrm dx^2}=\frac{\mathrm d}{\mathrm dx}\left(\frac1x\,\dot y\right)=-\frac{1}{x^2}\dot y+\frac1x\cdot\ddot y\cdot\frac1x=\frac{1}{x^2}(\ddot y-\dot y)\quad\Longrightarrow\quad x^2\frac{\mathrm d^2y}{\mathrm dx^2}=\ddot y-\dot y.$$<p><b>第二步：代入原方程。</b></p>$$(\ddot y-\dot y)+4\dot y+2y=0\quad\Longrightarrow\quad\ddot y+3\dot y+2y=0.$$<p>这是二阶常系数齐次线性方程。</p><p><b>第三步：解特征方程。</b>$r^2+3r+2=0$，即 $(r+1)(r+2)=0$，得两个不等实根 $r_1=-1$，$r_2=-2$，所以</p>$$y=C_1\mathrm e^{-t}+C_2\mathrm e^{-2t}.$$<p><b>第四步：换回 $x$。</b>由 $\mathrm e^t=x$ 得 $\mathrm e^{-t}=\dfrac1x$，$\mathrm e^{-2t}=\dfrac1{x^2}$，所以原方程的通解为</p>$$y=\frac{C_1}{x}+\frac{C_2}{x^2}\qquad(C_1,C_2\text{ 为任意常数}).$$<p><b>检验</b>（以 $y=x^{-1}$ 为例）：$y'=-x^{-2}$，$y''=2x^{-3}$，代入左边得 $x^2\cdot2x^{-3}+4x\cdot(-x^{-2})+2x^{-1}=(2-4+2)x^{-1}=0$。</p>`,
+      pitfalls: R`<p>① 把 $x^2y''$ 直接换成 $\ddot y$，漏掉 $-\dot y$，得到错误方程 $\ddot y+4\dot y+2y=0$（根为 $-2\pm\sqrt2$）。要记住 $x^2y''\to D(D-1)y$，而不是 $D^2y$。</p><p>② 解出 $y(t)$ 后忘记换回 $x$ 的函数。</p><p>③ 二阶方程的通解必须含两个独立的任意常数。</p>`,
+      summary: R`<p><b>欧拉方程</b> $x^ny^{(n)}+p_1x^{n-1}y^{(n-1)}+\cdots+p_ny=f(x)$：令 $x=\mathrm e^t$，记 $D=\dfrac{\mathrm d}{\mathrm dt}$，则</p>$$xy'=Dy,\qquad x^2y''=D(D-1)y,\qquad x^3y'''=D(D-1)(D-2)y.$$<p>化为常系数方程求解后，用 $t=\ln x$ 换回。齐次情形也可以直接设 $y=x^r$。</p><p><b>看到</b>"$x$ 的幂次与导数阶数一致"，<b>想到</b>欧拉方程 + 代换 $x=\mathrm e^t$。</p>`,
+      alt: R`<p><b>直接试探 $y=x^r$（更本质的看法）。</b>常系数方程试 $y=\mathrm e^{rx}$，是因为它求导后仍正比于自己；而对欧拉方程，$x^k\cdot(x^r)^{(k)}$ 恰好仍正比于 $x^r$。代入：</p>$$x^2\cdot r(r-1)x^{r-2}+4x\cdot rx^{r-1}+2x^r=\big[r(r-1)+4r+2\big]x^r=0,$$<p>得 $r^2+3r+2=0$，$r=-1,-2$。$x^{-1}$ 与 $x^{-2}$ 之比为 $x$，不是常数，二者线性无关，所以通解为 $y=C_1x^{-1}+C_2x^{-2}$。这里的 $r(r-1)+pr+q=0$ 正是代换后得到的特征方程，两种方法本质相同。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy dsolve(x²y″+4xy′+2y=0) 得 y=(C1+C2/x)/x，即 C1/x+C2/x²' },
+      flags: ['OCR 题末缺填空横线，已补"______"']
+    },
+
+    /* ───────────── 第 7 题 ───────────── */
+    {
+      id: '2004-7', year: 2004, no: '第7题', type: '选择', score: 4,
+      stem: R`把 $x\to0^{+}$ 时的无穷小量 $\alpha=\displaystyle\int_0^x\cos(t^2)\,\mathrm{d}t$，$\beta=\displaystyle\int_0^{x^2}\tan\sqrt t\,\mathrm{d}t$，$\gamma=\displaystyle\int_0^{\sqrt x}\sin(t^3)\,\mathrm{d}t$ 排列起来，使排在后面的是前一个的高阶无穷小量，则正确的排列次序是`,
+      options: [R`$\alpha,\beta,\gamma$`, R`$\alpha,\gamma,\beta$`, R`$\beta,\alpha,\gamma$`, R`$\beta,\gamma,\alpha$`],
+      answer: 'B',
+      figure: null,
+      kp: ['lim.inf', 'int.ftc'],
+      methods: ['无穷小阶数比较', '变限积分求导', '待定阶数 + 洛必达法则', '等价无穷小代换'],
+      difficulty: 2,
+      analysis: R`<p>本题考<b>无穷小阶数的比较</b>，三个无穷小都是<b>变限积分</b>。"排在后面的是前一个的高阶无穷小"意思是：越往后趋于零越快，即<b>按阶数从低到高排列</b>。</p><p>比较快慢最干净的办法，是把每个无穷小都化成标准形式 $c\,x^k$（$c\ne0$），$k$ 就是阶数，然后比较 $k$。变限积分的阶数怎么求？</p><ul><li>被积函数在 $t\to0$ 时换成等价的幂函数（如 $\tan\sqrt t\sim\sqrt t$），积出来就是幂函数，先"猜"出阶数；</li><li>再用"待定阶数 + 洛必达"验证：算 $\lim\dfrac{\text{积分}}{x^k}$，洛必达后对变限积分求导，看 $k$ 取多少时极限是非零常数。</li></ul>`,
+      solution: R`<p><b>第一步：求 $\alpha$ 的阶。</b>$t\to0$ 时 $\cos t^2\to1$，猜 $\alpha\sim x$。验证（$\frac00$ 型，洛必达，变限积分求导）：</p>$$\lim_{x\to0^+}\frac{\alpha}{x}=\lim_{x\to0^+}\frac{\int_0^x\cos t^2\,\mathrm dt}{x}=\lim_{x\to0^+}\frac{\cos x^2}{1}=1,$$<p>所以 $\alpha\sim x$，是 <b>1 阶</b>无穷小。</p><p><b>第二步：求 $\beta$ 的阶。</b>$t\to0^+$ 时 $\tan\sqrt t\sim t^{1/2}$，积分得 $\frac23u^{3/2}$，上限 $u=x^2$ 代入为 $\frac23x^3$，猜 3 阶。验证：</p>$$\lim_{x\to0^+}\frac{\beta}{x^3}=\lim_{x\to0^+}\frac{\tan\sqrt{x^2}\cdot(x^2)'}{3x^2}=\lim_{x\to0^+}\frac{2x\tan x}{3x^2}=\lim_{x\to0^+}\frac{2x\cdot x}{3x^2}=\frac23.$$<p>其中 $\sqrt{x^2}=|x|=x$，因为 $x>0$。所以 $\beta\sim\frac23x^3$，是 <b>3 阶</b>无穷小。</p><p><b>第三步：求 $\gamma$ 的阶。</b>$\sin t^3\sim t^3$，积分得 $\frac14u^4$，上限 $u=\sqrt x$ 代入为 $\frac14x^2$，猜 2 阶。验证：</p>$$\lim_{x\to0^+}\frac{\gamma}{x^2}=\lim_{x\to0^+}\frac{\sin\big((\sqrt x)^3\big)\cdot\frac{1}{2\sqrt x}}{2x}=\lim_{x\to0^+}\frac{x^{3/2}}{4x\sqrt x}=\frac14.$$<p>所以 $\gamma\sim\frac14x^2$，是 <b>2 阶</b>无穷小。</p><p><b>第四步：排序。</b>阶数：$\alpha$ 为 1，$\gamma$ 为 2，$\beta$ 为 3。从低阶到高阶为 $\alpha,\gamma,\beta$，选 <b>B</b>。</p><p><b>其余选项为什么错：</b>A 把 $\beta$ 排在 $\gamma$ 前面，但 $\dfrac{\gamma}{\beta}\sim\dfrac{\frac14x^2}{\frac23x^3}\to+\infty$，$\gamma$ 比 $\beta$ 趋于零更慢、阶更低，不能排在 $\beta$ 后面；C、D 都把阶数最高的 $\beta$ 放在第一位，与"后面的阶更高"矛盾。</p>`,
+      pitfalls: R`<p>① 变限积分求导<b>忘乘上限的导数</b>：求 $\beta$ 时要乘 $(x^2)'=2x$，求 $\gamma$ 时要乘 $(\sqrt x)'=\dfrac{1}{2\sqrt x}$。漏乘后阶数全错。</p><p>② <b>排序方向弄反</b>：高阶无穷小是"更快趋于零"的那个，阶数大；题目要求后面的比前面的高阶，所以从低阶排到高阶。</p><p>③ $\sqrt{x^2}=|x|$，本题因为 $x\to0^+$ 才等于 $x$；若是双侧极限要注意符号。</p>`,
+      summary: R`<p><b>变限积分的阶数速算：</b>若 $t\to0$ 时 $f(t)\sim a\,t^m$（$m>-1$），且 $\varphi(x)\sim b\,x^p$，则</p>$$\int_0^{\varphi(x)}f(t)\,\mathrm dt\sim\frac{a}{m+1}\big(b\,x^p\big)^{m+1},\qquad\text{阶数}=p(m+1).$$<p>本题：$\alpha$：$m=0,\ p=1$，阶 1；$\beta$：$m=\frac12,\ p=2$，阶 3；$\gamma$：$m=3,\ p=\frac12$，阶 2。</p><p><b>看到</b>"比较几个无穷小的阶"，<b>想到</b>统一化成 $c\,x^k$ 比较 $k$。求阶数的工具：等价代换、泰勒展开、"待定阶数 + 洛必达"。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: lim α/x=1，lim β/x³=2/3，lim γ/x²=1/4（洛必达后的极限）；mpmath 数值积分在 x=0.01、0.001 处比值分别约为 1、0.6667、0.25' },
+      flags: []
+    },
+
+    /* ───────────── 第 8 题 ───────────── */
+    {
+      id: '2004-8', year: 2004, no: '第8题', type: '选择', score: 4,
+      stem: R`设函数 $f(x)$ 连续，且 $f'(0)>0$，则存在 $\delta>0$，使得`,
+      options: [
+        R`$f(x)$ 在 $(0,\delta)$ 内单调增加.`,
+        R`$f(x)$ 在 $(-\delta,0)$ 内单调减少.`,
+        R`对任意的 $x\in(0,\delta)$，有 $f(x)>f(0)$.`,
+        R`对任意的 $x\in(-\delta,0)$，有 $f(x)>f(0)$.`
+      ],
+      answer: 'C',
+      figure: null,
+      kp: ['diff.def', 'lim.funcdef', 'diff.mono'],
+      methods: ['导数定义', '极限的局部保号性', '构造反例'],
+      difficulty: 3,
+      analysis: R`<p>本题考<b>导数定义</b>与<b>极限的局部保号性</b>，是一道经典的"概念陷阱"题。</p><p>关键是分清两种信息：</p><ul><li><b>一个点的导数</b> $f'(0)$ 是一个极限值，描述的是 $f$ 在 0 点附近"整体来看"的变化趋势，能推出 $f(x)$ 与 $f(0)$ 的大小关系（点态信息）；</li><li><b>在区间上单调</b>需要区间内每一点的导数都有确定的符号（区间信息），一个点的导数管不了附近其他点的导数。</li></ul><p>所以思路是：写出 $f'(0)$ 的定义式，用极限的保号性"脱掉极限"，看能得到什么。</p>`,
+      solution: R`<p><b>第一步：写出导数定义。</b></p>$$f'(0)=\lim_{x\to0}\frac{f(x)-f(0)}{x-0}>0.$$<p><b>第二步：用极限的局部保号性。</b>函数极限大于 0，则在某去心邻域内函数值也大于 0：存在 $\delta>0$，当 $0<|x|<\delta$ 时，</p>$$\frac{f(x)-f(0)}{x}>0.$$<p><b>第三步：按 $x$ 的符号拆开。</b></p><ul><li>当 $x\in(0,\delta)$ 时，分母 $x>0$，所以分子 $f(x)-f(0)>0$，即 $f(x)>f(0)$。这正是 <b>C</b>。</li><li>当 $x\in(-\delta,0)$ 时，分母 $x<0$，所以分子 $f(x)-f(0)<0$，即 $f(x)<f(0)$。D 说的恰好相反，<b>D 错</b>。</li></ul><p><b>第四步：排除 B。</b>取 $f(x)=x$，它连续且 $f'(0)=1>0$，但在任何 $(-\delta,0)$ 内都单调<b>增加</b>，所以 B 错。</p><p><b>第五步：排除 A（需要一个"振荡型"反例）。</b>取</p>$$f(x)=\begin{cases}x+2x^2\sin\dfrac1x,&x\ne0,\\[2mm]0,&x=0.\end{cases}$$<p>• 连续：$\left|2x^2\sin\frac1x\right|\le2x^2\to0$，所以 $\lim\limits_{x\to0}f(x)=0=f(0)$。</p><p>• $f'(0)=\lim\limits_{x\to0}\dfrac{x+2x^2\sin\frac1x}{x}=\lim\limits_{x\to0}\left(1+2x\sin\dfrac1x\right)=1>0$（$2x\sin\frac1x$ 是无穷小乘有界量）。</p><p>• 当 $x\ne0$ 时，$f'(x)=1+4x\sin\dfrac1x-2\cos\dfrac1x$。取 $x_k=\dfrac{1}{2k\pi}$（$k=1,2,\dots$），则 $\sin\frac1{x_k}=0$，$\cos\frac1{x_k}=1$，$f'(x_k)=1+0-2=-1<0$。</p><p>由于 $f'$ 在 $x_k$ 附近连续，$f$ 在 $x_k$ 的某个小邻域内单调<b>减少</b>。而 $x_k\to0^+$，无论 $\delta$ 多小，$(0,\delta)$ 里都含有这样的 $x_k$，所以 $f$ 在 $(0,\delta)$ 内不是单调增加的，<b>A 错</b>。</p><p>综上，选 <b>C</b>。</p><p><b>直观理解：</b>反例的图像是直线 $y=x$ 上叠加了一个振幅为 $2x^2$ 的快速振荡。越靠近原点，振幅 $2x^2$ 比主项 $x$ 小得多，所以整体仍是"左低右高"（C 成立）；但振荡越来越快，局部斜率在 $1-2=-1$ 与 $1+2=3$ 附近来回摆动，因此在任何右侧小区间上都不单调。</p>`,
+      pitfalls: R`<p>最常见的错误是把"$f'(0)>0$"当成"$f$ 在 0 附近单调增加"而选 A。单调性判别定理要求<b>区间内每一点</b>的导数都大于 0，而 $f'(0)$ 只是一个点的极限值。如果额外假设 $f'(x)$ 在 $x=0$ 处连续，那么由保号性可得 0 的某邻域内 $f'(x)>0$，A 才成立——本题没有这个条件（甚至没说 $f$ 在 0 以外可导）。</p><p>另一个错误是忽略分母 $x$ 的正负，得出"两侧都有 $f(x)>f(0)$"而误选 D。</p>`,
+      summary: R`<p><b>看到</b>"某点导数（或某个极限）大于 0，问附近的性质"，<b>想到</b>：写出定义式 → 用极限保号性脱掉极限 → 注意分母符号分情况讨论。</p><p>结论记牢：$f'(x_0)>0$ ⇒ 存在 $\delta>0$，在 $x_0$ 左侧附近 $f(x)<f(x_0)$，右侧附近 $f(x)>f(x_0)$；但<b>推不出</b>在邻域内单调。</p><p>反例模板：$x+2x^2\sin\dfrac1x$（"直线 + 高阶小振荡"），专门说明"一点导数为正 ⇏ 附近单调"。</p>`,
+      verify: { by: 'mixed', ok: true, note: '保号性论证；sympy 验证反例 f(x)=x+2x²sin(1/x)：lim f(x)/x=1，f′(x)=1+4x·sin(1/x)−2cos(1/x)，f′(1/(2kπ))=−1' },
+      flags: []
+    },
+
+    /* ───────────── 第 9 题 ───────────── */
+    {
+      id: '2004-9', year: 2004, no: '第9题', type: '选择', score: 4,
+      stem: R`设 $\sum\limits_{n=1}^{\infty}a_n$ 为正项级数. 下列结论中正确的是`,
+      options: [
+        R`若 $\lim\limits_{n\to\infty}na_n=0$，则级数 $\sum\limits_{n=1}^{\infty}a_n$ 收敛.`,
+        R`若存在非零常数 $\lambda$，使得 $\lim\limits_{n\to\infty}na_n=\lambda$，则级数 $\sum\limits_{n=1}^{\infty}a_n$ 发散.`,
+        R`若级数 $\sum\limits_{n=1}^{\infty}a_n$ 收敛，则 $\lim\limits_{n\to\infty}n^2a_n=0$.`,
+        R`若级数 $\sum\limits_{n=1}^{\infty}a_n$ 发散，则存在非零常数 $\lambda$，使得 $\lim\limits_{n\to\infty}na_n=\lambda$.`
+      ],
+      answer: 'B',
+      figure: null,
+      kp: ['series.positive', 'series.concept'],
+      methods: ['比较判别法的极限形式', '与 p 级数比较', '构造反例'],
+      difficulty: 2,
+      analysis: R`<p>本题考<b>正项级数的比较判别法（极限形式）</b>。四个选项都在说 $na_n$ 或 $n^2a_n$ 的极限，而</p>$$na_n=\frac{a_n}{1/n},$$<p>所以"$\lim na_n$"本质上就是<b>拿 $a_n$ 与调和级数 $\sum\frac1n$ 的通项作比较</b>。只要准确记住比较判别法极限形式的三种情形，就能逐个判断：正确的给出证明，错误的找反例。</p>`,
+      solution: R`<p><b>先回顾工具。</b>设 $a_n>0,\ b_n>0$，$\lim\limits_{n\to\infty}\dfrac{a_n}{b_n}=l$：</p><ul><li>$0<l<+\infty$：$\sum a_n$ 与 $\sum b_n$ <b>同敛散</b>；</li><li>$l=0$：只能推出"$\sum b_n$ 收敛 ⇒ $\sum a_n$ 收敛"；</li><li>$l=+\infty$：只能推出"$\sum b_n$ 发散 ⇒ $\sum a_n$ 发散"。</li></ul><p><b>第一步：证明 B 正确。</b>因为是正项级数，$na_n>0$，所以极限 $\lambda\ge0$；又 $\lambda\ne0$，故 $\lambda>0$。于是</p>$$\lim_{n\to\infty}\frac{a_n}{1/n}=\lambda\in(0,+\infty),$$<p>由比较判别法的极限形式，$\sum a_n$ 与调和级数 $\sum\frac1n$ 同敛散，而调和级数发散，所以 $\sum a_n$ 发散。</p><p>（从定义出发也很简单：取 $\varepsilon=\frac\lambda2$，存在 $N$，当 $n>N$ 时 $|na_n-\lambda|<\frac\lambda2$，从而 $a_n>\dfrac{\lambda}{2n}$；$\sum\frac{\lambda}{2n}$ 发散，由比较判别法 $\sum a_n$ 发散。）</p><p><b>第二步：A 的反例。</b>取 $a_n=\dfrac{1}{n\ln(n+1)}$，则 $na_n=\dfrac{1}{\ln(n+1)}\to0$。但级数发散：由积分判别法，</p>$$\int_2^{+\infty}\frac{\mathrm dx}{x\ln x}=\Big[\ln(\ln x)\Big]_2^{+\infty}=+\infty,$$<p>所以 $\sum\limits_{m=2}^{\infty}\dfrac{1}{m\ln m}$ 发散；又 $\dfrac{1}{n\ln(n+1)}>\dfrac{1}{(n+1)\ln(n+1)}$，而 $\sum\limits_{n=1}^{\infty}\dfrac{1}{(n+1)\ln(n+1)}=\sum\limits_{m=2}^{\infty}\dfrac{1}{m\ln m}$ 发散，故 $\sum a_n$ 发散。A 错。</p><p>直观上：$na_n\to0$ 只说明 $a_n$ 比 $\frac1n$ "小一点"，但调和级数本身就处在收敛与发散的边界上，只小一个对数因子还不够让它收敛。</p><p><b>第三步：C 的反例。</b>取 $a_n=\dfrac{1}{n^{3/2}}$，这是 $p=\frac32>1$ 的 $p$ 级数，收敛；但 $n^2a_n=\sqrt n\to+\infty$。C 错。（收敛只保证 $a_n\to0$，不保证 $a_n$ 比 $\frac1{n^2}$ 还小。）</p><p><b>第四步：D 的反例。</b>取 $a_n=\dfrac1{\sqrt n}$，$p=\frac12\le1$，发散；但 $na_n=\sqrt n\to+\infty$，不存在有限的非零常数 $\lambda$。D 错。（第二步的 $\frac{1}{n\ln(n+1)}$ 也是 D 的反例：发散而 $na_n\to0$。）</p><p>故选 <b>B</b>。</p>`,
+      pitfalls: R`<p>① 以为"$na_n\to0$，说明 $a_n$ 比 $\frac1n$ 小，所以收敛"。比较判别法里，"比发散的级数小"推不出任何结论，只有"比收敛的级数小"才能推出收敛。</p><p>② 把收敛的必要条件 $a_n\to0$ 随意加强成 $n^2a_n\to0$ 甚至 $na_n\to0$。对一般的正项级数这些都不是必要条件：例如令 $a_n$ 在 $n=k^2$ 时取 $\frac1n$，其余 $n$ 取 $\frac1{n^2}$，级数收敛，但 $n=k^2$ 时 $na_n=1$，$na_n$ 不趋于 0。</p><p>③ 没有注意"正项"这个条件，想不清为什么 $\lambda$ 只能为正。</p>`,
+      summary: R`<p><b>看到</b> $\lim n^pa_n$，<b>想到</b>"与 $p$ 级数 $\sum\frac1{n^p}$ 作极限比较"：</p><ul><li>$\lim n^pa_n=l\in(0,+\infty)$：与 $\sum\frac1{n^p}$ 同敛散（$p>1$ 收敛，$p\le1$ 发散）；</li><li>$p>1$ 且 $l$ 有限（含 $l=0$）：收敛；</li><li>$p\le1$ 且 $l>0$（含 $l=+\infty$）：发散。</li></ul><p>判断"下列结论正确的是"时：正确的给证明，错误的举反例。<b>常备反例库</b>：$\dfrac1{n^p}$（$p$ 级数）、$\dfrac{1}{n\ln n}$（发散，比 $\frac1n$ 略小）、$\dfrac{1}{n\ln^2n}$（收敛）。</p>`,
+      verify: { by: 'mixed', ok: true, note: 'B 用比较判别法证明；sympy 验证反例：lim 1/ln(n+1)=0 且 ∫₂^∞ dx/(x ln x)=∞（A、D 的反例），lim n²·n^(-3/2)=∞（C 的反例），lim n·n^(-1/2)=∞（D 的反例）' },
+      flags: []
+    },
+
+    /* ───────────── 第 10 题 ───────────── */
+    {
+      id: '2004-10', year: 2004, no: '第10题', type: '选择', score: 4,
+      stem: R`设 $f(x)$ 为连续函数，$F(t)=\displaystyle\int_1^t\mathrm{d}y\int_y^tf(x)\,\mathrm{d}x$，则 $F'(2)$ 等于`,
+      options: [R`$2f(2)$`, R`$f(2)$`, R`$-f(2)$`, R`$0$`],
+      answer: 'B',
+      figure: null,
+      kp: ['int.ftc', 'mint.double'],
+      methods: ['交换积分次序', '变限积分求导'],
+      difficulty: 3,
+      analysis: R`<p>本题考<b>变限积分求导</b>与<b>二次积分交换次序</b>。</p><p>$F(t)=\displaystyle\int_1^t\left[\int_y^tf(x)\,\mathrm dx\right]\mathrm dy$ 中，$t$ 出现在两个地方：外层的上限，以及外层的被积函数（内层积分）里。公式 $\dfrac{\mathrm d}{\mathrm dt}\displaystyle\int_a^tg(y)\,\mathrm dy=g(t)$ 只在被积函数 $g$ <b>不含 $t$</b> 时才能用，所以不能直接套。</p><p>解决办法是"把 $t$ 赶到积分限上"：交换积分次序，改为内层对 $y$ 积分（内层被积函数 $f(x)$ 与 $y$ 无关，可以直接积出来），外层被积函数就不再含 $t$ 了。</p><div style="text-align:center"><svg viewBox="0 0 210 165" width="210" height="165" style="max-width:100%"><line x1="20" y1="150" x2="200" y2="150" stroke="currentColor"/><line x1="30" y1="160" x2="30" y2="2" stroke="currentColor"/><polygon points="70,110 170,110 170,10" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-width="1.5"/><line x1="30" y1="150" x2="178" y2="2" stroke="currentColor" stroke-dasharray="4 3"/><line x1="120" y1="110" x2="120" y2="60" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/><text x="66" y="162" font-size="11" fill="currentColor">1</text><text x="167" y="162" font-size="11" fill="currentColor">t</text><text x="20" y="114" font-size="11" fill="currentColor">1</text><text x="20" y="14" font-size="11" fill="currentColor">t</text><text x="135" y="30" font-size="11" fill="currentColor">y=x</text><text x="196" y="146" font-size="11" fill="currentColor">x</text><text x="34" y="10" font-size="11" fill="currentColor">y</text></svg></div><p style="text-align:center"><small>阴影为积分区域 $1\le y\le x\le t$；竖虚线表示固定 $x$ 后 $y$ 从 $1$ 到 $x$。</small></p>`,
+      solution: R`<p><b>第一步：画出积分区域。</b>外层 $1\le y\le t$，内层 $y\le x\le t$，所以积分区域（设 $t>1$，本题关心的是 $t=2$ 附近）为</p>$$D=\{(x,y)\mid 1\le y\le x\le t\},$$<p>即以 $(1,1)$、$(t,1)$、$(t,t)$ 为顶点的三角形：下边是 $y=1$，右边是 $x=t$，斜边是 $y=x$。</p><p><b>第二步：交换积分次序。</b>改为先对 $y$ 后对 $x$：$x$ 从 $1$ 到 $t$；对固定的 $x$，竖线穿过区域时 $y$ 从 $1$ 到 $x$。于是</p>$$F(t)=\int_1^t\mathrm dx\int_1^xf(x)\,\mathrm dy=\int_1^t f(x)\cdot(x-1)\,\mathrm dx.$$<p>内层对 $y$ 积分时，$f(x)$ 与 $y$ 无关，视为常数，积分结果是 $f(x)\cdot(x-1)$。</p><p><b>第三步：求导。</b>现在被积函数 $(x-1)f(x)$ 连续且不含 $t$，由变上限积分求导公式</p>$$F'(t)=(t-1)f(t),\qquad F'(2)=(2-1)f(2)=f(2).$$<p>选 <b>B</b>。</p><p><b>用具体函数检验并排除其他选项：</b>取 $f(x)\equiv1$，则 $F(t)=\displaystyle\int_1^t(t-y)\,\mathrm dy=\frac{(t-1)^2}{2}$，$F'(2)=1=f(2)$；而 A 给出 $2$，C 给出 $-1$，D 给出 $0$，都不对。</p>`,
+      pitfalls: R`<p>直接套公式"变上限积分的导数 = 被积函数在上限处的值"，得 $F'(t)=\displaystyle\int_t^tf(x)\,\mathrm dx=0$，误选 D。错因：外层的被积函数 $\int_y^tf(x)\,\mathrm dx$ 本身也随 $t$ 变化，这部分变化被漏掉了。</p><p>交换次序时把区域画错（例如写成 $y$ 从 $x$ 到 $t$），也会得到错误结果。交换次序<b>一定先画图</b>。</p>`,
+      summary: R`<p><b>看到</b>对积分求导、而求导变量同时出现在被积函数里，<b>想到</b>把它"赶到积分限上"：</p><ul><li>二次积分 → 交换积分次序；</li><li>$\int_0^xf(x-t)\,\mathrm dt$ 型 → 换元 $u=x-t$；</li><li>或者用原函数表示，再用乘积法则求导。</li></ul><p>交换积分次序三步：写出区域的不等式 → 画图 → 按新次序重新定限。</p>`,
+      alt: R`<p><b>用原函数表示。</b>令 $G(u)=\displaystyle\int_1^uf(x)\,\mathrm dx$，则 $G'(u)=f(u)$，内层积分 $\int_y^tf(x)\,\mathrm dx=G(t)-G(y)$。于是</p>$$F(t)=\int_1^t\big[G(t)-G(y)\big]\mathrm dy=(t-1)G(t)-\int_1^tG(y)\,\mathrm dy.$$<p>（$G(t)$ 对 $y$ 是常数，可以提出积分号。）用乘积法则和变限积分求导：</p>$$F'(t)=G(t)+(t-1)f(t)-G(t)=(t-1)f(t),$$<p>所以 $F'(2)=f(2)$。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy 对抽象 f 的二次积分求导得 (T−1)f(T)；取 f=eˣ+x² 具体计算 F′(2)=e²+4=f(2)' },
+      flags: []
+    },
+
+    /* ───────────── 第 15 题 ───────────── */
+    {
+      id: '2004-15', year: 2004, no: '第15题', type: '解答', score: 12,
+      stem: R`设 $\mathrm{e}<a<b<\mathrm{e}^2$，证明 $\ln^2b-\ln^2a>\dfrac{4}{\mathrm{e}^2}(b-a)$.`,
+      options: null,
+      answer: R`证明要点：令 $\varphi(x)=\ln^2x-\dfrac{4}{\mathrm e^2}x$，由 $\varphi''(x)=\dfrac{2(1-\ln x)}{x^2}<0$（$x>\mathrm e$）及 $\varphi'(\mathrm e^2)=0$ 得 $\varphi'(x)>0$（$\mathrm e\le x<\mathrm e^2$），故 $\varphi$ 严格增加，$\varphi(b)>\varphi(a)$，原不等式成立。`,
+      figure: null,
+      kp: ['diff.ineq', 'diff.mvt', 'diff.mono'],
+      methods: ['构造辅助函数', '单调性证明不等式', '二阶导判断一阶导符号', '拉格朗日中值定理'],
+      difficulty: 3,
+      analysis: R`<p>本题考<b>用单调性（或中值定理）证明不等式</b>。</p><p><b>观察结构。</b>左边 $\ln^2b-\ln^2a$、右边 $\frac{4}{\mathrm e^2}b-\frac{4}{\mathrm e^2}a$，都是"$b$ 处的量减 $a$ 处的量"。移项后就是 $\varphi(b)>\varphi(a)$，其中 $\varphi(x)=\ln^2x-\frac{4}{\mathrm e^2}x$——只要证明 $\varphi$ 在 $(\mathrm e,\mathrm e^2)$ 内单调增加即可。这是"双变量不等式化为单变量函数单调性"的标准动作。</p><p><b>另一种看法。</b>两边除以 $b-a>0$：$\dfrac{\ln^2b-\ln^2a}{b-a}>\dfrac{4}{\mathrm e^2}$。左边是函数 $\ln^2x$ 在 $[a,b]$ 上的平均变化率，也就是曲线 $y=\ln^2x$ 的割线斜率——这是拉格朗日中值定理的信号。</p><p><b>"怪常数" $\frac{4}{\mathrm e^2}$ 从哪来？</b>$(\ln^2x)'=\dfrac{2\ln x}{x}$，在 $x=\mathrm e^2$ 处恰好等于 $\dfrac{2\cdot2}{\mathrm e^2}=\dfrac4{\mathrm e^2}$。所以右端点 $\mathrm e^2$ 是关键点；而 $\frac{2\ln x}{x}$ 的导数 $\frac{2(1-\ln x)}{x^2}$ 在 $x=\mathrm e$ 处变号，这就是左端点取 $\mathrm e$ 的原因：在 $(\mathrm e,\mathrm e^2)$ 内曲线 $y=\ln^2x$ 是凸的（向上凸，斜率递减），任何割线的斜率都大于右端点处切线的斜率 $\frac{4}{\mathrm e^2}$。</p>`,
+      solution: R`<p><b>第一步：把不等式改写成"同一个函数在两点的比较"。</b>原不等式等价于</p>$$\ln^2b-\frac{4}{\mathrm e^2}b>\ln^2a-\frac{4}{\mathrm e^2}a.$$<p>令 $\varphi(x)=\ln^2x-\dfrac{4}{\mathrm e^2}x$，$x\in[\mathrm e,\mathrm e^2]$，只需证明 $\varphi(b)>\varphi(a)$。由于 $a<b$，只需证明 $\varphi$ 在 $[\mathrm e,\mathrm e^2]$ 上严格单调增加。</p><p><b>第二步：求一阶导数。</b></p>$$\varphi'(x)=2\ln x\cdot\frac1x-\frac{4}{\mathrm e^2}=\frac{2\ln x}{x}-\frac{4}{\mathrm e^2}.$$<p>它的符号不能一眼看出，于是研究 $\varphi'$ 自身的单调性——再求一次导。</p><p><b>第三步：求二阶导数，确定 $\varphi'$ 的单调性。</b>由商的求导法则，</p>$$\varphi''(x)=\frac{2\cdot\frac1x\cdot x-2\ln x\cdot1}{x^2}=\frac{2(1-\ln x)}{x^2}.$$<p>当 $x>\mathrm e$ 时 $\ln x>1$，所以 $\varphi''(x)<0$，从而 $\varphi'(x)$ 在 $[\mathrm e,\mathrm e^2]$ 上严格单调减少。</p><p><b>第四步：利用端点值确定 $\varphi'$ 的符号。</b>计算右端点处的值：</p>$$\varphi'(\mathrm e^2)=\frac{2\ln\mathrm e^2}{\mathrm e^2}-\frac{4}{\mathrm e^2}=\frac{4}{\mathrm e^2}-\frac{4}{\mathrm e^2}=0.$$<p>$\varphi'$ 严格减少且在右端点等于 0，所以当 $\mathrm e\le x<\mathrm e^2$ 时，$\varphi'(x)>\varphi'(\mathrm e^2)=0$。</p><p><b>第五步：得出结论。</b>$\varphi'(x)>0$ 在 $[\mathrm e,\mathrm e^2)$ 上成立，故 $\varphi$ 在 $[\mathrm e,\mathrm e^2]$ 上严格单调增加。由 $\mathrm e<a<b<\mathrm e^2$ 得 $\varphi(b)>\varphi(a)$，即</p>$$\ln^2b-\ln^2a>\frac{4}{\mathrm e^2}(b-a).$$<p>证毕。</p>`,
+      pitfalls: R`<p>① 只求一阶导就停下：$\varphi'(x)=\frac{2\ln x}{x}-\frac{4}{\mathrm e^2}$ 的符号不能直接看出，必须借助二阶导（或单独分析 $\frac{\ln x}{x}$ 的单调性）。</p><p>② 用拉格朗日中值定理时，$\xi$ 是未知的，只能利用"$\xi$ 落在 $(\mathrm e,\mathrm e^2)$ 内"并配合函数单调性来放缩，不能把 $\xi$ 当成具体的数。</p><p>③ 结论是严格不等号，要说明 $\varphi'>0$（不是 $\ge0$）在区间上成立（最多个别点为 0），才能得到严格单调。</p>`,
+      summary: R`<p><b>证明含两个变量 $a,b$ 的不等式，常用两条路：</b></p><ul><li><b>分离成 $\varphi(b)>\varphi(a)$</b>：把与 $b$ 有关的放一边、与 $a$ 有关的放另一边，证 $\varphi$ 单调；</li><li><b>含 $\dfrac{f(b)-f(a)}{b-a}$ 结构</b>：用拉格朗日中值定理化为 $f'(\xi)$，再研究 $f'$ 的单调性来估计 $f'(\xi)$。</li></ul><p><b>看到</b>题中的"怪常数"（如 $\frac{4}{\mathrm e^2}$），<b>想到</b>先试着把它解释为某个函数在区间端点处的导数值或函数值，这往往直接暴露辅助函数。<b>看到</b>一阶导符号看不出，<b>想到</b>求二阶导 + 找一阶导的零点。</p>`,
+      alt: R`<p><b>拉格朗日中值定理法。</b>令 $f(x)=\ln^2x$，它在 $[a,b]$ 上连续、在 $(a,b)$ 内可导，由拉格朗日中值定理，存在 $\xi\in(a,b)$，使</p>$$\frac{\ln^2b-\ln^2a}{b-a}=f'(\xi)=\frac{2\ln\xi}{\xi}.$$<p>令 $h(x)=\dfrac{2\ln x}{x}$，则 $h'(x)=\dfrac{2(1-\ln x)}{x^2}<0$（$x>\mathrm e$），$h$ 在 $[\mathrm e,\mathrm e^2]$ 上严格减少。由 $\mathrm e<a<\xi<b<\mathrm e^2$ 得</p>$$h(\xi)>h(\mathrm e^2)=\frac{2\cdot2}{\mathrm e^2}=\frac{4}{\mathrm e^2}.$$<p>所以 $\dfrac{\ln^2b-\ln^2a}{b-a}>\dfrac{4}{\mathrm e^2}$，两边乘以 $b-a>0$ 即得结论。</p><p><b>几何解释：</b>在 $(\mathrm e,\mathrm e^2)$ 内曲线 $y=\ln^2x$ 的切线斜率递减，割线斜率等于中间某点的切线斜率，必然大于最右端 $x=\mathrm e^2$ 处的切线斜率 $\frac{4}{\mathrm e^2}$。</p>`,
+      verify: { by: 'mixed', ok: true, note: 'sympy: φ″(x)=2(1−ln x)/x²，φ′(e²)=0，h(e²)=4/e²；在 (e,e²) 内随机取 2000 组 a 小于 b 的数值检验不等式均成立' },
+      flags: []
+    },
+
+    /* ───────────── 第 16 题 ───────────── */
+    {
+      id: '2004-16', year: 2004, no: '第16题', type: '解答', score: 11,
+      stem: R`某种飞机在机场降落时，为了减少滑行距离，在触地的瞬间，飞机尾部张开减速伞，以增大阻力，使飞机迅速减速并停下。<br>现有一质量为 $9000\,\mathrm{kg}$ 的飞机，着陆时的水平速度为 $700\,\mathrm{km/h}$。经测试，减速伞打开后，飞机所受的总阻力与飞机的速度成正比（比例系数为 $k=6.0\times10^{6}$）。问从着陆点算起，飞机滑行的最长距离是多少？<br>（注：$\mathrm{kg}$ 表示千克，$\mathrm{km/h}$ 表示千米/小时.）`,
+      options: null,
+      answer: R`最长滑行距离为 $\dfrac{mv_0}{k}=\dfrac{9000\times700}{6.0\times10^{6}}=1.05$ 千米（即 $1.05\,\mathrm{km}$）.`,
+      figure: null,
+      kp: ['ode.app', 'ode.first', 'int.improper'],
+      methods: ['牛顿第二定律建模', '链式法则 dv/dt = v·dv/dx 消去时间', '变量可分离方程', '反常积分'],
+      difficulty: 3,
+      analysis: R`<p>本题是<b>微分方程的物理应用</b>。建模工具是牛顿第二定律 $F=ma$：阻力 $-kv$（与运动方向相反），加速度 $a=\dfrac{\mathrm dv}{\mathrm dt}$，于是得到一阶微分方程 $m\dfrac{\mathrm dv}{\mathrm dt}=-kv$。</p><p>题目问的是<b>距离</b>，不是时间。有两条路：</p><ul><li><b>消去时间</b>：用链式法则把 $\dfrac{\mathrm dv}{\mathrm dt}$ 写成 $v\dfrac{\mathrm dv}{\mathrm dx}$（$x$ 为滑行距离），直接得到速度与距离的关系；</li><li><b>先求 $v(t)$</b>：再把速度对时间积分得距离。</li></ul><p>"最长"二字的含义：速度按指数规律衰减，理论上永远不会严格等于 0，滑行距离随时间单调增加并趋于一个极限——这个极限（上确界）就是"最长距离"，对应反常积分 $\int_0^{+\infty}v(t)\,\mathrm dt$。</p>`,
+      solution: R`<p><b>第一步：设定变量，建立模型。</b>以着陆时刻为 $t=0$，着陆点为起点。设 $t$ 时刻飞机速度为 $v(t)$、滑行距离为 $x(t)$，则 $x(0)=0$，$v(0)=v_0=700$（km/h），$\dfrac{\mathrm dx}{\mathrm dt}=v$；飞机质量 $m=9000$（kg）。</p><p>阻力大小为 $kv$，方向与运动方向相反，取负号。由牛顿第二定律：</p>$$m\frac{\mathrm dv}{\mathrm dt}=-kv.$$<p><b>第二步：消去时间，得到速度与距离的关系。</b>由链式法则</p>$$\frac{\mathrm dv}{\mathrm dt}=\frac{\mathrm dv}{\mathrm dx}\cdot\frac{\mathrm dx}{\mathrm dt}=v\frac{\mathrm dv}{\mathrm dx}.$$<p>代入得 $mv\dfrac{\mathrm dv}{\mathrm dx}=-kv$。飞机停下之前 $v>0$，两边约去 $v$：</p>$$m\frac{\mathrm dv}{\mathrm dx}=-k\quad\Longrightarrow\quad\mathrm dv=-\frac{k}{m}\,\mathrm dx.$$<p><b>第三步：积分并代入初始条件。</b>两边积分得 $v=-\dfrac{k}{m}x+C$。$x=0$ 时 $v=v_0$，得 $C=v_0$，所以</p>$$v=v_0-\frac{k}{m}x\quad\Longleftrightarrow\quad x=\frac{m}{k}(v_0-v).$$<p>速度随滑行距离<b>线性</b>减小。</p><p><b>第四步：求最长距离。</b>滑行过程中 $v$ 从 $v_0$ 不断减小并趋于 $0$（由另解知 $v(t)=v_0\mathrm e^{-\frac kmt}$ 恒为正、$t\to+\infty$ 时趋于 0），所以 $x$ 单调增加并趋于</p>$$x_{\max}=\lim_{v\to0^+}\frac{m}{k}(v_0-v)=\frac{mv_0}{k}.$$<p><b>第五步：代入数值。</b></p>$$x_{\max}=\frac{9000\times700}{6.0\times10^{6}}=\frac{6.3\times10^{6}}{6.0\times10^{6}}=1.05\ (\mathrm{km}).$$<p>即飞机从着陆点算起，最长滑行 $1.05$ 千米。</p><p><b>关于单位：</b>题中 $k$ 没有写单位。速度用 km/h、时间用 h、质量用 kg 时，$k$ 的单位应为 kg/h，这样 $\dfrac{mv_0}{k}$ 的单位是 $\dfrac{\mathrm{kg}\cdot\mathrm{km/h}}{\mathrm{kg/h}}=\mathrm{km}$。标准答案 1.05 km 正是按这种配套单位计算的。</p>`,
+      pitfalls: R`<p>① <b>阻力符号写错</b>：写成 $m\dfrac{\mathrm dv}{\mathrm dt}=kv$，解出的速度会指数增长，显然不合物理事实。阻力与速度方向相反，必须带负号。</p><p>② <b>单位混用</b>：若把 700 km/h 换算成 m/s，而 $k$ 仍按 $6.0\times10^6$ 代入，会得到约 0.29 米的荒谬结果。题中 $k$ 的数值是与 km、h 配套给出的。</p><p>③ <b>想求"停下的时刻"</b>：$v(t)=v_0\mathrm e^{-\frac kmt}$ 永远不为 0，不存在有限的停止时刻，最长距离要用极限（反常积分）来求。</p>`,
+      summary: R`<p><b>运动学建模的两个"加速度"写法</b>：$a=\dfrac{\mathrm dv}{\mathrm dt}=v\dfrac{\mathrm dv}{\mathrm dx}$。</p><ul><li>问"距离与速度的关系""滑行多远"，<b>想到</b> $v\dfrac{\mathrm dv}{\mathrm dx}$，直接消去时间；</li><li>问"速度随时间如何变化""多久"，<b>想到</b> $\dfrac{\mathrm dv}{\mathrm dt}$。</li></ul><p><b>看到</b>"最长距离 / 最终位置"而运动永不停止，<b>想到</b> $t\to+\infty$ 的极限，即反常积分 $\displaystyle\int_0^{+\infty}v(t)\,\mathrm dt$。</p>`,
+      alt: R`<p><b>先求 $v(t)$，再积分。</b>由 $m\dfrac{\mathrm dv}{\mathrm dt}=-kv$ 分离变量：$\dfrac{\mathrm dv}{v}=-\dfrac{k}{m}\,\mathrm dt$，积分得 $\ln v=-\dfrac kmt+C_1$，结合 $v(0)=v_0$ 得</p>$$v(t)=v_0\,\mathrm e^{-\frac{k}{m}t}.$$<p>$t$ 时刻滑行的距离为 $x(t)=\displaystyle\int_0^tv(s)\,\mathrm ds=\frac{mv_0}{k}\left(1-\mathrm e^{-\frac kmt}\right)$，它关于 $t$ 单调增加，且</p>$$\lim_{t\to+\infty}x(t)=\int_0^{+\infty}v_0\,\mathrm e^{-\frac{k}{m}t}\,\mathrm dt=\frac{mv_0}{k}=1.05\ (\mathrm{km}).$$`,
+      verify: { by: 'sympy', ok: true, note: 'sympy dsolve(9000v′=−6×10⁶v, v(0)=700) 得 v=700e^(−2000t/3)，integrate(v, t:0→∞)=21/20=1.05' },
+      flags: ['原题比例系数 k 未注明单位；按与 km、h、kg 配套（k 的单位为 kg/h）理解，与参考答案 1.05 km 一致']
+    },
+
+    /* ───────────── 第 17 题 ───────────── */
+    {
+      id: '2004-17', year: 2004, no: '第17题', type: '解答', score: 12,
+      stem: R`计算曲面积分$$I=\iint_\Sigma2x^3\,\mathrm{d}y\mathrm{d}z+2y^3\,\mathrm{d}z\mathrm{d}x+3(z^2-1)\,\mathrm{d}x\mathrm{d}y,$$其中 $\Sigma$ 是曲面 $z=1-x^2-y^2\ (z\geqslant0)$ 的上侧.`,
+      options: null,
+      answer: R`$I=-\pi$`,
+      figure: null,
+      kp: ['mint.surf2', 'mint.triple'],
+      methods: ['补面 + 高斯公式', '柱面坐标计算三重积分', '第二类曲面积分投影计算'],
+      difficulty: 3,
+      analysis: R`<p>本题考<b>第二类（对坐标的）曲面积分</b>，核心方法是<b>补面 + 高斯公式</b>。</p><p>先看曲面：$z=1-x^2-y^2$ 是顶点在 $(0,0,1)$、开口向下的旋转抛物面；$z\ge0$ 的部分像一只倒扣的碗，碗口是 $xOy$ 面上的单位圆 $x^2+y^2=1$。它<b>不封闭</b>，缺一个底面圆盘。</p><p>为什么想到高斯公式？</p><ul><li>三项 $\mathrm dy\mathrm dz$、$\mathrm dz\mathrm dx$、$\mathrm dx\mathrm dy$ 都有，直接分别投影要算三个方向，繁琐；</li><li>散度 $\dfrac{\partial P}{\partial x}+\dfrac{\partial Q}{\partial y}+\dfrac{\partial R}{\partial z}=6x^2+6y^2+6z$ 很简单，积分区域是旋转体，适合柱坐标；</li><li>补的底面是平面 $z=0$：在它上面前两项自动为 0，第三项 $3(z^2-1)$ 变成常数 $-3$，非常好算。</li></ul>`,
+      solution: R`<p><b>第一步：补面，构成封闭曲面。</b>取 $\Sigma_0$：$z=0$（$x^2+y^2\le1$），<b>取下侧</b>。这样 $\Sigma$（上侧）与 $\Sigma_0$（下侧）合起来是闭区域 $\Omega=\{(x,y,z)\mid 0\le z\le1-x^2-y^2\}$ 的整个边界，方向<b>朝外</b>。于是</p>$$I=\iint_{\Sigma+\Sigma_0}-\iint_{\Sigma_0}.$$<p><b>第二步：对封闭曲面用高斯公式。</b>$P=2x^3$，$Q=2y^3$，$R=3(z^2-1)$，</p>$$\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}+\frac{\partial R}{\partial z}=6x^2+6y^2+6z,$$<p>所以（封闭曲面外侧）</p>$$\iint_{\Sigma+\Sigma_0}2x^3\,\mathrm dy\mathrm dz+2y^3\,\mathrm dz\mathrm dx+3(z^2-1)\,\mathrm dx\mathrm dy=\iiint_\Omega6(x^2+y^2+z)\,\mathrm dv.$$<p><b>第三步：用柱面坐标计算三重积分。</b>$x=r\cos\theta$，$y=r\sin\theta$，$\mathrm dv=r\,\mathrm dr\,\mathrm d\theta\,\mathrm dz$；$\Omega$：$0\le\theta\le2\pi$，$0\le r\le1$，$0\le z\le1-r^2$。</p>$$\iiint_\Omega6(r^2+z)\,\mathrm dv=6\int_0^{2\pi}\mathrm d\theta\int_0^1r\,\mathrm dr\int_0^{1-r^2}(r^2+z)\,\mathrm dz=12\pi\int_0^1r\left[r^2z+\frac{z^2}{2}\right]_0^{1-r^2}\mathrm dr.$$<p>化简方括号：</p>$$r^2(1-r^2)+\frac{(1-r^2)^2}{2}=\frac{2r^2-2r^4+1-2r^2+r^4}{2}=\frac{1-r^4}{2}.$$<p>所以</p>$$\iiint_\Omega6(r^2+z)\,\mathrm dv=12\pi\int_0^1\frac{r-r^5}{2}\,\mathrm dr=6\pi\left(\frac12-\frac16\right)=2\pi.$$<p><b>第四步：计算补面上的积分。</b>在 $\Sigma_0$ 上 $z=0$。$\Sigma_0$ 垂直于 $z$ 轴，它在 $yOz$ 面、$zOx$ 面上的投影都是线段（面积为 0），所以</p>$$\iint_{\Sigma_0}2x^3\,\mathrm dy\mathrm dz=\iint_{\Sigma_0}2y^3\,\mathrm dz\mathrm dx=0.$$<p>第三项：$R=3(0-1)=-3$；$\Sigma_0$ 取下侧，投影到 $xOy$ 面时要加负号：</p>$$\iint_{\Sigma_0}3(z^2-1)\,\mathrm dx\mathrm dy=-\iint_{x^2+y^2\le1}(-3)\,\mathrm dx\mathrm dy=3\pi.$$<p><b>第五步：相减。</b></p>$$I=2\pi-3\pi=-\pi.$$`,
+      pitfalls: R`<p>① <b>补面方向</b>：底面必须取<b>下侧</b>，才能与上侧的抛物面合成封闭曲面的外侧；取反了，高斯公式就差一个符号。</p><p>② <b>底面积分的符号</b>：底面上 $R=-3$，下侧投影还要再加一个负号，两个负号得 $+3\pi$。这里最容易错。</p><p>③ 最后要<b>减去</b>补面上的积分，而不是加上。</p><p>④ 柱坐标下体积元是 $r\,\mathrm dr\,\mathrm d\theta\,\mathrm dz$，漏掉因子 $r$ 是常见低级错误。</p>`,
+      summary: R`<p><b>第二类曲面积分的决策：</b></p><ul><li>封闭曲面 → 直接高斯公式；</li><li>不封闭、散度简单 → <b>补面</b>用高斯公式，补的面优先选垂直于坐标轴的平面。口诀："补面要封闭，方向朝外，最后减掉"；</li><li>曲面是 $z=z(x,y)$ 且三项都有 → 也可用合一投影：$\iint_\Sigma P\,\mathrm dy\mathrm dz+Q\,\mathrm dz\mathrm dx+R\,\mathrm dx\mathrm dy=\pm\iint_{D_{xy}}\big[P(-z_x)+Q(-z_y)+R\big]\mathrm dx\mathrm dy$（上侧取正）。</li></ul><p>投影符号规则：上侧、前侧、右侧取正，下侧、后侧、左侧取负；曲面垂直于某坐标面时，在该坐标面上的投影积分为 0。</p>`,
+      alt: R`<p><b>直接计算（合一投影法）。</b>对曲面 $z=z(x,y)$ 取上侧，有</p>$$\iint_\Sigma P\,\mathrm dy\mathrm dz+Q\,\mathrm dz\mathrm dx+R\,\mathrm dx\mathrm dy=\iint_{D_{xy}}\big[P\cdot(-z_x)+Q\cdot(-z_y)+R\big]\,\mathrm dx\mathrm dy.$$<p>（原因：上侧法向量与 $(-z_x,-z_y,1)$ 同向，曲面元在三个坐标面上的有向投影之比等于法向量三个分量之比。）这里 $-z_x=2x$，$-z_y=2y$，$D_{xy}$：$x^2+y^2\le1$，所以</p>$$I=\iint_{D_{xy}}\Big[4x^4+4y^4+3\big((1-x^2-y^2)^2-1\big)\Big]\,\mathrm dx\mathrm dy.$$<p>极坐标下 $(1-r^2)^2-1=r^4-2r^2$，且 $\displaystyle\int_0^{2\pi}(\cos^4\theta+\sin^4\theta)\,\mathrm d\theta=\frac{3\pi}{4}+\frac{3\pi}{4}=\frac{3\pi}{2}$，于是</p>$$I=4\cdot\frac{3\pi}{2}\int_0^1r^5\,\mathrm dr+2\pi\int_0^1(3r^4-6r^2)\,r\,\mathrm dr=4\cdot\frac{3\pi}{2}\cdot\frac16+2\pi\left(\frac12-\frac32\right)=\pi-2\pi=-\pi.$$<p>结果一致。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: 合一投影直接计算 I=−π；三重积分 ∭6(r²+z)r dz dr dθ=2π；底面（下侧）积分=3π；2π−3π=−π' },
+      flags: []
+    },
+
+    /* ───────────── 第 18 题 ───────────── */
+    {
+      id: '2004-18', year: 2004, no: '第18题', type: '解答', score: 11,
+      stem: R`设有方程 $x^n+nx-1=0$，其中 $n$ 为正整数. 证明此方程存在唯一正实根 $x_n$，并证明当 $\alpha>1$ 时，级数 $\sum\limits_{n=1}^{\infty}x_n^{\alpha}$ 收敛.`,
+      options: null,
+      answer: R`证明要点：$f_n(x)=x^n+nx-1$ 在 $[0,+\infty)$ 上严格增加，且 $f_n(0)=-1<0$，$f_n(1)=n>0$，故有唯一正根 $x_n\in(0,1)$；由 $nx_n=1-x_n^n<1$ 得 $0<x_n<\dfrac1n$，于是 $0<x_n^{\alpha}<\dfrac1{n^{\alpha}}$，由比较判别法，$\alpha>1$ 时 $\sum x_n^{\alpha}$ 收敛。`,
+      figure: null,
+      kp: ['series.positive', 'lim.closed', 'diff.ineq'],
+      methods: ['零点定理', '单调性证明根的唯一性', '由方程估计根的大小', '比较判别法'],
+      difficulty: 3,
+      analysis: R`<p>本题把<b>方程根的存在唯一性</b>与<b>正项级数的敛散性</b>结合在一起。</p><p>第一问"存在唯一"：<b>存在</b>用零点定理（找两点函数值异号），<b>唯一</b>用单调性（严格单调函数至多一个零点）。</p><p>第二问是关键：$x_n$ 是高次方程的根，<b>没有显式表达式</b>，不可能直接求和。能做的只有<b>估计</b> $x_n$ 的大小，再用比较判别法。估计从哪里来？就从方程本身：$nx_n=1-x_n^n$，而 $x_n^n>0$，丢掉这一项就得到 $nx_n<1$，即 $x_n<\frac1n$。"<b>用方程反过来估计根</b>"是这类题的核心思想。</p>`,
+      solution: R`<p><b>第一步：存在性（零点定理）。</b>令 $f_n(x)=x^n+nx-1$，它在 $[0,1]$ 上连续，且</p>$$f_n(0)=-1<0,\qquad f_n(1)=1+n-1=n>0.$$<p>由零点定理，存在 $x_n\in(0,1)$，使 $f_n(x_n)=0$。</p><p><b>第二步：唯一性（单调性）。</b>当 $x\ge0$ 时</p>$$f_n'(x)=nx^{n-1}+n>0,$$<p>所以 $f_n$ 在 $[0,+\infty)$ 上严格单调增加，至多有一个零点。结合第一步，方程存在唯一正实根 $x_n$，且 $0<x_n<1$。</p><p><b>第三步：由方程估计 $x_n$。</b>由 $x_n^n+nx_n-1=0$ 解出</p>$$x_n=\frac{1-x_n^n}{n}.$$<p>因为 $x_n>0$，所以 $x_n^n>0$，从而</p>$$0<x_n<\frac1n.$$<p><b>第四步：比较判别法。</b>当 $\alpha>1$ 时，函数 $u\mapsto u^{\alpha}$ 在 $u>0$ 上严格增加，所以</p>$$0<x_n^{\alpha}<\frac{1}{n^{\alpha}}.$$<p>$\sum\limits_{n=1}^{\infty}\dfrac1{n^{\alpha}}$ 是 $p=\alpha>1$ 的 $p$ 级数，收敛。$\sum x_n^{\alpha}$ 是正项级数，由比较判别法，$\sum\limits_{n=1}^{\infty}x_n^{\alpha}$ 收敛。证毕。</p><p><b>补充（看清条件 $\alpha>1$ 为什么必要）：</b>由 $0<x_n<\frac1n$ 得 $0<x_n^n<\frac1{n^n}\to0$，所以 $nx_n=1-x_n^n\to1$，即 $x_n\sim\dfrac1n$。因此 $\sum x_n^{\alpha}$ 与 $\sum\dfrac{1}{n^{\alpha}}$ 同敛散：$\alpha>1$ 收敛，$\alpha\le1$ 发散。题目的条件恰好是收敛的充要条件。</p>`,
+      pitfalls: R`<p>① 只证存在、不证唯一；或者只说"$f_n$ 单调"却不给出 $f_n'(x)>0$ 的理由。</p><p>② 试图求出 $x_n$ 的具体值——高次方程一般没有求根公式，正确的方向是<b>估计</b>。</p><p>③ 只用 $x_n<1$ 这种太粗的估计：$x_n^{\alpha}<1$，而 $\sum1$ 发散，推不出任何结论。必须得到随 $n$ 变小的上界 $\frac1n$。</p><p>④ 比较判别法只适用于正项级数，要说明 $x_n^{\alpha}>0$。</p>`,
+      summary: R`<p><b>"由方程的根构成的数列 / 级数"题型三步：</b></p><ol><li>零点定理 + 单调性：确定根的存在、唯一和大致范围；</li><li>从方程本身反解 $x_n$，再放缩（丢掉一个正项或用范围代入），得到 $x_n$ 关于 $n$ 的上下界；</li><li>用比较判别法（级数）或夹逼准则（极限）收尾。</li></ol><p><b>看到</b>"$x_n$ 没有显式表达式"，<b>想到</b>"用方程估计根"。</p>`,
+      verify: { by: 'mixed', ok: true, note: '证明为主；mpmath 数值求根验证 n=1,2,3,5,10,100 时唯一正根均满足 0 小于 x_n 小于 1/n（如 n=2 时 x₂=√2−1≈0.414）' },
+      flags: []
+    },
+
+    /* ───────────── 第 19 题 ───────────── */
+    {
+      id: '2004-19', year: 2004, no: '第19题', type: '解答', score: 12,
+      stem: R`设 $z=z(x,y)$ 是由 $x^2-6xy+10y^2-2yz-z^2+18=0$ 确定的函数，求 $z=z(x,y)$ 的极值点和极值.`,
+      options: null,
+      answer: R`点 $(9,3)$ 是极小值点，极小值 $z(9,3)=3$；点 $(-9,-3)$ 是极大值点，极大值 $z(-9,-3)=-3$.`,
+      figure: null,
+      kp: ['mdiff.extreme', 'mdiff.implicit'],
+      methods: ['隐函数求偏导', '驻点与原方程联立', '二阶偏导判别法 AC−B²', '配方法'],
+      difficulty: 4,
+      analysis: R`<p>本题考<b>隐函数的无条件极值</b>。步骤与显函数完全相同：</p><ol><li>令一阶偏导为 0 求驻点；</li><li>求二阶偏导 $A=z_{xx}$、$B=z_{xy}$、$C=z_{yy}$，用 $AC-B^2$ 判别。</li></ol><p>不同之处有两点：</p><ul><li>偏导要用<b>隐函数求导法</b>得到，表达式里含 $z$。所以求驻点时要把"$z_x=0$、$z_y=0$"与<b>原方程</b>联立——三个方程解三个未知数 $x,y,z$。</li><li>求二阶偏导时有个省力技巧：在驻点处 $z_x=z_y=0$，所以对"一阶偏导所满足的等式"再求导、然后代入驻点，很多项直接消失，比先求出二阶偏导的一般表达式再代入简单得多。</li></ul>`,
+      solution: R`<p><b>第一步：求一阶偏导。</b>方程两边对 $x$ 求偏导（$z$ 是 $x,y$ 的函数，$z^2$ 和 $yz$ 对 $x$ 求导要用链式法则）：</p>$$2x-6y-2y\,z_x-2z\,z_x=0,\qquad\text{(1)}$$<p>得 $z_x=\dfrac{x-3y}{y+z}$。方程两边对 $y$ 求偏导（$-2yz$ 用乘积法则）：</p>$$-6x+20y-2z-2y\,z_y-2z\,z_y=0,\qquad\text{(2)}$$<p>得 $z_y=\dfrac{-3x+10y-z}{y+z}$。这里要求 $y+z\ne0$，它正是隐函数存在定理的条件 $F_z=-2(y+z)\ne0$。</p><p><b>第二步：求驻点（与原方程联立）。</b>令 $z_x=0$ 得 $x=3y$；令 $z_y=0$ 得 $z=-3x+10y=-9y+10y=y$。把 $x=3y$、$z=y$ 代入原方程：</p>$$9y^2-18y^2+10y^2-2y^2-y^2+18=0\quad\Longrightarrow\quad-2y^2+18=0\quad\Longrightarrow\quad y=\pm3.$$<p>得到两组解 $(x,y,z)=(9,3,3)$ 和 $(-9,-3,-3)$。检验：$y+z=\pm6\ne0$，满足隐函数存在的条件。所以驻点为 $(9,3)$（对应 $z=3$）和 $(-9,-3)$（对应 $z=-3$）。</p><p><b>第三步：求二阶偏导（对 (1)(2) 再求导）。</b></p><p>(1) 式对 $x$ 求偏导：$2-2y\,z_{xx}-2z_x^2-2z\,z_{xx}=0$，即</p>$$2-2z_x^2-2(y+z)z_{xx}=0.$$<p>(1) 式对 $y$ 求偏导：$-6-2z_x-2y\,z_{xy}-2z_yz_x-2z\,z_{xy}=0$，即</p>$$-6-2z_x-2z_xz_y-2(y+z)z_{xy}=0.$$<p>(2) 式对 $y$ 求偏导：$20-2z_y-2z_y-2y\,z_{yy}-2z_y^2-2z\,z_{yy}=0$，即</p>$$20-4z_y-2z_y^2-2(y+z)z_{yy}=0.$$<p>在驻点处 $z_x=z_y=0$，于是</p>$$z_{xx}=\frac{1}{y+z},\qquad z_{xy}=\frac{-3}{y+z},\qquad z_{yy}=\frac{10}{y+z}.$$<p><b>第四步：判别。</b></p><p>• 在 $(9,3)$ 处，$z=3$，$y+z=6$：$A=\dfrac16$，$B=-\dfrac12$，$C=\dfrac{10}{6}=\dfrac53$。</p>$$AC-B^2=\frac16\cdot\frac53-\frac14=\frac{10}{36}-\frac{9}{36}=\frac1{36}>0,\qquad A>0,$$<p>所以 $(9,3)$ 是极小值点，极小值 $z(9,3)=3$。</p><p>• 在 $(-9,-3)$ 处，$z=-3$，$y+z=-6$：$A=-\dfrac16$，$B=\dfrac12$，$C=-\dfrac53$。</p>$$AC-B^2=\frac{5}{18}-\frac14=\frac1{36}>0,\qquad A<0,$$<p>所以 $(-9,-3)$ 是极大值点，极大值 $z(-9,-3)=-3$。</p><p><b>说明：</b>原方程关于 $z$ 是二次的，实际确定了两支隐函数（见另解）。上面的计算是在每个驻点附近、由隐函数存在定理确定的那一支上进行的：极小值 $3$ 与极大值 $-3$ 分别属于不同的两支，这也解释了为什么"极大值"反而比"极小值"小——它们不是同一个函数在同一块区域上的比较。</p>`,
+      pitfalls: R`<p>① 求驻点时只解 $x-3y=0$ 和 $-3x+10y-z=0$，忘了与<b>原方程</b>联立，于是定不出 $y$ 和 $z$。</p><p>② 求二阶偏导时忘记 $z$ 是 $x,y$ 的函数：例如对 $z\,z_x$ 关于 $x$ 求导，应得 $z_x^2+z\,z_{xx}$，不能只写 $z\,z_{xx}$。</p><p>③ 直接对商 $\dfrac{x-3y}{y+z}$ 求二阶偏导再代入，计算量大易出错；应利用驻点处 $z_x=z_y=0$ 来简化。</p><p>④ 极值点是 $xOy$ 平面上的点 $(9,3)$，不是空间点 $(9,3,3)$；极值是 $z$ 的值。</p>`,
+      summary: R`<p><b>隐函数极值四步：</b></p><ol><li>隐函数求导得 $z_x,z_y$（或直接对方程两边求偏导）；</li><li>令 $z_x=z_y=0$，<b>与原方程联立</b>求出驻点及对应的 $z$；</li><li>对一阶偏导满足的等式再求偏导，代入驻点（利用 $z_x=z_y=0$）得 $A,B,C$；</li><li>$AC-B^2>0$ 时，$A>0$ 为极小，$A<0$ 为极大；$AC-B^2<0$ 不是极值。</li></ol><p><b>看到</b>方程是二次式，<b>想到</b>试试配方，有时能直接看出极值甚至几何图形。</p>`,
+      alt: R`<p><b>配方法（从几何上看透这道题）。</b>注意到</p>$$x^2-6xy+10y^2-2yz-z^2=(x-3y)^2+y^2-2yz-z^2=(x-3y)^2+2y^2-(y+z)^2,$$<p>所以原方程等价于</p>$$(y+z)^2=(x-3y)^2+2y^2+18.$$<p>这是一个<b>双叶双曲面</b>，解出 $z$ 得两支：</p>$$z_1=-y+\sqrt{(x-3y)^2+2y^2+18},\qquad z_2=-y-\sqrt{(x-3y)^2+2y^2+18}.$$<p><b>上叶 $z_1$：</b>$z_1\ge-y+\sqrt{2y^2+18}=:g(y)$，当且仅当 $x=3y$ 时取等号。$g'(y)=-1+\dfrac{2y}{\sqrt{2y^2+18}}$，令 $g'(y)=0$ 得 $2y=\sqrt{2y^2+18}$，即 $y>0$ 且 $4y^2=2y^2+18$，$y=3$；$g'$ 在 $y=3$ 两侧由负变正，所以 $g$ 的最小值为 $g(3)=-3+6=3$。于是 $z_1\ge3$，仅在 $(9,3)$ 处取等号：上叶的最低点，极小值 $3$。</p><p><b>下叶 $z_2$：</b>同理 $z_2\le-y-\sqrt{2y^2+18}=:h(y)$，$h'(y)=0$ 得 $y=-3$，$h$ 的最大值为 $h(-3)=3-6=-3$。于是 $z_2\le-3$，仅在 $(-9,-3)$ 处取等号：下叶的最高点，极大值 $-3$。</p><p>与常规解法结论一致，而且看清了：极小值和极大值分别是双叶双曲面上、下两叶的"顶点"。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: solve(F_x=0, F_y=0, F=0) 得 (9,3,3)、(−9,−3,−3)；隐函数二阶偏导在两点分别为 (1/6,−1/2,5/3)、(−1/6,1/2,−5/3)，AC−B²=1/36；显式两支 z=−y±√((x−3y)²+2y²+18) 的驻点与 Hessian 结果一致' },
+      flags: []
+    }
+  ];
+});

@@ -86,7 +86,7 @@ for (const p of problems) {
   (p.methods || []).forEach((m) => { methodCount[m] = (methodCount[m] || 0) + 1; });
 }
 stats.methods = Object.entries(methodCount).sort((a, b) => b[1] - a[1]).slice(0, 40);
-// 考频指数：每次出现按年份衰减加权（半衰期约 10 年），解答题权重更高
+// 考频指数：每次出现按年份衰减加权（半衰期 10 年），解答题权重 2，作为辅助考点出现时减半
 const HALF = 10;
 for (const k of TAX.kps) {
   const K = stats.byKp[k.id];
@@ -99,7 +99,8 @@ for (const k of TAX.kps) {
   let w = 0;
   for (const id of K.ids) {
     const p = problems.find((x) => x.id === id);
-    w += Math.pow(0.5, (lastYear - p.year) / HALF) * (p.type === '解答' ? 2 : 1);
+    const role = p.kp[0] === k.id ? 1 : 0.5; // 主考点计 1，辅助考点计 0.5
+    w += Math.pow(0.5, (lastYear - p.year) / HALF) * (p.type === '解答' ? 2 : 1) * role;
   }
   K.index = Math.round(w * 10) / 10;
 }
