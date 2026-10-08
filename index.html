@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>数一高数真题研习</title>
-<meta name="description" content="考研数学一高等数学复习站：按大纲 8 章整理历年真题，每题配完整解析、易错提醒，支持错题本和随机刷题。">
+<meta name="description" content="考研数学一高等数学：1987–2025 年全部高数真题逐题详解、59 个考点从零讲起的基础讲解（含完整证明）、考频分析与预测、AI 辅导。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap">
@@ -29,23 +29,55 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" async></script>
 </head>
 <body>
+<a class="skip" href="#view">跳到正文</a>
 <header class="top">
   <div class="top-in">
     <a class="brand" href="#home" data-go="home">数一 · 高数<small>真题研习</small></a>
     <nav class="nav" aria-label="主导航">
       <a href="#home" data-go="home" data-nav="home">总览</a>
+      <a href="#learn" data-go="learn" data-nav="learn">基础讲解</a>
+      <a href="#bank" data-go="bank" data-nav="bank">真题库</a>
+      <a href="#stats" data-go="stats" data-nav="stats">考点分析</a>
       <a href="#practice" data-go="practice" data-nav="practice">随机刷题</a>
-      <a href="#wrong" data-go="wrong" data-nav="wrong">错题本 <span class="count" id="wrong-count">0</span></a>
+      <a href="#wrong" data-go="wrong" data-nav="wrong">错题本 <span class="count" id="wrong-count" data-zero>0</span></a>
     </nav>
   </div>
 </header>
 <main id="view" tabindex="-1"></main>
 <footer class="foot">
-  <span>做题标记只保存在当前浏览器，换设备或清除浏览器数据后不会保留。</span>
-  <span id="reset-slot"><button type="button" id="reset">清空做题记录</button></span>
+  <span>做题和学习记录只保存在当前浏览器。<span id="built"></span></span>
+  <span id="reset-slot"><button type="button" id="reset">清空做题与学习记录</button></span>
 </footer>
-<script src="js/chapters.js"></script>
-<script src="js/problems.js"></script>
-<script src="js/app.js"></script>
+
+<button type="button" class="fab" data-ai-open aria-label="打开 AI 辅导">问 AI</button>
+<aside class="ai" id="ai" hidden aria-label="AI 辅导">
+  <header class="ai-head">
+    <b>AI 辅导</b><span class="ai-mode" id="ai-mode">正在检测…</span>
+    <button type="button" class="ai-x" id="ai-close" aria-label="关闭">×</button>
+  </header>
+  <div class="ai-ctx" id="ai-ctx"></div>
+  <div class="ai-log" id="ai-log" aria-live="polite"></div>
+  <div class="ai-quick" id="ai-quick"></div>
+  <form class="ai-form" id="ai-form">
+    <label class="sr" for="ai-input">你的问题</label>
+    <textarea id="ai-input" rows="3" placeholder="说说你卡在哪里（Ctrl + Enter 发送）"></textarea>
+    <div class="ai-send-row">
+      <button type="submit" class="btn primary" id="ai-send">发送</button>
+      <button type="button" class="btn" id="ai-stop" hidden>停止</button>
+    </div>
+  </form>
+  <details class="ai-settings" id="ai-settings"><summary>连接设置</summary><div id="ai-settings-body"></div></details>
+</aside>
+<div class="tip" id="tip" hidden role="tooltip"></div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script src="js/core.js"></script>
+<script src="data/meta.js"></script>
+<script src="js/card.js"></script>
+<script src="js/views-learn.js"></script>
+<script src="js/views-bank.js"></script>
+<script src="js/views-stats.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
