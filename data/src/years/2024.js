@@ -47,7 +47,7 @@ $$g(-x)=G(\sin(-x))=G(-\sin x)=-G(\sin x)=-g(x).$$
       verify: { by: 'sympy', ok: true, note: 'sympy 数值积分：f(1)=2.3416=-f(-1)，g(1)=1.0905=-g(-1)；g(0.7+2π)-g(0.7)=0；f(x+2π)-f(x)=∫_0^{2π}e^{cos t}dt≈7.9549≠0，故 f 非周期' },
       flags: [
         '原卷 OCR 把 g(x) 识别成 g_{(x)}、把 f(x) 写成 \\mathrm{f}，均已改正。',
-        '选项 D 各版本不一致：两份原卷转写为“f(x) 与 g(x) 均为周期函数”，参考解析 PDF（考后回忆版）写作“均为偶函数”。采用“均为周期函数”（与官方试卷一致）；两种写法下答案都是 C。'
+        '选项 D 各版本不一致：“2024考研数学一真题.md”“2024考研数学一真题+答案.md”两份转写为“f(x) 与 g(x) 均为周期函数”，而“2024年数学(一)真题及参考答案.md”与参考解析（md/PDF，考后回忆版）写作“均为偶函数”。采用“均为周期函数”（与官方试卷一致）；两种写法下答案都是 C（f、g 都不是偶函数）。'
       ]
     },
 
@@ -126,7 +126,7 @@ $$\sum_{n=0}^{\infty}na_{2n}=-\frac12\sum_{n=1}^{\infty}\left(\frac14\right)^n=-
       pitfalls: R`<ul><li><b>符号</b>：$(-1)^{2n-1}=-1$，偶数下标的系数全是负的。</li>
 <li><b>分母</b>：$a_n$ 的分母是 $n\cdot2^n$，换成 $2n$ 后是 $2n\cdot2^{2n}$，不是 $n\cdot2^{2n}$。"整体代换"时每一个 $n$ 都要换。</li>
 <li><b>首项</b>：$\ln(1+u)$ 的展开从 $n=1$ 开始，常数项 $\ln2$ 要单独作为 $a_0$；本题因为乘了 $n$，$a_0$ 恰好不起作用。</li>
-<li>题目写的"和函数"指幂级数之和，不要和"幂函数 $x^a$"混淆。</li></ul>`,
+<li><b>求和前先看收敛</b>：$\sum na_{2n}$ 的公比是 $\frac14$，几何级数收敛才能套公式；用另解代入 $t=1$ 时，也要先确认 $t=1$ 落在 $E(t)$ 的收敛区间 $|t|&lt;4$ 内（对应原级数 $x=\pm1$ 落在 $(-2,2)$ 内）。</li></ul>`,
       summary: R`<p><b>方法要点：</b>已知和函数求系数 → 间接展开写出通项 → 代入所需下标 → 用几何级数、$\mathrm e^x$、$\ln(1+x)$ 等已知级数求和。</p>
 <p><b>题型识别：</b></p><ul><li>看到 $\ln(a+x)$ → 写成 $\ln a+\ln\left(1+\frac xa\right)$；看到 $\frac{1}{a+x}$ → 写成 $\frac1a\cdot\frac{1}{1+\frac xa}$。</li>
 <li>看到只要偶数项（或奇数项）系数 → 也可以用 $\frac{S(x)+S(-x)}{2}$（或 $\frac{S(x)-S(-x)}{2}$）把偶部（奇部）直接分离出来，见另解。</li>
@@ -207,7 +207,7 @@ $$\left(1+ax^2\right)^{\sin x}=\mathrm e^{\sin x\cdot\ln(1+ax^2)}.$$
 $$\left(1+ax^2\right)^{\sin x}-1=\mathrm e^{\sin x\ln(1+ax^2)}-1\sim\sin x\cdot\ln(1+ax^2).$$
 <p><b>第三步：再对乘积的每个因子等价代换。</b>$\sin x\sim x$；$\ln(1+ax^2)=ax^2+o(x^2)$（$a\ne0$ 时即 $\ln(1+ax^2)\sim ax^2$）。所以</p>
 $$\lim_{x\to0}\frac{(1+ax^2)^{\sin x}-1}{x^3}=\lim_{x\to0}\frac{x\cdot\big(ax^2+o(x^2)\big)}{x^3}=a.$$
-<p><b>第四步：解参数。</b>由 $a=6$ 得 $a=6$。（若 $a=0$，分子恒为 $0$，极限为 $0\ne6$，也与题设矛盾。）</p>`,
+<p><b>第四步：解参数。</b>上面算出原极限恰好等于 $a$，而题设该极限等于 $6$，所以 $a=6$。（若 $a=0$，分子恒为 $0$，极限为 $0\ne6$，与题设矛盾，所以上面按 $a\ne0$ 做等价代换没有遗漏情形。）</p>`,
       pitfalls: R`<ul><li><b>误判为 $1^\infty$ 型</b>：这里指数 $\sin x\to0$，$(1+ax^2)^{\sin x}\to1^0=1$，根本不是 $1^\infty$，不能套"重要极限 $\mathrm e$"那一套。真正的未定式是整体的 $\frac00$。</li>
 <li><b>直接洛必达</b>：对 $(1+ax^2)^{\sin x}$ 求导要用对数求导法，求三次导数会非常繁琐，几乎必错。</li>
 <li>$\mathrm e^{\square}-1\sim\square$ 的前提是 $\square\to0$，使用前要先验证指数趋于 $0$。</li></ul>`,
@@ -222,7 +222,7 @@ $$\lim_{x\to0}\frac{(1+ax^2)^{\sin x}-1}{x^3}=\lim_{x\to0}\frac{x\cdot\big(ax^2+
     /* ───────────────────────── 第 12 题 ───────────────────────── */
     {
       id: '2024-12', year: 2024, no: '第12题', type: '填空', score: 5,
-      stem: R`设 $z=f(u,v)$ 有二阶连续导数，$\mathrm{d}f\big|_{(1,1)}=3\,\mathrm{d}u+4\,\mathrm{d}v$，$y=f(\cos x,1+x^2)$，则 $\dfrac{\mathrm{d}^2y}{\mathrm{d}x^2}\bigg|_{x=0}=$ ______．`,
+      stem: R`设 $z=f(u,v)$ 有二阶连续导数，且 $\mathrm{d}f\big|_{(1,1)}=3\,\mathrm{d}u+4\,\mathrm{d}v$，若 $y=f(\cos x,1+x^2)$，则 $\dfrac{\mathrm{d}^2y}{\mathrm{d}x^2}\bigg|_{x=0}=$ ______．`,
       options: null,
       answer: R`$5$`,
       figure: null,
@@ -314,7 +314,7 @@ $$\sum_{n=1}^\infty a_n\cos0=\sum_{k=1}^{\infty}\frac{-4}{\pi(2k-1)^2}=-\frac4\p
 <p><b>从哪个特征想到换元：</b>右边只通过整体 $x+y$ 依赖于 $x,y$。凡是 $y'=f(ax+by+c)$ 的方程，令 $u=ax+by+c$，就有 $u'=a+bf(u)$，右边只含 $u$，立刻变成可分离方程。这是"哪个整体反复出现，就把哪个整体换掉"的原则。</p>
 <p><b>结果的形式：</b>最后得到的关系里 $y$ 既在三角函数里又在外面，无法解出 $y=y(x)$ 的初等表达式，所以答案以隐式解或"$x$ 用 $y$ 表示"的形式给出即可。</p>`,
       solution: R`<p><b>第一步：换元。</b>令 $u=x+y$，则 $u'=1+y'=1+\dfrac{1}{u^2}=\dfrac{u^2+1}{u^2}$。</p>
-<p><b>第二步：分离变量。</b>由于 $u^2+1>0$，可以写成</p>
+<p><b>第二步：分离变量。</b>原方程要求 $x+y\ne0$，即解曲线上 $u\ne0$；又 $u^2+1>0$，所以两边可以同乘 $\dfrac{u^2}{u^2+1}\,\mathrm dx$，写成</p>
 $$\frac{u^2}{1+u^2}\,\mathrm du=\mathrm dx.$$
 <p><b>第三步：两边积分。</b>先把被积函数"分子凑分母"：$\dfrac{u^2}{1+u^2}=\dfrac{(1+u^2)-1}{1+u^2}=1-\dfrac{1}{1+u^2}$，所以</p>
 $$u-\arctan u=x+C.$$
@@ -532,7 +532,7 @@ $$f(0)(1-x)+f(1)x-f(x)=\frac{x(1-x)}{2}\big[xf''(\eta_1)+(1-x)f''(\eta_2)\big],$
       figure: null,
       kp: ['mint.stokes', 'vec.surface', 'vec.planeline'],
       methods: ['斯托克斯公式', '取平面圆盘为曲面', '利用曲面方程化简被积函数', '点到平面距离求截面圆半径'],
-      difficulty: 4,
+      difficulty: 3,
       analysis: R`<p><b>这题考什么：</b>空间闭曲线上的第二类曲线积分，用斯托克斯公式转化为曲面积分。</p>
 <p><b>为什么想到斯托克斯：</b>$L$ 是"球面 ∩ 平面"，是一个空间圆，直接参数化虽然可行，但被积式是三次多项式，代入后积分非常繁琐。斯托克斯公式把"沿闭曲线的环量"变成"旋度穿过所围曲面的通量"：</p>
 $$\oint_L P\,\mathrm dx+Q\,\mathrm dy+R\,\mathrm dz=\iint_\Sigma(\nabla\times\mathbf F)\cdot\mathbf n\,\mathrm dS.$$

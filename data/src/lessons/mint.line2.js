@@ -1,0 +1,565 @@
+// 讲解：第二类曲线积分与格林公式（第 6 章 多元函数积分学）
+registerLesson(function (R) {
+  return {
+    id: 'mint.line2', ch: 'mint', title: '第二类曲线积分与格林公式',
+    summary: R`第二类曲线积分沿<b>有向</b>曲线累加"力 × 位移"，方向一反，积分就变号。本篇从变力做功出发讲透它的定义与计算、与第一类曲线积分的关系；严格证明格林公式，并由它推出"曲线积分与路径无关"的四个等价条件和全微分原函数的求法——补线、挖洞、换路径、求待定函数，是数学一大题的常客。`,
+    prereq: ['mint.line1', 'mint.double', 'mdiff.diffable', 'mdiff.chain', 'int.ftc'],
+    sections: [
+      /* ───────── 1. 为什么 ───────── */
+      {
+        kind: 'why', title: '为什么需要"对坐标"的曲线积分',
+        html: R`<p>第一类曲线积分（见「第一类曲线积分」）解决的是"<b>沿曲线累加一个标量</b>"的问题，例如线密度为 $\rho(x,y)$ 的铁丝质量 $\displaystyle\int_L\rho\,ds$：每一小段的贡献是 $\rho\,\Delta s_i$，只和"这一段有多长"有关，和"从哪头走到哪头"无关。</p>
+<p>物理里还有一类同样常见、性质却完全不同的累加：<b>变力沿曲线做功</b>。设质点在平面力场 $$\mathbf{F}(x,y)=P(x,y)\,\mathbf{i}+Q(x,y)\,\mathbf{j}$$ 的作用下，沿曲线 $L$ 从点 $A$ 移动到点 $B$，求力 $\mathbf{F}$ 做的功 $W$。</p>
+<p>最简单的情形我们会算：常力 $\mathbf{F}$ 使质点沿直线从 $A$ 移到 $B$，功等于力与位移的数量积 $W=\mathbf{F}\cdot\overrightarrow{AB}$。现在力在变、路是弯的，办法还是定积分那一套"<b>分割、近似、求和、取极限</b>"：</p>
+<ol>
+<li><b>分割</b>：在 $L$ 上从 $A$ 到 $B$ <b>依次</b>取分点 $A=M_0,M_1,\dots,M_n=B$，设 $M_i=(x_i,y_i)$。</li>
+<li><b>近似</b>：第 $i$ 小段 $\widehat{M_{i-1}M_i}$ 很短，可以用有向线段 $\overrightarrow{M_{i-1}M_i}=\Delta x_i\,\mathbf{i}+\Delta y_i\,\mathbf{j}$ 代替（$\Delta x_i=x_i-x_{i-1}$，$\Delta y_i=y_i-y_{i-1}$）；在这一小段上任取一点 $(\xi_i,\eta_i)$，把力近似看成常力 $\mathbf{F}(\xi_i,\eta_i)$。于是 $$\Delta W_i\approx\mathbf{F}(\xi_i,\eta_i)\cdot\overrightarrow{M_{i-1}M_i}=P(\xi_i,\eta_i)\Delta x_i+Q(\xi_i,\eta_i)\Delta y_i.$$</li>
+<li><b>求和</b>：$W\approx\sum\limits_{i=1}^n\big[P(\xi_i,\eta_i)\Delta x_i+Q(\xi_i,\eta_i)\Delta y_i\big]$。</li>
+<li><b>取极限</b>：让每一小段的长度都趋于 $0$，和式的极限就是 $W$。</li>
+</ol>
+<svg viewBox="0 0 420 230" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
+<defs><marker id="ml2-a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<path d="M40,190 C120,40 260,220 380,60" stroke-width="2"/>
+<line x1="80" y1="142" x2="108" y2="108" stroke-width="1.3" stroke-opacity="0.7" marker-end="url(#ml2-a1)"/>
+<line x1="167" y1="126" x2="200" y2="84" stroke-width="1.8" marker-end="url(#ml2-a1)"/>
+<line x1="306" y1="121" x2="334" y2="87" stroke-width="1.3" stroke-opacity="0.7" marker-end="url(#ml2-a1)"/>
+<line x1="143" y1="125" x2="191" y2="128.5" stroke-width="1.3" stroke-dasharray="5 3" marker-end="url(#ml2-a1)"/>
+<circle cx="143" cy="125" r="3.5" fill="currentColor"/>
+<circle cx="195" cy="129" r="3.5" fill="currentColor"/>
+<circle cx="40" cy="190" r="3.5" fill="currentColor"/>
+<circle cx="380" cy="60" r="3.5" fill="currentColor"/>
+<path d="M344,98 L361,83" stroke-width="1.5" marker-end="url(#ml2-a1)"/>
+<g fill="currentColor" stroke="none" font-size="13">
+<text x="24" y="208">A（起点）</text>
+<text x="360" y="48">B（终点）</text>
+<text x="112" y="146">M<tspan font-size="9" dy="3">i−1</tspan></text>
+<text x="190" y="150">M<tspan font-size="9" dy="3">i</tspan></text>
+<text x="206" y="80">F(ξ<tspan font-size="9" dy="3">i</tspan><tspan dy="-3">, η</tspan><tspan font-size="9" dy="3">i</tspan><tspan dy="-3">)</tspan></text>
+<text x="128" y="112" font-size="11">(Δx<tspan font-size="8" dy="3">i</tspan><tspan dy="-3">, Δy</tspan><tspan font-size="8" dy="3">i</tspan><tspan dy="-3">)</tspan></text>
+<text x="20" y="224" font-size="12">每一小段：力 · 有向位移 = PΔx + QΔy，带正负号</text>
+</g>
+</svg>
+<p>和第一类曲线积分相比，这里出现了两个<b>本质的新特点</b>：</p>
+<ul>
+<li><b>乘的是坐标增量 $\Delta x_i,\Delta y_i$，而不是弧长 $\Delta s_i$。</b>$\Delta s_i$ 永远为正；$\Delta x_i$ 却可正、可负、可为零，它携带着"这一步往哪边走"的信息。"对坐标的曲线积分"这个名字就由此而来。</li>
+<li><b>方向有意义。</b>把路线反过来从 $B$ 走到 $A$，每个 $\Delta x_i,\Delta y_i$ 都变号，功也就变号——顺风骑车和逆风骑车，风力做功的符号相反。所以第二类曲线积分必须定义在<b>有向曲线</b>上。</li>
+</ul>
+<p>本篇的路线是：定义 → 化为定积分来计算 → 与第一类曲线积分的关系 → <b>格林公式</b>（把闭曲线上的积分变成它所围区域上的二重积分）→ 什么时候积分只看起点终点、不看路径 → 全微分的原函数。后三部分是一条完整的逻辑链：一元微积分里，牛顿–莱布尼茨公式说"区间上 $f'$ 的积分由端点值决定"；格林公式说"区域上某种导数的积分由边界上的积分决定"，这是同一个思想在二维的推广；而"路径无关"和"原函数"正是二维版的"积分 = 原函数之差"。</p>`
+      },
+
+      /* ───────── 2. 定义 ───────── */
+      {
+        kind: 'def', title: '对坐标的曲线积分（第二类曲线积分）的定义',
+        html: R`<p><b>有向曲线弧</b>　一条曲线弧连同规定的走向（哪一端是起点、哪一端是终点）叫有向曲线弧。与 $L$ 方向相反的同一条曲线记作 $L^-$。曲线弧<b>光滑</b>是指它有参数方程 $x=\varphi(t),y=\psi(t)$，其中 $\varphi',\psi'$ 连续且不同时为零（切线连续转动、没有尖点）；由有限段光滑弧首尾相接而成的曲线叫<b>分段光滑</b>曲线。</p>
+<p><b>定义</b>　设 $L$ 为 $xOy$ 面内从点 $A$ 到点 $B$ 的一条有向光滑曲线弧，函数 $P(x,y)$、$Q(x,y)$ 在 $L$ 上有界。在 $L$ 上<b>沿 $L$ 的方向</b>任意插入一列点 $$A=M_0,\ M_1,\ \dots,\ M_{n-1},\ M_n=B,$$ 把 $L$ 分成 $n$ 个有向小弧段 $\widehat{M_{i-1}M_i}$。设 $M_i=(x_i,y_i)$，记 $\Delta x_i=x_i-x_{i-1}$，$\Delta y_i=y_i-y_{i-1}$；在 $\widehat{M_{i-1}M_i}$ 上任取一点 $(\xi_i,\eta_i)$；记 $\lambda$ 为各小弧段<b>长度</b>的最大值。如果当 $\lambda\to0$ 时，和式 $\sum\limits_{i=1}^nP(\xi_i,\eta_i)\Delta x_i$ 的极限总存在，且与 $L$ 的分法及点 $(\xi_i,\eta_i)$ 的取法都无关，就称这个极限为函数 $P(x,y)$ 在有向曲线弧 $L$ 上<b>对坐标 $x$ 的曲线积分</b>，记作 $$\int_LP(x,y)\,dx=\lim_{\lambda\to0}\sum_{i=1}^nP(\xi_i,\eta_i)\Delta x_i.$$ 类似地，$\displaystyle\int_LQ(x,y)\,dy=\lim_{\lambda\to0}\sum_{i=1}^nQ(\xi_i,\eta_i)\Delta y_i$ 叫 $Q$ 在 $L$ 上<b>对坐标 $y$ 的曲线积分</b>。两者统称<b>第二类曲线积分</b>，常合写为 $$\int_LP\,dx+Q\,dy=\int_LP\,dx+\int_LQ\,dy.$$</p>
+<p><b>向量形式与空间推广</b>　记 $\mathbf{F}=(P,Q)$，$d\mathbf{r}=(dx,dy)$，则 $\displaystyle\int_LP\,dx+Q\,dy=\int_L\mathbf{F}\cdot d\mathbf{r}$，它就是变力 $\mathbf{F}$ 沿 $L$ 做的功。对空间有向曲线 $\Gamma$ 和三个函数 $P,Q,R$，完全同样地定义 $\displaystyle\int_\Gamma P\,dx+Q\,dy+R\,dz$。若 $L$ 是闭曲线，积分记作 $\displaystyle\oint_L$，此时只需说明绕行方向；起点取在哪里不影响积分值（由下文的可加性）。</p>
+<p><b>逐字拆解</b></p>
+<ul>
+<li><b>"有向"</b>：$\Delta x_i=x_i-x_{i-1}$ 是"后一个分点减前一个分点"，前后由方向决定。没有方向，$\Delta x_i$ 的正负号就无从谈起——去掉"有向"，定义根本写不出来。</li>
+<li><b>"沿 $L$ 的方向依次插入分点"</b>：分点必须按走向顺序排列，不能跳着排；否则 $\Delta x_i$ 就不再是"这一小段上 $x$ 的改变量"。</li>
+<li><b>"与分法、取点都无关"</b>：和定积分、第一类曲线积分一样，这保证极限是 $L$ 与 $P$ 本身的属性，而不是某种特殊分法的巧合。</li>
+<li><b>"$\lambda$ 取小弧段长度的最大值"，而不是 $\max|\Delta x_i|$</b>：若 $L$ 中有一段竖直线段，那一段上每个 $\Delta x_i=0$，$\max|\Delta x_i|\to0$ 并不能保证每一小段真的缩短了，取的点 $(\xi_i,\eta_i)$ 也就不能代表整段。用弧长控制，才能保证"每一小段都缩成一点"。</li>
+<li><b>"$P,Q$ 在 $L$ 上有界"</b>：这只是定义的前提（无界时适当取点可使和式任意大，极限不可能与取点无关）。真正保证积分存在的常用充分条件是：<b>$L$ 光滑（或分段光滑），$P,Q$ 在 $L$ 上连续</b>。下一节的计算公式顺带证明了这一点。</li>
+<li><b>"$P$ 配 $dx$、$Q$ 配 $dy$"</b>：$\int_LP\,dx$ 只用到 $\Delta x_i$，与 $Q$ 无关；两个积分本来是独立的，合写只是为了"功"的物理意义和后面格林公式的需要。</li>
+</ul>
+<p><b>正例</b></p>
+<ul>
+<li>$L$ 为 $x$ 轴上从 $(a,0)$ 到 $(b,0)$ 的有向线段。此时 $\Delta y_i=0$，$\Delta x_i$ 就是区间分割的小区间（带号）长度，于是 $\displaystyle\int_LP\,dx=\int_a^bP(x,0)\,dx$。$a>b$ 时同样成立，右边是"从大到小"的定积分。所以<b>定积分本身就是第二类曲线积分的特例</b>，而熟悉的 $\int_a^b=-\int_b^a$ 正是下文"反向变号"的原型。</li>
+<li>$L$ 为平行于 $y$ 轴的有向线段。每个 $\Delta x_i=0$，所以 $\displaystyle\int_LP\,dx=0$，不论 $P$ 是什么。这个结论在补线、折线换路径时天天要用。</li>
+</ul>
+<p><b>反例</b></p>
+<ul>
+<li>$L$ 为从 $(0,0)$ 到 $(1,0)$ 的线段，$P(x,y)=\begin{cases}1,&x\in\mathbb{Q},\\0,&x\notin\mathbb{Q}.\end{cases}$ $P$ 有界，但 $\xi_i$ 全取有理数时和式恒为 $1$，全取无理数时恒为 $0$，极限与取点有关，$\int_LP\,dx$ 不存在。可见"有界"远远不够。</li>
+<li>同一个点集、不同方向，积分不同：从 $(0,0)$ 到 $(1,0)$，$\int_Ldx=1$；从 $(1,0)$ 到 $(0,0)$，$\int_{L^-}dx=-1$。第二类曲线积分是"<b>有向曲线</b>"的函数，而不是"点集"的函数——这是它和第一类曲线积分最大的不同。</li>
+</ul>`
+      },
+
+      /* ───────── 3. 计算公式 ───────── */
+      {
+        kind: 'thm', title: '定理：化为定积分的计算公式',
+        statement: R`<p>设 $P(x,y)$、$Q(x,y)$ 在有向光滑曲线弧 $L$ 上连续，$L$ 的参数方程为 $$x=\varphi(t),\quad y=\psi(t),$$ 当参数 $t$ <b>单调地由 $\alpha$ 变到 $\beta$</b> 时，点 $M(\varphi(t),\psi(t))$ 从 $L$ 的起点 $A$ 沿 $L$ 不重复地运动到终点 $B$；$\varphi,\psi$ 在以 $\alpha,\beta$ 为端点的闭区间上具有一阶连续导数，且 $\varphi'^2(t)+\psi'^2(t)\neq0$。则曲线积分 $\int_LP\,dx+Q\,dy$ 存在，且 $$\int_LP\,dx+Q\,dy=\int_\alpha^\beta\Big\{P[\varphi(t),\psi(t)]\varphi'(t)+Q[\varphi(t),\psi(t)]\psi'(t)\Big\}dt.$$ <b>下限 $\alpha$ 对应起点，上限 $\beta$ 对应终点，$\alpha$ 不一定小于 $\beta$。</b></p>
+<p>常用特例：若 $L$ 由 $y=y(x)$ 给出，起点、终点的横坐标分别为 $a,b$，则 $$\int_LP\,dx+Q\,dy=\int_a^b\big\{P[x,y(x)]+Q[x,y(x)]\,y'(x)\big\}dx.$$ 空间曲线 $\Gamma:\ x=\varphi(t),y=\psi(t),z=\omega(t)$（$t:\alpha\to\beta$）上：$\displaystyle\int_\Gamma P\,dx+Q\,dy+R\,dz=\int_\alpha^\beta\big(P\varphi'+Q\psi'+R\omega'\big)dt$，其中 $P,Q,R$ 都取在 $(\varphi(t),\psi(t),\omega(t))$ 处。</p>
+<p>口诀："<b>一代、二换、三定限</b>"——把参数方程代入被积函数；$dx$ 换成 $\varphi'(t)dt$、$dy$ 换成 $\psi'(t)dt$；下限对起点、上限对终点。</p>`,
+        intuition: R`<p>把 $t$ 想成时间，质点沿 $L$ 运动，速度为 $\mathbf{v}=(\varphi'(t),\psi'(t))$。在 $dt$ 时间内 $x$ 坐标改变 $dx=\varphi'(t)dt$，于是 $\mathbf{F}\cdot d\mathbf{r}=(\mathbf{F}\cdot\mathbf{v})\,dt$，即"功 = 功率对时间积分"。时间从出发时刻积到到达时刻，所以下限必须对起点；如果参数是"倒着走"的（$\alpha>\beta$），积分就从大积到小，符号自然体现了方向。</p>
+<p>对比第一类：$ds=\sqrt{\varphi'^2+\psi'^2}\,dt$ 永远非负，所以第一类的计算公式必须"下限小于上限"；第二类的 $dx=\varphi'(t)dt$ 可正可负，方向信息由积分限的先后携带。</p>`,
+        steps: [
+          { s: R`<p><b>化归到 $\alpha\lt\beta$。</b>若 $\alpha>\beta$，令 $t=-u$，则 $x=\varphi(-u),y=\psi(-u)$ 仍是 $L$ 的参数方程，$u$ 从 $-\alpha$ 增加到 $-\beta$，且 $-\alpha\lt-\beta$。对右端积分作换元 $u=-t$：$$\int_{-\alpha}^{-\beta}P[\varphi(-u),\psi(-u)]\cdot\big(-\varphi'(-u)\big)du=\int_\alpha^\beta P[\varphi(t),\psi(t)]\varphi'(t)\,dt,$$ 两种参数给出的右端相同（$Q$ 项同理）。所以只需对 $\alpha\lt\beta$ 证明。</p>`, why: R`<p>证明中要用"黎曼和收敛到定积分"，那里习惯区间从小到大。先说明"倒着走"的参数可以换成"正着走"的参数而右端不变，就把两种情形统一了。</p>` },
+          { s: R`<p><b>分割的对应。</b>由于 $t$ 增大时点 $M(t)$ 从 $A$ 沿 $L$ 单调地走到 $B$，$L$ 上沿方向排列的分点 $M_0,M_1,\dots,M_n$ 恰好对应 $[\alpha,\beta]$ 的分割 $\alpha=t_0\lt t_1\lt\dots\lt t_n=\beta$，$M_i=(\varphi(t_i),\psi(t_i))$；小弧段上的点 $(\xi_i,\eta_i)$ 对应某个 $\tau_i\in[t_{i-1},t_i]$，即 $\xi_i=\varphi(\tau_i),\eta_i=\psi(\tau_i)$。</p><p>再说明"$\lambda\to0$"与"$\|\Delta t\|=\max\Delta t_i\to0$"等价。弧长函数 $s(t)=\displaystyle\int_\alpha^t\sqrt{\varphi'^2(u)+\psi'^2(u)}\,du$ 的被积函数连续且恒正，故 $s(t)$ 在 $[\alpha,\beta]$ 上连续、严格增，其反函数 $t=t(s)$ 在 $[0,\ell]$ 上也连续（$\ell$ 为 $L$ 的长）。闭区间上的连续函数一致连续（康托尔定理），所以 $\max\Delta t_i\to0\Rightarrow\max\Delta s_i\to0$，反之亦然。</p>`, why: R`<p>定义里的极限过程是"小弧段长度 $\lambda\to0$"，定积分的极限过程是"参数小区间长度 $\to0$"，要把一种和式的极限转成另一种，必须先说明两种"分细"是一回事。"$\varphi'^2+\psi'^2\neq0$"在这里起作用：它保证 $s(t)$ 严格增，参数和弧长一一对应。</p>` },
+          { s: R`<p><b>用拉格朗日中值定理改写坐标增量。</b>$\Delta x_i=\varphi(t_i)-\varphi(t_{i-1})=\varphi'(\tau_i')\Delta t_i$，$\tau_i'\in(t_{i-1},t_i)$。于是 $$\sum_{i=1}^nP(\xi_i,\eta_i)\Delta x_i=\sum_{i=1}^nP[\varphi(\tau_i),\psi(\tau_i)]\,\varphi'(\tau_i')\,\Delta t_i.$$</p>`, why: R`<p>想法：定积分的黎曼和形如"函数值 × $\Delta t_i$"，所以要把 $\Delta x_i$ 写成"导数 × $\Delta t_i$"。麻烦在于：$P$ 取在 $\tau_i$ 处，$\varphi'$ 取在 $\tau_i'$ 处，两个点一般不同，这还不是一个函数的黎曼和。</p>` },
+          { s: R`<p><b>拆成"黎曼和 + 误差"。</b>令 $g(t)=P[\varphi(t),\psi(t)]\varphi'(t)$，则 $$\sum_{i=1}^nP[\varphi(\tau_i),\psi(\tau_i)]\varphi'(\tau_i')\Delta t_i=\underbrace{\sum_{i=1}^ng(\tau_i)\Delta t_i}_{S_1}+\underbrace{\sum_{i=1}^nP[\varphi(\tau_i),\psi(\tau_i)]\big[\varphi'(\tau_i')-\varphi'(\tau_i)\big]\Delta t_i}_{S_2}.$$ $g$ 是连续函数的复合与乘积，在 $[\alpha,\beta]$ 上连续，从而可积，$S_1$ 正是它的黎曼和，故 $\|\Delta t\|\to0$ 时 $S_1\to\displaystyle\int_\alpha^\beta g(t)\,dt$。</p>`, why: R`<p>"加一项减一项"把和式凑成标准黎曼和，剩下的差全部集中到 $S_2$ 里，只需证明它趋于 $0$。</p>` },
+          { s: R`<p><b>误差 $S_2\to0$。</b>$P[\varphi(t),\psi(t)]$ 在闭区间 $[\alpha,\beta]$ 上连续，故有界：$|P[\varphi(t),\psi(t)]|\leqslant M$。$\varphi'$ 在 $[\alpha,\beta]$ 上连续，故一致连续：对任意 $\varepsilon>0$，存在 $\delta>0$，当 $|t'-t''|\lt\delta$ 时 $|\varphi'(t')-\varphi'(t'')|\lt\varepsilon$。当 $\|\Delta t\|\lt\delta$ 时，$\tau_i,\tau_i'$ 同在长度小于 $\delta$ 的区间 $[t_{i-1},t_i]$ 内，于是 $$|S_2|\leqslant\sum_{i=1}^nM\varepsilon\,\Delta t_i=M\varepsilon(\beta-\alpha).$$ 由 $\varepsilon$ 的任意性，$S_2\to0$。</p>`, why: R`<p>这是证明的关键：要求对<b>所有</b>小区间同时有 $|\varphi'(\tau_i')-\varphi'(\tau_i)|\lt\varepsilon$，而分点随分割在变，逐点连续给不出统一的 $\delta$，必须用一致连续。</p>` },
+          { s: R`<p><b>结论。</b>综上，不论 $L$ 怎样分、$(\xi_i,\eta_i)$ 怎样取，只要 $\lambda\to0$（等价于 $\|\Delta t\|\to0$），就有 $\sum P(\xi_i,\eta_i)\Delta x_i\to\displaystyle\int_\alpha^\beta P[\varphi(t),\psi(t)]\varphi'(t)\,dt$。按定义，$\int_LP\,dx$ 存在且等于它。把 $\varphi$ 换成 $\psi$，同理得 $\int_LQ\,dy=\displaystyle\int_\alpha^\beta Q[\varphi(t),\psi(t)]\psi'(t)\,dt$。两式相加即得公式。空间曲线的情形，证明逐字相同。</p>`, why: R`<p>极限值与分法、取点无关，正是定义所要求的，所以存在性和计算公式一并得到。</p>` }
+        ],
+        remark: R`<p><b>与第一类的计算公式对比</b>：第一类 $\displaystyle\int_Lf\,ds=\int_\alpha^\beta f\sqrt{\varphi'^2+\psi'^2}\,dt$ 必须 $\alpha\lt\beta$；第二类必须"下限对起点"。两类公式最容易互相串用，一定要分清。</p>
+<p><b>分段光滑曲线</b>：逐段用公式，再相加（下一节的可加性）。<b>参数的选法</b>不影响结果——积分是由曲线和方向决定的几何量，用 $x$、用 $y$、用角度作参数都可以，选让被积函数最简单的那个。</p>
+<p><b>"不重复地运动"不能少</b>：对闭曲线尤其要让参数恰好走一圈。圆周 $x=a\cos t,y=a\sin t$ 若让 $t$ 从 $0$ 到 $4\pi$，算出的是绕两圈的积分，等于 $\oint_L$ 的 $2$ 倍。</p>`
+      },
+
+      /* ───────── 4. 基本性质 ───────── */
+      {
+        kind: 'thm', title: '定理：第二类曲线积分的基本性质',
+        statement: R`<p>设 $L$ 为有向分段光滑曲线，下列各被积函数在 $L$ 上连续，$k_1,k_2$ 为常数。</p>
+<ol>
+<li><b>线性</b>：$\displaystyle\int_L[k_1\mathbf{F}_1+k_2\mathbf{F}_2]\cdot d\mathbf{r}=k_1\int_L\mathbf{F}_1\cdot d\mathbf{r}+k_2\int_L\mathbf{F}_2\cdot d\mathbf{r}$。</li>
+<li><b>对积分弧段的可加性</b>：若有向曲线 $L$ 由 $L_1$ 和 $L_2$ 首尾相接而成（方向与 $L$ 一致），则 $\displaystyle\int_L=\int_{L_1}+\int_{L_2}$。</li>
+<li><b>反向变号</b>：$\displaystyle\int_{L^-}P\,dx+Q\,dy=-\int_LP\,dx+Q\,dy$。</li>
+<li><b>垂直线段</b>：若 $L$ 是垂直于 $x$ 轴的有向线段，则 $\int_LP\,dx=0$；若 $L$ 垂直于 $y$ 轴，则 $\int_LQ\,dy=0$。</li>
+</ol>`,
+        intuition: R`<p>用"功"来读：分两段走，总功等于两段功之和；原路返回，每一小步的位移都反向，功变号；沿竖直方向移动时，水平分力 $P$ 不做功。</p>`,
+        steps: [
+          { s: R`<p><b>(1) 线性。</b>用计算公式把两边都化为定积分，由定积分的线性性即得。</p>`, why: R`<p>在 $P,Q$ 连续、曲线光滑的前提下，计算公式把第二类曲线积分"翻译"成定积分，定积分的性质就可以直接搬过来。</p>` },
+          { s: R`<p><b>(2) 可加性。</b>设 $L$ 的参数方程为 $x=\varphi(t),y=\psi(t)$，$t$ 由 $\alpha$ 变到 $\beta$，接点对应 $t=\gamma$（$\gamma$ 介于 $\alpha,\beta$ 之间）。则 $L_1$ 对应 $t:\alpha\to\gamma$，$L_2$ 对应 $t:\gamma\to\beta$。由定积分的区间可加性 $\int_\alpha^\beta=\int_\alpha^\gamma+\int_\gamma^\beta$（对 $\alpha,\beta,\gamma$ 的任意大小顺序都成立）即得。分段光滑曲线把所有分段点都取为接点，逐段处理。</p>`, why: R`<p>闭曲线的积分与起点选取无关，也是这条性质的推论：换一个起点，相当于把曲线在两点处切开、重新排列两段的先后次序，总和不变。</p>` },
+          { s: R`<p><b>(3) 反向变号。</b>用同一个参数方程，$L^-$ 对应 $t$ 由 $\beta$ 变到 $\alpha$，于是 $\int_{L^-}=\int_\beta^\alpha g(t)dt=-\int_\alpha^\beta g(t)dt=-\int_L$。也可以直接从定义看：$L^-$ 的分点就是 $L$ 的分点倒过来排，每个 $\Delta x_i,\Delta y_i$ 都变号而取点不变，和式整体变号，极限也变号。</p>`, why: R`<p>第二种看法说明这条性质的根源在定义本身——"后减前"随方向翻转。第一类曲线积分里 $\Delta s_i>0$ 与方向无关，所以没有这条性质。</p>` },
+          { s: R`<p><b>(4) 垂直线段。</b>设 $L$ 在直线 $x=c$ 上，取参数 $x=c,y=t$，则 $\varphi'(t)=0$，$\int_LP\,dx=\int P(c,t)\cdot0\,dt=0$。另一种情形同理。</p>`, why: R`<p>定义里每个 $\Delta x_i=0$，和式恒为零，所以这条性质甚至不需要 $P$ 连续。</p>` }
+        ],
+        remark: R`<p><b>没有保号性</b>：第一类曲线积分中"$f\geqslant0$ 则 $\int_Lf\,ds\geqslant0$"；第二类没有这回事。$P\equiv1>0$，从 $(1,0)$ 到 $(0,0)$ 的 $\int_Ldx=-1\lt0$，因为 $\Delta x_i$ 可以为负。同理，第二类也没有第一类那样的积分中值定理。</p>
+<p><b>估值不等式</b>倒是有的：$\left|\int_LP\,dx+Q\,dy\right|\leqslant M\cdot s$，其中 $M=\max\limits_L\sqrt{P^2+Q^2}$，$s$ 为 $L$ 的长度——它要借助两类曲线积分的关系来证，见后文。</p>`
+      },
+
+      /* ───────── 5. 例题：直接计算 ───────── */
+      {
+        kind: 'example', title: '例题：直接计算，以及"积分值和路径有关吗"',
+        html: R`<p><b>例 1</b>　计算 $\displaystyle\int_Lxy\,dx$，其中 $L$ 从 $O(0,0)$ 到 $B(1,1)$，分别沿：(a) 抛物线 $y=x^2$；(b) 抛物线 $x=y^2$；(c) 折线 $O\to C(1,0)\to B$。</p>
+<p><b>解</b>　(a) 以 $x$ 为参数，$y=x^2$，起点 $x=0$、终点 $x=1$：$$\int_Lxy\,dx=\int_0^1x\cdot x^2\,dx=\frac14.$$ (b) 这条曲线用 $y$ 作参数更方便：$x=y^2$，$dx=2y\,dy$，$y$ 从 $0$ 到 $1$：$$\int_Lxy\,dx=\int_0^1y^2\cdot y\cdot2y\,dy=2\int_0^1y^4dy=\frac25.$$ (c) 在 $OC$ 上 $y=0$，被积函数为 $0$；在 $CB$ 上 $x=1$ 是竖直线段，$dx=0$。所以积分为 $0$。</p>
+<p><b>为什么这样想</b>：选参数的原则是"让曲线方程和 $dx$ 最简单"。(b) 中若硬用 $x$ 作参数，$y=\sqrt x$，也能算（结果相同），但 $y$ 作参数一步到位。(c) 中两段分别用"$y=0$"和"$dx=0$"秒杀。</p>
+<p><b>观察</b>：起点、终点相同，三条路径给出 $\frac14,\frac25,0$ 三个不同的值——<b>第二类曲线积分一般与路径有关</b>。</p>
+<p><b>例 2</b>　沿例 1 的三条路径计算 $\displaystyle\int_L2xy\,dx+x^2dy$。</p>
+<p><b>解</b>　(a) $y=x^2$，$dy=2x\,dx$：$\int_0^1(2x\cdot x^2+x^2\cdot2x)dx=\int_0^14x^3dx=1$。(b) $x=y^2$，$dx=2y\,dy$：$\int_0^1(2y^2\cdot y\cdot2y+y^4)dy=\int_0^15y^4dy=1$。(c) $OC$ 上 $y=0,dy=0$，积分为 $0$；$CB$ 上 $x=1,dx=0$，积分为 $\int_0^1dy=1$。合计 $1$。</p>
+<p><b>观察</b>：这次三条路径结果都是 $1$。而且 $1=x^2y\big|_{(1,1)}-x^2y\big|_{(0,0)}$——因为 $2xy\,dx+x^2dy$ 恰好是 $d(x^2y)$。这不是巧合，后面"路径无关"一节会彻底解释：被积式是某个函数的全微分时，积分只看起点终点。</p>
+<p><b>例 3</b>　设 $L$ 为圆周 $x^2+y^2=a^2$，逆时针方向，计算 $\displaystyle\oint_L\frac{x\,dy-y\,dx}{x^2+y^2}$。</p>
+<p><b>解</b>　$x=a\cos t,y=a\sin t$，逆时针对应 $t$ 从 $0$ 增到 $2\pi$。$x\,dy-y\,dx=(a\cos t\cdot a\cos t+a\sin t\cdot a\sin t)dt=a^2dt$，分母为 $a^2$，所以 $$\oint_L\frac{x\,dy-y\,dx}{x^2+y^2}=\int_0^{2\pi}dt=2\pi.$$ 若顺时针，结果为 $-2\pi$。请记住这个 $2\pi$：它与半径 $a$ 无关，是格林公式一节最重要的"反例"。几何上，$\dfrac{x\,dy-y\,dx}{x^2+y^2}$ 是极角 $\theta$ 的微小改变量，绕原点一圈，极角增加 $2\pi$。</p>
+<p><b>例 4（空间曲线）</b>　$\Gamma$ 为从 $A(1,1,1)$ 到 $B(2,3,4)$ 的直线段，计算 $\displaystyle\int_\Gamma x\,dx+y\,dy+(x+y-1)\,dz$。</p>
+<p><b>解</b>　方向向量 $\overrightarrow{AB}=(1,2,3)$，参数方程 $x=1+t,y=1+2t,z=1+3t$，$t$ 从 $0$（起点）到 $1$（终点）。$$\int_\Gamma=\int_0^1\big[(1+t)\cdot1+(1+2t)\cdot2+(1+3t)\cdot3\big]dt=\int_0^1(6+14t)\,dt=13.$$ <b>为什么这样想</b>：直线段用"起点 $+\,t\cdot$方向向量"参数化最省事，$t$ 从 $0$ 到 $1$ 自动对应起点到终点，不会把方向弄反。</p>`
+      },
+
+      /* ───────── 6. 两类曲线积分的关系 ───────── */
+      {
+        kind: 'thm', title: '定理：两类曲线积分之间的关系',
+        statement: R`<p>设 $L$ 为有向光滑曲线弧，$\vec{\tau}=(\cos\alpha,\cos\beta)$ 为 $L$ 上点 $(x,y)$ 处<b>与 $L$ 的方向一致</b>的单位切向量，$P,Q$ 在 $L$ 上连续，则 $$\int_LP\,dx+Q\,dy=\int_L\big(P\cos\alpha+Q\cos\beta\big)\,ds.$$ 向量形式：$\displaystyle\int_L\mathbf{F}\cdot d\mathbf{r}=\int_L\mathbf{F}\cdot\vec{\tau}\,ds$，即 $d\mathbf{r}=\vec{\tau}\,ds$，$dx=\cos\alpha\,ds$，$dy=\cos\beta\,ds$。空间曲线上：$\displaystyle\int_\Gamma P\,dx+Q\,dy+R\,dz=\int_\Gamma(P\cos\alpha+Q\cos\beta+R\cos\gamma)\,ds$，$(\cos\alpha,\cos\beta,\cos\gamma)$ 为与 $\Gamma$ 方向一致的单位切向量。</p>`,
+        intuition: R`<p>做功只看力在<b>前进方向</b>上的分量：$\mathbf{F}\cdot\vec{\tau}$ 是切向分力，乘上走过的路程 $ds$ 再累加就是功。第一类积分里 $ds$ 没有方向，第二类的方向信息被"搬进"了单位切向量 $\vec{\tau}$ 里。（这里的 $\alpha,\beta$ 是切向量的方向角，不要与上一节的参数积分限混淆。）</p>`,
+        steps: [
+          { s: R`<p>取 $L$ 的参数方程 $x=\varphi(t),y=\psi(t)$，并使 $t$ <b>增大</b>的方向就是 $L$ 的方向，$t$ 从 $a$ 增到 $b$（$a\lt b$）。若给定参数的增大方向与 $L$ 相反，用 $t\to-t$ 换一下即可。</p>`, why: R`<p>这样第一类、第二类的计算公式积分限都是从 $a$ 到 $b$（$a\lt b$），只需比较被积函数。</p>` },
+          { s: R`<p>向量 $(\varphi'(t),\psi'(t))$ 是切向量，且指向 $t$ 增大的方向，即 $L$ 的方向。单位化得 $$\cos\alpha=\frac{\varphi'(t)}{\sqrt{\varphi'^2(t)+\psi'^2(t)}},\qquad\cos\beta=\frac{\psi'(t)}{\sqrt{\varphi'^2(t)+\psi'^2(t)}}.$$</p>`, why: R`<p>为什么指向 $t$ 增大的方向：它是割线向量 $\dfrac{M(t+h)-M(t)}{h}$（$h>0$）的极限，而 $h>0$ 时割线从 $M(t)$ 指向"前方"的 $M(t+h)$。光滑性保证分母不为零。</p>` },
+          { s: R`<p>由第一类曲线积分的计算公式（见「第一类曲线积分」），$ds=\sqrt{\varphi'^2+\psi'^2}\,dt$，于是 $$\int_L(P\cos\alpha+Q\cos\beta)\,ds=\int_a^b\Big(P\frac{\varphi'}{\sqrt{\varphi'^2+\psi'^2}}+Q\frac{\psi'}{\sqrt{\varphi'^2+\psi'^2}}\Big)\sqrt{\varphi'^2+\psi'^2}\,dt=\int_a^b\big(P\varphi'+Q\psi'\big)dt,$$ 其中 $P,Q$ 都取在 $(\varphi(t),\psi(t))$ 处。</p>`, why: R`<p>根号恰好约掉——这就是"$dx=\cos\alpha\,ds$"的来源：$dx=\varphi'dt=\dfrac{\varphi'}{\sqrt{\varphi'^2+\psi'^2}}\cdot\sqrt{\varphi'^2+\psi'^2}\,dt$。</p>` },
+          { s: R`<p>右端正是第二类曲线积分的计算公式（起点 $t=a$，终点 $t=b$），等于 $\int_LP\,dx+Q\,dy$。证毕。空间情形完全相同。</p>`, why: R`<p>两类积分都已化成同一个定积分，自然相等。</p>` }
+        ],
+        remark: R`<p><b>方向的一致性</b>：$L$ 反向时，$\vec{\tau}$ 变成 $-\vec{\tau}$，$\cos\alpha,\cos\beta$ 都变号，右端变号，与左端"反向变号"吻合。</p>
+<p><b>估值不等式的证明</b>：由柯西不等式 $|P\cos\alpha+Q\cos\beta|\leqslant\sqrt{P^2+Q^2}\sqrt{\cos^2\alpha+\cos^2\beta}=\sqrt{P^2+Q^2}$，再用第一类积分的估值，得 $\left|\int_LP\,dx+Q\,dy\right|\leqslant\max\limits_L\sqrt{P^2+Q^2}\cdot s$。证明题里常用它说明"沿越来越小的曲线积分趋于零"。</p>
+<p><b>法向量形式（预告）</b>：对正向闭曲线（见后文），外法向单位向量是切向量顺时针转 $90^\circ$：$\mathbf{n}=(\cos\beta,-\cos\alpha)$，于是 $dy=n_x\,ds$，$dx=-n_y\,ds$。这把 $\oint P\,dy-Q\,dx$ 变成通量 $\oint(\mathbf{F}\cdot\mathbf{n})\,ds$，与格林公式结合就得到平面上的"高斯公式"。</p>`
+      },
+
+      /* ───────── 7. 例：两类转化 ───────── */
+      {
+        kind: 'example', title: '例题：把第二类曲线积分化成第一类',
+        html: R`<p><b>例 5</b>　把 $\displaystyle\int_LP(x,y)\,dx+Q(x,y)\,dy$ 化为对弧长的曲线积分，其中 $L$ 为沿上半圆周 $x^2+y^2=2x$ 从点 $O(0,0)$ 到点 $(1,1)$ 的弧。</p>
+<p><b>分析</b>　关键是求出与 $L$ <b>方向一致</b>的单位切向量。$L$ 可写成 $y=\sqrt{2x-x^2}$，从 $O$ 到 $(1,1)$ 时 $x$ 由 $0$ 增到 $1$，所以"$x$ 增大的方向"就是 $L$ 的方向，切向量取 $(1,y')$（若方向相反就取 $(-1,-y')$）。</p>
+<p><b>解</b>　$y'=\dfrac{1-x}{\sqrt{2x-x^2}}$，$$\sqrt{1+y'^2}=\sqrt{\frac{2x-x^2+(1-x)^2}{2x-x^2}}=\frac1{\sqrt{2x-x^2}}.$$ 所以 $$\cos\alpha=\frac1{\sqrt{1+y'^2}}=\sqrt{2x-x^2},\qquad\cos\beta=\frac{y'}{\sqrt{1+y'^2}}=1-x,$$ $$\int_LP\,dx+Q\,dy=\int_L\Big[\sqrt{2x-x^2}\,P(x,y)+(1-x)\,Q(x,y)\Big]ds.$$</p>
+<p><b>自检</b>：在起点 $O$，$(\cos\alpha,\cos\beta)=(0,1)$，切线竖直向上——圆 $(x-1)^2+y^2=1$ 的最左点切线确实竖直，从这里沿上半圆出发确实向上走；在终点 $(1,1)$，$(\cos\alpha,\cos\beta)=(1,0)$，水平向右——圆的最高点切线水平，沿 $L$ 的方向确实向右。用端点检验方向是避免符号错误的好习惯。</p>
+<p><b>例 6</b>　$\Gamma$ 为从 $(0,0,0)$ 到 $(1,2,2)$ 的直线段，把 $\int_\Gamma P\,dx+Q\,dy+R\,dz$ 化为第一类曲线积分。</p>
+<p><b>解</b>　方向向量 $(1,2,2)$，长度 $3$，单位切向量 $\left(\frac13,\frac23,\frac23\right)$，所以 $$\int_\Gamma P\,dx+Q\,dy+R\,dz=\int_\Gamma\frac{P+2Q+2R}3\,ds.$$ 直线段上切向量处处相同，是最简单的情形。</p>`
+      },
+
+      /* ───────── 8. 单连通、复连通与正向 ───────── */
+      {
+        kind: 'def', title: '单连通区域、复连通区域与边界的正向',
+        html: R`<p>格林公式要把"闭曲线上的积分"与"它所围区域上的二重积分"联系起来。动笔之前必须先说清两件事：<b>区域里有没有"洞"</b>；<b>边界往哪个方向绕算正</b>。</p>
+<p><b>定义 1（单连通与复连通）</b>　设 $D$ 为平面区域。如果 $D$ 内<b>任一</b>简单闭曲线（自身不相交的闭曲线）所围成的部分都完全属于 $D$，就称 $D$ 为<b>平面单连通区域</b>；否则称为<b>复连通区域</b>。通俗地说：单连通区域就是"没有洞"的区域，哪怕只挖掉一个点也算有洞。</p>
+<ul>
+<li><b>"任一"</b>：只要能找到一条位于 $D$ 内的闭曲线，圈住了某个不属于 $D$ 的点，$D$ 就不是单连通的。</li>
+<li><b>"所围成的部分"</b>：简单闭曲线把平面分成有界的"内部"和无界的"外部"（若尔当曲线定理，直观上显然，严格证明超出要求，这里承认），"所围成的部分"指有界的内部。</li>
+</ul>
+<p><b>正例</b>：圆盘、矩形、上半平面、全平面都是单连通的。一个容易判断错的正例：<b>全平面去掉一条射线</b> $\{(x,0)\mid x\leqslant0\}$ 也是单连通的——射线一直延伸到无穷远，任何不与它相交的闭曲线都不可能把它的点圈在内部。</p>
+<p><b>反例</b>：圆环 $1\lt x^2+y^2\lt4$（中间有洞）；去心圆盘 $0\lt x^2+y^2\lt1$；全平面去掉原点。最后两个只挖掉了一个点，却同样是复连通的——在曲线积分中这是最常见的情形，因为被积函数常常在原点没有定义（如例 3 的 $\dfrac{x\,dy-y\,dx}{x^2+y^2}$）。</p>
+<p><b>定义 2（边界的正向）</b>　设区域 $D$ 由一条或几条分段光滑的闭曲线围成，$L$ 为 $D$ 的全部边界。规定 $L$ 的<b>正向</b>为：当观察者沿 $L$ 的这个方向行走时，$D$ 内在他近处的那一部分<b>总在他的左边</b>。</p>
+<ul>
+<li>单连通区域：边界的正向就是<b>逆时针</b>方向。</li>
+<li>复连通区域：<b>外边界逆时针，内边界顺时针</b>。</li>
+</ul>
+<svg viewBox="0 0 420 250" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
+<defs><marker id="ml2-a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<path d="M40,120 a170,95 0 1,0 340,0 a170,95 0 1,0 -340,0 Z M270,115 a40,40 0 1,0 -80,0 a40,40 0 1,0 80,0 Z" fill="currentColor" fill-opacity="0.08" fill-rule="evenodd" stroke="none"/>
+<ellipse cx="210" cy="120" rx="170" ry="95" stroke-width="1.8"/>
+<circle cx="230" cy="115" r="40" stroke-width="1.8"/>
+<line x1="198" y1="215" x2="216" y2="215" stroke-width="2" marker-end="url(#ml2-a2)"/>
+<line x1="222" y1="25" x2="204" y2="25" stroke-width="2" marker-end="url(#ml2-a2)"/>
+<line x1="380" y1="130" x2="380" y2="112" stroke-width="2" marker-end="url(#ml2-a2)"/>
+<line x1="40" y1="110" x2="40" y2="128" stroke-width="2" marker-end="url(#ml2-a2)"/>
+<line x1="222" y1="75" x2="238" y2="75" stroke-width="2" marker-end="url(#ml2-a2)"/>
+<line x1="238" y1="155" x2="222" y2="155" stroke-width="2" marker-end="url(#ml2-a2)"/>
+<line x1="270" y1="107" x2="270" y2="123" stroke-width="2" marker-end="url(#ml2-a2)"/>
+<line x1="190" y1="123" x2="190" y2="107" stroke-width="2" marker-end="url(#ml2-a2)"/>
+<g fill="currentColor" stroke="none" font-size="13">
+<text x="100" y="125">D</text>
+<text x="215" y="120" font-size="12">洞</text>
+<text x="300" y="16" font-size="12">外边界：逆时针</text>
+<text x="252" y="182" font-size="12">内边界：顺时针</text>
+<text x="40" y="245" font-size="12">沿任一边界按箭头走，D 都在左手边</text>
+</g>
+</svg>
+<p><b>为什么用"左手规则"而不直接说"逆时针"</b>：对内边界而言，逆时针走时区域在右边。只有统一成"区域在左边"，一句话才能覆盖所有情形，格林公式也才能写成一个式子。<b>去掉正向的规定会怎样</b>：边界方向一反，曲线积分变号，而二重积分不变，格林公式就只能写成"相差一个正负号"，没法用。</p>`
+      },
+
+      /* ───────── 9. 格林公式 ───────── */
+      {
+        kind: 'thm', title: '定理：格林公式',
+        statement: R`<p>设闭区域 $D$ 由分段光滑的曲线 $L$ 围成，函数 $P(x,y)$、$Q(x,y)$ 在 $D$ 上具有<b>一阶连续偏导数</b>，则 $$\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)dxdy=\oint_LP\,dx+Q\,dy,$$ 其中 $L$ 是 $D$ 的<b>取正向</b>的边界曲线。$D$ 可以是复连通的，此时 $L$ 包括全部内、外边界（各取正向）。</p>
+<p>记忆：被积函数是行列式 $\begin{vmatrix}\dfrac{\partial}{\partial x}&\dfrac{\partial}{\partial y}\\P&Q\end{vmatrix}=\dfrac{\partial Q}{\partial x}-\dfrac{\partial P}{\partial y}$——"$Q$ 对 $x$，减 $P$ 对 $y$"，配 $dy$ 的函数对 $x$ 求导排在前面。</p>`,
+        intuition: R`<p><b>小方格里的环流。</b>取一个边长为 $\Delta x,\Delta y$ 的小矩形 $[x,x+\Delta x]\times[y,y+\Delta y]$，逆时针绕一圈，四条边分别贡献：下边 $\approx P(x,y)\Delta x$，右边 $\approx Q(x+\Delta x,y)\Delta y$，上边（向左走）$\approx-P(x,y+\Delta y)\Delta x$，左边（向下走）$\approx-Q(x,y)\Delta y$。合计 $$\big[Q(x+\Delta x,y)-Q(x,y)\big]\Delta y-\big[P(x,y+\Delta y)-P(x,y)\big]\Delta x\approx\Big(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\Big)\Delta x\Delta y.$$ 所以 $\dfrac{\partial Q}{\partial x}-\dfrac{\partial P}{\partial y}$ 就是"单位面积上的环流量"，即场在这一点的"旋转强度"（旋度）。</p>
+<svg viewBox="0 0 420 235" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
+<defs><marker id="ml2-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<rect x="40" y="20" width="300" height="160" stroke-width="2.2"/>
+<line x1="140" y1="20" x2="140" y2="180" stroke-width="0.8" stroke-dasharray="4 3"/>
+<line x1="240" y1="20" x2="240" y2="180" stroke-width="0.8" stroke-dasharray="4 3"/>
+<line x1="40" y1="100" x2="340" y2="100" stroke-width="0.8" stroke-dasharray="4 3"/>
+<line x1="72" y1="91" x2="108" y2="91" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="131" y1="78" x2="131" y2="42" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="108" y1="29" x2="72" y2="29" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="49" y1="42" x2="49" y2="78" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="72" y1="171" x2="108" y2="171" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="131" y1="158" x2="131" y2="122" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="108" y1="109" x2="72" y2="109" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="49" y1="122" x2="49" y2="158" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="172" y1="91" x2="208" y2="91" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="231" y1="78" x2="231" y2="42" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="208" y1="29" x2="172" y2="29" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="149" y1="42" x2="149" y2="78" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="172" y1="171" x2="208" y2="171" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="231" y1="158" x2="231" y2="122" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="208" y1="109" x2="172" y2="109" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="149" y1="122" x2="149" y2="158" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="272" y1="91" x2="308" y2="91" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="331" y1="78" x2="331" y2="42" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="308" y1="29" x2="272" y2="29" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="249" y1="42" x2="249" y2="78" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="272" y1="171" x2="308" y2="171" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="331" y1="158" x2="331" y2="122" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="308" y1="109" x2="272" y2="109" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<line x1="249" y1="122" x2="249" y2="158" stroke-width="1.3" marker-end="url(#ml2-g)"/>
+<g fill="currentColor" stroke="none" font-size="12">
+<text x="350" y="64">公共边上</text>
+<text x="350" y="80">一来一回</text>
+<text x="350" y="96">互相抵消</text>
+<text x="20" y="205">每个小格都逆时针绕一圈，把所有小格的环流加起来：</text>
+<text x="20" y="225">内部的边全部抵消，只剩最外圈——这就是格林公式。</text>
+</g>
+</svg>
+<p>把区域 $D$ 划分成许多小方格，把所有小方格的环流加起来：左边 $\approx\iint_D\big(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\big)dxdy$；而任意两个相邻小格在公共边上的走向相反，这些内部边上的积分两两抵消，最后只剩外边界上的积分 $\oint_L$。这就是格林公式："<b>内部各处旋转量之和 = 边界上的总环流</b>"。下面的严格证明，正是把这个"抵消"的想法落实。</p>`,
+        steps: [
+          { s: R`<p><b>第 1 步：$D$ 既是 X 型又是 Y 型时，证 $\displaystyle-\iint_D\frac{\partial P}{\partial y}dxdy=\oint_LP\,dx$。</b>把 $D$ 写成 X 型：$D=\{(x,y)\mid\varphi_1(x)\leqslant y\leqslant\varphi_2(x),\ a\leqslant x\leqslant b\}$。化为先 $y$ 后 $x$ 的累次积分，内层用牛顿–莱布尼茨公式：$$\iint_D\frac{\partial P}{\partial y}dxdy=\int_a^bdx\int_{\varphi_1(x)}^{\varphi_2(x)}\frac{\partial P}{\partial y}dy=\int_a^b\Big\{P[x,\varphi_2(x)]-P[x,\varphi_1(x)]\Big\}dx.$$</p>`, why: R`<p>二重积分化累次积分见「二重积分」。<b>为什么先对 $y$ 积分</b>：被积函数是 $P$ 对 $y$ 的偏导，对 $y$ 积回去恰好抵消一次求导，只剩下 $P$ 在上下边界上的值——而边界上的值正是曲线积分要用的东西。$\frac{\partial P}{\partial y}$ 连续保证了内层牛顿–莱布尼茨公式成立。</p>` },
+          { s: R`<p><b>第 2 步：计算边界上的 $\oint_LP\,dx$。</b>如图，正向边界 $L=L_1+L_2+L_3+L_4$：</p>
+<svg viewBox="0 0 420 250" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
+<defs><marker id="ml2-a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<line x1="30" y1="220" x2="405" y2="220" stroke-width="1" marker-end="url(#ml2-a3)"/>
+<line x1="40" y1="232" x2="40" y2="12" stroke-width="1" marker-end="url(#ml2-a3)"/>
+<path d="M100,170 C160,200 260,190 340,160 L340,90 C260,70 160,40 100,120 Z" fill="currentColor" fill-opacity="0.08" stroke="none"/>
+<path d="M100,170 C160,200 260,190 340,160" stroke-width="2"/>
+<path d="M100,120 C160,40 260,70 340,90" stroke-width="2"/>
+<line x1="100" y1="120" x2="100" y2="170" stroke-width="2"/>
+<line x1="340" y1="90" x2="340" y2="160" stroke-width="2"/>
+<line x1="100" y1="170" x2="100" y2="220" stroke-width="0.8" stroke-dasharray="4 3"/>
+<line x1="340" y1="160" x2="340" y2="220" stroke-width="0.8" stroke-dasharray="4 3"/>
+<line x1="204" y1="187.5" x2="222" y2="187.5" stroke-width="2" marker-end="url(#ml2-a3)"/>
+<line x1="222" y1="67.5" x2="204" y2="67.5" stroke-width="2" marker-end="url(#ml2-a3)"/>
+<line x1="340" y1="134" x2="340" y2="116" stroke-width="2" marker-end="url(#ml2-a3)"/>
+<line x1="100" y1="136" x2="100" y2="154" stroke-width="2" marker-end="url(#ml2-a3)"/>
+<g fill="currentColor" stroke="none" font-size="13">
+<text x="200" y="135">D</text>
+<text x="150" y="210" font-size="12">L₁：y = φ₁(x)，x 从 a 到 b</text>
+<text x="150" y="50" font-size="12">L₃：y = φ₂(x)，x 从 b 到 a</text>
+<text x="348" y="130" font-size="12">L₂</text>
+<text x="76" y="150" font-size="12">L₄</text>
+<text x="96" y="238">a</text>
+<text x="336" y="238">b</text>
+<text x="26" y="236">O</text>
+<text x="400" y="238">x</text>
+<text x="46" y="18">y</text>
+</g>
+</svg>
+<p>$L_1$：下边界 $y=\varphi_1(x)$，$x$ 从 $a$ 到 $b$，$\displaystyle\int_{L_1}P\,dx=\int_a^bP[x,\varphi_1(x)]\,dx$；<br>$L_3$：上边界 $y=\varphi_2(x)$，$x$ 从 $b$ 到 $a$，$\displaystyle\int_{L_3}P\,dx=\int_b^aP[x,\varphi_2(x)]\,dx=-\int_a^bP[x,\varphi_2(x)]\,dx$；<br>$L_2,L_4$：竖直线段（也可能退化为一点），$\int P\,dx=0$。<br>相加：$$\oint_LP\,dx=\int_a^b\Big\{P[x,\varphi_1(x)]-P[x,\varphi_2(x)]\Big\}dx=-\iint_D\frac{\partial P}{\partial y}dxdy.$$</p>`, why: R`<p>方向由"区域在左边"决定：沿下边界从左往右走，区域在上方即左手边；沿上边界只能从右往左走，区域在下方才是左手边。用 $x$ 作参数时，这正好决定了 $L_1$、$L_3$ 的上下限。竖直边上 $dx=0$ 用的是基本性质 (4)。注意上边界是"往回走"的，这就是公式里 $\frac{\partial P}{\partial y}$ 前面带负号的来源。</p>` },
+          { s: R`<p><b>第 3 步：同理证 $\displaystyle\iint_D\frac{\partial Q}{\partial x}dxdy=\oint_LQ\,dy$。</b>把 $D$ 写成 Y 型：$D=\{(x,y)\mid\psi_1(y)\leqslant x\leqslant\psi_2(y),\ c\leqslant y\leqslant d\}$。先对 $x$ 积分：$$\iint_D\frac{\partial Q}{\partial x}dxdy=\int_c^d\Big\{Q[\psi_2(y),y]-Q[\psi_1(y),y]\Big\}dy.$$ 正向边界上：右边界 $x=\psi_2(y)$，$y$ 从 $c$ 到 $d$（向上走）；左边界 $x=\psi_1(y)$，$y$ 从 $d$ 到 $c$（向下走）；上下两段水平线段上 $dy=0$。于是 $$\oint_LQ\,dy=\int_c^dQ[\psi_2(y),y]\,dy+\int_d^cQ[\psi_1(y),y]\,dy=\iint_D\frac{\partial Q}{\partial x}dxdy.$$</p>`, why: R`<p>检查方向：沿右边界向上走，左手边是 $x$ 较小的一侧，正是区域内部，符合正向。这一次"正着走"的是 $x$ 较大的右边界，所以没有负号——两步一对比，就明白了为什么公式是 $\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}$ 而不是反过来。</p>` },
+          { s: R`<p><b>第 4 步：相加。</b>对既是 X 型又是 Y 型的区域，第 2、3 步两式相加即得 $$\oint_LP\,dx+Q\,dy=\iint_D\Big(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\Big)dxdy.$$</p>`, why: R`<p>两个等式各自独立成立，$P$ 和 $Q$ 互不干扰。圆、椭圆、三角形、矩形等凸区域都属于这种情形。</p>` },
+          { s: R`<p><b>第 5 步：一般的单连通区域——分块。</b>用有限条辅助线把 $D$ 分成有限块 $D_1,\dots,D_k$，使每块既是 X 型又是 Y 型。对每块用第 4 步：$\iint_{D_j}=\oint_{\partial D_j}$（$\partial D_j$ 取 $D_j$ 的正向边界）。对 $j$ 求和：左边由二重积分的区域可加性得 $\iint_D$；右边，每条辅助线是相邻两块的公共边界，两块各自的正向都要求"自己在左边"，而两块位于辅助线两侧，所以这条辅助线被沿<b>相反方向</b>各走一次，由"反向变号"其上的积分互相抵消。剩下的恰是 $D$ 的边界 $L$，且方向是 $D$ 的正向。</p>`, why: R`<p>这正是直观中"小方格内部边抵消"的严格版本。教材和考题中的区域都能这样有限分块；对边界极不规则的一般区域，需要用逼近论证，超出考研要求。</p>` },
+          { s: R`<p><b>第 6 步：复连通区域——剪开。</b>设 $D$ 的外边界为 $L_0$，内边界为 $L_1,\dots,L_m$。对每个洞，用两条辅助线把它与外边界连起来，$D$ 就被剪成若干块单连通区域。对每块用第 5 步，相加：辅助线都被来回各走一次，积分抵消；剩下的是 $L_0$（按逆时针）与 $L_1,\dots,L_m$（按顺时针）——这正是 $D$ 的正向边界。所以公式对复连通区域同样成立。</p>`, why: R`<p>"剪开"后每块的正向边界在原内边界上的走向，都是"让该块在左边"，而该块在洞的外侧，于是沿内边界的走向是顺时针。这就解释了为什么复连通区域的内边界正向是顺时针。</p>` }
+        ],
+        remark: R`<p><b>三个条件缺一不可。</b></p>
+<ol>
+<li><b>$L$ 封闭</b>：不封闭时没有"所围区域"，要先补线（见例题）。</li>
+<li><b>$L$ 取正向</b>：若 $L$ 是顺时针（对单连通区域），则 $\oint_L=-\iint_D\big(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\big)dxdy$。</li>
+<li><b>$P,Q$ 在整个 $D$ 上（含内部每一点）有一阶连续偏导数</b>：反例：$P=\dfrac{-y}{x^2+y^2}$，$Q=\dfrac{x}{x^2+y^2}$，$L$ 为单位圆逆时针。当 $(x,y)\neq(0,0)$ 时 $$\frac{\partial Q}{\partial x}=\frac{y^2-x^2}{(x^2+y^2)^2}=\frac{\partial P}{\partial y},$$ 若硬套格林公式会得到 $0$，但例 3 已算出积分为 $2\pi$。错在 $P,Q$ 在原点无定义，而原点在 $L$ 所围区域内。</li>
+</ol>
+<p><b>与其他公式的关系</b>：格林公式是牛顿–莱布尼茨公式的二维推广，又是斯托克斯公式在平面上的特例（见「斯托克斯公式」）。把 $(P,Q)$ 换成 $(-Q,P)$ 得到它的<b>散度形式</b> $$\oint_LP\,dy-Q\,dx=\iint_D\Big(\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}\Big)dxdy,$$ 结合两类曲线积分关系中的外法向 $\mathbf{n}$，左边就是流出 $D$ 的通量 $\oint_L\mathbf{F}\cdot\mathbf{n}\,ds$，这是高斯公式的平面版本（见「第二类曲面积分与高斯公式」「场论初步与积分的应用」）。</p>`
+      },
+
+      /* ───────── 10. 面积公式 ───────── */
+      {
+        kind: 'thm', title: '推论：用曲线积分计算平面图形的面积',
+        statement: R`<p>设闭区域 $D$ 由分段光滑的闭曲线 $L$ 围成，$L$ 取正向，则 $D$ 的面积 $$A=\oint_Lx\,dy=-\oint_Ly\,dx=\frac12\oint_Lx\,dy-y\,dx.$$</p>`,
+        intuition: R`<p>格林公式左边被积函数若恒为 $1$，二重积分就是面积。所以只要找 $P,Q$ 使 $\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}=1$，边界上的积分就"量出"了面积——求积仪正是按这个原理工作的。</p>`,
+        steps: [
+          { s: R`<p>取 $P=0,Q=x$：$\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}=1$，且 $P,Q$ 在 $D$ 上一阶偏导连续，由格林公式 $\oint_Lx\,dy=\iint_D1\,dxdy=A$。</p>`, why: R`<p>这是满足"差为 1"的最简单选择。</p>` },
+          { s: R`<p>取 $P=-y,Q=0$：同样得 $-\oint_Ly\,dx=A$。</p>`, why: R`<p>另一种最简单的选择。</p>` },
+          { s: R`<p>两式相加除以 $2$，得 $A=\frac12\oint_Lx\,dy-y\,dx$。</p>`, why: R`<p>对称形式在参数方程中往往最简洁：$x\,dy-y\,dx=(\varphi\psi'-\psi\varphi')dt$，常能用 $\cos^2+\sin^2=1$ 合并。</p>` }
+        ],
+        remark: R`<p><b>例</b>：椭圆 $x=a\cos t,y=b\sin t$（$t:0\to2\pi$ 为逆时针），$x\,dy-y\,dx=(ab\cos^2t+ab\sin^2t)dt=ab\,dt$，所以 $A=\frac12\int_0^{2\pi}ab\,dt=\pi ab$。</p>
+<p>注意 $L$ 必须取正向，否则算出负面积。这个公式也提供了一个检查格林公式符号的好办法：$\oint x\,dy$（逆时针）应当是正数。</p>`
+      },
+
+      /* ───────── 11. 例题：格林公式的用法 ───────── */
+      {
+        kind: 'example', title: '例题：格林公式的三种用法——直接用、补线、挖洞',
+        html: R`<p><b>例 7（直接用）</b>　计算 $\displaystyle\oint_L(2xy-3y)\,dx+(x^2-5x)\,dy$，$L$ 为椭圆 $\dfrac{x^2}4+y^2=1$，逆时针方向。</p>
+<p><b>解</b>　$P=2xy-3y$，$Q=x^2-5x$ 是多项式，在整个椭圆域 $D$ 上一阶偏导连续。$$\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}=(2x-5)-(2x-3)=-2,$$ 由格林公式，原式 $=\iint_D(-2)\,dxdy=-2\cdot\pi\cdot2\cdot1=-4\pi$。</p>
+<p><b>为什么想到</b>：闭曲线、$P,Q$ 处处光滑、$\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}$ 是常数——三个信号齐全。直接参数化也能做，但要处理 $\int\cos t\sin^2t\,dt$ 之类的项，远不如格林公式干净。</p>
+<p><b>例 8（先代入，再用格林）</b>　计算 $\displaystyle\oint_L\frac{x\,dy-y\,dx}{x^2+y^2}$，$L$ 为圆周 $x^2+y^2=a^2$，逆时针。</p>
+<p><b>解</b>　曲线积分只用到被积函数在 $L$ 上的值，而在 $L$ 上 $x^2+y^2=a^2$，所以 $$\oint_L\frac{x\,dy-y\,dx}{x^2+y^2}=\frac1{a^2}\oint_Lx\,dy-y\,dx=\frac1{a^2}\cdot2\cdot\pi a^2=2\pi,$$ 最后一步用了面积公式。代入之后，新的 $P=-\frac{y}{a^2}$、$Q=\frac{x}{a^2}$ 在整个圆盘上都光滑，用格林公式完全合法；若不先代入就对原来的 $P,Q$ 用格林公式，就会掉进上一节反例的陷阱。</p>
+<p><b>例 9（补线）</b>　计算 $I=\displaystyle\int_L(e^x\sin y-my)\,dx+(e^x\cos y-m)\,dy$，其中 $L$ 为从点 $A(a,0)$ 沿上半圆周 $x^2+y^2=ax$ 到点 $O(0,0)$ 的弧，$a>0$，$m$ 为常数。</p>
+<svg viewBox="0 0 420 210" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
+<defs><marker id="ml2-a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<path d="M60,180 A150,150 0 0,1 360,180 Z" fill="currentColor" fill-opacity="0.08" stroke="none"/>
+<line x1="20" y1="180" x2="405" y2="180" stroke-width="1" marker-end="url(#ml2-a4)"/>
+<path d="M360,180 A150,150 0 0,0 60,180" stroke-width="2"/>
+<line x1="220" y1="30" x2="200" y2="30" stroke-width="2" marker-end="url(#ml2-a4)"/>
+<line x1="60" y1="180" x2="360" y2="180" stroke-width="2.5" stroke-dasharray="7 4"/>
+<line x1="200" y1="180" x2="222" y2="180" stroke-width="2" marker-end="url(#ml2-a4)"/>
+<circle cx="60" cy="180" r="3.5" fill="currentColor"/>
+<circle cx="360" cy="180" r="3.5" fill="currentColor"/>
+<g fill="currentColor" stroke="none" font-size="13">
+<text x="50" y="200">O</text>
+<text x="352" y="200">A(a, 0)</text>
+<text x="200" y="120">D</text>
+<text x="300" y="40" font-size="12">L：从 A 到 O</text>
+<text x="160" y="200" font-size="12">补线 OA（y = 0）</text>
+</g>
+</svg>
+<p><b>分析</b>　直接参数化 $x=\frac a2+\frac a2\cos t,y=\frac a2\sin t$，会出现 $e^{\frac a2(1+\cos t)}\sin\big(\frac a2\sin t\big)$ 这类积不出来的东西。但是 $$\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}=e^x\cos y-(e^x\cos y-m)=m,$$ 难算的部分在偏导数之差里<b>抵消了</b>——这就是"补线用格林"的信号。</p>
+<p><b>解</b>　补有向线段 $\overline{OA}$：$y=0$，$x$ 从 $0$ 到 $a$。$L+\overline{OA}$ 是闭曲线，从 $A$ 沿上半圆到 $O$ 再沿 $x$ 轴回到 $A$，正好是逆时针，即半圆域 $D$（半径 $\frac a2$）的正向边界。由格林公式 $$\oint_{L+\overline{OA}}=\iint_Dm\,dxdy=m\cdot\frac12\pi\Big(\frac a2\Big)^2=\frac{m\pi a^2}8.$$ 在 $\overline{OA}$ 上 $y=0$，$dy=0$，$P=e^x\sin0-0=0$，所以 $\int_{\overline{OA}}=0$。因此 $$I=\oint_{L+\overline{OA}}-\int_{\overline{OA}}=\frac{m\pi a^2}8.$$</p>
+<p><b>补线的三条要领</b>：(1) 补的线要让积分好算，首选坐标轴或平行于坐标轴的线段；(2) 补线的方向要与 $L$ 首尾相接，构成闭曲线，再判断是正向还是负向；(3) 最后一定要<b>减去</b>补线上的积分；补线围成的区域内不能有奇点。</p>
+<p><b>例 10（挖洞）</b>　设 $L$ 为不经过原点的分段光滑简单闭曲线，取逆时针方向，计算 $I=\displaystyle\oint_L\frac{x\,dy-y\,dx}{4x^2+y^2}$。</p>
+<p><b>先算偏导数</b>：$P=\dfrac{-y}{4x^2+y^2}$，$Q=\dfrac{x}{4x^2+y^2}$，当 $(x,y)\neq(0,0)$ 时 $$\frac{\partial Q}{\partial x}=\frac{(4x^2+y^2)-8x^2}{(4x^2+y^2)^2}=\frac{y^2-4x^2}{(4x^2+y^2)^2},\qquad\frac{\partial P}{\partial y}=\frac{-(4x^2+y^2)+2y^2}{(4x^2+y^2)^2}=\frac{y^2-4x^2}{(4x^2+y^2)^2}.$$ 二者相等。</p>
+<p><b>情形一：原点在 $L$ 外部。</b>$L$ 所围区域 $D$ 不含原点，$P,Q$ 在 $D$ 上一阶偏导连续，由格林公式 $I=\iint_D0\,dxdy=0$。</p>
+<p><b>情形二：原点在 $L$ 内部。</b>不能直接用格林公式。取充分小的 $r>0$，作椭圆 $C_r:4x^2+y^2=r^2$，使它完全落在 $L$ 内部，取逆时针方向。记 $L$ 与 $C_r$ 之间的环形区域为 $D_1$，它的正向边界是 $L+C_r^-$（外圈逆时针、内圈顺时针）。$D_1$ 不含原点，用格林公式：$$\oint_L+\oint_{C_r^-}=\iint_{D_1}0\,dxdy=0\quad\Longrightarrow\quad\oint_L=\oint_{C_r}.$$</p>
+<svg viewBox="0 0 420 240" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
+<defs><marker id="ml2-a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<path d="M90,120 C90,40 200,30 260,45 C350,65 370,150 320,190 C270,225 150,215 110,180 C95,165 90,140 90,120 Z M234,120 a24,34 0 1,0 -48,0 a24,34 0 1,0 48,0 Z" fill="currentColor" fill-opacity="0.08" fill-rule="evenodd" stroke="none"/>
+<path d="M90,120 C90,40 200,30 260,45 C350,65 370,150 320,190 C270,225 150,215 110,180 C95,165 90,140 90,120 Z" stroke-width="2"/>
+<ellipse cx="210" cy="120" rx="24" ry="34" stroke-width="1.8"/>
+<circle cx="210" cy="120" r="3" fill="currentColor"/>
+<line x1="208" y1="209" x2="226" y2="210" stroke-width="2" marker-end="url(#ml2-a5)"/>
+<line x1="210" y1="37" x2="192" y2="39" stroke-width="2" marker-end="url(#ml2-a5)"/>
+<line x1="202" y1="86" x2="218" y2="86" stroke-width="2" marker-end="url(#ml2-a5)"/>
+<line x1="218" y1="154" x2="202" y2="154" stroke-width="2" marker-end="url(#ml2-a5)"/>
+<g fill="currentColor" stroke="none" font-size="13">
+<text x="214" y="126">O</text>
+<text x="320" y="40" font-size="12">L：逆时针</text>
+<text x="240" y="160" font-size="12">C<tspan font-size="9" dy="3">r</tspan><tspan dy="-3">⁻：顺时针</tspan></text>
+<text x="120" y="120">D<tspan font-size="9" dy="3">1</tspan></text>
+<text x="40" y="234" font-size="12">在 L 与小椭圆之间的环形区域上用格林公式</text>
+</g>
+</svg>
+<p>在 $C_r$ 上取 $x=\frac r2\cos t,y=r\sin t$，$t:0\to2\pi$。则 $4x^2+y^2=r^2$，$$x\,dy-y\,dx=\frac r2\cos t\cdot r\cos t\,dt-r\sin t\cdot\Big(-\frac r2\sin t\Big)dt=\frac{r^2}2dt,$$ 所以 $\displaystyle I=\oint_{C_r}=\int_0^{2\pi}\frac{r^2/2}{r^2}dt=\pi$。</p>
+<p><b>为什么挖"椭圆"而不挖"圆"</b>：在 $C_r$ 上分母 $4x^2+y^2$ 恒为常数 $r^2$，被积函数立刻化简。挖圆也能做，但要算 $\int_0^{2\pi}\frac{dt}{1+3\cos^2t}$，麻烦得多。口诀："<b>洞的形状跟着分母走</b>"。</p>
+<p><b>结果的含义</b>：只要 $L$ 逆时针绕原点一圈，不论 $L$ 是什么形状，积分都是 $\pi$；不绕原点则是 $0$。积分只取决于"绕洞几圈"，这正是下一节的主题。</p>`
+      },
+
+      /* ───────── 12. 路径无关与原函数的定义 ───────── */
+      {
+        kind: 'def', title: '曲线积分与路径无关；全微分的原函数',
+        html: R`<p>例 1 中积分随路径而变，例 2 中却只看起点终点；例 3、例 10 中绕原点一圈积分不为零。什么时候积分"只看两端"？先把概念定义清楚。这里 $G$ 总表示平面<b>区域</b>（开的连通集：每点都有一个小圆盘含于 $G$，且任两点可用 $G$ 内的折线连接）。</p>
+<p><b>定义 1（与路径无关）</b>　设 $P,Q$ 在区域 $G$ 内连续。如果对 $G$ 内<b>任意</b>两点 $A,B$，以及 $G$ 内从 $A$ 到 $B$ 的<b>任意</b>两条分段光滑曲线 $L_1,L_2$，恒有 $$\int_{L_1}P\,dx+Q\,dy=\int_{L_2}P\,dx+Q\,dy,$$ 就称曲线积分 $\int_LP\,dx+Q\,dy$ <b>在 $G$ 内与路径无关</b>。此时积分只由起点和终点决定，可记作 $\displaystyle\int_A^BP\,dx+Q\,dy$ 或 $\displaystyle\int_{(x_A,y_A)}^{(x_B,y_B)}P\,dx+Q\,dy$。</p>
+<ul>
+<li><b>"在 $G$ 内"</b>：路径必须完全落在 $G$ 中。同一个被积式，在小区域内与路径无关，在大区域内可能有关。例如 $\dfrac{x\,dy-y\,dx}{x^2+y^2}$ 在右半平面 $x>0$ 内与路径无关（后面会证明），在"全平面去掉原点"内却有关（例 3：绕原点一圈得 $2\pi$）。</li>
+<li><b>"任意两点、任意两条路径"</b>：只对某几条路径相等不算数。例 2 只验证了三条路径，严格说明还要靠下面的定理。</li>
+<li><b>"分段光滑"</b>：保证每条路径上的积分有意义。</li>
+</ul>
+<p><b>定义 2（全微分的原函数）</b>　如果存在区域 $G$ 内的可微函数 $u(x,y)$，使得在 $G$ 内处处 $$du=P\,dx+Q\,dy,\quad\text{即}\quad\frac{\partial u}{\partial x}=P,\ \ \frac{\partial u}{\partial y}=Q,$$ 就称 $P\,dx+Q\,dy$ 在 $G$ 内是 $u$ 的<b>全微分</b>，称 $u$ 为 $P\,dx+Q\,dy$ 的一个<b>原函数</b>（物理上叫势函数）。</p>
+<ul>
+<li>这是一元"$F'(x)=f(x)$ 则 $F$ 是 $f$ 的原函数"的二元版本。区别在于：一元连续函数总有原函数；二元的 $P\,dx+Q\,dy$ <b>不一定</b>有，因为要<b>同时</b>满足两个方程 $u_x=P$、$u_y=Q$，它们可能互相矛盾。</li>
+<li><b>正例</b>：$2xy\,dx+x^2dy=d(x^2y)$，原函数 $u=x^2y$（全平面）；$x\,dx+y\,dy=d\big(\frac12(x^2+y^2)\big)$。</li>
+<li><b>反例</b>：$y\,dx$ 不是任何函数的全微分。若 $u_x=y$，则 $u=xy+\varphi(y)$，于是 $u_y=x+\varphi'(y)$，要它恒等于 $Q=0$，就要 $\varphi'(y)=-x$ 对所有 $x$ 成立，不可能。</li>
+<li><b>与区域有关的例子</b>：在右半平面内 $\dfrac{x\,dy-y\,dx}{x^2+y^2}=d\Big(\arctan\dfrac yx\Big)$；但在"全平面去掉原点"内它没有原函数——候选者是极角 $\theta$，可极角绕原点一圈要增加 $2\pi$，不是单值函数。</li>
+</ul>
+<p><b>物理意义</b>：若力场 $\mathbf{F}=(P,Q)$ 有势函数 $u$，就称它是<b>保守场</b>，做功只与起点终点有关（如重力、静电力），$-u$ 就是势能。</p>`
+      },
+
+      /* ───────── 13. 三条等价 ───────── */
+      {
+        kind: 'thm', title: '定理：路径无关 ⇔ 闭路积分为零 ⇔ 存在原函数',
+        statement: R`<p>设 $G$ 是平面区域，$P(x,y)$、$Q(x,y)$ 在 $G$ 内连续。则以下三条<b>等价</b>：</p>
+<ol>
+<li>曲线积分 $\int_LP\,dx+Q\,dy$ 在 $G$ 内与路径无关；</li>
+<li>对 $G$ 内任意分段光滑闭曲线 $C$，$\oint_CP\,dx+Q\,dy=0$；</li>
+<li>在 $G$ 内存在函数 $u(x,y)$，使 $du=P\,dx+Q\,dy$。</li>
+</ol>
+<p>并且当它们成立时，对 $G$ 内任意两点 $A,B$ 有 $$\int_A^BP\,dx+Q\,dy=u(B)-u(A)\qquad\text{（曲线积分的牛顿–莱布尼茨公式）}.$$</p>`,
+        intuition: R`<p>重力场里，爬山的路有千万条，重力做的功只取决于高度差（1 ⇔ 3）；绕一圈回到原地，重力做功为零（2）。"高度"就是势函数。三条说的是同一件事的三个侧面：<b>只看两端 ⇔ 转圈为零 ⇔ 有"势"</b>。</p>`,
+        steps: [
+          { s: R`<p><b>(1)⇒(2)。</b>设 $C$ 是 $G$ 内的分段光滑闭曲线，在 $C$ 上取两个不同的点 $A,B$，把 $C$ 分成从 $A$ 到 $B$ 的 $C_1$ 和从 $B$ 回到 $A$ 的 $C_2$。由可加性与反向变号，$$\oint_C=\int_{C_1}+\int_{C_2}=\int_{C_1}-\int_{C_2^-}.$$ $C_1$ 与 $C_2^-$ 都是 $G$ 内从 $A$ 到 $B$ 的路径，由 (1) 两积分相等，所以 $\oint_C=0$。</p>`, why: R`<p>闭曲线 = "去" + "回"；把"回"反过来，就是另一条"去"的路。</p>` },
+          { s: R`<p><b>(2)⇒(1)。</b>设 $L_1,L_2$ 是 $G$ 内从 $A$ 到 $B$ 的两条分段光滑曲线，则 $L_1+L_2^-$ 是 $G$ 内的分段光滑闭曲线，由 (2)：$$0=\oint_{L_1+L_2^-}=\int_{L_1}-\int_{L_2},$$ 即 $\int_{L_1}=\int_{L_2}$。</p>`, why: R`<p>$L_1$ 与 $L_2$ 可能相交，$L_1+L_2^-$ 未必是简单闭曲线，所以 (2) 必须对<b>一切</b>闭曲线（包括自交的）成立，而不仅仅是简单闭曲线。</p>` },
+          { s: R`<p><b>(1)⇒(3)：构造原函数。</b>取定 $M_0(x_0,y_0)\in G$，对 $(x,y)\in G$ 令 $$u(x,y)=\int_{(x_0,y_0)}^{(x,y)}P\,dx+Q\,dy,$$ 积分沿 $G$ 内从 $M_0$ 到 $(x,y)$ 的任一分段光滑路径。$G$ 连通，这样的路径存在（例如折线）；由 (1)，积分值与路径的选取无关，所以 $u$ 是 $G$ 上一个确定的（单值）函数。</p>`, why: R`<p>想法来自一元：$f$ 连续时，$F(x)=\int_a^xf(t)\,dt$ 是 $f$ 的原函数。这里如法炮制"终点可变的曲线积分"。路径无关是 $u$ 能被定义的前提——否则换一条路 $u$ 的值就变了。</p>` },
+          { s: R`<p><b>(1)⇒(3)：求偏导数。</b>任取 $(x,y)\in G$。$G$ 是开集，存在以 $(x,y)$ 为心的小圆盘含于 $G$，所以 $|\Delta x|$ 足够小时，从 $(x,y)$ 到 $(x+\Delta x,y)$ 的水平线段在 $G$ 内。到 $(x+\Delta x,y)$ 的路径可选为"先到 $(x,y)$，再走这条水平线段"，于是 $$u(x+\Delta x,y)-u(x,y)=\int_{(x,y)}^{(x+\Delta x,y)}P\,dx+Q\,dy=\int_x^{x+\Delta x}P(t,y)\,dt=P(x+\theta\Delta x,y)\,\Delta x,$$ 其中 $0\leqslant\theta\leqslant1$。第二个等号因为水平线段上 $dy=0$，第三个等号是积分中值定理。两边除以 $\Delta x$ 并令 $\Delta x\to0$，由 $P$ 的连续性得 $\dfrac{\partial u}{\partial x}=P(x,y)$。同理（走竖直线段）得 $\dfrac{\partial u}{\partial y}=Q(x,y)$。</p>`, why: R`<p>路径无关的好处是可以挑"最方便"的路：沿水平线段走，$dy=0$，增量恰好只剩 $P$ 的一个定积分，和一元变上限积分求导一模一样。"$G$ 是开集"保证这条小线段不会跑出 $G$。</p>` },
+          { s: R`<p><b>(1)⇒(3)：可微。</b>$u_x=P$、$u_y=Q$ 都在 $G$ 内连续，由可微的充分条件（偏导数连续则可微，见「偏导数与全微分」），$u$ 在 $G$ 内可微，且 $du=P\,dx+Q\,dy$。</p>`, why: R`<p>定义 2 要求 $u$ 可微，仅有偏导数存在不够，所以要补这一步。</p>` },
+          { s: R`<p><b>(3)⇒(1)，并得牛顿–莱布尼茨公式。</b>设 $du=P\,dx+Q\,dy$，$L$ 是 $G$ 内从 $A$ 到 $B$ 的光滑曲线，$x=\varphi(t),y=\psi(t)$，$t:\alpha\to\beta$。令 $h(t)=u[\varphi(t),\psi(t)]$。$u$ 可微，由链式法则 $$h'(t)=u_x\varphi'(t)+u_y\psi'(t)=P[\varphi(t),\psi(t)]\varphi'(t)+Q[\varphi(t),\psi(t)]\psi'(t),$$ 它是连续函数。由计算公式与一元牛顿–莱布尼茨公式，$$\int_LP\,dx+Q\,dy=\int_\alpha^\beta h'(t)\,dt=h(\beta)-h(\alpha)=u(B)-u(A).$$ 若 $L$ 分段光滑，分点依次为 $A=A_0,A_1,\dots,A_k=B$，逐段相加得 $\sum_{j=1}^k[u(A_j)-u(A_{j-1})]=u(B)-u(A)$（中间项相消）。结果只与 $A,B$ 有关，故 (1) 成立。</p>`, why: R`<p>沿着路径看，被积式就是 $u$ 沿路径的"全导数" $h'(t)\,dt$，积分自然等于 $u$ 的增量。这正是一元牛顿–莱布尼茨公式在曲线上的翻版。</p>` }
+        ],
+        remark: R`<p><b>这三条只要求 $P,Q$ 连续、$G$ 是区域</b>，不要求单连通，也不要求偏导数存在。它们是"定义层面"的等价，但不好直接检验——谁也不能把所有路径、所有闭曲线都算一遍。下一个定理给出可以检验的条件。</p>
+<p><b>回看前面的例子</b>：例 2 中 $2xy\,dx+x^2dy=d(x^2y)$，所以积分 $=x^2y\big|_{(0,0)}^{(1,1)}=1$，与路径无关。例 3 中沿单位圆积分为 $2\pi\neq0$，(2) 不成立，所以 $\frac{x\,dy-y\,dx}{x^2+y^2}$ 在"全平面去掉原点"内与路径有关，也没有原函数。</p>`
+      },
+
+      /* ───────── 14. 单连通判别 ───────── */
+      {
+        kind: 'thm', title: '定理：单连通区域上的判别条件 ∂P/∂y = ∂Q/∂x',
+        statement: R`<p>设 $G$ 是平面<b>单连通</b>区域，$P(x,y)$、$Q(x,y)$ 在 $G$ 内具有<b>一阶连续偏导数</b>，则上一定理中的 (1)(2)(3) 都等价于</p>
+<p>(4) 在 $G$ 内处处成立 $$\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}.$$</p>`,
+        intuition: R`<p>$\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}$ 是场的局部"旋转强度"。处处无旋，而区域又没有洞可以"藏"旋转，那么任何闭曲线上的环流（= 所围区域内旋转强度之和）都只能是零。有洞时，洞里可能藏着旋转（如例 3 中原点处），绕洞一圈的环流就不一定为零。</p>`,
+        steps: [
+          { s: R`<p><b>(3)⇒(4)。</b>设 $u_x=P$，$u_y=Q$，则 $$\frac{\partial^2u}{\partial x\partial y}=\frac{\partial P}{\partial y},\qquad\frac{\partial^2u}{\partial y\partial x}=\frac{\partial Q}{\partial x}.$$ 由假设两者都在 $G$ 内连续，而两个二阶混合偏导数连续时必相等，所以 $\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$。</p>`, why: R`<p>这是原函数存在的"相容性条件"：如果 $u$ 存在，它的两个混合偏导必须相等。这一步<b>不需要单连通</b>——在任何区域内，有原函数就必有 (4)。</p>` },
+          { s: R`<p><b>(4)⇒(2)：简单闭曲线。</b>设 $C$ 是 $G$ 内任一分段光滑的简单闭曲线，$D$ 为它所围的闭区域。因为 $G$ 单连通，$D$ 完全含于 $G$，所以 $P,Q$ 在 $D$ 上有一阶连续偏导数。由格林公式 $$\oint_CP\,dx+Q\,dy=\pm\iint_D\Big(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\Big)dxdy=0$$（$C$ 逆时针取"$+$"，顺时针取"$-$"）。</p>`, why: R`<p><b>单连通的唯一作用就在这里</b>：保证 $C$ 圈住的每一点都在 $G$ 内，从而格林公式的条件"$P,Q$ 在整个 $D$ 上偏导连续"成立。没有它，$C$ 可能圈住一个 $P,Q$ 无定义的"洞"。</p>` },
+          { s: R`<p><b>(4)⇒(2)：一般闭曲线。</b>若闭曲线 $C$ 自身相交于有限个点，从某点出发沿 $C$ 走，第一次回到已经过的点时，就走完了一个简单闭环；把它切下来，余下部分仍是闭曲线，自交点更少。如此有限次后，$C$ 被拆成有限条简单闭曲线，每条上积分为零（上一步），所以 $\oint_C=0$。若 $C$ 中有沿同一段弧来回各走一次的部分，这两部分的积分由反向变号相互抵消。考研涉及的闭曲线都属于这两种情形；有无穷多个自交点的一般情形需要更精细的逼近论证，超出要求。</p>`, why: R`<p>由 (2)⇒(1) 的证明可知，(2) 必须对自交的闭曲线也成立，所以这一步不能省。</p>` },
+          { s: R`<p><b>结论。</b>(4)⇒(2)，再由上一定理 (2)⇔(1)⇔(3)，以及 (3)⇒(4)，四条两两等价。</p>`, why: R`<p>实际做题时，(4) 是唯一"算得出来"的条件：求两个偏导数比一比即可。</p>` }
+        ],
+        remark: R`<p><b>"单连通"不能去掉。</b>$G=\mathbb{R}^2\setminus\{(0,0)\}$，$P=\dfrac{-y}{x^2+y^2}$，$Q=\dfrac{x}{x^2+y^2}$，在 $G$ 内处处 $\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$，偏导也连续，但沿单位圆积分为 $2\pi\neq0$。若把区域缩小为单连通的右半平面 $x>0$，定理就适用了：此时积分与路径无关，原函数 $u=\arctan\frac yx$。若取"全平面去掉负 $x$ 轴（含原点）"这个单连通区域，原函数就是取值于 $(-\pi,\pi)$ 的极角 $\theta$。</p>
+<p><b>"偏导连续"也不能去掉</b>：格林公式和混合偏导相等都要用到它。</p>
+<p><b>复连通区域里 (4) 仍然有用</b>：若 $G$ 只有一个洞（如去掉原点），$\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$ 处处成立，则对不绕洞的闭曲线积分为零；对逆时针绕洞一圈的简单闭曲线，积分都等于同一个常数（用例 10 的挖洞法可证），只需挑一条最好算的曲线算一次。</p>`
+      },
+
+      /* ───────── 15. 原函数的折线公式 ───────── */
+      {
+        kind: 'thm', title: '定理：原函数的折线公式与"相差一个常数"',
+        statement: R`<p>设 $G$ 是矩形区域（或全平面），$P,Q$ 在 $G$ 内具有一阶连续偏导数，且 $\frac{\partial Q}{\partial x}=\frac{\partial P}{\partial y}$。任取 $(x_0,y_0)\in G$，则 $$u(x,y)=\int_{x_0}^xP(t,y_0)\,dt+\int_{y_0}^yQ(x,t)\,dt$$ 是 $P\,dx+Q\,dy$ 在 $G$ 内的一个原函数（也可以先竖后横：$u=\int_{y_0}^yQ(x_0,t)\,dt+\int_{x_0}^xP(t,y)\,dt$）。并且在任意区域 $G$ 内，若 $u$ 是 $P\,dx+Q\,dy$ 的一个原函数，则全体原函数为 $u+C$（$C$ 为任意常数）。</p>`,
+        intuition: R`<p>公式就是沿折线 $(x_0,y_0)\to(x,y_0)\to(x,y)$ 的曲线积分：横着走时 $dy=0$，只剩 $\int P(t,y_0)dt$；竖着走时 $dx=0$，只剩 $\int Q(x,t)dt$。下面不借助格林公式，直接验证它的偏导数，让结论对矩形区域完全自足。</p>`,
+        steps: [
+          { s: R`<p><b>$u$ 有定义。</b>$G$ 是矩形，$(x,y_0)$ 与 $(x,y)$ 都在 $G$ 内，连接它们的水平、竖直线段也在 $G$ 内，两个定积分的被积函数连续，$u$ 有定义。</p>`, why: R`<p>这就是要求"矩形或全平面"的原因：在一般区域（如圆环）里，折线可能跑出 $G$。</p>` },
+          { s: R`<p><b>$u_y=Q$。</b>第一项与 $y$ 无关；第二项是以 $y$ 为上限的变上限积分，被积函数 $Q(x,t)$ 对 $t$ 连续，由微积分基本定理，$\dfrac{\partial u}{\partial y}=Q(x,y)$。</p>`, why: R`<p>见「变限积分与微积分基本定理」。</p>` },
+          { s: R`<p><b>积分号下对 $x$ 求导。</b>记 $I(x)=\int_{y_0}^yQ(x,t)\,dt$（$y$ 固定）。对每个 $t$，由拉格朗日中值定理 $\dfrac{Q(x+h,t)-Q(x,t)}h=Q_x(x+\theta_th,t)$，$0\lt\theta_t\lt1$。$Q_x$ 在含于 $G$ 的闭矩形 $[x-\delta_0,x+\delta_0]\times[\min(y_0,y),\max(y_0,y)]$ 上连续，从而一致连续：对任意 $\varepsilon>0$，存在 $\eta>0$，当 $|h|\lt\eta$ 时对所有 $t$ 都有 $|Q_x(x+\theta_th,t)-Q_x(x,t)|\lt\varepsilon$。于是 $$\left|\frac{I(x+h)-I(x)}h-\int_{y_0}^yQ_x(x,t)\,dt\right|\leqslant\varepsilon|y-y_0|,$$ 即 $I'(x)=\displaystyle\int_{y_0}^y\frac{\partial Q}{\partial x}(x,t)\,dt$。</p>`, why: R`<p>这是"积分号下求导"。逐点的拉格朗日中值定理只给出每个 $t$ 各自的近似，一致连续才能把它们统一控制，进而交换"求导"与"积分"的次序。</p>` },
+          { s: R`<p><b>用条件 $Q_x=P_y$ 得 $u_x=P$。</b>$$I'(x)=\int_{y_0}^y\frac{\partial P}{\partial y}(x,t)\,dt=P(x,y)-P(x,y_0),$$ 第一项对 $x$ 求导为 $P(x,y_0)$，所以 $\dfrac{\partial u}{\partial x}=P(x,y_0)+P(x,y)-P(x,y_0)=P(x,y)$。</p>`, why: R`<p>条件 $Q_x=P_y$ 恰好在这里用上：它把"对 $x$ 求导"转成"对 $y$ 的导数再积回去"，从而还原出 $P$。</p>` },
+          { s: R`<p><b>$u$ 可微。</b>$u_x=P,u_y=Q$ 在 $G$ 内连续，所以 $u$ 可微，$du=P\,dx+Q\,dy$。</p>`, why: R`<p>与上一定理同样的理由。</p>` },
+          { s: R`<p><b>原函数相差常数。</b>设 $u,v$ 都是区域 $G$ 内 $P\,dx+Q\,dy$ 的原函数，令 $w=v-u$，则 $w_x=w_y=0$。任取 $M\in G$，用 $G$ 内各边平行于坐标轴的折线连接 $M_0$ 与 $M$（区域内总能做到）。在水平的一段上，$w$ 作为 $x$ 的一元函数导数为零，由拉格朗日中值定理它是常数；竖直的段同理。逐段推过去得 $w(M)=w(M_0)$，即 $w\equiv C$。</p>`, why: R`<p>一元"导数恒为零的函数是常数"推广到二元，必须用到区域的<b>连通性</b>：若 $G$ 由两块不相连的部分组成，两块上的原函数可以相差不同的常数。</p>` }
+        ],
+        remark: R`<p><b>用法</b>：$(x_0,y_0)$ 常取 $(0,0)$；若 $P,Q$ 在原点无定义（如分母含 $x^2+y^2$），改取 $(1,0)$ 等方便的点，且要保证折线不经过奇点。对一般单连通区域，原函数仍然存在（由上一定理），只是要换成 $G$ 内的其他路径。</p>
+<p>与微分方程的联系：若 $P\,dx+Q\,dy=du$，则方程 $P\,dx+Q\,dy=0$ 叫<b>全微分方程</b>，通解就是 $u(x,y)=C$（见「一阶微分方程」）。</p>`
+      },
+
+      /* ───────── 16. 例题：路径无关的应用 ───────── */
+      {
+        kind: 'example', title: '例题：换路径、求待定函数、求原函数',
+        html: R`<p><b>例 11（换路径）</b>　计算 $I=\displaystyle\int_L(x^2+2xy)\,dx+(x^2+y^4)\,dy$，其中 $L$ 为从 $O(0,0)$ 沿曲线 $y=\sin\dfrac{\pi x}2$ 到 $B(1,1)$ 的弧。</p>
+<p><b>分析</b>　直接代入会出现 $\int x^2\cos\frac{\pi x}2\,dx$、$\int\sin^4\frac{\pi x}2\cos\frac{\pi x}2\,dx$ 等，很繁。先检验：$\frac{\partial P}{\partial y}=2x$，$\frac{\partial Q}{\partial x}=2x$，在全平面（单连通）相等，所以积分与路径无关，可以换一条好走的路。</p>
+<p><b>解</b>　取折线 $O\to C(1,0)\to B(1,1)$。$OC$ 上 $y=0,dy=0$：$\int_0^1x^2dx=\frac13$；$CB$ 上 $x=1,dx=0$：$\int_0^1(1+y^4)dy=\frac65$。所以 $I=\frac13+\frac65=\frac{23}{15}$。</p>
+<p><b>另解（原函数）</b>　凑得 $u=\frac{x^3}3+x^2y+\frac{y^5}5$（验证：$u_x=x^2+2xy$，$u_y=x^2+y^4$），$I=u(1,1)-u(0,0)=\frac13+1+\frac15=\frac{23}{15}$。</p>
+<p><b>例 12（求待定函数）</b>　设 $\varphi(x)$ 具有连续导数，$\varphi(0)=0$，且曲线积分 $\int_Lxy^2dx+y\varphi(x)\,dy$ 与路径无关，求 $\varphi(x)$，并计算 $\displaystyle\int_{(0,0)}^{(1,1)}xy^2dx+y\varphi(x)\,dy$。</p>
+<p><b>解</b>　$P=xy^2$，$Q=y\varphi(x)$ 在全平面一阶偏导连续，全平面单连通，所以与路径无关 $\Leftrightarrow\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$，即 $$2xy=y\varphi'(x)\quad\text{对一切 }(x,y)\text{ 成立}.$$ 取 $y=1$ 得 $\varphi'(x)=2x$，故 $\varphi(x)=x^2+C$，由 $\varphi(0)=0$ 得 $\varphi(x)=x^2$。沿折线 $(0,0)\to(1,0)\to(1,1)$：第一段 $y=0$，被积式为零；第二段 $x=1,dx=0$：$\int_0^1y\cdot1\,dy=\frac12$。所以积分为 $\frac12$。</p>
+<p><b>为什么"与路径无关"能求出函数</b>：路径无关 $\Leftrightarrow$ $P_y=Q_x$，它把一个关于"积分"的条件变成了一个关于"导数"的方程——常常就是一个微分方程，这是数学一综合题的经典套路。</p>
+<p><b>例 13（求原函数的三种方法）</b>　验证 $(2x\cos y+y^2\cos x)\,dx+(2y\sin x-x^2\sin y)\,dy$ 在全平面是某函数的全微分，并求其原函数。</p>
+<p><b>验证</b>　$\frac{\partial P}{\partial y}=-2x\sin y+2y\cos x$，$\frac{\partial Q}{\partial x}=2y\cos x-2x\sin y$，二者相等且连续，全平面单连通，所以原函数存在。</p>
+<p><b>法一（折线法）</b>　取 $(x_0,y_0)=(0,0)$：$$u=\int_0^xP(t,0)\,dt+\int_0^yQ(x,t)\,dt=\int_0^x2t\,dt+\int_0^y(2t\sin x-x^2\sin t)\,dt=x^2+y^2\sin x+x^2(\cos y-1)=x^2\cos y+y^2\sin x.$$</p>
+<p><b>法二（偏积分法）</b>　由 $u_x=P$，对 $x$ 积分（$y$ 看作常数）：$u=x^2\cos y+y^2\sin x+\varphi(y)$。注意"积分常数"可以依赖 $y$。再由 $u_y=Q$：$-x^2\sin y+2y\sin x+\varphi'(y)=2y\sin x-x^2\sin y$，得 $\varphi'(y)=0$，$\varphi=C$。</p>
+<p><b>法三（凑微分法）</b>　重新分组：$(2x\cos y\,dx-x^2\sin y\,dy)+(y^2\cos x\,dx+2y\sin x\,dy)=d(x^2\cos y)+d(y^2\sin x)$。</p>
+<p>所以全体原函数为 $u=x^2\cos y+y^2\sin x+C$。</p>
+<p><b>例 14（由全微分定参数）</b>　已知 $\dfrac{(x+ay)\,dx+y\,dy}{(x+y)^2}$ 为某函数的全微分，求 $a$。</p>
+<p><b>解</b>　在 $x+y>0$（或 $x+y\lt0$）这样的半平面内考虑，它是单连通的。$$\frac{\partial P}{\partial y}=\frac{a(x+y)-2(x+ay)}{(x+y)^3}=\frac{(a-2)x-ay}{(x+y)^3},\qquad\frac{\partial Q}{\partial x}=\frac{-2y}{(x+y)^3}.$$ 要求对区域内一切 $(x,y)$ 都有 $(a-2)x-ay=-2y$，比较系数得 $a=2$。此时可求出一个原函数 $u=\ln|x+y|+\dfrac{x}{x+y}$（请自行验证 $u_x=\frac{x+2y}{(x+y)^2}$，$u_y=\frac{y}{(x+y)^2}$）。</p>`
+      },
+
+      /* ───────── 17. 常见误区 ───────── */
+      {
+        kind: 'pitfall', title: '常见误区',
+        html: R`<ol>
+<li><b>化定积分时习惯性地"下限小于上限"。</b>第二类曲线积分的下限对应<b>起点</b>，上限对应<b>终点</b>。例如从 $(1,0)$ 到 $(0,0)$ 的线段上 $\int_Ldx=\int_1^0dx=-1$，写成 $\int_0^1$ 就错了符号。第一类曲线积分才要求下限小于上限，两者不能串。</li>
+<li><b>照搬第一类曲线积分的对称性。</b>单位圆关于 $x$ 轴对称，$y$ 是 $y$ 的奇函数，第一类 $\oint_Ly\,ds=0$；但第二类 $$\oint_Ly\,dx=\int_0^{2\pi}\sin t\cdot(-\sin t)\,dt=-\pi\neq0\quad\text{（逆时针）}.$$ 原因：上半圆 $y>0$，逆时针走时向左，$dx\lt0$；下半圆 $y\lt0$，走向向右，$dx>0$。两半的乘积 $y\,dx$ <b>都是负的</b>，相加而不是抵消。第二类的对称性要同时考虑被积函数和 $dx$（即方向）的变化，初学阶段最稳妥的做法是参数化，或用格林公式（$\oint y\,dx=\iint(0-1)\,dxdy=-\pi$）。</li>
+<li><b>用格林公式前不查奇点。</b>被积函数分母为零的点若在 $L$ 所围区域内，不能直接用格林公式，要挖洞（例 10）；若分母为零的点在 $L$ 外，则可以放心用。</li>
+<li><b>忘记方向。</b>顺时针的闭曲线用格林公式要加负号；复连通区域的内边界正向是顺时针；补线后要判断整条闭曲线是正向还是负向。</li>
+<li><b>把 $\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}$ 写反。</b>记住"配 $dy$ 的 $Q$ 对 $x$ 求导在前"。自检：$\oint_Lx\,dy$（逆时针）应当等于面积，是正数，而 $P=0,Q=x$ 时 $Q_x-P_y=1$，对得上。</li>
+<li><b>"$\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$，所以任意闭曲线积分为零"。</b>漏了"单连通"和"偏导连续"。反例就是例 3：绕原点积分为 $2\pi$。同样，"某一条闭曲线上积分为零"也推不出与路径无关——(2) 要求<b>所有</b>闭曲线。</li>
+<li><b>补线后忘记减去补线上的积分</b>，或者补线的方向与 $L$ 没有首尾相接。</li>
+<li><b>用格林公式之后再把曲线方程代入二重积分。</b>代入曲线方程只能在<b>曲线积分</b>里做（$L$ 上的点满足方程）；一旦化成 $\iint_D$，$D$ 内部的点并不满足曲线方程。例如 $L:x^2+y^2=a^2$ 时，$\iint_D(x^2+y^2)\,dxdy\neq\iint_Da^2\,dxdy$。正确顺序是"先代入、再格林"（例 8）。</li>
+<li><b>偏积分法中把"积分常数"写成常数 $C$。</b>对 $x$ 积分时 $y$ 是常数，所以"常数"应是 $y$ 的任意函数 $\varphi(y)$，否则会漏掉只含 $y$ 的项。</li>
+<li><b>对空间曲线用格林公式。</b>格林公式只适用于平面闭曲线；空间曲线积分用参数化或斯托克斯公式（见「斯托克斯公式」）。</li>
+</ol>`
+      },
+
+      /* ───────── 18. 方法 ───────── */
+      {
+        kind: 'method', title: '解题方法与题型识别',
+        html: R`<p><b>总流程</b>：拿到一个平面第二类曲线积分 $\int_LP\,dx+Q\,dy$，先问两个问题——<b>$L$ 封闭吗？$\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}$ 是什么？</b>然后按下表对号入座。</p>
+<table>
+<thead><tr><th>看到</th><th>想到</th><th>注意</th></tr></thead>
+<tbody>
+<tr><td>曲线不封闭，有简单的参数式，代入后好积</td><td>直接化为定积分</td><td>下限对起点；分段曲线逐段算</td></tr>
+<tr><td>曲线封闭，$P,Q$ 在所围区域内处处光滑</td><td>格林公式</td><td>$Q_x-P_y$ 常化为常数或简单函数；顺时针加负号</td></tr>
+<tr><td>曲线封闭，被积函数能用曲线方程化简（尤其能消掉分母）</td><td>先代入曲线方程，再用格林或面积公式</td><td>只能在曲线积分里代入</td></tr>
+<tr><td>曲线封闭，区域内有奇点，且除奇点外 $Q_x=P_y$</td><td>挖洞：取形状与分母一致的小曲线</td><td>结果与 $L$ 的形状无关，只看是否绕奇点</td></tr>
+<tr><td>曲线不封闭，直接算很难，但 $Q_x-P_y$ 很简单</td><td>补线成闭曲线，用格林公式，再减去补线</td><td>补坐标轴或平行线；所围区域不能含奇点</td></tr>
+<tr><td>曲线不封闭，$Q_x=P_y$（单连通区域内）</td><td>换路径（折线）或求原函数用 $u(B)-u(A)$</td><td>新路径不能穿过奇点</td></tr>
+<tr><td>"与路径无关""是全微分"，求未知函数或参数</td><td>列 $\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$</td><td>常化为微分方程；利用初值定常数</td></tr>
+<tr><td>求 $P\,dx+Q\,dy$ 的原函数</td><td>折线法 / 偏积分法 / 凑微分法</td><td>答案要加 $+C$</td></tr>
+<tr><td>两类曲线积分互化</td><td>$dx=\cos\alpha\,ds$，$dy=\cos\beta\,ds$</td><td>切向量与 $L$ 同向，用端点检验</td></tr>
+<tr><td>空间曲线</td><td>参数化；闭曲线考虑斯托克斯公式</td><td>不能用格林公式</td></tr>
+</tbody>
+</table>
+<p><b>口诀</b>：不闭先试参数化，难算补线凑闭合；闭线先查有无洞，无洞格林有洞挖；两偏相等路无关，折线原函任你选。</p>
+<p><b>凑微分常用公式</b>（法三的"弹药"，熟记可秒杀很多题）：</p>
+<ul>
+<li>$x\,dx+y\,dy=\frac12d(x^2+y^2)$；$y\,dx+x\,dy=d(xy)$；</li>
+<li>$\dfrac{x\,dy-y\,dx}{x^2}=d\Big(\dfrac yx\Big)$；$\dfrac{y\,dx-x\,dy}{y^2}=d\Big(\dfrac xy\Big)$；</li>
+<li>$\dfrac{x\,dy-y\,dx}{x^2+y^2}=d\Big(\arctan\dfrac yx\Big)$（在不含奇点的单连通区域内）；$\dfrac{x\,dx+y\,dy}{x^2+y^2}=d\Big(\dfrac12\ln(x^2+y^2)\Big)$；</li>
+<li>$\dfrac{x\,dy-y\,dx}{xy}=d\Big(\ln\Big|\dfrac yx\Big|\Big)$。</li>
+</ul>
+<p><b>挖洞法的标准写法</b>（三句话）：① 验证除奇点外 $Q_x=P_y$；② 作与分母同形的小曲线 $C_r$，在 $L$ 与 $C_r$ 之间用格林公式，得 $\oint_L=\oint_{C_r}$（同向）；③ 在 $C_r$ 上先代入使分母为常数，再计算（常再用一次格林公式或面积公式）。</p>`
+      },
+
+      /* ───────── 19. 考研怎么考 ───────── */
+      {
+        kind: 'exam', title: '数学一怎么考',
+        html: R`<p>第二类曲线积分与格林公式是数学一多元积分学中出现频率很高的考点，选择、填空、解答题都考过，而且常作为综合题的一环出现。</p>
+<ul>
+<li><b>小题（选择、填空）</b>：直接用格林公式计算闭曲线积分（$Q_x-P_y$ 为常数，结果是面积的倍数）；利用"是全微分"或"与路径无关"求参数（如例 14）；判断关于曲线积分的命题对错（考察格林公式的条件、奇点、单连通）；两类曲线积分的概念。</li>
+<li><b>解答题之一：补线 + 格林</b>。给一段不封闭的曲线（半圆、抛物线、正弦曲线等），被积函数直接算很麻烦，但 $Q_x-P_y$ 简单，补一条坐标轴上的线段解决。</li>
+<li><b>解答题之二：挖洞</b>。被积函数的分母形如 $ax^2+by^2$，曲线绕原点，要求取与分母同形的小曲线，在两者之间用格林公式。也常问"对任意绕原点的闭曲线，积分为同一常数"。</li>
+<li><b>解答题之三：路径无关 + 微分方程</b>。被积函数中含未知函数 $\varphi(x)$ 或 $f(x,y)$，由"与路径无关"或"对某类闭曲线积分为零 / 为常数"列出 $Q_x=P_y$，得到一个微分方程或偏微分方程，解出未知函数后再求积分或原函数。这是最能体现综合能力的题型。</li>
+<li><b>证明题</b>：用格林公式把两个曲线积分化为二重积分，再借助区域的对称性（含轮换对称性）或基本不等式证明等式、不等式。</li>
+<li><b>与其他考点综合</b>：空间曲线积分常与斯托克斯公式一起考；"变力做功""环流量"类应用题与场论结合；"全微分方程"与常微分方程结合。</li>
+</ul>
+<p><b>阅卷关注点</b>：格林公式条件的验证（尤其是奇点）、方向是否标明、补线是否减去、原函数是否加常数。解答题中写清"因为 $P,Q$ 在 $D$ 上具有一阶连续偏导数，由格林公式……"这样的条件陈述，是拿满分的习惯。</p>`
+      },
+
+      /* ───────── 20. 小结 ───────── */
+      {
+        kind: 'text', title: '小结：两类曲线积分对比与本篇逻辑链',
+        html: R`<table>
+<thead><tr><th></th><th>第一类（对弧长）</th><th>第二类（对坐标）</th></tr></thead>
+<tbody>
+<tr><td>物理背景</td><td>曲线形构件的质量</td><td>变力沿曲线做功</td></tr>
+<tr><td>积分元</td><td>$ds>0$</td><td>$dx,dy$ 可正可负</td></tr>
+<tr><td>与方向的关系</td><td>无关：$\int_{L^-}f\,ds=\int_Lf\,ds$</td><td>反向变号：$\int_{L^-}=-\int_L$</td></tr>
+<tr><td>化定积分的积分限</td><td>下限小于上限</td><td>下限对起点，上限对终点</td></tr>
+<tr><td>对称性</td><td>可直接用奇偶对称</td><td>要同时考虑方向，慎用</td></tr>
+<tr><td>联系</td><td colspan="2">$\int_LP\,dx+Q\,dy=\int_L(P\cos\alpha+Q\cos\beta)\,ds$，$(\cos\alpha,\cos\beta)$ 与 $L$ 同向</td></tr>
+</tbody>
+</table>
+<p><b>逻辑链</b>：</p>
+<ol>
+<li>定义（有向曲线上的极限和） → 计算公式（化为定积分，下限对起点） → 性质（反向变号）。</li>
+<li>格林公式：$\oint_LP\,dx+Q\,dy=\iint_D(Q_x-P_y)\,dxdy$，条件是"封闭、正向、$D$ 内处处一阶偏导连续"。证明的核心是"先对 $y$ 积 $P_y$、先对 $x$ 积 $Q_x$"以及"分块后内部边抵消"。</li>
+<li>一般区域：路径无关 ⇔ 闭路为零 ⇔ 存在原函数，且 $\int_A^B=u(B)-u(A)$。</li>
+<li>单连通 + 偏导连续：以上三条 ⇔ $P_y=Q_x$（证明用格林公式与混合偏导相等）。</li>
+<li>原函数的求法：折线法、偏积分法、凑微分法；全体原函数相差常数。</li>
+</ol>`
+      },
+
+      /* ───────── 21. 自测 ───────── */
+      {
+        kind: 'check', title: '自测',
+        items: [
+          { q: R`<p>判断对错并说明理由：把第二类曲线积分化为定积分时，下限必须小于上限。</p>`, a: R`<p><b>错。</b>下限对应 $L$ 的起点、上限对应终点，二者大小关系由方向决定。例如从 $(1,0)$ 到 $(0,0)$ 的线段，$\int_Ldx=\int_1^0dx=-1$。"下限小于上限"是第一类曲线积分的要求，因为 $ds>0$。</p>` },
+          { q: R`<p>$L$ 为单位圆 $x^2+y^2=1$，逆时针方向，则 $\oint_Ly\,dx=$</p>`, options: [R`<p>$0$</p>`, R`<p>$\pi$</p>`, R`<p>$-\pi$</p>`, R`<p>$2\pi$</p>`], correct: 2, explain: R`<p>由格林公式（$P=y,Q=0$，$Q_x-P_y=-1$），$\oint_Ly\,dx=\iint_D(-1)\,dxdy=-\pi$。也可参数化：$\int_0^{2\pi}\sin t\cdot(-\sin t)\,dt=-\pi$。选 $0$ 是照搬了第一类积分的对称性：上下两半圆上 $y\,dx$ 都为负，不会抵消。</p>` },
+          { q: R`<p>设 $P=\dfrac{-y}{x^2+y^2}$，$Q=\dfrac{x}{x^2+y^2}$。已知在原点以外处处 $\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$。判断：(1) 对任意不过原点的闭曲线 $L$，$\oint_LP\,dx+Q\,dy=0$；(2) 在右半平面 $x>0$ 内，$\int_LP\,dx+Q\,dy$ 与路径无关。</p>`, a: R`<p>(1) <b>错。</b>"去掉原点的平面"不是单连通区域，定理不适用。$L$ 逆时针绕原点一圈时积分为 $2\pi$（例 3、挖洞法），不绕原点时为 $0$。(2) <b>对。</b>右半平面单连通，$P,Q$ 在其中一阶偏导连续且 $P_y=Q_x$，所以与路径无关，原函数为 $\arctan\frac yx$。</p>` },
+          { q: R`<p>计算 $\oint_L(x+y)\,dx-(x-y)\,dy$，$L$ 为圆周 $x^2+y^2=a^2$，逆时针方向。</p>`, a: R`<p>$P=x+y$，$Q=-(x-y)=-x+y$，处处光滑。$Q_x-P_y=-1-1=-2$。由格林公式，原式 $=\iint_D(-2)\,dxdy=-2\pi a^2$。也可参数化验证：$x=a\cos t,y=a\sin t$，被积式化为 $-a^2dt$，积分得 $-2\pi a^2$。</p>` },
+          { q: R`<p>下列表达式中，在全平面上是某个函数的全微分的是</p>`, options: [R`<p>$y\,dx-x\,dy$</p>`, R`<p>$(x+y)\,dx+(x-y)\,dy$</p>`, R`<p>$x^2y\,dx+xy^2\,dy$</p>`, R`<p>$y\,dx+2x\,dy$</p>`], correct: 1, explain: R`<p>逐个检验 $P_y$ 与 $Q_x$：(A) $1$ 与 $-1$；(B) $1$ 与 $1$，相等；(C) $x^2$ 与 $y^2$；(D) $1$ 与 $2$。全平面单连通，所以只有 (B) 是全微分，原函数 $u=\frac{x^2}2+xy-\frac{y^2}2+C$。</p>` },
+          { q: R`<p>把有向曲线 $L$ 改为反方向 $L^-$，$\int_LP\,dx+Q\,dy$ 与 $\int_L(P\cos\alpha+Q\cos\beta)\,ds$ 分别怎样变化？这与两类曲线积分的关系矛盾吗？</p>`, a: R`<p>前者变号（反向变号）。后者中 $ds$ 与方向无关，但 $(\cos\alpha,\cos\beta)$ 是"与 $L$ 方向一致"的单位切向量，反向后变成 $(-\cos\alpha,-\cos\beta)$，所以后者也变号。两边同时变号，关系式仍成立，不矛盾。方向信息完全藏在切向量里。</p>` },
+          { q: R`<p>用曲线积分求星形线 $x=a\cos^3t,y=a\sin^3t$（$a>0$）所围图形的面积。</p>`, a: R`<p>$t:0\to2\pi$ 为逆时针。$x\,dy-y\,dx=\big[a\cos^3t\cdot3a\sin^2t\cos t+a\sin^3t\cdot3a\cos^2t\sin t\big]dt=3a^2\sin^2t\cos^2t\,dt$。$$A=\frac12\int_0^{2\pi}3a^2\sin^2t\cos^2t\,dt=\frac{3a^2}2\int_0^{2\pi}\frac{\sin^22t}4\,dt=\frac{3a^2}2\cdot\frac\pi4=\frac{3\pi a^2}8.$$ 对称形式 $\frac12\oint x\,dy-y\,dx$ 让 $\cos^2+\sin^2$ 合并，计算最省。</p>` },
+          { q: R`<p>$L$ 为圆周 $(x-2)^2+y^2=1$，逆时针方向，则 $\oint_L\dfrac{x\,dy-y\,dx}{x^2+y^2}=$</p>`, options: [R`<p>$0$</p>`, R`<p>$2\pi$</p>`, R`<p>$-2\pi$</p>`, R`<p>$\pi$</p>`], correct: 0, explain: R`<p>圆心 $(2,0)$、半径 $1$，原点在圆外，所围圆盘内 $P,Q$ 一阶偏导连续且 $Q_x-P_y=0$，由格林公式积分为 $0$。是否为 $2\pi$ 只取决于曲线是否绕原点，而不是被积函数长什么样。</p>` },
+          { q: R`<p>设 $\varphi(x)$ 具有连续导数，$\varphi(0)=1$，且 $\int_L[\varphi(x)-e^x]y\,dx+\varphi(x)\,dy$ 在全平面与路径无关，求 $\varphi(x)$。</p>`, a: R`<p>$P=[\varphi(x)-e^x]y$，$Q=\varphi(x)$。与路径无关 $\Leftrightarrow P_y=Q_x$：$\varphi(x)-e^x=\varphi'(x)$，即一阶线性方程 $\varphi'-\varphi=-e^x$。通解 $\varphi=e^{x}\big(\int-e^x\cdot e^{-x}dx+C\big)=e^x(C-x)$。由 $\varphi(0)=1$ 得 $C=1$，故 $\varphi(x)=(1-x)e^x$。验证：$\varphi'=-xe^x$，$\varphi-e^x=-xe^x$，相等。</p>` },
+          { q: R`<p>某同学这样计算：$L$ 为 $x^2+y^2=a^2$（逆时针），由格林公式 $\oint_L-x^2y\,dx+xy^2\,dy=\iint_D(x^2+y^2)\,dxdy=\iint_Da^2\,dxdy=\pi a^4$。指出错误并改正。</p>`, a: R`<p>第一个等号正确（$Q_x-P_y=y^2+x^2$）。错在第二个等号：$D$ 内部的点不满足 $x^2+y^2=a^2$，不能代入。正确做法用极坐标：$\iint_D(x^2+y^2)\,dxdy=\int_0^{2\pi}d\theta\int_0^ar^2\cdot r\,dr=\frac{\pi a^4}2$。曲线方程只能在曲线积分中代入。</p>` }
+        ]
+      }
+    ]
+  };
+});

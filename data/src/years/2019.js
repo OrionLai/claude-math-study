@@ -1,0 +1,486 @@
+// 2019 年全国硕士研究生招生考试 数学（一）· 高等数学部分
+// 共 13 题：选择 1、2、3、4；填空 9、10、11、12；解答 15、16、17、18、19。
+// 第 5、6、13、20、21 题属于线性代数（第 6 题虽然画的是三个平面，但考的是系数矩阵与增广矩阵的秩），
+// 第 7、8、14、22、23 题属于概率论与数理统计，未收录。
+registerYear(2019, function (R) {
+  return [
+    /* ───────────── 第1题 无穷小比阶 ───────────── */
+    {
+      id: '2019-1', year: 2019, no: '第1题', type: '选择', score: 4,
+      stem: R`当 $x\to0$ 时，若 $x-\tan x$ 与 $x^k$ 是同阶无穷小，则 $k=$（　　）.`,
+      options: [R`$1$`, R`$2$`, R`$3$`, R`$4$`],
+      answer: 'C',
+      figure: null,
+      kp: ['lim.inf', 'diff.taylor'],
+      methods: ['泰勒公式', '无穷小阶的比较', '洛必达法则'],
+      difficulty: 1,
+      analysis: R`<p><b>这题考什么：</b>无穷小阶的比较。"$x-\tan x$ 与 $x^k$ 同阶"的意思是</p>
+$$\lim_{x\to0}\frac{x-\tan x}{x^k}=C\ne0\quad(C\text{ 是有限常数}),$$
+<p>所以问题就是：<b>$x-\tan x$ 写成 $Cx^k+(\text{更高阶})$ 时，$k$ 是几？</b></p>
+<p><b>从题目哪个特征想到方法：</b>$x$ 和 $\tan x$ 是一对"一阶等价"的无穷小（$\tan x\sim x$），两者相减，最低阶的 $x$ 一项恰好抵消了。抵消之后剩下什么，只有把 $\tan x$ <b>展开到更高一项</b>才看得见——这正是泰勒公式的用武之地。</p>
+<p><b>为什么不能直接替换：</b>如果把 $\tan x$ 换成 $x$，得到 $x-x=0$，信息全部丢失。"加减中慎用等价替换"说的就是这种情况：替换只保证主部相同，而相减恰恰把主部减没了，真正决定阶数的是被丢掉的高阶部分。</p>`,
+      solution: R`<p><b>第一步：写出 $\tan x$ 的泰勒展开。</b>这个展开要熟记，也可以现场推：</p>
+$$\tan x=\frac{\sin x}{\cos x}=\frac{x-\frac{x^3}{6}+o(x^3)}{1-\frac{x^2}{2}+o(x^2)}=\left(x-\frac{x^3}{6}\right)\left(1+\frac{x^2}{2}\right)+o(x^3)=x+\frac{x^3}{3}+o(x^3).$$
+<p>这里用了 $\dfrac{1}{1-u}=1+u+o(u)$（$u=\frac{x^2}{2}+o(x^2)\to0$），再把乘积展开，只保留到 $x^3$：$x\cdot\frac{x^2}{2}-\frac{x^3}{6}=\frac{x^3}{3}$。</p>
+<p><b>第二步：相减找主部。</b></p>
+$$x-\tan x=x-\left(x+\frac{x^3}{3}+o(x^3)\right)=-\frac{x^3}{3}+o(x^3).$$
+<p>一阶项抵消，第一个不为零的项是 $-\dfrac{x^3}{3}$。</p>
+<p><b>第三步：按定义确定 $k$。</b></p>
+$$\lim_{x\to0}\frac{x-\tan x}{x^3}=\lim_{x\to0}\frac{-\frac{x^3}{3}+o(x^3)}{x^3}=-\frac13\ne0,$$
+<p>所以 $x-\tan x$ 与 $x^3$ 同阶，$k=3$，选 <b>C</b>。</p>
+<p><b>其他选项为什么不对：</b>取 $k=1$ 或 $k=2$ 时，$\dfrac{x-\tan x}{x^k}=\dfrac{-\frac13x^3+o(x^3)}{x^k}\to0$，说明 $x-\tan x$ 是比 $x$、$x^2$ <b>高阶</b>的无穷小，不是同阶；取 $k=4$ 时，比值 $\sim-\dfrac{1}{3x}\to\infty$，说明 $x-\tan x$ 比 $x^4$ <b>低阶</b>。只有 $k=3$ 时极限是非零常数。</p>`,
+      pitfalls: R`<ul><li><b>加减中直接等价替换：</b>把 $\tan x$ 换成 $x$ 得到 $0$，然后不知道怎么选，甚至误以为是"任意阶"。</li><li><b>把"同阶"和"等价"混为一谈：</b>同阶只要求比值的极限是<b>非零常数</b>，不要求等于 $1$。这里极限是 $-\frac13$，负号和系数都不影响阶数。</li><li><b>展开式记错：</b>把 $\tan x$ 的三次项系数记成 $-\frac13$ 或 $\frac16$（和 $\sin x$ 混淆），虽然本题不影响 $k$，但同类填空题会直接算错常数。</li></ul>`,
+      summary: R`<p><b>方法要点：</b>确定一个无穷小的阶数，就是找它展开式中第一个不为零的项。两个一阶等价的函数相减，一定要用泰勒公式展开到"不抵消"的那一项。</p>
+<p><b>必背的三阶差：</b></p>
+$$x-\sin x\sim\frac{x^3}{6},\quad \tan x-x\sim\frac{x^3}{3},\quad \tan x-\sin x\sim\frac{x^3}{2},\quad x-\arctan x\sim\frac{x^3}{3},\quad \arcsin x-x\sim\frac{x^3}{6}.$$
+<p><b>题型识别：</b>看到"同阶 / 等价 / $k$ 阶无穷小"且式子是"两个等价无穷小相减" → 想到泰勒展开（或洛必达）找主部。</p>`,
+      alt: R`<p><b>洛必达法则：</b>先猜 $k=3$，再验证：</p>$$\lim_{x\to0}\frac{x-\tan x}{x^3}=\lim_{x\to0}\frac{1-\sec^2x}{3x^2}=\lim_{x\to0}\frac{-\tan^2x}{3x^2}=-\frac13.$$<p>第二步用了恒等式 $1-\sec^2x=-\tan^2x$，第三步用 $\tan x\sim x$（这里是乘除，可以替换）。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: series(x - tan x) = -x^3/3 - 2x^5/15 + O(x^6)，limit((x - tan x)/x^3, x→0) = -1/3，故 k = 3' },
+      flags: []
+    },
+
+    /* ───────────── 第2题 分段函数的可导性与极值 ───────────── */
+    {
+      id: '2019-2', year: 2019, no: '第2题', type: '选择', score: 4,
+      stem: R`设函数 $f(x)=\begin{cases}x|x|, & x\leqslant0,\\ x\ln x, & x>0,\end{cases}$ 则 $x=0$ 是 $f(x)$ 的（　　）.`,
+      options: [R`可导点，极值点`, R`不可导点，极值点`, R`可导点，非极值点`, R`不可导点，非极值点`],
+      answer: 'B',
+      figure: null,
+      kp: ['diff.def', 'diff.mono'],
+      methods: ['左右导数定义', '极值的定义', '函数值符号判断'],
+      difficulty: 2,
+      analysis: R`<p><b>这题考什么：</b>分段函数在分段点处的两件事——<b>可导性</b>和<b>是否为极值点</b>。</p>
+<p><b>为什么用左右导数：</b>$x=0$ 是分段点，左右两边的表达式不一样，所以在这一点不能"直接套求导公式"，必须回到导数的定义，左右分开算：</p>
+$$f'_-(0)=\lim_{x\to0^-}\frac{f(x)-f(0)}{x},\qquad f'_+(0)=\lim_{x\to0^+}\frac{f(x)-f(0)}{x}.$$
+<p>两者都存在且相等，才可导。</p>
+<p><b>为什么判断极值不用导数：</b>极值的定义是"在某邻域内 $f(x)\leqslant f(0)$（或 $\geqslant$）"，它本身<b>不要求可导</b>。最典型的例子是 $y=|x|$：在 $0$ 处不可导，却是极小值点。所以这里最稳的做法是直接比较 $f(x)$ 与 $f(0)$ 的大小，也就是看 $0$ 两侧 $f(x)$ 的符号。</p>
+<p><b>直观图像：</b>左边 $x|x|=-x^2$ 是一段开口向下的抛物线，在原点处切线水平；右边 $x\ln x$ 在 $(0,1)$ 上为负，从原点出发"几乎竖直地"往下掉（斜率趋于 $-\infty$）。两边都低于原点，原点像一个尖尖的山顶。</p>`,
+      solution: R`<p><b>第一步：算 $f(0)$ 并确认连续。</b>$f(0)=0\cdot|0|=0$。右极限 $\lim\limits_{x\to0^+}x\ln x=\lim\limits_{x\to0^+}\dfrac{\ln x}{1/x}=\lim\limits_{x\to0^+}\dfrac{1/x}{-1/x^2}=\lim\limits_{x\to0^+}(-x)=0$，左极限显然为 $0$，所以 $f$ 在 $0$ 处连续。</p>
+<p><b>第二步：左导数。</b></p>
+$$f'_-(0)=\lim_{x\to0^-}\frac{x|x|-0}{x}=\lim_{x\to0^-}|x|=0.$$
+<p><b>第三步：右导数。</b></p>
+$$\lim_{x\to0^+}\frac{x\ln x-0}{x}=\lim_{x\to0^+}\ln x=-\infty,$$
+<p>极限不是有限数，所以右导数不存在，$x=0$ 是<b>不可导点</b>。这就排除了 A 和 C。</p>
+<p><b>第四步：判断极值。</b>比较 $0$ 附近 $f(x)$ 与 $f(0)=0$ 的大小：</p>
+<ul><li>当 $x\lt 0$ 时，$|x|=-x$，$f(x)=x\cdot(-x)=-x^2\lt0$；</li><li>当 $0\lt x\lt1$ 时，$x\gt0$ 而 $\ln x\lt0$，所以 $f(x)=x\ln x\lt0$。</li></ul>
+<p>于是在邻域 $(-1,1)$ 内，$f(x)\leqslant f(0)$，且只在 $x=0$ 处取等号，所以 $x=0$ 是 $f(x)$ 的<b>极大值点</b>。这就排除了 D。</p>
+<p><b>结论：</b>$x=0$ 是不可导点、极值点，选 <b>B</b>。</p>
+<p><b>逐项小结：</b>A、C 说"可导"，但右导数为 $-\infty$，错；D 说"非极值点"，但 $0$ 两侧函数值都小于 $f(0)$，它是极大值点，错。</p>`,
+      pitfalls: R`<ul><li><b>认为"不可导就不可能是极值点"：</b>极值只看函数值大小，与可导无关；只有"可导的极值点导数为零"（费马引理）这一个方向的结论。</li><li><b>算错 $x|x|$：</b>$x\lt0$ 时 $x|x|=-x^2$ 而不是 $x^2$，若当成 $x^2$ 会误判左侧函数值为正。</li><li><b>只看左导数：</b>左导数为 $0$ 很"像"可导，必须左右都检查。</li><li><b>用导函数的极限代替导数：</b>$x\gt0$ 时 $f'(x)=\ln x+1\to-\infty$，本题恰好结论一致，但一般情况下"导函数极限不存在"推不出"导数不存在"，分段点处应坚持用定义。</li></ul>`,
+      summary: R`<p><b>方法要点：</b></p><ul><li>分段点处的导数 → 左右导数定义，分别求 $\lim\dfrac{f(x)-f(x_0)}{x-x_0}$。</li><li>极值点判定 → 首选<b>定义法</b>：看 $x_0$ 两侧 $f(x)-f(x_0)$ 的符号；可导时才可以借助一阶、二阶导数判别。</li></ul>
+<p><b>题型识别：</b>看到"分段函数 + 分段点处可导吗、是极值吗" → 想到"左右导数定义 + 两侧函数值符号"。记住常用结论：$\lim\limits_{x\to0^+}x^a\ln x=0\ (a\gt0)$。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: 左侧 limit(x|x|/x, x→0⁻)=0；右侧 limit(x ln x / x, x→0⁺)=-∞；limit(x ln x, x→0⁺)=0 确认连续；x<0 时 x|x|=-x²<0，(0,1) 上 x ln x<0，故为极大值点' },
+      flags: ['OCR 把分段函数识别成乱码（只剩 "x & |x|, x ln x" 和一个条件 x≤0），根据题意及参考解析中左右导数的计算（左侧差商为 |x|、右侧差商为 ln x）还原为：x≤0 时 f(x)=x|x|，x>0 时 f(x)=x ln x']
+    },
+
+    /* ───────────── 第3题 单调有界数列与级数敛散 ───────────── */
+    {
+      id: '2019-3', year: 2019, no: '第3题', type: '选择', score: 4,
+      stem: R`设 $\{u_n\}$ 是单调增加的有界数列，则下列级数中收敛的是（　　）.`,
+      options: [
+        R`$\displaystyle\sum_{n=1}^{\infty}\frac{u_n}{n}$`,
+        R`$\displaystyle\sum_{n=1}^{\infty}(-1)^n\frac{1}{u_n}$`,
+        R`$\displaystyle\sum_{n=1}^{\infty}\left(1-\frac{u_n}{u_{n+1}}\right)$`,
+        R`$\displaystyle\sum_{n=1}^{\infty}\left(u_{n+1}^2-u_n^2\right)$`
+      ],
+      answer: 'D',
+      figure: null,
+      kp: ['series.concept', 'lim.rules', 'series.positive'],
+      methods: ['单调有界准则', '裂项相消求部分和', '构造反例', '收敛的必要条件', '比较判别法'],
+      difficulty: 3,
+      analysis: R`<p><b>这题考什么：</b>级数收敛的定义（部分和有极限）、收敛的必要条件、比较判别法，以及<b>构造反例</b>的能力。</p>
+<p><b>条件能翻译成什么：</b>"单调增加且有界"——立刻想到<b>单调有界准则</b>：$\lim\limits_{n\to\infty}u_n=A$ 存在。但要特别注意，题目没有说 $u_n\gt0$，所以 $A$ 可正、可负、可以是 $0$，$u_n$ 本身也可能是负数。这几个"没说"的地方，正是构造反例的突破口。</p>
+<p><b>从选项的形状找线索：</b>(D) 的通项 $u_{n+1}^2-u_n^2$ 是"<b>某个数列相邻两项之差</b>"，这种级数的部分和会<b>裂项相消</b>，一眼就能求出来——这是最可能"必收敛"的选项。选择题的策略是：先证 (D) 收敛，再给 (A)(B)(C) 各找一个反例。</p>`,
+      solution: R`<p><b>第一步：极限存在。</b>由单调有界准则，存在有限数 $A$，使 $\lim\limits_{n\to\infty}u_n=A$，从而 $\lim\limits_{n\to\infty}u_n^2=A^2$。</p>
+<p><b>第二步：证明 (D) 收敛。</b>写出部分和，中间项两两抵消：</p>
+$$S_n=\sum_{k=1}^{n}\left(u_{k+1}^2-u_k^2\right)=(u_2^2-u_1^2)+(u_3^2-u_2^2)+\cdots+(u_{n+1}^2-u_n^2)=u_{n+1}^2-u_1^2.$$
+<p>于是 $\lim\limits_{n\to\infty}S_n=A^2-u_1^2$ 是有限数，按定义 (D) 收敛。</p>
+<p><b>第三步：排除 (A)。</b>取 $u_n=2-\dfrac1n$，它单调增加，且 $1\leqslant u_n\lt2$ 有界。此时</p>
+$$\frac{u_n}{n}\geqslant\frac1n\gt0,$$
+<p>而调和级数 $\sum\frac1n$ 发散，由比较判别法，(A) 发散。（本质原因：只要 $A\ne0$，就有 $\frac{u_n}{n}\sim\frac{A}{n}$，必发散。）</p>
+<p><b>第四步：排除 (B)。</b>还用 $u_n=2-\dfrac1n$：$\dfrac{1}{u_n}\to\dfrac12\ne0$，通项 $(-1)^n\dfrac{1}{u_n}$ 不趋于 $0$，违反收敛的必要条件，(B) 发散。</p>
+<p>事实上 (B) <b>对任何满足条件的数列都发散</b>（只要它有意义）：设 $|u_n|\leqslant M$，则 $\left|\dfrac{1}{u_n}\right|\geqslant\dfrac1M\gt0$，通项永远不可能趋于 $0$。</p>
+<p><b>第五步：排除 (C)。</b>先想一想反例该往哪里找。若 $u_n\gt0$，则</p>
+$$0\leqslant1-\frac{u_n}{u_{n+1}}=\frac{u_{n+1}-u_n}{u_{n+1}}\leqslant\frac{u_{n+1}-u_n}{u_1},$$
+<p>而 $\sum(u_{n+1}-u_n)$ 裂项后部分和为 $u_{n+1}-u_1\to A-u_1$，收敛，由比较判别法 (C) 也收敛。所以反例必须让分母 $u_{n+1}$ 趋于 $0$，把差值"放大"——这就要取<b>从负方向增加到 $0$</b> 的数列。</p>
+<p>取 $u_n=-\dfrac1n$：$-1,-\frac12,-\frac13,\cdots$ 单调增加，且 $-1\leqslant u_n\lt0$ 有界。计算通项：</p>
+$$1-\frac{u_n}{u_{n+1}}=1-\frac{-\frac1n}{-\frac{1}{n+1}}=1-\frac{n+1}{n}=-\frac1n,$$
+<p>$\sum\left(-\frac1n\right)$ 发散，所以 (C) 不一定收敛。</p>
+<p><b>结论：</b>选 <b>D</b>。</p>`,
+      pitfalls: R`<ul><li><b>默认 $u_n\gt0$：</b>这样会觉得 (C) 也收敛（上面已证明正数列时 (C) 确实收敛），从而在 C、D 之间犹豫。题目没给正负，反例就要往负数里找。</li><li><b>(B) 误用莱布尼茨判别法：</b>$\frac{1}{u_n}$ 单调减少只满足了一半条件，莱布尼茨判别法还要求通项趋于 $0$，而这里 $\frac1{u_n}$ 不趋于 $0$。</li><li><b>以为"$u_n$ 有界，所以 $\frac{u_n}{n}$ 像 $\frac1{n^2}$"：</b>有界只说明 $\frac{u_n}{n}$ 不超过 $\frac Mn$，而 $\sum\frac Mn$ 本身发散，这个放缩什么也说明不了。</li></ul>`,
+      summary: R`<p><b>方法要点：</b></p><ul><li>看到"单调有界数列" → 立刻写出 $\lim u_n=A$ 存在。</li><li>看到"相邻项之差构成的级数" $\sum(a_{n+1}-a_n)$ → 部分和裂项为 $a_{n+1}-a_1$，<b>该级数收敛 $\iff$ 数列 $\{a_n\}$ 收敛</b>。</li><li>选择题判断"必收敛"：能证的直接证，其余用反例排除。</li></ul>
+<p><b>常备反例库：</b>$u_n=2-\frac1n$（正、增、极限非零）；$u_n=-\frac1n$（负、增、极限为零）。两个反例覆盖了"极限非零"和"极限为零"两种情况，足以检验绝大多数此类选项。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: u_n=2-1/n 时 lim (u_n/n)/(1/n)=2、lim 1/u_n=1/2，(A)(B) 发散；u_n=-1/n 时 1-u_n/u_{n+1} 化简为 -1/n，求和为 -∞，(C) 发散；(D) 部分和裂项为 u_{n+1}^2-u_1^2（以 u_n=2-1/n 取 n=50 数值核对）' },
+      flags: []
+    },
+
+    /* ───────────── 第4题 曲线积分与路径无关 ───────────── */
+    {
+      id: '2019-4', year: 2019, no: '第4题', type: '选择', score: 4,
+      stem: R`设函数 $Q(x,y)=\dfrac{x}{y^2}$. 如果对上半平面 $(y>0)$ 内的任意有向光滑封闭曲线 $C$ 都有 $\displaystyle\oint_C P(x,y)\,\mathrm{d}x+Q(x,y)\,\mathrm{d}y=0$，那么函数 $P(x,y)$ 可取为（　　）.`,
+      options: [
+        R`$y-\dfrac{x^2}{y^3}$`,
+        R`$\dfrac1y-\dfrac{x^2}{y^3}$`,
+        R`$\dfrac1x-\dfrac1y$`,
+        R`$x-\dfrac1y$`
+      ],
+      answer: 'D',
+      figure: null,
+      kp: ['mint.line2'],
+      methods: ['格林公式', '积分与路径无关的条件', '验证 ∂P/∂y = ∂Q/∂x', '求原函数'],
+      difficulty: 2,
+      analysis: R`<p><b>这题考什么：</b>平面曲线积分与路径无关的条件。</p>
+<p><b>从条件想到定理：</b>"区域内任意闭曲线上的积分都为 $0$"等价于"积分与路径无关"，而判断它的工具是格林公式的推论：</p>
+<p>若区域 $D$ 是<b>单连通</b>的，$P,Q$ 在 $D$ 内<b>具有一阶连续偏导数</b>，则 $D$ 内任意闭曲线上 $\oint_C P\,\mathrm{d}x+Q\,\mathrm{d}y=0$ 的充要条件是在 $D$ 内处处有</p>
+$$\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}.$$
+<p><b>为什么是这个条件：</b>格林公式把闭曲线积分变成二重积分 $\iint\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)\mathrm{d}\sigma$。要让它对每一个小区域都为 $0$，被积函数只能恒为 $0$。</p>
+<p><b>本题的两道关卡：</b>上半平面是单连通的，所以①先算 $\frac{\partial Q}{\partial x}=\frac{1}{y^2}$，逐个检查 $\frac{\partial P}{\partial y}$ 是否等于它；②还要检查 $P$ 在<b>整个上半平面</b>上是否有定义、偏导是否连续——这一关专门用来筛掉"形式上满足等式、却有奇点"的选项。</p>`,
+      solution: R`<p><b>第一步：算 $\dfrac{\partial Q}{\partial x}$。</b>把 $y$ 看作常数，$\dfrac{\partial}{\partial x}\left(\dfrac{x}{y^2}\right)=\dfrac{1}{y^2}$。</p>
+<p><b>第二步：逐个计算 $\dfrac{\partial P}{\partial y}$。</b></p>
+<ul><li>(A) $P=y-x^2y^{-3}$，$\dfrac{\partial P}{\partial y}=1+\dfrac{3x^2}{y^4}$。与 $\dfrac1{y^2}$ 之差在点 $(1,1)$ 处等于 $1+3-1=3\ne0$，不满足。</li>
+<li>(B) $P=y^{-1}-x^2y^{-3}$，$\dfrac{\partial P}{\partial y}=-\dfrac{1}{y^2}+\dfrac{3x^2}{y^4}$。与 $\dfrac1{y^2}$ 之差为 $\dfrac{3x^2-2y^2}{y^4}$，在点 $(0,1)$ 处等于 $-2\ne0$，不满足。</li>
+<li>(C) $P=\dfrac1x-\dfrac1y$，$\dfrac{\partial P}{\partial y}=\dfrac{1}{y^2}$，<b>形式上</b>满足。</li>
+<li>(D) $P=x-\dfrac1y$，$\dfrac{\partial P}{\partial y}=\dfrac{1}{y^2}$，满足。</li></ul>
+<p>对 (A)(B)：既然 $\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}$ 在某点不为零，由连续性它在该点附近一个小圆盘内保持同号，沿这个小圆周用格林公式，积分就不为 $0$，所以它们不符合题意。</p>
+<p><b>第三步：排除 (C)。</b>$P=\dfrac1x-\dfrac1y$ 在 $y$ 轴的上半段 $\{x=0,\ y\gt0\}$ 上<b>没有定义</b>，而这条射线就在上半平面里。取一条跨过 $y$ 轴的闭曲线，比如圆 $x=\cos\theta,\ y=2+\sin\theta$，积分中含有</p>
+$$\oint\frac{\mathrm{d}x}{x}=\int_0^{2\pi}\frac{-\sin\theta}{\cos\theta}\,\mathrm{d}\theta=-\int_0^{2\pi}\tan\theta\,\mathrm{d}\theta,$$
+<p>$\tan\theta$ 在 $\theta=\frac{\pi}{2}$ 附近像 $\frac{1}{\frac{\pi}{2}-\theta}$ 一样趋于无穷，这个反常积分发散，曲线积分根本不存在，更谈不上等于 $0$。所以 (C) 不满足"对上半平面内任意闭曲线积分为零"。</p>
+<p><b>第四步：确认 (D)。</b>$P=x-\dfrac1y$、$Q=\dfrac{x}{y^2}$ 在整个上半平面内都有连续偏导，且 $\dfrac{\partial P}{\partial y}=\dfrac{\partial Q}{\partial x}$，由定理，任意闭曲线积分为 $0$。还可以直接找出原函数来印证：令 $u(x,y)=\dfrac{x^2}{2}-\dfrac{x}{y}$，则</p>
+$$\mathrm{d}u=\left(x-\frac1y\right)\mathrm{d}x+\frac{x}{y^2}\,\mathrm{d}y=P\,\mathrm{d}x+Q\,\mathrm{d}y,$$
+<p>全微分沿闭曲线的积分等于 $u$ 的终点值减起点值，起点与终点重合，结果为 $0$。选 <b>D</b>。</p>`,
+      pitfalls: R`<ul><li><b>只验证 $\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$，忽略"在整个区域内连续可偏导"：</b>这样 (C)(D) 都满足，会在两者之间犹豫甚至误选 C。凡是含 $\frac1x$、$\frac{1}{x^2+y^2}$ 这类式子，都要先看奇点在不在区域里。</li><li><b>求偏导符号出错：</b>$\frac{\partial}{\partial y}\left(-\frac1y\right)=+\frac{1}{y^2}$，容易漏掉负负得正。</li><li><b>把条件写反：</b>是 $\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$（"$P$ 对 $y$，$Q$ 对 $x$"，交叉求导），不是 $\frac{\partial P}{\partial x}=\frac{\partial Q}{\partial y}$。</li></ul>`,
+      summary: R`<p><b>方法要点：</b>闭路积分为零 / 与路径无关 / $P\,\mathrm{d}x+Q\,\mathrm{d}y$ 是全微分，三者在<b>单连通区域且 $P,Q$ 一阶偏导连续</b>的前提下都等价于 $\dfrac{\partial P}{\partial y}=\dfrac{\partial Q}{\partial x}$。</p>
+<p><b>题型识别：</b></p><ul><li>看到"任意闭曲线积分为零""与路径无关""某式是全微分" → 想到交叉偏导相等。</li><li>已知 $Q$ 反求 $P$ → 由 $\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$ 对 $y$ 积分：$P=\int\frac{\partial Q}{\partial x}\,\mathrm{d}y+\varphi(x)$。</li><li>永远补一句检查：区域是否单连通、函数在区域内有无奇点。</li></ul>`,
+      alt: R`<p><b>直接求出所有可能的 $P$：</b>由 $\dfrac{\partial P}{\partial y}=\dfrac{1}{y^2}$ 对 $y$ 积分，得 $P(x,y)=-\dfrac1y+\varphi(x)$，其中 $\varphi(x)$ 在整个实轴上需连续可导（因为上半平面里 $x$ 可以取任何实数）。(D) 对应 $\varphi(x)=x$，符合；(C) 对应 $\varphi(x)=\dfrac1x$，在 $x=0$ 无定义，不符合；(A)(B) 根本不是这种形式。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: 对四个选项计算 ∂P/∂y-∂Q/∂x，(A) 得 (3x²+y⁴-y²)/y⁴、(B) 得 (3x²-2y²)/y⁴，均不恒为零；(C)(D) 为 0；验证 u=x²/2-x/y 满足 u_x=x-1/y、u_y=x/y²；(C) 在圆 x=cosθ, y=2+sinθ 上含 -tanθ dθ，在 θ=π/2 处不可积' },
+      flags: []
+    },
+
+    /* ───────────── 第9题 抽象复合函数偏导 ───────────── */
+    {
+      id: '2019-9', year: 2019, no: '第9题', type: '填空', score: 4,
+      stem: R`设函数 $f(u)$ 可导，$z=f(\sin y-\sin x)+xy$，则 $\dfrac{1}{\cos x}\cdot\dfrac{\partial z}{\partial x}+\dfrac{1}{\cos y}\cdot\dfrac{\partial z}{\partial y}=$______.`,
+      options: null,
+      answer: R`$\dfrac{y}{\cos x}+\dfrac{x}{\cos y}$`,
+      figure: null,
+      kp: ['mdiff.chain'],
+      methods: ['多元复合函数链式法则'],
+      difficulty: 1,
+      analysis: R`<p><b>这题考什么：</b>含抽象函数的多元复合函数求偏导（链式法则）。</p>
+<p><b>怎么下手：</b>$f$ 的具体表达式不知道，所以只能把它当成"外层函数"，引入中间变量 $u=\sin y-\sin x$，用链式法则：$\dfrac{\partial}{\partial x}f(u)=f'(u)\cdot\dfrac{\partial u}{\partial x}$。</p>
+<p><b>观察题目的设计：</b>所求式子给 $\frac{\partial z}{\partial x}$ 配上系数 $\frac{1}{\cos x}$，给 $\frac{\partial z}{\partial y}$ 配上 $\frac{1}{\cos y}$，而 $u$ 对 $x$、$y$ 的偏导恰好分别是 $-\cos x$、$\cos y$。可以预见，这两个系数是为了让含未知函数的 $f'(u)$ 项<b>正好抵消</b>，最后答案里不会出现 $f'$。</p>`,
+      solution: R`<p><b>第一步：设中间变量。</b>令 $u=\sin y-\sin x$，则 $z=f(u)+xy$，且</p>
+$$\frac{\partial u}{\partial x}=-\cos x,\qquad \frac{\partial u}{\partial y}=\cos y.$$
+<p><b>第二步：求两个偏导。</b>对 $x$ 求偏导时 $y$ 是常数，$xy$ 对 $x$ 的偏导是 $y$：</p>
+$$\frac{\partial z}{\partial x}=f'(u)\cdot(-\cos x)+y,\qquad \frac{\partial z}{\partial y}=f'(u)\cdot\cos y+x.$$
+<p><b>第三步：代入组合。</b></p>
+$$\frac{1}{\cos x}\cdot\frac{\partial z}{\partial x}=-f'(u)+\frac{y}{\cos x},\qquad \frac{1}{\cos y}\cdot\frac{\partial z}{\partial y}=f'(u)+\frac{x}{\cos y}.$$
+<p>两式相加，$f'(u)$ 一正一负抵消：</p>
+$$\frac{1}{\cos x}\cdot\frac{\partial z}{\partial x}+\frac{1}{\cos y}\cdot\frac{\partial z}{\partial y}=\frac{y}{\cos x}+\frac{x}{\cos y}.$$`,
+      pitfalls: R`<ul><li><b>漏掉内层导数或符号：</b>$\frac{\partial}{\partial x}(-\sin x)=-\cos x$，负号丢了 $f'$ 就消不掉。</li><li><b>$xy$ 求偏导写错：</b>对 $x$ 求偏导得 $y$，对 $y$ 求偏导得 $x$，别写反。</li><li><b>写成 $f'(x)$：</b>$f'$ 是在 $u=\sin y-\sin x$ 处取值，记号要写清楚。</li></ul>`,
+      summary: R`<p><b>方法要点：</b>抽象复合函数求偏导，先画出"$z\to u\to x,y$"的变量关系，再按链式法则逐项相乘。</p>
+<p><b>题型识别：</b>所求式子是"偏导的特定组合"时，组合系数往往是为了消去抽象导数 $f'$。如果算完 $f'$ 没消掉，多半是某个偏导的符号或系数算错了，应回头检查。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: 以抽象函数 f 定义 z=f(sin y - sin x)+xy，化简 z_x/cos x + z_y/cos y 得 x/cos(y) + y/cos(x)' },
+      flags: []
+    },
+
+    /* ───────────── 第10题 一阶微分方程特解 ───────────── */
+    {
+      id: '2019-10', year: 2019, no: '第10题', type: '填空', score: 4,
+      stem: R`微分方程 $2yy'-y^2-2=0$ 满足条件 $y(0)=1$ 的特解 $y=$______.`,
+      options: null,
+      answer: R`$\sqrt{3\mathrm{e}^x-2}$`,
+      figure: null,
+      kp: ['ode.first'],
+      methods: ['变量代换 u=y²', '一阶线性方程', '分离变量', '由初值确定符号'],
+      difficulty: 2,
+      analysis: R`<p><b>这题考什么：</b>一阶微分方程的求解与初值问题。</p>
+<p><b>从哪个特征想到方法：</b>方程里出现了 $2yy'$。这个组合非常有标志性——它就是 $(y^2)'$。于是令 $u=y^2$，原方程立刻变成关于 $u$ 的一阶<b>线性</b>方程 $u'-u=2$，好解得多。</p>
+<p>另一个看法：把方程写成 $2yy'=y^2+2$，左边只含 $y$ 和 $y'$，右边只含 $y$，没有 $x$，属于可分离变量方程，也可以直接分离变量。</p>
+<p><b>最后一步别忘：</b>解出来的是 $y^2$，开方时有正负两支，要用初值 $y(0)=1\gt0$ 来确定取哪一支。</p>`,
+      solution: R`<p><b>第一步：换元。</b>注意到 $(y^2)'=2yy'$，令 $u=y^2$，原方程化为</p>
+$$u'-u-2=0,\quad\text{即}\quad u'=u+2.$$
+<p><b>第二步：解关于 $u$ 的方程。</b>分离变量：$\dfrac{\mathrm{d}u}{u+2}=\mathrm{d}x$，两边积分得 $\ln|u+2|=x+C_1$，即</p>
+$$u+2=C\mathrm{e}^x\quad(C\text{ 为任意常数}).$$
+<p><b>第三步：代入初值。</b>$u(0)=y(0)^2=1$，所以 $1+2=C\mathrm{e}^0$，$C=3$，于是 $y^2=u=3\mathrm{e}^x-2$。</p>
+<p><b>第四步：开方定号。</b>$y=\pm\sqrt{3\mathrm{e}^x-2}$。由 $y(0)=1\gt0$，取正号：</p>
+$$y=\sqrt{3\mathrm{e}^x-2}\qquad\left(x\gt\ln\frac23\right).$$
+<p><b>第五步：回代检验。</b>$y'=\dfrac{3\mathrm{e}^x}{2\sqrt{3\mathrm{e}^x-2}}$，所以 $2yy'=3\mathrm{e}^x$，而 $y^2+2=3\mathrm{e}^x$，两边相等，确实是解，且 $y(0)=\sqrt{1}=1$。</p>`,
+      pitfalls: R`<ul><li><b>忘记开方或忘记定号：</b>答案写成 $y^2=3\mathrm{e}^x-2$ 不符合"求 $y$"的要求；写成 $\pm\sqrt{\cdots}$ 则没有用上初值。</li><li><b>常数处理出错：</b>由 $\ln(u+2)=x+C_1$ 得 $u+2=\mathrm{e}^{C_1}\mathrm{e}^x$，常数是乘在 $\mathrm{e}^x$ 前面的，不是加在后面。</li><li><b>没认出 $2yy'=(y^2)'$：</b>硬把方程化成 $y'=\frac{y^2+2}{2y}$ 也能分离变量，但容易在积分 $\int\frac{2y}{y^2+2}\mathrm{d}y$ 时出错。</li></ul>`,
+      summary: R`<p><b>方法要点：</b>看到 $yy'$ 想到 $(y^2)'$；更一般地，看到 $y^{n-1}y'$ 想到 $\frac1n(y^n)'$——这也是伯努利方程换元 $u=y^{1-n}$ 的出发点。</p>
+<p><b>题型识别：</b>一阶方程先判断类型（可分离、齐次、线性、伯努利、全微分），能"凑导数"的先凑；解出的是 $y^2$ 等隐式形式时，用初值的符号决定开方取哪一支。</p>`,
+      alt: R`<p><b>直接分离变量：</b>$2y\dfrac{\mathrm{d}y}{\mathrm{d}x}=y^2+2\Rightarrow\dfrac{2y\,\mathrm{d}y}{y^2+2}=\mathrm{d}x$，两边积分：$\ln(y^2+2)=x+C$。由 $y(0)=1$ 得 $C=\ln3$，所以 $y^2+2=3\mathrm{e}^x$，再由 $y(0)\gt0$ 得 $y=\sqrt{3\mathrm{e}^x-2}$。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy dsolve(2yy\'-y²-2=0, y(0)=1) 得 y=sqrt(3e^x-2)；回代 2yy\'-y²-2 化简为 0，且 y(0)=1' },
+      flags: ['OCR 中填空横线识别为 "\\_"，按原卷补为横线']
+    },
+
+    /* ───────────── 第11题 幂级数和函数 ───────────── */
+    {
+      id: '2019-11', year: 2019, no: '第11题', type: '填空', score: 4,
+      stem: R`幂级数 $\displaystyle\sum_{n=0}^{\infty}\frac{(-1)^n}{(2n)!}x^n$ 在 $(0,+\infty)$ 内的和函数 $S(x)=$______.`,
+      options: null,
+      answer: R`$\cos\sqrt{x}$`,
+      figure: null,
+      kp: ['series.sum', 'series.expand'],
+      methods: ['利用常用展开式求和函数', '变量代换 t=√x'],
+      difficulty: 2,
+      analysis: R`<p><b>这题考什么：</b>用已知的麦克劳林展开式"反向"求幂级数的和函数。</p>
+<p><b>从哪个特征想到 $\cos$：</b>系数是 $\dfrac{(-1)^n}{(2n)!}$——符号交错、分母是<b>偶数阶乘</b>，这正是余弦展开式的系数：</p>
+$$\cos t=\sum_{n=0}^{\infty}\frac{(-1)^n}{(2n)!}t^{2n}=1-\frac{t^2}{2!}+\frac{t^4}{4!}-\cdots,\quad t\in(-\infty,+\infty).$$
+<p>不同之处在于 $\cos t$ 里幂次是 $t^{2n}$，而题目是 $x^n$。要把 $x^n$ 写成"某个量的 $2n$ 次方"，自然想到 $x^n=(\sqrt x)^{2n}$——这一步需要 $x\gt0$，这也解释了题目为什么只问 $(0,+\infty)$ 上的和函数。</p>`,
+      solution: R`<p><b>第一步：确定收敛范围。</b>系数 $a_n=\dfrac{(-1)^n}{(2n)!}$，</p>
+$$\left|\frac{a_{n+1}}{a_n}\right|=\frac{(2n)!}{(2n+2)!}=\frac{1}{(2n+1)(2n+2)}\to0,$$
+<p>收敛半径 $R=+\infty$，级数在整个实轴上收敛，当然在 $(0,+\infty)$ 内收敛。</p>
+<p><b>第二步：换元对上余弦展开式。</b>当 $x\gt0$ 时，令 $t=\sqrt x$，则 $x^n=t^{2n}$，于是</p>
+$$S(x)=\sum_{n=0}^{\infty}\frac{(-1)^n}{(2n)!}\left(\sqrt x\right)^{2n}=\cos\sqrt x.$$
+<p><b>第三步：验证前几项。</b>$\cos\sqrt x=1-\dfrac{x}{2}+\dfrac{x^2}{24}-\dfrac{x^3}{720}+\cdots$，与原级数 $n=0,1,2,3$ 的项 $1,-\frac{x}{2!},\frac{x^2}{4!},-\frac{x^3}{6!}$ 完全一致。</p>
+<p><b>补充：</b>若 $x\lt0$，令 $x=-s^2$，则 $(-1)^nx^n=s^{2n}$，和函数变为 $\displaystyle\sum\frac{s^{2n}}{(2n)!}=\cosh s=\cosh\sqrt{-x}$；$x=0$ 时 $S(0)=1$。所以在整个实轴上和函数是分段表达的。</p>`,
+      pitfalls: R`<ul><li><b>直接写成 $\cos x$：</b>没注意幂次是 $x^n$ 而不是 $x^{2n}$。</li><li><b>不管 $x$ 的正负就开方：</b>$x\lt0$ 时 $\sqrt x$ 无意义，此时和函数是 $\cosh\sqrt{-x}$。</li><li><b>求导逐项凑：</b>本题用不着逐项求导或积分，硬套"先求导再积分"的套路反而复杂。</li></ul>`,
+      summary: R`<p><b>方法要点：</b>求和函数先"认系数"：</p><ul><li>分母有 $n!$ → 想 $\mathrm{e}^x$；分母有 $(2n)!$ → 想 $\cos x$ 或 $\cosh x$；分母有 $(2n+1)!$ → 想 $\sin x$ 或 $\sinh x$；</li><li>分母是 $n$ 或 $n+1$ → 想 $\ln(1+x)$，配合逐项积分；</li><li>没有阶乘、系数是多项式 → 想几何级数 $\frac{1}{1-x}$，配合逐项求导。</li></ul>
+<p>幂次与标准展开式不一致时，用换元（如 $t=\sqrt x$、$t=x^2$、$t=-x$）把它"对齐"，同时注意换元成立的范围。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: 对正实数 x 计算 summation((-1)^n x^n/(2n)!, n=0..∞) 得 cos(sqrt(x))；series(cos(sqrt(x))) 前四项 1 - x/2 + x²/24 - x³/720 与原级数一致' },
+      flags: ['OCR 中填空横线识别为 "\\_"，按原卷补为横线']
+    },
+
+    /* ───────────── 第12题 第二类曲面积分 ───────────── */
+    {
+      id: '2019-12', year: 2019, no: '第12题', type: '填空', score: 4,
+      stem: R`设 $\Sigma$ 为曲面 $x^2+y^2+4z^2=4\ (z\geqslant0)$ 的上侧，则 $\displaystyle\iint_\Sigma\sqrt{4-x^2-4z^2}\,\mathrm{d}x\,\mathrm{d}y=$______.`,
+      options: null,
+      answer: R`$\dfrac{32}{3}$`,
+      figure: null,
+      kp: ['mint.surf2', 'mint.double'],
+      methods: ['用曲面方程化简被积函数', '投影法计算第二类曲面积分', '对称性', '极坐标'],
+      difficulty: 3,
+      analysis: R`<p><b>这题考什么：</b>对坐标的曲面积分（第二类曲面积分）中 $\mathrm{d}x\,\mathrm{d}y$ 型的计算。</p>
+<p><b>第一个关键观察：</b>被积函数里的 $4-x^2-4z^2$ 和曲面方程 $x^2+y^2+4z^2=4$ 长得很像。曲面积分的被积函数只在曲面上取值，所以<b>可以用曲面方程代入化简</b>：在 $\Sigma$ 上 $4-x^2-4z^2=y^2$，被积函数就变成 $\sqrt{y^2}=|y|$。（这是曲线、曲面积分特有的技巧，二重、三重积分不能这样代。）</p>
+<p><b>第二个关键观察：</b>化简后的被积函数 $|y|$ 不含 $z$，而积分是 $\mathrm{d}x\,\mathrm{d}y$ 型，最自然的方法就是<b>投影到 $xOy$ 面</b>：上半椭球面 $z\geqslant0$ 投影到 $xOy$ 面是圆盘 $x^2+y^2\leqslant4$，每个投影点只对应曲面上的一个点；"上侧"的法向量指向 $z$ 轴正方向一侧，所以投影后取正号。</p>`,
+      solution: R`<p><b>第一步：代入曲面方程化简。</b>在 $\Sigma$ 上 $x^2+y^2+4z^2=4$，所以 $4-x^2-4z^2=y^2$，</p>
+$$\iint_\Sigma\sqrt{4-x^2-4z^2}\,\mathrm{d}x\,\mathrm{d}y=\iint_\Sigma\sqrt{y^2}\,\mathrm{d}x\,\mathrm{d}y=\iint_\Sigma|y|\,\mathrm{d}x\,\mathrm{d}y.$$
+<p><b>第二步：投影到 $xOy$ 面。</b>$\Sigma$ 可以写成 $z=\dfrac12\sqrt{4-x^2-y^2}$，$(x,y)\in D=\{(x,y)\mid x^2+y^2\leqslant4\}$。$\Sigma$ 取上侧，法向量与 $z$ 轴正向成锐角，所以</p>
+$$\iint_\Sigma|y|\,\mathrm{d}x\,\mathrm{d}y=+\iint_D|y|\,\mathrm{d}x\,\mathrm{d}y.$$
+<p>（被积函数 $|y|$ 不含 $z$，代入 $z=z(x,y)$ 后不变。）</p>
+<p><b>第三步：利用对称性。</b>$D$ 关于 $x$ 轴、$y$ 轴都对称，$|y|$ 关于 $x$、$y$ 都是偶函数，所以等于第一象限部分 $D_1$ 上积分的 $4$ 倍，而在 $D_1$ 上 $|y|=y$：</p>
+$$\iint_D|y|\,\mathrm{d}x\,\mathrm{d}y=4\iint_{D_1}y\,\mathrm{d}x\,\mathrm{d}y.$$
+<p><b>第四步：极坐标计算。</b>$x=r\cos\theta,\ y=r\sin\theta$，$\mathrm{d}x\,\mathrm{d}y=r\,\mathrm{d}r\,\mathrm{d}\theta$，$D_1$：$0\leqslant\theta\leqslant\frac{\pi}{2},\ 0\leqslant r\leqslant2$：</p>
+$$4\int_0^{\frac{\pi}{2}}\mathrm{d}\theta\int_0^2 r\sin\theta\cdot r\,\mathrm{d}r=4\int_0^{\frac{\pi}{2}}\sin\theta\,\mathrm{d}\theta\cdot\int_0^2r^2\,\mathrm{d}r=4\cdot1\cdot\frac83=\frac{32}{3}.$$`,
+      pitfalls: R`<ul><li><b>把 $\sqrt{y^2}$ 写成 $y$：</b>这是本题最大的陷阱。写成 $y$ 后，$D$ 关于 $x$ 轴对称、$y$ 是奇函数，积分为 $0$，答案就错成 $0$。</li><li><b>忘记"上侧"的符号：</b>投影到 $xOy$ 面时，上侧取 $+$，下侧取 $-$。本题是上侧，取正。</li><li><b>投影区域找错：</b>令 $z=0$ 得 $x^2+y^2=4$，投影区域半径是 $2$，不是 $1$（$1$ 是 $z$ 方向的半轴）。</li><li><b>不代入化简而直接计算：</b>把 $z=\frac12\sqrt{4-x^2-y^2}$ 代入 $\sqrt{4-x^2-4z^2}$ 同样得到 $\sqrt{y^2}$，但很多人在这里算乱了。</li></ul>`,
+      summary: R`<p><b>方法要点：</b></p><ul><li>曲线积分、曲面积分：<b>先用曲线 / 曲面方程化简被积函数</b>，再计算。</li><li>第二类曲面积分 $\iint_\Sigma R\,\mathrm{d}x\,\mathrm{d}y$：投影到 $xOy$ 面，"上正下负"，把 $z=z(x,y)$ 代入 $R$。</li><li>$\sqrt{u^2}=|u|$，带绝对值的被积函数配合对称性拆成一个象限计算。</li></ul>
+<p><b>题型识别：</b>看到被积函数与曲面方程"长得像" → 想到代入化简；看到只有 $\mathrm{d}x\,\mathrm{d}y$ 一项 → 想到直接投影，不必用高斯公式。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: 极坐标 ∫₀^{2π}∫₀² |r sinθ| r dr dθ = 32/3；另用直角坐标 4∫₀²∫₀^{√(4-x²)} y dy dx 复核为 32/3' },
+      flags: ['OCR 题干为 "设 Σ 设为曲面"，多了一个"设"字，已删去']
+    },
+
+    /* ───────────── 第15题 一阶线性方程 + 凹凸拐点 ───────────── */
+    {
+      id: '2019-15', year: 2019, no: '第15题', type: '解答', score: 10,
+      stem: R`设函数 $y(x)$ 是微分方程 $y'+xy=\mathrm{e}^{-\frac{x^2}{2}}$ 满足条件 $y(0)=0$ 的特解.<br>（Ⅰ）求 $y(x)$；<br>（Ⅱ）求曲线 $y=y(x)$ 的凹凸区间及拐点.`,
+      options: null,
+      answer: R`（Ⅰ）$y(x)=x\mathrm{e}^{-\frac{x^2}{2}}$；（Ⅱ）凹区间为 $(-\sqrt3,0)$ 和 $(\sqrt3,+\infty)$，凸区间为 $(-\infty,-\sqrt3)$ 和 $(0,\sqrt3)$；拐点为 $\left(-\sqrt3,-\sqrt3\,\mathrm{e}^{-\frac32}\right)$、$(0,0)$、$\left(\sqrt3,\sqrt3\,\mathrm{e}^{-\frac32}\right)$.`,
+      figure: null,
+      kp: ['ode.first', 'diff.convex'],
+      methods: ['一阶线性方程（积分因子法）', '二阶导数符号判断凹凸', '拐点的判定'],
+      difficulty: 2,
+      analysis: R`<p><b>这题考什么：</b>（Ⅰ）一阶线性微分方程的求解；（Ⅱ）用二阶导数判断曲线的凹凸性与拐点。两问都是基本功。</p>
+<p><b>（Ⅰ）为什么用积分因子：</b>方程形如 $y'+P(x)y=Q(x)$，其中 $P(x)=x$、$Q(x)=\mathrm{e}^{-\frac{x^2}{2}}$，是一阶线性方程。积分因子法的想法是：两边乘上 $\mathrm{e}^{\int P(x)\mathrm{d}x}=\mathrm{e}^{\frac{x^2}{2}}$，左边就恰好变成乘积的导数 $\left(y\,\mathrm{e}^{\frac{x^2}{2}}\right)'$。而且本题右边乘上 $\mathrm{e}^{\frac{x^2}{2}}$ 后正好变成 $1$——这是出题人特意设计的，积分会非常简单。</p>
+<p><b>（Ⅱ）凹凸看二阶导数的符号：</b>$y''\gt0$ 的区间上曲线是凹的（向上弯，像碗口朝上），$y''\lt0$ 的区间上是凸的；拐点是凹凸性发生改变的点，候选点是 $y''=0$ 或 $y''$ 不存在的点，<b>还要验证两侧 $y''$ 变号</b>。</p>
+<p><b>术语提醒：</b>本题按教材与考试大纲的约定："凹"指 $y''\gt0$，"凸"指 $y''\lt0$。</p>`,
+      solution: R`<p><b>（Ⅰ）第一步：乘积分因子。</b>两边同乘 $\mathrm{e}^{\frac{x^2}{2}}$：</p>
+$$\mathrm{e}^{\frac{x^2}{2}}y'+x\,\mathrm{e}^{\frac{x^2}{2}}y=1.$$
+<p>左边正是 $\left(y\,\mathrm{e}^{\frac{x^2}{2}}\right)'=y'\mathrm{e}^{\frac{x^2}{2}}+y\cdot x\,\mathrm{e}^{\frac{x^2}{2}}$，所以方程化为</p>
+$$\left(y\,\mathrm{e}^{\frac{x^2}{2}}\right)'=1.$$
+<p><b>第二步：积分并代入初值。</b>两边积分：$y\,\mathrm{e}^{\frac{x^2}{2}}=x+C$，即 $y=(x+C)\mathrm{e}^{-\frac{x^2}{2}}$。由 $y(0)=0$ 得 $C=0$，所以</p>
+$$y(x)=x\,\mathrm{e}^{-\frac{x^2}{2}}.$$
+<p><b>（Ⅱ）第三步：求一阶导数。</b>用乘积法则，$\left(\mathrm{e}^{-\frac{x^2}{2}}\right)'=-x\,\mathrm{e}^{-\frac{x^2}{2}}$：</p>
+$$y'=\mathrm{e}^{-\frac{x^2}{2}}+x\cdot\left(-x\,\mathrm{e}^{-\frac{x^2}{2}}\right)=(1-x^2)\mathrm{e}^{-\frac{x^2}{2}}.$$
+<p><b>第四步：求二阶导数并因式分解。</b></p>
+$$y''=-2x\,\mathrm{e}^{-\frac{x^2}{2}}+(1-x^2)\cdot\left(-x\,\mathrm{e}^{-\frac{x^2}{2}}\right)=(-2x-x+x^3)\mathrm{e}^{-\frac{x^2}{2}}=x(x-\sqrt3)(x+\sqrt3)\,\mathrm{e}^{-\frac{x^2}{2}}.$$
+<p>$y''$ 处处存在，令 $y''=0$ 得 $x=-\sqrt3,\ 0,\ \sqrt3$。</p>
+<p><b>第五步：列表判断符号。</b>因为 $\mathrm{e}^{-\frac{x^2}{2}}\gt0$，$y''$ 的符号由 $x(x-\sqrt3)(x+\sqrt3)$ 决定：</p>
+<table><thead><tr><th>区间</th><th>$x$</th><th>$x+\sqrt3$</th><th>$x-\sqrt3$</th><th>$y''$</th><th>曲线</th></tr></thead><tbody>
+<tr><td>$(-\infty,-\sqrt3)$</td><td>$-$</td><td>$-$</td><td>$-$</td><td>$-$</td><td>凸</td></tr>
+<tr><td>$(-\sqrt3,0)$</td><td>$-$</td><td>$+$</td><td>$-$</td><td>$+$</td><td>凹</td></tr>
+<tr><td>$(0,\sqrt3)$</td><td>$+$</td><td>$+$</td><td>$-$</td><td>$-$</td><td>凸</td></tr>
+<tr><td>$(\sqrt3,+\infty)$</td><td>$+$</td><td>$+$</td><td>$+$</td><td>$+$</td><td>凹</td></tr>
+</tbody></table>
+<p><b>第六步：写出结论。</b>凹区间为 $(-\sqrt3,0)$ 和 $(\sqrt3,+\infty)$；凸区间为 $(-\infty,-\sqrt3)$ 和 $(0,\sqrt3)$。</p>
+<p>在 $x=-\sqrt3,0,\sqrt3$ 三点，$y''$ 两侧都变号，且 $y$ 在这些点连续，所以三点对应的曲线上的点都是拐点。算出纵坐标：$y(\pm\sqrt3)=\pm\sqrt3\,\mathrm{e}^{-\frac32}$，$y(0)=0$。拐点为</p>
+$$\left(-\sqrt3,-\sqrt3\,\mathrm{e}^{-\frac32}\right),\quad(0,0),\quad\left(\sqrt3,\sqrt3\,\mathrm{e}^{-\frac32}\right).$$
+<p><b>检查：</b>$y=x\mathrm{e}^{-\frac{x^2}{2}}$ 是奇函数，图形关于原点对称，所以拐点也应关于原点对称，凹凸性在关于原点对称的区间上恰好相反——结果与此吻合。</p>`,
+      pitfalls: R`<ul><li><b>拐点只写横坐标：</b>拐点是曲线上的<b>点</b>，必须写成 $(x_0,y(x_0))$ 的坐标形式。</li><li><b>凹凸说反：</b>按考试约定，$y''\gt0$ 为凹、$y''\lt0$ 为凸；记法：$y=x^2$ 的 $y''=2\gt0$，图形像碗，是"凹"的。</li><li><b>求 $y''$ 时符号出错：</b>$(1-x^2)\cdot(-x)=-x+x^3$，与 $-2x$ 合并得 $x^3-3x$，常见错误是写成 $x^3-x$。</li><li><b>只解 $y''=0$ 不验变号：</b>$y''=0$ 只是拐点的必要条件（如 $y=x^4$ 在 $0$ 处 $y''=0$ 但不是拐点），必须说明两侧变号。</li><li><b>积分因子取错：</b>积分因子是 $\mathrm{e}^{\int P\,\mathrm{d}x}=\mathrm{e}^{+\frac{x^2}{2}}$，不是 $\mathrm{e}^{-\frac{x^2}{2}}$。</li></ul>`,
+      summary: R`<p><b>方法要点：</b></p><ul><li>一阶线性方程 $y'+P(x)y=Q(x)$：通解 $y=\mathrm{e}^{-\int P\mathrm{d}x}\left(\int Q\,\mathrm{e}^{\int P\mathrm{d}x}\mathrm{d}x+C\right)$；本质是乘积分因子 $\mathrm{e}^{\int P\mathrm{d}x}$ 把左边凑成乘积的导数。</li><li>凹凸与拐点三步走：求 $y''$ 并因式分解 → 找 $y''=0$ 及 $y''$ 不存在的点 → 列表看符号、看变号。</li></ul>
+<p><b>题型识别：</b>看到 $y'+P(x)y=Q(x)$ → 积分因子；看到"凹凸区间、拐点" → 二阶导数符号表；结果有对称性（奇偶函数）时用它来自查。</p>`,
+      alt: R`<p><b>直接套一阶线性方程通解公式：</b>$P(x)=x$，$\int P\,\mathrm{d}x=\frac{x^2}{2}$，</p>$$y=\mathrm{e}^{-\frac{x^2}{2}}\left(\int\mathrm{e}^{-\frac{x^2}{2}}\cdot\mathrm{e}^{\frac{x^2}{2}}\,\mathrm{d}x+C\right)=\mathrm{e}^{-\frac{x^2}{2}}(x+C),$$<p>再由 $y(0)=0$ 得 $C=0$。结果相同，公式法适合考场快速书写，但要理解它就是积分因子法的结果。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy dsolve(y\'+xy=e^{-x²/2}, y(0)=0) 得 x·e^{-x²/2}；factor(y\'\')=x(x²-3)e^{-x²/2}，零点 0、±√3；在 -2、-1、1、2 处 y\'\' 符号依次为 -、+、-、+；拐点纵坐标 ∓√3 e^{-3/2}、0' },
+      flags: []
+    },
+
+    /* ───────────── 第16题 方向导数与梯度 + 曲面面积 ───────────── */
+    {
+      id: '2019-16', year: 2019, no: '第16题', type: '解答', score: 10,
+      stem: R`设 $a,b$ 为实数，函数 $z=2+ax^2+by^2$ 在点 $(3,4)$ 处的方向导数中，沿方向 $\mathbf{l}=-3\mathbf{i}-4\mathbf{j}$ 的方向导数最大，最大值为 $10$.<br>（Ⅰ）求 $a,b$；<br>（Ⅱ）求曲面 $z=2+ax^2+by^2\ (z\geqslant0)$ 的面积.`,
+      options: null,
+      answer: R`（Ⅰ）$a=-1$，$b=-1$；（Ⅱ）曲面面积 $S=\dfrac{13\pi}{3}$.`,
+      figure: null,
+      kp: ['mdiff.dir', 'mint.surf1', 'mint.double'],
+      methods: ['梯度与方向导数的关系', '曲面面积公式', '极坐标', '凑微分'],
+      difficulty: 3,
+      analysis: R`<p><b>这题考什么：</b>（Ⅰ）方向导数与梯度的关系；（Ⅱ）用二重积分求曲面面积。</p>
+<p><b>（Ⅰ）从条件想到梯度：</b>方向导数可以写成梯度与单位方向向量的数量积：</p>
+$$\frac{\partial z}{\partial\mathbf{l}}=\mathbf{grad}\,z\cdot\mathbf{e}_l=|\mathbf{grad}\,z|\cos\theta,$$
+<p>$\theta$ 是梯度与方向 $\mathbf{e}_l$ 的夹角。$\cos\theta$ 最大为 $1$，取在 $\theta=0$，即<b>沿梯度方向时方向导数最大，最大值就是梯度的模</b>。所以"沿 $\mathbf{l}$ 方向导数最大且最大值为 $10$"这句话，翻译过来就是一个向量等式：</p>
+$$\mathbf{grad}\,z\big|_{(3,4)}=10\cdot\frac{\mathbf{l}}{|\mathbf{l}|}.$$
+<p>一个向量等式就是两个分量方程，恰好解出 $a,b$ 两个未知数。</p>
+<p><b>（Ⅱ）认出曲面：</b>求出 $a=b=-1$ 后曲面是 $z=2-x^2-y^2$，一个顶点在 $(0,0,2)$、开口向下的旋转抛物面；$z\geqslant0$ 截下的部分投影到 $xOy$ 面是圆盘 $x^2+y^2\leqslant2$。用曲面面积公式 $S=\iint_D\sqrt{1+z_x^2+z_y^2}\,\mathrm{d}x\,\mathrm{d}y$，被积函数只依赖 $x^2+y^2$，区域是圆，极坐标是最自然的选择。</p>`,
+      solution: R`<p><b>（Ⅰ）第一步：求梯度。</b></p>
+$$\mathbf{grad}\,z=\left(\frac{\partial z}{\partial x},\frac{\partial z}{\partial y}\right)=(2ax,\ 2by),\qquad \mathbf{grad}\,z\big|_{(3,4)}=(6a,\ 8b).$$
+<p><b>第二步：把条件翻译成向量等式。</b>由上面的分析，方向导数在梯度方向取最大值，最大值等于梯度的模。$\mathbf{l}=(-3,-4)$，$|\mathbf{l}|=5$，单位向量 $\mathbf{e}_l=\left(-\frac35,-\frac45\right)$。"沿 $\mathbf{l}$ 方向导数最大"说明梯度与 $\mathbf{e}_l$ 同向，"最大值为 $10$"说明梯度的模为 $10$，所以</p>
+$$(6a,\ 8b)=10\left(-\frac35,-\frac45\right)=(-6,\ -8).$$
+<p><b>第三步：解出 $a,b$。</b>$6a=-6$，$8b=-8$，得 $a=-1$，$b=-1$。</p>
+<p><b>验证：</b>此时梯度 $(-6,-8)$，模为 $\sqrt{36+64}=10$；沿 $\mathbf{l}$ 的方向导数 $(-6)\cdot\left(-\frac35\right)+(-8)\cdot\left(-\frac45\right)=\frac{18+32}{5}=10$，正好是最大值。</p>
+<p><b>注意：</b>如果只用"梯度与 $\mathbf{l}$ 平行"（$\frac{6a}{-3}=\frac{8b}{-4}$，得 $a=b$）和"模为 $10$"（$\sqrt{36a^2+64b^2}=10$），会得到 $a=b=\pm1$。其中 $a=b=1$ 时梯度为 $(6,8)$，与 $\mathbf{l}$ <b>反向</b>，沿 $\mathbf{l}$ 的方向导数是 $-10$（最小值），必须舍去。</p>
+<p><b>（Ⅱ）第四步：确定曲面与投影区域。</b>曲面 $\Sigma:\ z=2-x^2-y^2$，$z\geqslant0\iff x^2+y^2\leqslant2$，所以投影区域 $D=\{(x,y)\mid x^2+y^2\leqslant2\}$。</p>
+<p><b>第五步：写出面积元。</b>$z_x=-2x$，$z_y=-2y$，</p>
+$$\mathrm{d}S=\sqrt{1+z_x^2+z_y^2}\,\mathrm{d}x\,\mathrm{d}y=\sqrt{1+4x^2+4y^2}\,\mathrm{d}x\,\mathrm{d}y.$$
+<p>这个公式的来历：曲面在 $(x,y)$ 上方的一小块面积，等于它在 $xOy$ 面上的投影面积除以法向量与 $z$ 轴夹角的余弦 $\cos\gamma=\dfrac{1}{\sqrt{1+z_x^2+z_y^2}}$——曲面越陡，同样的投影对应的面积越大。</p>
+<p><b>第六步：极坐标计算。</b>$x=r\cos\theta,\ y=r\sin\theta$，$0\leqslant\theta\leqslant2\pi$，$0\leqslant r\leqslant\sqrt2$：</p>
+$$S=\int_0^{2\pi}\mathrm{d}\theta\int_0^{\sqrt2}\sqrt{1+4r^2}\,r\,\mathrm{d}r=2\pi\int_0^{\sqrt2}\sqrt{1+4r^2}\,r\,\mathrm{d}r.$$
+<p>凑微分：$r\,\mathrm{d}r=\frac18\,\mathrm{d}(1+4r^2)$，当 $r$ 从 $0$ 到 $\sqrt2$ 时，$1+4r^2$ 从 $1$ 到 $9$：</p>
+$$\int_0^{\sqrt2}\sqrt{1+4r^2}\,r\,\mathrm{d}r=\frac18\int_1^9\sqrt w\,\mathrm{d}w=\frac18\cdot\frac23\left(9^{\frac32}-1\right)=\frac{1}{12}(27-1)=\frac{13}{6}.$$
+<p>所以 $S=2\pi\cdot\dfrac{13}{6}=\dfrac{13\pi}{3}$。</p>`,
+      pitfalls: R`<ul><li><b>$a,b$ 的符号：</b>只用"平行 + 模长"会得到两组解，忘了检验方向就会多出 $a=b=1$。方向导数"最大"要求梯度与 $\mathbf{l}$ <b>同向</b>。</li><li><b>把 $\mathbf{l}$ 当成单位向量：</b>$\mathbf{l}=(-3,-4)$ 的模是 $5$，必须先单位化。</li><li><b>投影区域半径：</b>$z\geqslant0$ 对应 $x^2+y^2\leqslant2$，半径是 $\sqrt2$，不是 $2$。</li><li><b>极坐标漏掉 $r$：</b>$\mathrm{d}x\,\mathrm{d}y=r\,\mathrm{d}r\,\mathrm{d}\theta$，漏掉 $r$ 积分就做不出来，也会得到错误结果。</li></ul>`,
+      summary: R`<p><b>方法要点：</b></p><ul><li>方向导数 $=\mathbf{grad}\,f\cdot\mathbf{e}_l$；最大方向导数的方向 = 梯度方向，最大值 $=|\mathbf{grad}\,f|$；最小值 $=-|\mathbf{grad}\,f|$，在负梯度方向取得。</li><li>曲面 $z=z(x,y)$ 的面积：$S=\iint_D\sqrt{1+z_x^2+z_y^2}\,\mathrm{d}x\,\mathrm{d}y$，$D$ 是曲面在 $xOy$ 面上的投影。</li></ul>
+<p><b>题型识别：</b>看到"方向导数最大 / 增长最快的方向" → 想到梯度；看到"曲面面积" → 写出面积元并投影；被积函数含 $x^2+y^2$ 且区域是圆 → 极坐标。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: grad 在 (3,4) 为 (6a,8b)，解 (6a,8b)=10·(-3/5,-4/5) 得 a=b=-1；验证沿 l 方向导数为 10 且 |grad|=10；曲面面积 ∫₀^{2π}∫₀^{√2} r√(1+4r²) dr dθ = 13π/3（内层积分 13/6）' },
+      flags: ['OCR 中方向向量 l、i、j 使用 \\boldsymbol，按格式要求改为 \\mathbf']
+    },
+
+    /* ───────────── 第17题 无穷区间上的面积 ───────────── */
+    {
+      id: '2019-17', year: 2019, no: '第17题', type: '解答', score: 10,
+      stem: R`求曲线 $y=\mathrm{e}^{-x}\sin x\ (x\geqslant0)$ 与 $x$ 轴之间图形的面积.`,
+      options: null,
+      answer: R`$A=\dfrac{\mathrm{e}^{\pi}+1}{2(\mathrm{e}^{\pi}-1)}=\dfrac12+\dfrac{1}{\mathrm{e}^{\pi}-1}$`,
+      figure: null,
+      kp: ['int.app', 'int.improper', 'int.defcalc'],
+      methods: ['面积 = 绝对值的积分', '按周期分段', '平移换元', '分部积分（循环积分）', '等比级数求和'],
+      difficulty: 3,
+      analysis: R`<p><b>这题考什么：</b>定积分求面积 + 无穷区间上的反常积分 + 等比级数求和的综合运用。</p>
+<p><b>第一个关键点：面积要加绝对值。</b>"曲线与 $x$ 轴之间图形的面积"等于 $\int|y|\,\mathrm{d}x$，不是 $\int y\,\mathrm{d}x$。因为 $\sin x$ 在 $(0,\pi)$ 上为正、在 $(\pi,2\pi)$ 上为负……曲线是一串在 $x$ 轴上下交替、振幅越来越小的"拱"，$x$ 轴下方那些拱的面积也要算正的。所以</p>
+$$A=\int_0^{+\infty}\mathrm{e}^{-x}|\sin x|\,\mathrm{d}x.$$
+<p><b>第二个关键点：绝对值怎么去掉。</b>$|\sin x|$ 不能整体积分，但在每一段 $[k\pi,(k+1)\pi]$ 上 $\sin x$ 的符号是固定的，所以自然想到<b>按周期分段</b>，每段算一个拱的面积，再把无穷多个拱加起来。</p>
+<p><b>第三个关键点：为什么每段都能化成第一段。</b>$|\sin x|$ 以 $\pi$ 为周期，而 $\mathrm{e}^{-x}$ 有性质 $\mathrm{e}^{-(t+k\pi)}=\mathrm{e}^{-k\pi}\mathrm{e}^{-t}$。作平移 $x=t+k\pi$，第 $k$ 个拱的面积恰好是第一个拱面积的 $\mathrm{e}^{-k\pi}$ 倍——各拱面积构成<b>公比为 $\mathrm{e}^{-\pi}$ 的等比数列</b>，求和就是等比级数。</p>`,
+      solution: R`<p><b>第一步：写出面积并说明收敛。</b></p>
+$$A=\int_0^{+\infty}\mathrm{e}^{-x}|\sin x|\,\mathrm{d}x.$$
+<p>由于 $0\leqslant\mathrm{e}^{-x}|\sin x|\leqslant\mathrm{e}^{-x}$，而 $\int_0^{+\infty}\mathrm{e}^{-x}\mathrm{d}x=1$ 收敛，由比较判别法，这个反常积分收敛。</p>
+<p><b>第二步：按 $\pi$ 分段。</b>被积函数非负，所以 $\int_0^b\mathrm{e}^{-x}|\sin x|\,\mathrm{d}x$ 随 $b$ 单调不减，它在 $b\to+\infty$ 时的极限可以沿 $b=n\pi$ 去取：</p>
+$$A=\lim_{n\to\infty}\sum_{k=0}^{n-1}A_k,\qquad A_k=\int_{k\pi}^{(k+1)\pi}\mathrm{e}^{-x}|\sin x|\,\mathrm{d}x.$$
+<p><b>第三步：平移换元，把 $A_k$ 化成 $A_0$。</b>令 $x=t+k\pi$，$t\in[0,\pi]$。因为 $\sin(t+k\pi)=(-1)^k\sin t$，所以 $|\sin(t+k\pi)|=\sin t$（$t\in[0,\pi]$ 时 $\sin t\geqslant0$），又 $\mathrm{e}^{-x}=\mathrm{e}^{-k\pi}\mathrm{e}^{-t}$，于是</p>
+$$A_k=\int_0^{\pi}\mathrm{e}^{-k\pi}\mathrm{e}^{-t}\sin t\,\mathrm{d}t=\mathrm{e}^{-k\pi}A_0,\qquad A_0=\int_0^{\pi}\mathrm{e}^{-t}\sin t\,\mathrm{d}t.$$
+<p><b>第四步：计算 $A_0$。</b>先求原函数。记 $J=\int\mathrm{e}^{-t}\sin t\,\mathrm{d}t$，分部积分两次：</p>
+$$J=-\mathrm{e}^{-t}\sin t+\int\mathrm{e}^{-t}\cos t\,\mathrm{d}t=-\mathrm{e}^{-t}\sin t-\mathrm{e}^{-t}\cos t-\int\mathrm{e}^{-t}\sin t\,\mathrm{d}t,$$
+<p>右端又出现了 $J$（"循环"），移项得 $2J=-\mathrm{e}^{-t}(\sin t+\cos t)+C$，即</p>
+$$\int\mathrm{e}^{-t}\sin t\,\mathrm{d}t=-\frac12\mathrm{e}^{-t}(\sin t+\cos t)+C.$$
+<p>（求导检验：$\frac12\mathrm{e}^{-t}(\sin t+\cos t)-\frac12\mathrm{e}^{-t}(\cos t-\sin t)=\mathrm{e}^{-t}\sin t$ ✓。）代入上下限：</p>
+$$A_0=\left[-\frac12\mathrm{e}^{-t}(\sin t+\cos t)\right]_0^{\pi}=-\frac12\mathrm{e}^{-\pi}(0-1)+\frac12(0+1)=\frac12\left(1+\mathrm{e}^{-\pi}\right).$$
+<p><b>第五步：等比级数求和。</b></p>
+$$A=\sum_{k=0}^{\infty}\mathrm{e}^{-k\pi}A_0=A_0\cdot\frac{1}{1-\mathrm{e}^{-\pi}}=\frac{1+\mathrm{e}^{-\pi}}{2\left(1-\mathrm{e}^{-\pi}\right)}.$$
+<p>这里公比 $0\lt\mathrm{e}^{-\pi}\lt1$，等比级数 $\sum_{k=0}^{\infty}q^k=\frac{1}{1-q}$ 收敛。分子分母同乘 $\mathrm{e}^{\pi}$：</p>
+$$A=\frac{\mathrm{e}^{\pi}+1}{2(\mathrm{e}^{\pi}-1)}=\frac12+\frac{1}{\mathrm{e}^{\pi}-1}\approx0.5452.$$`,
+      pitfalls: R`<ul><li><b>面积不加绝对值：</b>直接算 $\int_0^{+\infty}\mathrm{e}^{-x}\sin x\,\mathrm{d}x=\frac12$，把 $x$ 轴下方的部分当成负面积抵消掉了，得到错误答案 $\frac12$。</li><li><b>分段后忽略符号：</b>不做平移换元、直接在 $[k\pi,(k+1)\pi]$ 上用原函数时，要乘 $(-1)^k$ 才是正的面积，这里极易丢符号。</li><li><b>等比级数起始项：</b>$k$ 从 $0$ 开始，首项是 $A_0$（对应 $\mathrm{e}^{0}=1$），和为 $\frac{A_0}{1-\mathrm{e}^{-\pi}}$；若从 $k=1$ 开始求和会漏掉第一个拱。</li><li><b>分部积分的"循环"处理：</b>两次分部后要把同类项移到左边解方程，别把 $J$ 当成已知又积一次。</li></ul>`,
+      summary: R`<p><b>方法要点：</b></p><ul><li>曲线与 $x$ 轴之间的面积 $=\int|f(x)|\,\mathrm{d}x$；函数变号时必须分段去绝对值。</li><li>"绝对值 + 周期函数 + 指数衰减"在无穷区间上积分 → 按周期分段 → 平移换元 → 各段构成等比数列 → 等比级数求和。</li><li>$\int\mathrm{e}^{ax}\sin bx\,\mathrm{d}x=\dfrac{\mathrm{e}^{ax}(a\sin bx-b\cos bx)}{a^2+b^2}+C$，可用两次分部积分推出，或求导验证。</li></ul>
+<p><b>题型识别：</b>看到"$\mathrm{e}^{-x}|\sin x|$ 在 $[0,+\infty)$ 上积分"或"无穷多个拱的面积" → 想到分段 + 等比级数。</p>`,
+      alt: R`<p><b>不换元，直接用原函数并处理符号：</b>在 $[k\pi,(k+1)\pi]$ 上 $|\sin x|=(-1)^k\sin x$，记 $F(x)=-\frac12\mathrm{e}^{-x}(\sin x+\cos x)$，由 $\sin k\pi=0$、$\cos k\pi=(-1)^k$ 得 $F(k\pi)=-\frac12(-1)^k\mathrm{e}^{-k\pi}$，于是</p>$$A_k=(-1)^k\left[F((k+1)\pi)-F(k\pi)\right]=\frac12\left(\mathrm{e}^{-(k+1)\pi}+\mathrm{e}^{-k\pi}\right),$$<p>求和得 $A=\frac12\left(1+2\sum_{k=1}^{\infty}\mathrm{e}^{-k\pi}\right)=\frac12+\frac{\mathrm{e}^{-\pi}}{1-\mathrm{e}^{-\pi}}=\frac12+\frac{1}{\mathrm{e}^{\pi}-1}$，与上面结果相同。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy: ∫₀^π e^{-x} sin x dx = (1+e^{-π})/2；A₀/(1-e^{-π}) 与 1/2+1/(e^π-1) 之差化简为 0；数值 0.545165705363684 与前 30 个拱的数值积分之和一致；逐拱核对 A_k = e^{-kπ}A₀（k=0..3）；原函数求导验证通过' },
+      flags: []
+    },
+
+    /* ───────────── 第18题 积分数列：单调、递推与比值极限 ───────────── */
+    {
+      id: '2019-18', year: 2019, no: '第18题', type: '解答', score: 10,
+      stem: R`设 $a_n=\displaystyle\int_0^1x^n\sqrt{1-x^2}\,\mathrm{d}x\ (n=0,1,2,\cdots)$.<br>（Ⅰ）证明数列 $\{a_n\}$ 单调递减，且 $a_n=\dfrac{n-1}{n+2}a_{n-2}\ (n=2,3,\cdots)$；<br>（Ⅱ）求 $\lim\limits_{n\to\infty}\dfrac{a_n}{a_{n-1}}$.`,
+      options: null,
+      answer: R`（Ⅰ）证明见解答；（Ⅱ）$\lim\limits_{n\to\infty}\dfrac{a_n}{a_{n-1}}=1$.`,
+      figure: null,
+      kp: ['int.defcalc', 'lim.seqcalc', 'int.def'],
+      methods: ['定积分的比较性质', '分部积分建立递推', '三角换元与华里士公式', '夹逼准则'],
+      difficulty: 4,
+      analysis: R`<p><b>这题考什么：</b>由定积分定义的数列——单调性、递推公式、相邻项比值的极限。这是"积分 + 数列极限"的经典综合题，背后的模型就是华里士（Wallis）积分。</p>
+<p><b>（Ⅰ）单调性怎么想：</b>$a_n$ 与 $a_{n+1}$ 积分区间相同，只是被积函数差一个因子 $x$。在 $[0,1]$ 上 $x^{n+1}\leqslant x^n$，所以比较被积函数即可——这是定积分的<b>比较性质</b>。</p>
+<p><b>（Ⅰ）递推怎么想：</b>要把 $a_n$ 和 $a_{n-2}$ 联系起来，即"幂次降 $2$"。分部积分是降幂的标准工具。关键是怎样拆被积函数：注意到 $x\sqrt{1-x^2}$ 有一个很干净的原函数 $-\frac13(1-x^2)^{\frac32}$，于是把 $x^n\sqrt{1-x^2}$ 拆成 $x^{n-1}\cdot x\sqrt{1-x^2}$，对后者积分、对 $x^{n-1}$ 求导。分部之后出现 $(1-x^2)^{\frac32}=(1-x^2)\sqrt{1-x^2}$，正好拆成 $a_{n-2}-a_n$——原积分 $a_n$ "回来了"，解一个一次方程就得到递推式。</p>
+<p><b>（Ⅱ）比值极限怎么想：</b>递推式联系的是 $a_n$ 与 $a_{n-2}$（隔一项），而要求的是 $a_n$ 与 $a_{n-1}$（相邻项）的比，不能直接从递推式读出来。这时（Ⅰ）的单调性派上用场：$a_n\lt a_{n-1}\lt a_{n-2}$，<b>把 $a_{n-1}$ 夹在中间</b>，再用递推式把 $a_{n-2}$ 换成 $a_n$，就得到比值的上下界，用夹逼准则。这正是证明华里士公式时的经典手法。</p>`,
+      solution: R`<p><b>（Ⅰ）第一步：$a_n\gt0$。</b>被积函数 $x^n\sqrt{1-x^2}$ 在 $[0,1]$ 上连续、非负，且在 $(0,1)$ 内为正，所以 $a_n\gt0$。</p>
+<p><b>第二步：单调递减。</b>考虑</p>
+$$a_n-a_{n+1}=\int_0^1x^n(1-x)\sqrt{1-x^2}\,\mathrm{d}x.$$
+<p>被积函数 $g(x)=x^n(1-x)\sqrt{1-x^2}$ 在 $[0,1]$ 上连续、非负，且在 $(0,1)$ 内严格大于 $0$，不恒为零，因此积分严格大于 $0$（连续非负函数若积分为 $0$ 则必恒为 $0$）。所以 $a_{n+1}\lt a_n$，$\{a_n\}$ 单调递减。</p>
+<p><b>第三步：准备一个原函数。</b>由 $\mathrm{d}\left[(1-x^2)^{\frac32}\right]=\frac32(1-x^2)^{\frac12}\cdot(-2x)\,\mathrm{d}x=-3x\sqrt{1-x^2}\,\mathrm{d}x$，得</p>
+$$x\sqrt{1-x^2}\,\mathrm{d}x=-\frac13\,\mathrm{d}\left[(1-x^2)^{\frac32}\right].$$
+<p><b>第四步：分部积分。</b>设 $n\geqslant2$：</p>
+$$a_n=\int_0^1x^{n-1}\cdot x\sqrt{1-x^2}\,\mathrm{d}x=-\frac13\int_0^1x^{n-1}\,\mathrm{d}\left[(1-x^2)^{\frac32}\right]$$
+$$=-\frac13\Big[x^{n-1}(1-x^2)^{\frac32}\Big]_0^1+\frac{n-1}{3}\int_0^1x^{n-2}(1-x^2)^{\frac32}\,\mathrm{d}x.$$
+<p>边界项：$x=1$ 时 $(1-x^2)^{\frac32}=0$；$x=0$ 时因 $n-1\geqslant1$ 有 $x^{n-1}=0$。所以边界项为 $0$。（这也是递推式要求 $n\geqslant2$ 的原因。）</p>
+<p><b>第五步：让原积分"回来"。</b>把 $(1-x^2)^{\frac32}=(1-x^2)\sqrt{1-x^2}$ 拆开：</p>
+$$\int_0^1x^{n-2}(1-x^2)\sqrt{1-x^2}\,\mathrm{d}x=\int_0^1x^{n-2}\sqrt{1-x^2}\,\mathrm{d}x-\int_0^1x^{n}\sqrt{1-x^2}\,\mathrm{d}x=a_{n-2}-a_n.$$
+<p>于是 $a_n=\dfrac{n-1}{3}(a_{n-2}-a_n)$。两边乘 $3$ 并移项：$3a_n+(n-1)a_n=(n-1)a_{n-2}$，即 $(n+2)a_n=(n-1)a_{n-2}$，</p>
+$$a_n=\frac{n-1}{n+2}a_{n-2}\quad(n=2,3,\cdots).$$
+<p><b>（Ⅱ）第六步：上界。</b>由单调递减，$a_n\lt a_{n-1}$；又 $a_{n-1}\gt0$，所以 $\dfrac{a_n}{a_{n-1}}\lt1$。</p>
+<p><b>第七步：下界。</b>对 $n\geqslant2$，由单调递减 $a_{n-2}\gt a_{n-1}$，且 $\dfrac{n-1}{n+2}\gt0$，结合递推式：</p>
+$$a_n=\frac{n-1}{n+2}a_{n-2}\gt\frac{n-1}{n+2}a_{n-1},$$
+<p>两边除以 $a_{n-1}\gt0$，得 $\dfrac{a_n}{a_{n-1}}\gt\dfrac{n-1}{n+2}$。</p>
+<p><b>第八步：夹逼。</b>综上，对 $n\geqslant2$，</p>
+$$\frac{n-1}{n+2}\lt\frac{a_n}{a_{n-1}}\lt1,$$
+<p>而 $\lim\limits_{n\to\infty}\dfrac{n-1}{n+2}=1$，由夹逼准则，</p>
+$$\lim_{n\to\infty}\frac{a_n}{a_{n-1}}=1.$$
+<p><b>数值感受：</b>$a_0=\frac{\pi}{4}$，$a_1=\frac13$，$a_2=\frac{\pi}{16}$，$a_3=\frac{2}{15}$，……相邻比值依次约为 $0.42,\ 0.59,\ 0.68,\ 0.74,\cdots$，缓慢地趋向 $1$。</p>`,
+      pitfalls: R`<ul><li><b>单调性只写"$\leqslant$"：</b>由 $x^{n+1}\leqslant x^n$ 只能直接得到 $a_{n+1}\leqslant a_n$；要得到严格递减，需说明被积函数之差连续、非负且不恒为零。</li><li><b>分部积分时拆错因子：</b>若对 $x^n$ 积分、对 $\sqrt{1-x^2}$ 求导，会出现 $\frac{1}{\sqrt{1-x^2}}$，越算越复杂。应拆成 $x^{n-1}\cdot x\sqrt{1-x^2}$。</li><li><b>边界项不讨论：</b>$x=0$ 处 $x^{n-1}$ 为 $0$ 需要 $n\geqslant2$，这一点要写出来。</li><li><b>想从递推式直接求 $\frac{a_n}{a_{n-1}}$：</b>递推联系的是隔一项，得不出相邻比值；必须借助单调性夹逼。</li><li><b>夹逼时不等号方向：</b>在不等式两边乘除 $a_{n-1}$ 或 $\frac{n-1}{n+2}$ 前，要先确认它们为正。</li></ul>`,
+      summary: R`<p><b>方法要点：</b></p><ul><li>积分数列的单调性 → 比较被积函数（定积分的保号性 / 比较性质）。</li><li>积分数列的递推式 → 分部积分降幂，常见技巧是"凑出一个好积的因子"，分部后让原积分重新出现、解方程；或用三角换元化成华里士积分 $I_n=\int_0^{\frac{\pi}{2}}\sin^nt\,\mathrm{d}t$，$I_n=\frac{n-1}{n}I_{n-2}$。</li><li>已知隔项递推 + 单调性，求相邻项比值极限 → 把中间项夹住，用夹逼准则。</li></ul>
+<p><b>题型识别：</b>看到 $a_n=\int_0^1x^n\cdot(\cdots)\,\mathrm{d}x$ 或 $\int_0^{\frac{\pi}{2}}\sin^nx\,\mathrm{d}x$ 型数列 → 想到"比较性质证单调 + 分部积分得递推 + 单调夹逼求比值极限"三件套。</p>`,
+      alt: R`<p><b>三角换元，借助华里士公式：</b>令 $x=\sin t$，$\mathrm{d}x=\cos t\,\mathrm{d}t$，$\sqrt{1-x^2}=\cos t$（$t\in[0,\frac{\pi}{2}]$）：</p>$$a_n=\int_0^{\frac{\pi}{2}}\sin^nt\cos^2t\,\mathrm{d}t=\int_0^{\frac{\pi}{2}}\left(\sin^nt-\sin^{n+2}t\right)\mathrm{d}t=I_n-I_{n+2},$$<p>其中 $I_n=\int_0^{\frac{\pi}{2}}\sin^nt\,\mathrm{d}t$ 满足 $I_{n+2}=\frac{n+1}{n+2}I_n$，所以 $a_n=\frac{1}{n+2}I_n$。于是</p>$$\frac{a_n}{a_{n-2}}=\frac{n}{n+2}\cdot\frac{I_n}{I_{n-2}}=\frac{n}{n+2}\cdot\frac{n-1}{n}=\frac{n-1}{n+2},$$<p>与（Ⅰ）一致。对（Ⅱ），$\dfrac{a_n}{a_{n-1}}=\dfrac{n+1}{n+2}\cdot\dfrac{I_n}{I_{n-1}}$，而 $\dfrac{I_n}{I_{n-1}}\to1$（同样由 $\frac{n-1}{n}I_{n-2}=I_n\lt I_{n-1}\lt I_{n-2}$ 夹逼得到），所以极限为 $1$。</p>`,
+      verify: { by: 'mixed', ok: true, note: 'sympy 用 x=sin t 算出 a_0..a_8 = π/4, 1/3, π/16, 2/15, π/32, 8/105, 5π/256, 16/315, 7π/512，严格递减，且 n=2..8 递推式误差均为 0；Beta 函数通式化简得 a_n/a_{n-2}=(n-1)/(n+2)；数值比值 n=2000 时约 0.99925；分部积分的原函数求导核对通过；单调性与夹逼部分为人工证明' },
+      flags: ['参考解析由被积函数的非严格不等式直接写出积分的严格不等式，本文补充了严格性的理由（被积函数之差连续、非负且不恒为零）']
+    },
+
+    /* ───────────── 第19题 斜圆锥的形心 ───────────── */
+    {
+      id: '2019-19', year: 2019, no: '第19题', type: '解答', score: 10,
+      stem: R`设 $\Omega$ 是由锥面 $x^2+(y-z)^2=(1-z)^2\ (0\leqslant z\leqslant1)$ 与平面 $z=0$ 围成的锥体，求 $\Omega$ 的形心坐标.`,
+      options: null,
+      answer: R`形心坐标为 $\left(0,\dfrac14,\dfrac14\right)$.`,
+      figure: null,
+      kp: ['mint.triple', 'mint.field', 'vec.surface'],
+      methods: ['形心公式', '先二后一（截面法）', '对称性', '平移换元', '偏心柱面坐标'],
+      difficulty: 3,
+      analysis: R`<p><b>这题考什么：</b>用三重积分求立体的形心（密度均匀时的质心）：</p>
+$$\bar x=\frac{\iiint_\Omega x\,\mathrm{d}V}{V},\quad \bar y=\frac{\iiint_\Omega y\,\mathrm{d}V}{V},\quad \bar z=\frac{\iiint_\Omega z\,\mathrm{d}V}{V}.$$
+<p><b>先看清立体长什么样：</b>固定高度 $z\in[0,1]$，锥面方程 $x^2+(y-z)^2=(1-z)^2$ 是 $xOy$ 平行平面上的一个圆：<b>圆心 $(0,z)$，半径 $1-z$</b>。当 $z$ 从 $0$ 升到 $1$ 时，圆心沿着直线 $x=0,\ y=z$ 向斜上方移动，半径从 $1$ 缩小到 $0$。所以这是一个<b>斜圆锥</b>：底面是 $z=0$ 上的单位圆盘，顶点在 $(0,1,1)$。下图是它被平面 $x=0$ 截得的三角形（横轴 $y$、纵轴 $z$），虚线是各截面圆心的连线：</p>
+<svg viewBox="0 0 300 175" width="300" height="175" role="img"><title>斜圆锥在 x=0 平面上的截面</title><line x1="10" y1="145" x2="285" y2="145" stroke="currentColor" stroke-width="1"/><line x1="130" y1="165" x2="130" y2="12" stroke="currentColor" stroke-width="1"/><polygon points="30,145 230,145 230,45" fill="none" stroke="currentColor" stroke-width="2"/><line x1="130" y1="145" x2="230" y2="45" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3"/><circle cx="155" cy="120" r="3.5" fill="currentColor"/><text x="278" y="160" font-size="12" fill="currentColor">y</text><text x="136" y="20" font-size="12" fill="currentColor">z</text><text x="22" y="162" font-size="11" fill="currentColor">-1</text><text x="225" y="162" font-size="11" fill="currentColor">1</text><text x="236" y="45" font-size="11" fill="currentColor">顶点 (0,1,1)</text><text x="162" y="118" font-size="11" fill="currentColor">形心</text></svg>
+<p>注意右侧那条母线 $y=1$ 是竖直的——这个锥是"歪"的，所以不能想当然地认为形心在 $z$ 轴上。</p>
+<p><b>为什么用"先二后一"：</b>每个水平截面都是圆盘，面积 $\pi(1-z)^2$ 立刻可得；截面上 $\iint y\,\mathrm{d}x\,\mathrm{d}y$ 也只需把圆心平移到原点就能算出。所以按 $z$ 切片，先在截面上做二重积分，再对 $z$ 积分，是最省力的路线。</p>`,
+      solution: R`<p><b>第一步：描述立体。</b></p>
+$$\Omega=\left\{(x,y,z)\ \middle|\ 0\leqslant z\leqslant1,\ (x,y)\in D_z\right\},\quad D_z:\ x^2+(y-z)^2\leqslant(1-z)^2.$$
+<p>$D_z$ 是圆心 $(0,z)$、半径 $1-z$ 的圆盘，面积为 $\pi(1-z)^2$。</p>
+<p><b>第二步：对称性求 $\bar x$。</b>把 $x$ 换成 $-x$，$D_z$ 的不等式不变，所以 $\Omega$ 关于平面 $x=0$ 对称；而 $x$ 是关于 $x$ 的奇函数，所以 $\iiint_\Omega x\,\mathrm{d}V=0$，$\bar x=0$。（$y$ 方向没有这样的对称性，必须真算。）</p>
+<p><b>第三步：体积。</b></p>
+$$V=\int_0^1\left(\iint_{D_z}\mathrm{d}x\,\mathrm{d}y\right)\mathrm{d}z=\int_0^1\pi(1-z)^2\,\mathrm{d}z=\pi\left[-\frac{(1-z)^3}{3}\right]_0^1=\frac{\pi}{3}.$$
+<p>（与底面半径 $1$、高 $1$ 的直圆锥体积 $\frac13\pi r^2h$ 相同——截面面积处处相同，体积当然相同。）</p>
+<p><b>第四步：截面上 $y$ 的积分。</b>在 $D_z$ 上作平移 $u=y-z$（$z$ 此时是常数，雅可比行列式为 $1$），$D_z$ 变成以原点为圆心、半径 $1-z$ 的圆盘 $D_z'$：</p>
+$$\iint_{D_z}y\,\mathrm{d}x\,\mathrm{d}y=\iint_{D_z'}(u+z)\,\mathrm{d}x\,\mathrm{d}u=\iint_{D_z'}u\,\mathrm{d}x\,\mathrm{d}u+z\iint_{D_z'}\mathrm{d}x\,\mathrm{d}u=0+z\cdot\pi(1-z)^2.$$
+<p>第一项为 $0$，因为 $D_z'$ 关于 $u=0$ 对称、$u$ 是奇函数。直观地说：圆盘上 $y$ 的积分 = 面积 × 圆心的 $y$ 坐标。</p>
+<p><b>第五步：$\iiint y$ 和 $\iiint z$。</b></p>
+$$\iiint_\Omega y\,\mathrm{d}V=\int_0^1\pi z(1-z)^2\,\mathrm{d}z,\qquad \iiint_\Omega z\,\mathrm{d}V=\int_0^1z\left(\iint_{D_z}\mathrm{d}x\,\mathrm{d}y\right)\mathrm{d}z=\int_0^1\pi z(1-z)^2\,\mathrm{d}z.$$
+<p>两者竟然相同。计算：</p>
+$$\int_0^1z(1-z)^2\,\mathrm{d}z=\int_0^1\left(z-2z^2+z^3\right)\mathrm{d}z=\frac12-\frac23+\frac14=\frac{6-8+3}{12}=\frac{1}{12},$$
+<p>所以 $\iiint_\Omega y\,\mathrm{d}V=\iiint_\Omega z\,\mathrm{d}V=\dfrac{\pi}{12}$。</p>
+<p><b>第六步：形心。</b></p>
+$$\bar y=\frac{\pi/12}{\pi/3}=\frac14,\qquad \bar z=\frac{\pi/12}{\pi/3}=\frac14,$$
+<p>形心坐标为 $\left(0,\dfrac14,\dfrac14\right)$。</p>
+<p><b>几何检验：</b>任何锥体（不论正、斜）的形心都在"底面形心与顶点的连线"上、距底面 $\frac14$ 处。本题底面形心 $(0,0,0)$、顶点 $(0,1,1)$，$\frac14$ 处正是 $\left(0,\frac14,\frac14\right)$，与计算结果一致。</p>`,
+      pitfalls: R`<ul><li><b>当成以 $z$ 轴为轴的直圆锥：</b>误以为 $\bar y=0$。截面圆心是 $(0,z)$，随高度移动，必须实际计算 $\bar y$。</li><li><b>用以原点为中心的极坐标：</b>截面圆不以 $z$ 轴为中心，$r$ 的上限会变成关于 $\theta$ 的复杂表达式；应先平移，或用以 $(0,z)$ 为中心的"偏心"柱面坐标。</li><li><b>截面半径搞错：</b>半径是 $1-z$（不是 $1-z^2$ 或 $z$），面积是 $\pi(1-z)^2$。</li><li><b>多项式积分算错：</b>$\int_0^1z(1-z)^2\mathrm{d}z=\frac{1}{12}$，可以用 $B(2,3)=\frac{1!\,2!}{4!}=\frac{1}{12}$ 交叉检验。</li></ul>`,
+      summary: R`<p><b>方法要点：</b></p><ul><li>形心 = 一阶矩 ÷ 体积；先用对称性消去能消的坐标。</li><li>截面是简单图形（圆、矩形、三角形）时用"先二后一"：$\iiint f\,\mathrm{d}V=\int\mathrm{d}z\iint_{D_z}f\,\mathrm{d}x\,\mathrm{d}y$。</li><li>截面上的一阶矩 = 截面面积 × 截面形心坐标，平移换元即可证明。</li><li>锥体形心在底面形心到顶点连线上距底面 $\frac14$ 处——可作检验。</li></ul>
+<p><b>题型识别：</b>看到 $x^2+(y-\varphi(z))^2=r(z)^2$ 这类"截面为圆、圆心随 $z$ 移动"的曲面 → 想到按 $z$ 切片 + 平移，不要硬套以原点为中心的柱面或球面坐标。</p>`,
+      alt: R`<p><b>偏心柱面坐标：</b>令 $x=\rho\cos\varphi,\ y=z+\rho\sin\varphi,\ z=z$，雅可比行列式为 $\rho$，$\Omega$ 变为 $0\leqslant z\leqslant1,\ 0\leqslant\varphi\leqslant2\pi,\ 0\leqslant\rho\leqslant1-z$。于是</p>$$\iiint_\Omega y\,\mathrm{d}V=\int_0^1\mathrm{d}z\int_0^{2\pi}\mathrm{d}\varphi\int_0^{1-z}(z+\rho\sin\varphi)\rho\,\mathrm{d}\rho=\int_0^1\pi z(1-z)^2\,\mathrm{d}z=\frac{\pi}{12},$$<p>含 $\sin\varphi$ 的项在 $[0,2\pi]$ 上积分为 $0$。体积和 $\iiint z\,\mathrm{d}V$ 同理，结果一致。</p>`,
+      verify: { by: 'sympy', ok: true, note: 'sympy 在偏心柱面坐标 x=ρcosφ, y=z+ρsinφ 下直接计算三重积分：V=π/3，∭x=0，∭y=π/12，∭z=π/12，形心 (0,1/4,1/4)；截面法结果相同' },
+      flags: ['OCR 题干中 Ω 一处写作 \\varOmega，统一为 \\Omega']
+    }
+  ];
+});
