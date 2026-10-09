@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 // 为"考点分析与预测"准备输入：在 tools/build.js 之后运行，输出 JSON（各考点逐年次数、题型、分值、代表题面）。
+// 用法：node tools/analysis-input.js [输出路径] [--compact]
 'use strict';
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const ROOT = path.resolve(__dirname, '..');
-const out = process.argv[2] || '/tmp/kywork/analysis-input.json';
+const argv = process.argv.slice(2);
+const compact = argv.includes('--compact'); // 只列题号，不带题面摘要（体积小很多）
+const out = argv.filter((a) => !a.startsWith('--'))[0] || '/tmp/kywork/analysis-input.json';
 let M = null;
 vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'data', 'meta.js'), 'utf8'), { KY_setMeta: (m) => { M = m; } });
 const S = M.stats;
@@ -18,7 +21,9 @@ const kps = M.taxonomy.kps.map((k) => {
     count: K.count, asPrimary: K.primary, scoreAsPrimary: K.score, yearsCovered: K.yearsCovered,
     recent10: K.recent10, last: K.last, gapYears: K.gap, frequencyIndex: K.index, byType: K.types,
     byYear: K.yearsList.map((y) => [y, K.years[y]]),
-    problems: probs.map((p) => ({ id: p.id, year: p.year, no: p.no, type: p.type, score: p.score, difficulty: p.difficulty, methods: p.methods, stem: plain(p.stem).slice(0, 220) })),
+    problems: compact
+      ? probs.map((p) => `${p.id}|${p.type}|${p.score == null ? '?' : p.score}`)
+      : probs.map((p) => ({ id: p.id, year: p.year, no: p.no, type: p.type, score: p.score, difficulty: p.difficulty, methods: p.methods, stem: plain(p.stem).slice(0, 220) })),
   };
 });
 const data = {
@@ -28,5 +33,5 @@ const data = {
   kps,
 };
 fs.mkdirSync(path.dirname(out), { recursive: true });
-fs.writeFileSync(out, JSON.stringify(data, null, 1));
+fs.writeFileSync(out, compact ? JSON.stringify(data) : JSON.stringify(data, null, 1));
 console.log(`写入 ${out}（${Math.round(fs.statSync(out).size / 1024)} KB）`);

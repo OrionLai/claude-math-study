@@ -61,9 +61,11 @@ node tools/remaining.js
 
 **额度重置后怎么继续：** 在 Claude Code 里打开这个仓库，对 Claude 说：
 
-> 运行 `node tools/remaining.js --args 3`，用 `tools/workflows/content.workflow.js` 按清单继续补全内容；跑完后更新 `data/src/status.json`，校验、构建、提交，并重新发布网站。
+> 运行 `node tools/remaining.js --args 1`，用 `tools/workflows/content.workflow.js` 按清单继续补全内容，5 小时额度用到 60% 就停；跑完后更新 `data/src/status.json`，校验、构建、提交，并重新发布网站。
 
-清单已经按优先级排好：先补缺的年份，再写高频考点的讲解，然后审校讲解，最后审校早年的真题。额度不够时，做到哪里算哪里，下次接着做。
+清单已经按优先级排好：先补缺的年份，再写高频考点的讲解，然后审校讲解，最后审校早年的真题。
+
+工作流自带额度闸门（参数 `gate`）：每开始一项任务之前，先读取当前 5 小时额度的实时用量。如果"已用 + 本项预计 + 在跑任务预计剩余"超过 `stopAt`，就不再开始新任务，正在跑的任务照常做完。没开始的任务会列在返回结果的 `notStarted` 里，下次接着做。按经验，每篇讲解约占 5 小时额度的 12%，每年真题审校约占 4%。
 
 ## 修改内容
 

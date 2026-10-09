@@ -8,6 +8,7 @@ export const meta = {
     { title: '讲解撰写', detail: '每个考点一篇：定义、定理与完整证明、例题、自测' },
     { title: '讲解审校', detail: '独立审校员检查数学正确性、完整性、教学质量并修正' },
     { title: '考点分析', detail: '基于全部真题的考频统计写出分析与预测，再由审校员逐个核对数字' },
+    { title: '额度检查', detail: '每开始一项前读取 5 小时额度用量，预计超过上限就不再开始新任务' },
   ],
 }
 
@@ -53,6 +54,11 @@ const COMMON = `
 - 正文（公式之外）出现小于号必须写成 &lt;；公式里可以直接写。
 - 行内公式 $…$，独立公式 $$…$$。公式只能用 MathJax 的 base 和 ams 宏：不要用 \\boldsymbol（改 \\mathbf）、\\color、\\cancel、\\oiint、\\xlongequal（改 \\overset{…}{=}）、\\bm。
 - 允许的 HTML：p br b strong i em ul ol li span div table thead tbody tr th td sup sub small blockquote，以及内联 svg。
+【节省额度】（额度有限，下面几条必须遵守，不影响内容质量）
+- 不要安装任何软件包，不要创建虚拟环境；不要把 SVG 渲染成图片来检查，直接写出坐标正确的 SVG。
+- 格式只看 tools/examples/ 下的示例；不要通读 data/src/ 下其他年份或其他讲解的大文件，需要参考时用 grep 查具体片段。
+- 先想清楚再一次写成文件；校验不通过或需要修正时，用局部编辑改，不要整份重写已写好的文件。
+- sympy 验证尽量写成一个脚本一次验证多项，不要一项一项反复运行。
 `
 
 function yearSources(it) {
@@ -139,7 +145,7 @@ function analysisWriter() {
   return `你是考研数学一命题规律研究员。任务：基于 1987–2025 年数学一高数真题的逐题考点标注，写出"考点分析与预测"，写入 ${REPO}/data/src/analysis.js。
 ${COMMON}
 【步骤】
-1. 在 ${REPO} 下运行：node tools/build.js && node tools/analysis-input.js /tmp/kywork/analysis/input.json，然后读取 input.json。里面有各考点逐年出现次数、题型分布、作为主考点的分值、考频指数（定义见 note 字段）以及该考点全部真题的题面摘要。需要时可以读 data/src/years/*.js 看具体题目和解析。
+1. 在 ${REPO} 下运行：node tools/build.js && node tools/analysis-input.js /tmp/kywork/analysis/input.json --compact，然后读取 input.json。里面有各考点逐年出现次数、题型分布、作为主考点的分值、考频指数（定义见 note 字段）以及该考点全部真题的编号（格式：题目id|题型|分值）。需要看具体题面时，用 grep 在 data/src/years/<年份>.js 里查那道题的 id，不要通读整份文件。
 2. 分析这些问题：各章题量与分值占比及其变化（注意 2021 年起题型结构调整：选择题与填空题每题 5 分，解答题分值也有变化）；几乎每年必考的考点（覆盖年数高、近 10 年连续出现）；考频指数排名和近 10 年相对早年的升温、降温趋势；哪些考点主要以解答题出现、哪些多在小题；历史高频但已多年没考的考点（gapYears 大）；常见的综合方式（例如多元积分配合空间曲面、级数配合微分方程）。
 3. predictions：12–18 条，按可能性从高到低排序。每条包含：kp（taxonomy 里的 id）；level（极高/高/中）；reason（必须引用 input.json 里的具体数字，如出现次数、近 10 年次数、最近一次年份、连续性、题型分布，可以点名具体年份的真题作为例证）；form（下一年最可能的考法：题型、设问方式、可能与哪些考点结合）。
 4. summary：一段结论性的 HTML，约 600–1200 字。先说结论（最该保分的考点、各章权重、该怎么分配复习时间），再讲规律和复习建议。必须说明：预测是基于历史考频的概率判断，不是押题；每个考点都要复习。
@@ -152,7 +158,7 @@ ${COMMON}
 function analysisChecker() {
   return `你是严格的数据审校员。审查 ${REPO}/data/src/analysis.js（数学一高数考点分析与预测）。默认它有错，逐句挑刺。
 ${COMMON}
-1. 在 ${REPO} 下运行 node tools/build.js && node tools/analysis-input.js /tmp/kywork/analysis-v/input.json，用这份数据逐个核对文中出现的每一个数字（出现次数、近 10 年次数、最近一次年份、占比、点名的真题年份与题号）。不一致的改正。
+1. 在 ${REPO} 下运行 node tools/build.js && node tools/analysis-input.js /tmp/kywork/analysis-v/input.json --compact，用这份数据逐个核对文中出现的每一个数字（出现次数、近 10 年次数、最近一次年份、占比、点名的真题年份与题号）。不一致的改正。
 2. 检查推理：结论是否由数据支持，有没有过度断言（预测只能是概率判断），有没有遗漏明显的高频考点或趋势，kp 与 level 是否合理。
 3. 检查是否有编造的"官方说法"，有就删掉。
 直接在文件里改（局部修改，保留写得好的部分）。改完运行 node tools/check.js analysis 直到 ✓。
@@ -168,16 +174,78 @@ const RUN = {
   analysisReview: () => agent(analysisChecker(), { label: '考点分析 审校', phase: '考点分析', schema: STAGE }),
 }
 const key = (it) => it.kind + ':' + (it.y || it.id || '')
-async function runOne(it) {
-  const r = await RUN[it.kind](it)
-  return { item: key(it), result: r }
+const pct = (x) => Math.round(x * 100) + '%'
+
+// 额度闸门：args.gate = { session, resetsAt, stopAt, est: {kind: 预计占 5 小时额度的比例}, model }
+// 每开始一项前读取实时用量；"已用 + 本项预计 + 在跑任务预计剩余" 超过 stopAt 就不再开始新任务（在跑的任务照常做完）。
+const G = args.gate || null
+let stopped = false
+const inflight = new Map()
+const dropped = []
+const GATE = {
+  type: 'object',
+  properties: { utilization: { type: 'number' }, resetsAt: { type: 'number' }, created_at: { type: 'string' } },
+  required: ['utilization', 'resetsAt', 'created_at'],
 }
-// seq：按顺序一个接一个（后一项依赖前一项）；par：并行流水
+let gateN = 0
+const gatePrompt = (n) => `只做一件事：读取当前账号 5 小时额度的用量。不要读写任何文件，不要运行任何命令。（第 ${n} 次检查）
+1. 用 ToolSearch 加载工具，query 写 "select:mcp__claude-code-remote__list_events"。
+2. 调用 mcp__claude-code-remote__list_events，参数：session_id="${G.session}"，kinds=["rate_limit_event"]，limit=100。
+3. 返回的 data 按 created_at 从早到晚排列，取最后一条（最新的）。如果 data 为空而 has_more 为 true，就把返回的 first_id 作为 before_id 再调用一次，最多翻 5 页。
+4. 从这条事件的 rate_limit_event.internal_anthropic_catchall.rate_limit_info.unifiedWindows.five_hour 读出 utilization（0 到 1 之间的小数）和 resetsAt（整数），连同这条事件的 created_at 一起返回。`
+let gateLock = Promise.resolve()
+function gate(it) {
+  const p = gateLock.then(() => gateInner(it))
+  gateLock = p.catch(() => {})
+  return p
+}
+async function gateInner(it) {
+  if (!G) return true
+  if (stopped) return false
+  const est = G.est[it.kind] || 0.1
+  let r = null
+  for (let i = 0; i < 2 && !r; i++) {
+    r = await agent(gatePrompt(++gateN), { label: `额度检查 ${gateN}`, phase: '额度检查', schema: GATE, model: G.model, effort: 'low' })
+  }
+  if (!r) { stopped = true; log('读不到额度用量，保守起见不再开始新任务'); return false }
+  if (r.resetsAt !== G.resetsAt) { stopped = true; log('额度窗口已经变化，按约定不再开始新任务'); return false }
+  const pending = [...inflight.values()].reduce((a, e) => a + e, 0) * 0.5
+  const proj = r.utilization + est + pending
+  if (proj > G.stopAt) {
+    stopped = true
+    log(`已用 ${pct(r.utilization)}，在跑的任务约还要 ${pct(pending)}，${key(it)} 预计 ${pct(est)}，合计会超过 ${pct(G.stopAt)}：不再开始新任务`)
+    return false
+  }
+  inflight.set(key(it), est)
+  log(`已用 ${pct(r.utilization)}，开始 ${key(it)}（预计 ${pct(est)}）`)
+  return true
+}
+async function runOne(it) {
+  if (!(await gate(it))) { dropped.push(key(it)); return { item: key(it), result: null, skipped: true } }
+  try {
+    const r = await RUN[it.kind](it)
+    return { item: key(it), result: r }
+  } finally {
+    inflight.delete(key(it))
+  }
+}
+
+// seq：按顺序一个接一个（后一项依赖前一项）；par：共享队列，由 workers 个工人依次领取
 const seq = args.seq || []
-const par = args.par || []
-log(`顺序项：${seq.map(key).join(' → ') || '无'}；并行项：${par.map(key).join('、') || '无'}`)
-const [a, b] = await Promise.all([
-  (async () => { const out = []; for (const it of seq) out.push(await runOne(it)); return out })(),
-  pipeline(par, (it) => runOne(it)),
-])
-return [...a, ...b]
+const queue = [...(args.par || [])]
+const workers = args.workers || 2
+log(`顺序项：${seq.map(key).join(' → ') || '无'}；队列：${queue.map(key).join('、') || '无'}${G ? `；额度上限 ${pct(G.stopAt)}` : ''}`)
+async function worker(first) {
+  const out = []
+  for (const it of first) {
+    const r = await runOne(it)
+    out.push(r)
+    if (r.skipped || !r.result) break
+  }
+  while (queue.length && !stopped) out.push(await runOne(queue.shift()))
+  return out
+}
+const res = await Promise.all([worker(seq), ...Array.from({ length: workers - 1 }, () => worker([]))])
+const notStarted = [...dropped, ...queue.map(key)]
+if (notStarted.length) log(`未开始（留到下次）：${notStarted.join('、')}`)
+return { results: res.flat().filter((r) => !r.skipped), notStarted }
