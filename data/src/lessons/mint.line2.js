@@ -203,7 +203,7 @@ registerLesson(function (R) {
       {
         kind: 'thm', title: '定理：格林公式',
         statement: R`<p>设闭区域 $D$ 由分段光滑的曲线 $L$ 围成，函数 $P(x,y)$、$Q(x,y)$ 在 $D$ 上具有<b>一阶连续偏导数</b>，则 $$\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)dxdy=\oint_LP\,dx+Q\,dy,$$ 其中 $L$ 是 $D$ 的<b>取正向</b>的边界曲线。$D$ 可以是复连通的，此时 $L$ 包括全部内、外边界（各取正向）。</p>
-<p>记忆：被积函数是行列式 $\begin{vmatrix}\dfrac{\partial}{\partial x}&\dfrac{\partial}{\partial y}\\P&Q\end{vmatrix}=\dfrac{\partial Q}{\partial x}-\dfrac{\partial P}{\partial y}$——"$Q$ 对 $x$，减 $P$ 对 $y$"，配 $dy$ 的函数对 $x$ 求导排在前面。</p>`,
+<p>记忆：被积函数是行列式 $\begin{vmatrix}\dfrac{\partial}{\partial x}&\dfrac{\partial}{\partial y}\\P&Q\end{vmatrix}=\dfrac{\partial Q}{\partial x}-\dfrac{\partial P}{\partial y}$——"$Q$ 对 $x$，减 $P$ 对 $y$"，配 $dy$ 的函数对 $x$ 求导排在前面。下文常把 $\frac{\partial Q}{\partial x}$ 简记为 $Q_x$，$\frac{\partial P}{\partial y}$ 简记为 $P_y$，其余类推。</p>`,
         intuition: R`<p><b>小方格里的环流。</b>取一个边长为 $\Delta x,\Delta y$ 的小矩形 $[x,x+\Delta x]\times[y,y+\Delta y]$，逆时针绕一圈，四条边分别贡献：下边 $\approx P(x,y)\Delta x$，右边 $\approx Q(x+\Delta x,y)\Delta y$，上边（向左走）$\approx-P(x,y+\Delta y)\Delta x$，左边（向下走）$\approx-Q(x,y)\Delta y$。合计 $$\big[Q(x+\Delta x,y)-Q(x,y)\big]\Delta y-\big[P(x,y+\Delta y)-P(x,y)\big]\Delta x\approx\Big(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\Big)\Delta x\Delta y.$$ 所以 $\dfrac{\partial Q}{\partial x}-\dfrac{\partial P}{\partial y}$ 就是"单位面积上的环流量"，即场在这一点的"旋转强度"（旋度）。</p>
 <svg viewBox="0 0 420 235" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
 <defs><marker id="ml2-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
