@@ -1,6 +1,9 @@
 {
   "note": "内容完成度记录。reviewedYears：已经过独立审校的年份；reviewedLessons：已经过独立审校的讲解。未列出的年份是作者初稿（作者已用 SymPy 验算并对照参考答案）。由 Claude 在每轮补全后更新。",
   "reviewedYears": [
+    2021,
+    2022,
+    2023,
     2024,
     2025
   ],
