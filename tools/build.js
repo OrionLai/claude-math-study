@@ -12,7 +12,7 @@ const vm = require('vm');
 const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, 'data', 'src');
 const OUT = path.join(ROOT, 'data');
-const PAPERS = '/home/user/tsekaluk/kaoyan-math1-papers';
+const PAPERS = process.env.KY_PAPERS || '/home/user/tsekaluk/kaoyan-math1-papers'; // 真题源仓库，可用环境变量 KY_PAPERS 覆盖
 
 const MATH = /\$\$[\s\S]*?\$\$|\$[^$]*\$/g;
 // 公式里的 "<" 会被浏览器当成标签开头，统一转义

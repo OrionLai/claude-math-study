@@ -8,7 +8,7 @@ const vm = require('vm');
 
 const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, 'data', 'src');
-const PAPERS = '/home/user/tsekaluk/kaoyan-math1-papers';
+const PAPERS = process.env.KY_PAPERS || '/home/user/tsekaluk/kaoyan-math1-papers'; // 真题源仓库，可用环境变量 KY_PAPERS 覆盖
 
 /* ── 考点体系 ── */
 let TAX = null;
@@ -146,7 +146,8 @@ function checkYear(year) {
     }
     if (p.figure != null) {
       if (typeof p.figure !== 'object' || !p.figure.file || !p.figure.desc) errs.push(`${L} figure 应为 {file, desc}`);
-      else if (!fs.existsSync(path.join(PAPERS, p.figure.file))) errs.push(`${L} figure.file 不存在：${p.figure.file}（相对于真题仓库根目录）`);
+      // 图片在真题源仓库里；本机没有那个仓库时，构建产物 img/ 里已有的同名图片也算存在
+      else if (!fs.existsSync(path.join(PAPERS, p.figure.file)) && !fs.existsSync(path.join(ROOT, 'img', path.basename(p.figure.file)))) errs.push(`${L} figure.file 不存在：${p.figure.file}（相对于真题仓库根目录）`);
       else checkText(`${L}.figure.desc`, p.figure.desc, errs);
     }
     if (!Array.isArray(p.kp) || !p.kp.length) errs.push(`${L} kp 至少一个考点`);

@@ -46,6 +46,7 @@ img/                    题目配图
 tools/check.js          校验器：结构、考点标签、HTML、并用 MathJax 实际解析每个公式
 tools/build.js          构建：源文件 → 站点数据与统计
 tools/artifact.js       生成 Claude artifact 版页面
+tools/api-run.js        用 API 额度在本机跑内容工作流（见下）
 ```
 
 ## 内容完成度与续做
@@ -59,7 +60,35 @@ node tools/remaining.js
 - `data/src/status.json` 记录哪些年份、哪些讲解已经经过独立审校。网站上，未审校的解析和讲解都有"作者初稿"标注；还没写的讲解显示"讲解整理中"。
 - `tools/workflows/content.workflow.js` 是生成内容用的工作流脚本：每项任务由一个作者撰写，再由一个审校员独立核对，全部使用最强模型。
 
-**额度重置后怎么继续：** 在 Claude Code 里打开这个仓库，对 Claude 说：
+### 用 API 额度补全（推荐）
+
+Max 和 Team 套餐每月附带 Claude Platform 的 API 额度（Max 5x 每月 100 美元、Max 20x 每月 200 美元，当月用不完作废）。`tools/api-run.js` 把下面那套工作流改成在本机用 API Key 跑：它调用 `claude --bare -p`，这个模式不读登录凭据，只认环境变量 `ANTHROPIC_API_KEY`，按官方说明计入 API 额度，不占 Claude 订阅的 5 小时额度。
+
+准备（只做一次）：
+
+1. 领额度：claude.ai → 设置 → 账单 → API credits → Link organization，把一个 Console 组织关联到套餐。
+2. 在 platform.claude.com 用这个组织创建一个 API Key。
+3. 本机要有：Claude Code CLI（`claude --version` 能运行）、Node 18+、装了 sympy 的 Python（`python -m pip install sympy`）。真题审校任务还需要把 [TsekaLuk/Kaoyan-Math1-Papers](https://github.com/TsekaLuk/Kaoyan-Math1-Papers) 克隆到本地。
+
+每月跑一次。在普通终端里运行；不要在 Claude Code、IDE 插件或桌面 App 里跑，那些算作 Claude Code 用量：
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-…                 # PowerShell：$env:ANTHROPIC_API_KEY="sk-ant-…"
+export KY_PAPERS=/path/to/kaoyan-math1-papers      # 可选，只有真题任务需要；没设就跳过真题任务
+node tools/api-run.js --dry-run                    # 看清单和预算分配，不花钱
+node tools/api-run.js --limit 1                    # 先跑一项试水，看实际花费（台账在 tools/.api-run/runs.jsonl）
+node tools/api-run.js --budget 90                  # 正式跑：花到 90 美元就不再开始新任务，正在跑的做完
+```
+
+跑完会自动校验、把审校通过的记入 `data/src/status.json`、重新构建。看一眼 `git status`，没问题就提交并重新发布。失败的任务会列出来，用 `--ids` 重跑即可。其他选项：`--only lessonWrite,lessonReview`、`--workers 2`、`--model claude-sonnet-5-5`（约为 Opus 一半价钱）、`--effort high`、`--task-budget 8`（单项上限）。
+
+花费参考（经验值，跑过之后以台账为准）：用 Opus 写一篇讲解约 2–4 美元、审校一篇或一年约 1–2 美元。一个月 100 美元大约够写 25–40 篇讲解。
+
+网站里的「问 AI」同理：在 GitHub Pages 版的 AI 面板「连接设置」里填这个 Key，自己提问也计入 API 额度。
+
+### 在 Claude Code 里继续（备选，消耗订阅额度）
+
+在 Claude Code 里打开这个仓库，对 Claude 说：
 
 > 运行 `node tools/remaining.js --args 1`，用 `tools/workflows/content.workflow.js` 按清单继续补全内容，5 小时额度用到 60% 就停；跑完后更新 `data/src/status.json`，校验、构建、提交，并重新发布网站。
 

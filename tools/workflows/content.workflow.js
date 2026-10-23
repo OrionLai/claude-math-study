@@ -29,8 +29,11 @@ function lessonItem(id) {
   const ch = TAX.chapters.find((c) => c[0] === k[1])
   return { id, ch: k[1], title: k[2], scope: k[3], chTitle: ch[1], siblings: TAX.kps.filter((x) => x[1] === k[1] && x[0] !== id).map((x) => x[0] + " " + x[2]).join("；") }
 }
-const REPO = '/home/user/claude-math-study'
-const PAPERS = '/home/user/tsekaluk/kaoyan-math1-papers'
+// 路径与命令可以由 args 覆盖（tools/api-run.js 在本机用 API Key 跑这套工作流时会传入），默认值是 Claude Code 云端环境的
+const REPO = args.repo || '/home/user/claude-math-study'
+const PAPERS = args.papers || '/home/user/tsekaluk/kaoyan-math1-papers'
+const TMP = args.tmp || '/tmp/kywork'
+const PY = args.python || 'python3'
 const STAGE = {
   type: 'object',
   properties: {
@@ -48,7 +51,7 @@ const COMMON = `
 - 真题源仓库（只读）：${PAPERS}
 - 考点体系：${REPO}/data/src/taxonomy.js（kp 标签、讲解 id 只能取自这里）
 - 校验器：在 ${REPO} 下运行 node tools/check.js …（结构、HTML 标签配对、并用 MathJax 实际解析每个公式）
-- python3 已安装 sympy；临时脚本放 /tmp/kywork/ 下你自己的子目录。
+- 用 ${PY} 运行 Python（已安装 sympy）；临时脚本放 ${TMP}/ 下你自己的子目录（目录不存在就先创建）。
 【文本格式硬性规定】
 - 文件里的文本用 R 加反引号的模板字符串（String.raw），LaTeX 反斜杠不用转义。文本内容里绝对不能出现反引号字符，也不能出现 "$" 紧跟 "{" 的写法。
 - 正文（公式之外）出现小于号必须写成 &lt;；公式里可以直接写。
@@ -145,7 +148,7 @@ function analysisWriter() {
   return `你是考研数学一命题规律研究员。任务：基于 1987–2025 年数学一高数真题的逐题考点标注，写出"考点分析与预测"，写入 ${REPO}/data/src/analysis.js。
 ${COMMON}
 【步骤】
-1. 在 ${REPO} 下运行：node tools/build.js && node tools/analysis-input.js /tmp/kywork/analysis/input.json --compact，然后读取 input.json。里面有各考点逐年出现次数、题型分布、作为主考点的分值、考频指数（定义见 note 字段）以及该考点全部真题的编号（格式：题目id|题型|分值）。需要看具体题面时，用 grep 在 data/src/years/<年份>.js 里查那道题的 id，不要通读整份文件。
+1. 在 ${REPO} 下运行：node tools/build.js && node tools/analysis-input.js ${TMP}/analysis/input.json --compact，然后读取 input.json。里面有各考点逐年出现次数、题型分布、作为主考点的分值、考频指数（定义见 note 字段）以及该考点全部真题的编号（格式：题目id|题型|分值）。需要看具体题面时，用 grep 在 data/src/years/<年份>.js 里查那道题的 id，不要通读整份文件。
 2. 分析这些问题：各章题量与分值占比及其变化（注意 2021 年起题型结构调整：选择题与填空题每题 5 分，解答题分值也有变化）；几乎每年必考的考点（覆盖年数高、近 10 年连续出现）；考频指数排名和近 10 年相对早年的升温、降温趋势；哪些考点主要以解答题出现、哪些多在小题；历史高频但已多年没考的考点（gapYears 大）；常见的综合方式（例如多元积分配合空间曲面、级数配合微分方程）。
 3. predictions：12–18 条，按可能性从高到低排序。每条包含：kp（taxonomy 里的 id）；level（极高/高/中）；reason（必须引用 input.json 里的具体数字，如出现次数、近 10 年次数、最近一次年份、连续性、题型分布，可以点名具体年份的真题作为例证）；form（下一年最可能的考法：题型、设问方式、可能与哪些考点结合）。
 4. summary：一段结论性的 HTML，约 600–1200 字。先说结论（最该保分的考点、各章权重、该怎么分配复习时间），再讲规律和复习建议。必须说明：预测是基于历史考频的概率判断，不是押题；每个考点都要复习。
@@ -158,7 +161,7 @@ ${COMMON}
 function analysisChecker() {
   return `你是严格的数据审校员。审查 ${REPO}/data/src/analysis.js（数学一高数考点分析与预测）。默认它有错，逐句挑刺。
 ${COMMON}
-1. 在 ${REPO} 下运行 node tools/build.js && node tools/analysis-input.js /tmp/kywork/analysis-v/input.json --compact，用这份数据逐个核对文中出现的每一个数字（出现次数、近 10 年次数、最近一次年份、占比、点名的真题年份与题号）。不一致的改正。
+1. 在 ${REPO} 下运行 node tools/build.js && node tools/analysis-input.js ${TMP}/analysis-v/input.json --compact，用这份数据逐个核对文中出现的每一个数字（出现次数、近 10 年次数、最近一次年份、占比、点名的真题年份与题号）。不一致的改正。
 2. 检查推理：结论是否由数据支持，有没有过度断言（预测只能是概率判断），有没有遗漏明显的高频考点或趋势，kp 与 level 是否合理。
 3. 检查是否有编造的"官方说法"，有就删掉。
 直接在文件里改（局部修改，保留写得好的部分）。改完运行 node tools/check.js analysis 直到 ✓。
