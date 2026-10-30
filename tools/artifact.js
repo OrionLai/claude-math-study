@@ -16,7 +16,10 @@ html = html
   .replace(/<\/?body>\s*/gi, '')
   .replace(/<\/html>\s*/i, '')
   .replace(/<meta charset[^>]*>\s*/i, '')
-  .replace(/<meta name="viewport"[^>]*>\s*/i, '');
+  .replace(/<meta name="viewport"[^>]*>\s*/i, '')
+  // artifact 不附带 2MB 的 MathJax（js/vendor/ 不在文件清单里），直接从 cdnjs 加载同一版本
+  .replace(/<script id="mathjax-js" src="[^"]*" data-fallback="([^"]*)"/, '<script id="mathjax-js" src="$1"');
+if (!/<script id="mathjax-js" src="https:\/\/cdnjs\./.test(html)) { console.error('index.html 里没找到 MathJax 的 script 标签，artifact 版会没有公式渲染'); process.exit(1); }
 fs.writeFileSync(out, html);
 
 const files = ['css/style.css'];

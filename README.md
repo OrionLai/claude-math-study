@@ -30,7 +30,7 @@
 - **GitHub Pages**：仓库 Settings → Pages → Source 选 `Deploy from a branch`，选这个分支和 `/ (root)`。打开后在 AI 面板的「连接设置」里填自己的 Anthropic API Key 即可提问（Key 只存在自己的浏览器里，请求从浏览器直接发给 Anthropic）。
 - **本地**：在仓库目录运行 `npx http-server .`，再用浏览器打开显示的地址。直接双击 `index.html` 也能看题和讲解，但浏览器不允许本地文件加载 AI 模块，这时请用「复制问题」把内容发给任意 AI。
 
-公式渲染（MathJax）和字体从 CDN 加载，需要联网。
+公式渲染用的 MathJax 随网站自带（`js/vendor/mathjax/`），不依赖境外 CDN，本站文件加载失败时才改从 cdnjs 取；Claude artifact 版直接用 cdnjs。字体从 Google Fonts 异步加载，连不上（大陆常见）就用系统字体，不会拖慢打开。
 
 ## 目录结构
 
@@ -42,7 +42,7 @@ js/card.js              题目卡（分层提示、掌握标记）
 js/views-*.js           各页面：讲解、真题库、考点分析
 js/search.js            全站搜索
 js/ai.js                AI 辅导面板
-js/vendor/              官方 @anthropic-ai/sdk 的浏览器打包版（MIT）
+js/vendor/              官方 @anthropic-ai/sdk 的浏览器打包版（MIT）、MathJax 3.2.2（mathjax/，Apache-2.0）
 data/src/taxonomy.js    考点体系（59 个考点）
 data/src/years/*.js     每年的真题与解析（源文件）
 data/src/lessons/*.js   每个考点的讲解（源文件）
@@ -68,7 +68,7 @@ npm test            # 常规：所有页面（桌面、手机、深色）、每�
 npm run test:full   # 额外把 520 道题的完整解析逐一打开排版（几分钟）
 ```
 
-测试会检查：脚本报错、公式渲染错误、没排版的 TeX、行内公式被排成独占一行、手机宽度下横向溢出、讲解里的真题引用是否都指向存在的题，以及看题浮层、分步证明、自测、快捷键、真题库筛选与翻页、随机刷题、错题本、清空记录、配色切换、AI 面板等交互。MathJax 用本地同版本文件代替 CDN，所以测试不需要外网。设置了 `ANTHROPIC_API_KEY` 时加 `--live-ai` 会用 Haiku 真实问一次 AI（花费不到 1 美分）。
+测试会检查：脚本报错、公式渲染错误、没排版的 TeX、行内公式被排成独占一行、手机宽度下横向溢出、讲解里的真题引用是否都指向存在的题，以及看题浮层、分步证明、自测、快捷键、真题库筛选与翻页、随机刷题、错题本、清空记录、配色切换、AI 面板等交互。网站自带 MathJax、字体请求直接拦掉，所以测试不需要外网；另有一项专门检查字体服务器无响应时页面照样马上出来、本站 MathJax 加载失败时退回 cdnjs。设置了 `ANTHROPIC_API_KEY` 时加 `--live-ai` 会用 Haiku 真实问一次 AI（花费不到 1 美分）。
 
 ## 内容完成度与续做
 
@@ -128,4 +128,5 @@ node tools/api-run.js --budget 90                  # 正式跑：花到 90 美�
 - 真题题面整理自 [TsekaLuk/Kaoyan-Math1-Papers](https://github.com/TsekaLuk/Kaoyan-Math1-Papers)（CC BY-NC-SA 4.0），OCR 错误已逐题校对。真题版权归原出题单位。
 - 本站的解析、讲解、考点分析与代码中的内容数据，按相同方式以 **CC BY-NC-SA 4.0** 共享：可以转载和改编，但要署名、不得商用，改编作品须用相同许可。
 - `js/vendor/anthropic-sdk-*.mjs` 是 Anthropic 官方 SDK 的打包版，MIT 许可（见同目录 LICENSE 文件）。
+- `js/vendor/mathjax/tex-svg.js` 是 [MathJax](https://www.mathjax.org/) 3.2.2 的发行文件，Apache-2.0 许可（见同目录 LICENSE 文件）。
 - 内容经过 SymPy 验算和独立审校，但仍可能有疏漏，欢迎指正。

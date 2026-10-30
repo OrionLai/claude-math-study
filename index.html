@@ -7,11 +7,23 @@
 <meta name="description" content="考研数学一高等数学：1987–2025 年全部高数真题逐题详解、按考点从零讲起的基础讲解（含完整证明，陆续补全）、考频分析与预测、AI 辅导。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap">
+<!-- 字体不阻塞渲染：先按 print 加载，加载完再对屏幕生效（见下面的脚本）；连不上 Google Fonts 时一直用系统字体 -->
+<link rel="stylesheet" id="font-css" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap" media="print">
 <link rel="stylesheet" href="css/style.css">
 <script>
   // 先应用保存的配色，避免页面闪一下
   try { var t0 = JSON.parse(localStorage.getItem('ky2-theme')); if (t0 === 'light' || t0 === 'dark') document.documentElement.setAttribute('data-theme', t0); } catch (e) {}
+  (function (f) { if (f.sheet) f.media = 'all'; else f.addEventListener('load', function () { f.media = 'all'; }); })(document.getElementById('font-css'));
+  // MathJax 用本站自带的同版本文件（js/vendor/mathjax）；它加载失败时再从 data-fallback 里的 cdnjs 地址加载
+  window.addEventListener('error', function (e) {
+    var s = e.target;
+    if (!s || s.id !== 'mathjax-js' || !s.getAttribute('data-fallback')) return;
+    var c = document.createElement('script');
+    c.src = s.getAttribute('data-fallback');
+    c.async = true;
+    s.removeAttribute('data-fallback');
+    document.head.appendChild(c);
+  }, true);
   window.MathJax = {
     tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
     svg: { fontCache: 'global' },
@@ -28,7 +40,7 @@
     }
   };
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" async></script>
+<script id="mathjax-js" src="js/vendor/mathjax/tex-svg.js" data-fallback="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" async></script>
 </head>
 <body>
 <a class="skip" href="#view">跳到正文</a>

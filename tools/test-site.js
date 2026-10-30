@@ -7,8 +7,8 @@
 //                  node tools/test-site.js --only lessons,peek   只跑名字里含这些词的测试
 //                  ANTHROPIC_API_KEY=… node tools/test-site.js --live-ai   额外真实问一次 AI（用 Haiku，花费不到 1 美分）
 //
-// MathJax 用 tools/node_modules/mathjax-full 里同版本（3.2.2）的本地文件代替 CDN，Google 字体直接拦掉，
-// 所以测试不依赖外网，结果也稳定。
+// 网站自带 MathJax（js/vendor/mathjax）；万一请求到 cdnjs（本地文件加载失败时的退路），用 tools/node_modules/mathjax-full
+// 里同版本（3.2.2）的文件代替。Google 字体直接拦掉，所以测试不依赖外网，结果也稳定。
 'use strict';
 const http = require('http');
 const fs = require('fs');
@@ -142,6 +142,28 @@ async function run() {
       await page.context().close();
     }
     return '6 个页面 × 3 种外观';
+  });
+
+  await test('首屏不依赖境外 CDN：字体服务器无响应不阻塞、本地 MathJax 失败时退回 cdnjs', async () => {
+    // 字体服务器一直不响应（大陆常见）：页面照样马上出来，MathJax 用的是本站的文件
+    let page = await newPage(PHONE);
+    await page.context().route(/fonts\.(googleapis|gstatic)\.com/, () => { /* 永远不响应 */ });
+    const t0 = Date.now();
+    await page.goto(BASE + '#q-2023-3', { waitUntil: 'commit' });
+    await page.waitForFunction(() => window.KY && KY.meta && document.querySelector('#view h1'), null, { timeout: 5000 });
+    const shown = Date.now() - t0;
+    await page.waitForFunction(() => window.__mjReady && document.querySelector('#view mjx-container'), null, { timeout: 15000 });
+    const res = await page.evaluate(() => performance.getEntriesByType('resource').map((e) => e.name).filter((n) => /tex-svg\.js/.test(n)));
+    assert(res.length === 1 && /\/js\/vendor\/mathjax\/tex-svg\.js$/.test(res[0]), 'MathJax 应从本站加载，实际：' + res.join('、'));
+    await page.context().close();
+    // 本站的 MathJax 加载失败：退回 cdnjs，公式照常排版
+    page = await newPage(DESKTOP);
+    await page.context().route(/\/js\/vendor\/mathjax\/tex-svg\.js$/, (r) => r.abort());
+    await open(page, 'q-2023-3');
+    assert(await page.evaluate(() => !!document.querySelector('#view mjx-container') && performance.getEntriesByType('resource').some((e) => /cdnjs\.cloudflare\.com\/ajax\/libs\/mathjax\/3\.2\.2\//.test(e.name))), '本站 MathJax 加载失败后没有退回 cdnjs');
+    await audit(page, 'MathJax 退回 cdnjs');
+    await page.context().close();
+    return `字体无响应时 ${shown}ms 出正文`;
   });
 
   await test('每一篇讲解：公式、布局、真题引用', async () => {
