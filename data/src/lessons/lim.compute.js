@@ -17,12 +17,12 @@ $$\lim_{x\to0}\frac{x}{x}=1,\qquad \lim_{x\to0}\frac{x^2}{x}=0,\qquad \lim_{x\to
   <line x1="40" y1="220" x2="400" y2="20" stroke="currentColor" stroke-width="1.6" stroke-dasharray="6,4"/>
   <polyline points="40,220 58,175 76,157 94,143 112,131 130,120 148,110 166,102 184,94 202,86 220,79 238,72 256,65 274,59 292,53 310,47 328,41 346,36 364,30 382,25 400,20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2,3"/>
   <text x="300" y="150" font-size="13" fill="currentColor">y = x²（最快）</text>
-  <text x="250" y="65" font-size="13" fill="currentColor">y = x（虚线）</text>
+  <text x="205" y="150" font-size="13" fill="currentColor">y = x</text>
   <text x="90" y="100" font-size="13" fill="currentColor">y = √x（最慢）</text>
   <text x="400" y="238" font-size="12" fill="currentColor">x</text>
   <text x="25" y="225" font-size="12" fill="currentColor">O</text>
 </svg>
-<p>图中三条曲线在 $x\to0^+$ 时都趋于 $0$，但 $x^2$ 跑得最快、$\sqrt x$ 最慢。$\dfrac{x^2}{x}$ 是"快的比慢的"，所以趋于 $0$；$\dfrac{x}{x^2}$ 是"慢的比快的"，所以趋于 $\infty$。<b>未定式极限的计算，本质上就是把这种"快慢之比"精确地算出来</b>。</p>
+<p>图中三条曲线（实线 $x^2$、虚线 $x$、点线 $\sqrt x$）在 $x\to0^+$ 时都趋于 $0$，但 $x^2$ 跑得最快、$\sqrt x$ 最慢。$\dfrac{x^2}{x}$ 是"快的比慢的"，所以趋于 $0$；$\dfrac{x}{x^2}$ 是"慢的比快的"，所以趋于 $\infty$。<b>未定式极限的计算，本质上就是把这种"快慢之比"精确地算出来</b>。</p>
 <p>同样的现象还出现在 $\dfrac{\infty}{\infty}$（两个无穷大谁跑得快）、$0\cdot\infty$（一个变小一个变大，谁占上风）、$\infty-\infty$（两个无穷大相减剩多少）以及 $1^\infty$、$0^0$、$\infty^0$（底数和指数拉锯）之中。这七种形式统称为<b>未定式</b>。它们的共同点是：<b>极限运算法则在这里不适用</b>——法则要求各部分极限存在且分母极限不为零，而未定式恰好违反了这些条件。</p>
 <p>本篇要做的事情就是建立一套系统的工具来处理这些"算不出来"的极限。核心工具有三件：</p>
 <ul>
@@ -85,17 +85,35 @@ $$u^v-1=\mathrm e^{v\ln u}-1\sim v\ln u\quad(\text{当 }v\ln u\to0),$$
         kind: 'thm', title: '等价无穷小代换定理（乘除因子可换）',
         statement: R`<p>设在同一极限过程中 $\alpha\sim\alpha'$，$\beta\sim\beta'$（即 $\lim\dfrac{\alpha}{\alpha'}=1$，$\lim\dfrac{\beta}{\beta'}=1$），且 $\lim\dfrac{\alpha'}{\beta'}$ 存在（或为 $\infty$），则</p>
 $$\lim\frac{\alpha}{\beta}=\lim\frac{\alpha'}{\beta'}.$$
-<p>更一般地，若 $\lim\dfrac{\alpha' h}{\beta'}$ 存在，则 $\lim\dfrac{\alpha h}{\beta}=\lim\dfrac{\alpha' h}{\beta'}$，即<b>作为整体的乘除因子</b>的无穷小可以换成它的等价无穷小。</p>`,
+<p>更一般地，设 $h$ 是任意一个函数（代表极限式里"其余的部分"，可以不是无穷小），若 $\lim\dfrac{\alpha' h}{\beta'}$ 存在（或为 $\infty$），则 $\lim\dfrac{\alpha h}{\beta}=\lim\dfrac{\alpha' h}{\beta'}$，即<b>作为整体的乘除因子</b>的无穷小可以换成它的等价无穷小。</p>`,
         intuition: R`<p>$\alpha\sim\alpha'$ 的意思是"两者的比值趋于 $1$"，也就是在这个极限过程中它们"快慢完全一样"。既然求极限只关心快慢之比，把一个乘积因子换成快慢相同的另一个因子，比值当然不变。但"快慢一样"不等于"相等"：$\alpha-\alpha'$ 虽然是比 $\alpha$ 更高阶的无穷小，却不是零，当它与同阶的东西相减时，这个差就可能冒出来成为主角。这就是加减项不能随便换的根源。</p>`,
         steps: [
-          { s: R`<p>写 $\dfrac{\alpha h}{\beta}=\dfrac{\alpha}{\alpha'}\cdot\dfrac{\beta'}{\beta}\cdot\dfrac{\alpha' h}{\beta'}$。</p>`, why: R`<p>这是恒等变形：把想换的因子"乘回去再除掉"。等价的定义只给了比值信息，所以要把比值 $\dfrac\alpha{\alpha'}$、$\dfrac{\beta'}{\beta}$ 人为地制造出来。能作这些除法，是因为"$\alpha\sim\alpha'$"的定义本身已隐含 $\alpha'$ 在去心邻域内非零（否则比值无意义），同理 $\beta$、$\beta'$ 非零。</p>` },
+          { s: R`<p>写 $\dfrac{\alpha h}{\beta}=\dfrac{\alpha}{\alpha'}\cdot\dfrac{\beta'}{\beta}\cdot\dfrac{\alpha' h}{\beta'}$。</p>`, why: R`<p>这是恒等变形：把想换的因子"乘回去再除掉"。等价的定义只给了比值信息，所以要把比值 $\dfrac\alpha{\alpha'}$、$\dfrac{\beta'}{\beta}$ 人为地制造出来。能作这些除法，是因为"$\alpha\sim\alpha'$"的定义本身已隐含 $\alpha'$ 在去心邻域内非零（否则比值无意义），同理 $\beta'$ 非零；而 $\beta\ne0$ 是原式 $\dfrac{\alpha h}{\beta}$ 有意义的前提。</p>` },
           { s: R`<p>三个因子的极限分别为 $1$、$1$、$\lim\dfrac{\alpha' h}{\beta'}$。若最后一个极限为有限数 $A$，由极限的乘法法则，$\lim\dfrac{\alpha h}{\beta}=1\cdot1\cdot A=A$。</p>`, why: R`<p>乘法法则要求每个因子极限都存在，这里恰好满足——这也解释了为什么定理要假设"换完之后的极限存在"。</p>` },
           { s: R`<p>若 $\lim\dfrac{\alpha' h}{\beta'}=\infty$，则 $\dfrac{\beta'}{\alpha' h}\to0$，对倒数用上一步得 $\dfrac{\beta}{\alpha h}\to0$，故 $\dfrac{\alpha h}{\beta}\to\infty$。</p>`, why: R`<p>无穷大与无穷小互为倒数（见 lim.inf），把 $\infty$ 的情形转化为有限情形处理。</p>` }
         ],
         remark: R`<p><b>条件"乘除因子"不能去掉。</b> $\lim_{x\to0}\dfrac{\tan x-\sin x}{x^3}$ 中若把 $\tan x$、$\sin x$ 各换成 $x$，得 $\dfrac{x-x}{x^3}=0$，而正确答案是 $\dfrac12$（见后面例题）。错在 $\tan x-\sin x$ 是加减结构，不是乘积因子。正确做法是先把它<b>变成乘积</b>：$\tan x-\sin x=\tan x(1-\cos x)$，再换。</p>
+<svg viewBox="0 0 420 260" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="40,230 47,228 54,225 60,223 67,220 74,218 81,216 88,213 94,211 101,208 108,206 115,203 122,201 128,198 135,195 142,193 149,190 156,188 162,185 169,182 176,179 183,176 190,174 196,171 203,168 210,164 217,161 224,158 230,155 237,151 244,148 251,144 258,141 264,137 271,133 278,129 285,125 292,120 298,116 305,111 312,106 319,101 326,96 332,91 339,85 346,79 353,72 360,66 366,59 373,51 380,43 380,129 373,130 366,132 360,133 353,135 346,136 339,138 332,139 326,141 319,142 312,144 305,146 298,147 292,149 285,151 278,153 271,155 264,156 258,158 251,160 244,162 237,164 230,166 224,168 217,170 210,172 203,175 196,177 190,179 183,181 176,183 169,185 162,188 156,190 149,192 142,195 135,197 128,199 122,201 115,204 108,206 101,209 94,211 88,213 81,216 74,218 67,220 60,223 54,225 47,228 40,230" fill="currentColor" fill-opacity="0.15" stroke="none"/>
+  <line x1="40" y1="230" x2="400" y2="230" stroke="currentColor" stroke-width="1"/>
+  <line x1="40" y1="240" x2="40" y2="20" stroke="currentColor" stroke-width="1"/>
+  <polyline points="40,230 47,228 54,225 60,223 67,220 74,218 81,216 88,213 94,211 101,208 108,206 115,203 122,201 128,198 135,195 142,193 149,190 156,188 162,185 169,182 176,179 183,176 190,174 196,171 203,168 210,164 217,161 224,158 230,155 237,151 244,148 251,144 258,141 264,137 271,133 278,129 285,125 292,120 298,116 305,111 312,106 319,101 326,96 332,91 339,85 346,79 353,72 360,66 366,59 373,51 380,43" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <polyline points="40,230 380,110" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="6,4"/>
+  <polyline points="40,230 47,228 54,225 60,223 67,220 74,218 81,216 88,213 94,211 101,209 108,206 115,204 122,201 128,199 135,197 142,195 149,192 156,190 162,188 169,185 176,183 183,181 190,179 196,177 203,175 210,172 217,170 224,168 230,166 237,164 244,162 251,160 258,158 264,156 271,155 278,153 285,151 292,149 298,147 305,146 312,144 319,142 326,141 332,139 339,138 346,136 353,135 360,133 366,132 373,130 380,129" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <line x1="142" y1="230" x2="142" y2="193" stroke="currentColor" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="134" y="246" font-size="12" fill="currentColor">0.3</text>
+  <text x="300" y="50" font-size="13" fill="currentColor">y = tan x</text>
+  <text x="345" y="100" font-size="13" fill="currentColor">y = x</text>
+  <text x="300" y="165" font-size="13" fill="currentColor">y = sin x</text>
+  <text x="60" y="60" font-size="12" fill="currentColor">阴影 = tan x − sin x，是三阶小量</text>
+  <text x="60" y="78" font-size="12" fill="currentColor">x ≤ 0.3 时三条曲线几乎重合</text>
+  <text x="392" y="246" font-size="12" fill="currentColor">x</text>
+  <text x="25" y="235" font-size="12" fill="currentColor">O</text>
+</svg>
+<p>图中看什么：在 $x\le0.3$ 的范围内 $\sin x$、$x$、$\tan x$ 三条曲线几乎分不开——这就是"等价"的几何含义，所以作为<b>乘除因子</b>时互换无妨；但它们之间的阴影（$\tan x-\sin x$）并不是零，而是一个三阶小量，当分母也是三阶（如 $x^3$）时，这块"薄薄的阴影"恰恰就是答案，换成 $x-x=0$ 等于把它抹掉了。</p>
 <p><b>常用等价无穷小表（$x\to0$）</b>，每一条都可以由后面的泰勒公式（取首项）得到：</p>
 $$\sin x\sim\tan x\sim\arcsin x\sim\arctan x\sim\ln(1+x)\sim\mathrm e^x-1\sim x,\qquad 1-\cos x\sim\frac{x^2}{2},$$
-$$(1+x)^a-1\sim ax,\qquad a^x-1\sim x\ln a,\qquad x-\sin x\sim\frac{x^3}{6},\qquad \tan x-x\sim\frac{x^3}{3},\qquad x-\ln(1+x)\sim\frac{x^2}{2},$$
+$$(1+x)^a-1\sim ax\ (a\ne0),\qquad a^x-1\sim x\ln a\ (a>0,\ a\ne1),\qquad x-\sin x\sim\frac{x^3}{6},\qquad \tan x-x\sim\frac{x^3}{3},\qquad x-\ln(1+x)\sim\frac{x^2}{2},$$
 $$x-\arctan x\sim\frac{x^3}{3},\qquad \arcsin x-x\sim\frac{x^3}{6},\qquad \tan x-\sin x\sim\frac{x^3}{2}.$$
 <p>表中的 $x$ 可以换成任何趋于 $0$ 的表达式 $\varphi(x)$（复合函数极限法则），例如 $\ln(1+x\sin x)\sim x\sin x\sim x^2$。</p>`
       },
@@ -123,16 +141,24 @@ $$x-\arctan x\sim\frac{x^3}{3},\qquad \arcsin x-x\sim\frac{x^3}{6},\qquad \tan x
         intuition: R`<p>把 $f$、$g$ 在 $a$ 附近都看成几乎是直线：$f(x)\approx f'(a)(x-a)$，$g(x)\approx g'(a)(x-a)$，那么 $\dfrac{f(x)}{g(x)}\approx\dfrac{f'(a)}{g'(a)}$。也就是说，两条过同一点 $(a,0)$ 的曲线之比，由它们在该点的<b>斜率之比</b>决定。严格证明时 $f'(a)$、$g'(a)$ 未必存在，于是用柯西中值定理把"某一点的斜率"换成"附近某点 $\xi$ 的斜率"，再让 $\xi$ 被夹着趋于 $a$。</p>
 <svg viewBox="0 0 420 260" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
   <line x1="40" y1="130" x2="400" y2="130" stroke="currentColor" stroke-width="1"/>
-  <line x1="210" y1="240" x2="210" y2="20" stroke="currentColor" stroke-width="1"/>
-  <polyline points="60,183 75,182 90,180 105,176 120,172 135,166 150,160 165,153 180,146 195,138 210,130 225,122 240,114 255,107 270,100 285,94 300,88 315,84 330,80 345,78 360,77" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <polyline points="60,210 75,202 90,194 105,186 120,178 135,170 150,162 165,154 180,146 195,138 210,130 225,122 240,114 255,106 270,98 285,90 300,82 315,74 330,66 345,58 360,50" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="5,4"/>
+  <line x1="210" y1="250" x2="210" y2="10" stroke="currentColor" stroke-width="1"/>
+  <polyline points="98,205 101,204 105,204 109,203 112,202 116,201 120,200 124,198 128,197 131,195 135,193 139,191 142,189 146,186 150,184 154,181 158,178 161,175 165,172 169,169 172,166 176,163 180,159 184,156 188,152 191,149 195,145 199,141 202,137 206,134 210,130 214,126 218,123 221,119 225,115 229,111 232,108 236,104 240,101 244,97 248,94 251,91 255,88 259,85 262,82 266,79 270,76 274,74 278,71 281,69 285,67 289,65 292,63 296,62 300,60 304,59 308,58 311,57 315,56 319,56 322,55" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <polyline points="139,252 142,247 146,243 150,238 154,232 158,227 161,221 165,215 169,208 172,202 176,195 180,188 184,181 188,174 191,167 195,160 199,152 202,145 206,137 210,130 214,123 218,115 221,108 225,100 229,93 232,86 236,79 240,72 244,65 248,58 251,52 255,45 259,39 262,33 266,28 270,22 274,17 278,13 281,8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="5,4"/>
+  <line x1="240" y1="130" x2="240" y2="72" stroke="currentColor" stroke-width="1" stroke-dasharray="2,2"/>
   <circle cx="210" cy="130" r="3" fill="currentColor"/>
-  <text x="215" y="150" font-size="12" fill="currentColor">a</text>
-  <text x="300" y="70" font-size="13" fill="currentColor">y = g(x)</text>
-  <text x="305" y="105" font-size="13" fill="currentColor">y = f(x)</text>
-  <text x="50" y="40" font-size="12" fill="currentColor">两条曲线都过 (a,0)，</text>
-  <text x="50" y="56" font-size="12" fill="currentColor">靠近 a 时 f/g ≈ 斜率之比</text>
-</svg>`,
+  <circle cx="240" cy="101" r="2.5" fill="currentColor"/>
+  <circle cx="240" cy="72" r="2.5" fill="currentColor"/>
+  <text x="200" y="146" font-size="12" fill="currentColor">a</text>
+  <text x="236" y="146" font-size="12" fill="currentColor">x</text>
+  <text x="246" y="122" font-size="12" fill="currentColor">f(x)</text>
+  <text x="207" y="70" font-size="12" fill="currentColor">g(x)</text>
+  <text x="288" y="40" font-size="13" fill="currentColor">y = g(x)</text>
+  <text x="295" y="85" font-size="13" fill="currentColor">y = f(x)</text>
+  <text x="48" y="32" font-size="12" fill="currentColor">两条曲线都过 (a,0)，</text>
+  <text x="48" y="48" font-size="12" fill="currentColor">f'(a)=1，g'(a)=2，</text>
+  <text x="48" y="64" font-size="12" fill="currentColor">x 靠近 a 时 f(x)/g(x) ≈ 1/2</text>
+</svg>
+<p>图中看什么：实线 $f$ 在 $a$ 处斜率为 $1$，虚线 $g$ 斜率为 $2$；在靠近 $a$ 的点 $x$ 处，竖直线段上 $f(x)$ 的高度恰约为 $g(x)$ 的一半。离 $a$ 越近，曲线越像它的切线，$\dfrac{f(x)}{g(x)}$ 就越接近 $\dfrac{f'(a)}{g'(a)}$。</p>`,
         steps: [
           { s: R`<p><b>第一步：补充定义，使 $f$、$g$ 在 $a$ 处连续。</b> 令 $f(a)=g(a)=0$（若 $f$、$g$ 在 $a$ 处原本有定义但值不为 $0$，就改成 $0$）。由条件 1，这样修改后 $f$、$g$ 在 $a$ 处连续；由条件 2，在 $(a,a+\delta)$（以及 $(a-\delta,a)$）内可导。</p>`, why: R`<p>极限 $\lim_{x\to a}$ 与 $f(a)$ 的值无关，所以可以随意改动 $f(a)$ 而不影响结论。改成 $0$ 是为了能在闭区间 $[a,x]$ 上使用柯西中值定理，它要求端点连续。</p>` },
           { s: R`<p><b>第二步：对 $[a,x]$ 用柯西中值定理。</b> 任取 $x\in(a,a+\delta)$，$f$、$g$ 在 $[a,x]$ 上连续、在 $(a,x)$ 内可导、$g'\ne0$，故存在 $\xi\in(a,x)$ 使</p>
@@ -171,6 +197,22 @@ $$\left|\frac{f(x)}{g(x)}-A\right|\le\varepsilon(1+\varepsilon)+|A|\varepsilon+\
         ],
         remark: R`<p><b>条件 1 只要求分母趋于无穷</b>，分子 $f$ 可以是任何东西（证明中根本没用到 $f\to\infty$）。这一点在 $\dfrac{\text{有界}}{\infty}$ 的情形不必用洛必达——直接为 $0$；但它说明定理的适用范围比"$\dfrac\infty\infty$"字面上更宽。</p>
 <p><b>典型应用：无穷大的"速度排序"。</b> $x\to+\infty$ 时，$\ln x\ll x^a\ (a>0)\ll b^x\ (b>1)\ll x^x$。例如 $\lim_{x\to+\infty}\dfrac{x^n}{\mathrm e^x}$ 连用 $n$ 次洛必达得 $\lim\dfrac{n!}{\mathrm e^x}=0$；$\lim_{x\to+\infty}\dfrac{\ln x}{x^a}=\lim\dfrac{1/x}{ax^{a-1}}=\lim\dfrac{1}{ax^a}=0$。这个排序在判断 $\dfrac\infty\infty$ 型时经常直接用。</p>
+<svg viewBox="0 0 420 260" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+  <line x1="40" y1="230" x2="400" y2="230" stroke="currentColor" stroke-width="1"/>
+  <line x1="40" y1="240" x2="40" y2="15" stroke="currentColor" stroke-width="1"/>
+  <polyline points="40,212 46,211 51,209 57,206 63,204 68,201 74,198 80,195 85,191 91,187 97,182 102,177 108,172 114,166 119,159 125,152 131,143 136,134 142,124 148,113 153,101 159,87 165,72 170,55 176,37 181,20" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <polyline points="40,230 46,230 51,229 57,228 63,227 68,226 74,224 80,221 85,219 91,216 97,212 102,209 108,205 114,200 119,196 125,191 131,185 136,179 142,173 148,167 153,160 159,153 165,145 170,137 176,129 182,121 187,112 193,102 199,93 204,83 210,72 216,62 221,51 227,39 233,28 236,20" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <line x1="40" y1="230" x2="380" y2="125" stroke="currentColor" stroke-width="1.2" stroke-dasharray="6,4"/>
+  <polyline points="97,230 102,228 108,227 114,225 119,224 125,223 131,222 136,221 142,220 148,219 153,218 159,217 165,216 170,215 176,215 182,214 187,213 193,213 199,212 204,211 210,211 216,210 221,210 227,209 233,209 238,208 244,208 250,207 255,207 261,206 267,206 272,205 278,205 284,204 289,204 295,204 301,203 306,203 312,203 318,202 323,202 329,201 335,201 340,201 346,200 352,200 357,200 363,200 369,199 374,199 380,199" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <text x="120" y="45" font-size="13" fill="currentColor">y = eˣ</text>
+  <text x="245" y="45" font-size="13" fill="currentColor">y = x²</text>
+  <text x="340" y="110" font-size="13" fill="currentColor">y = x</text>
+  <text x="320" y="185" font-size="13" fill="currentColor">y = ln x</text>
+  <text x="392" y="246" font-size="12" fill="currentColor">x</text>
+  <text x="25" y="235" font-size="12" fill="currentColor">O</text>
+  <text x="90" y="246" font-size="12" fill="currentColor">1</text>
+</svg>
+<p>图中看什么：四条曲线都趋于 $+\infty$，但"陡"的程度天差地别——$\mathrm e^x$ 很快冲出图外，$\ln x$ 几乎贴着地面爬。$\dfrac\infty\infty$ 型的极限就是"慢的比快的 $\to0$，快的比慢的 $\to\infty$"，洛必达法则不过是把这种直觉算成精确结果。</p>
 <p><b>失效的例子。</b> $\lim_{x\to+\infty}\dfrac{x+\sin x}{x}$ 是 $\dfrac\infty\infty$ 型，求导得 $\dfrac{1+\cos x}{1}$，极限不存在；但原极限显然是 $1$（分子分母同除 $x$）。再次强调：洛必达失效 $\ne$ 极限不存在。</p>`
       },
       {
@@ -181,11 +223,11 @@ $$f(x)=\sum_{k=0}^{n}\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k+o\big((x-x_0)^n\big).$$
 $$\mathrm e^x=1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+o(x^3),\qquad \sin x=x-\frac{x^3}{3!}+o(x^4),\qquad \cos x=1-\frac{x^2}{2!}+\frac{x^4}{4!}+o(x^5),$$
 $$\ln(1+x)=x-\frac{x^2}{2}+\frac{x^3}{3}+o(x^3),\qquad (1+x)^a=1+ax+\frac{a(a-1)}{2}x^2+o(x^2),$$
 $$\tan x=x+\frac{x^3}{3}+o(x^4),\qquad \arctan x=x-\frac{x^3}{3}+o(x^4),\qquad \arcsin x=x+\frac{x^3}{6}+o(x^4).$$`,
-        intuition: R`<p>泰勒公式是"等价无穷小"的升级版：等价代换只保留首项（$\sin x\approx x$），泰勒公式则保留任意多项（$\sin x\approx x-\dfrac{x^3}{6}$）。当加减抵消了首项时，就得靠第二项、第三项来决定快慢，这就是为什么加减结构要用泰勒。余项 $o((x-x_0)^n)$ 的意思是"比 $(x-x_0)^n$ 更高阶的无穷小"，它是一个精确的数学对象，而不是"大约"。</p>`,
+        intuition: R`<p>泰勒公式是"等价无穷小"的升级版：等价代换只保留首项（$\sin x\approx x$），泰勒公式则保留任意多项（$\sin x\approx x-\dfrac{x^3}{6}$）。当加减抵消了首项时，就得靠第二项、第三项来决定快慢，这就是为什么加减结构要用泰勒。余项 $o((x-x_0)^n)$ 的意思是"比 $(x-x_0)^n$ 更高阶的无穷小"，它是一个精确的数学对象，而不是"大约"：记号 $r(x)=o((x-x_0)^n)$ 的定义就是 $\lim_{x\to x_0}\dfrac{r(x)}{(x-x_0)^n}=0$。所以"$f(x)=P_n(x)+o((x-x_0)^n)$"这句话的全部内容，就是下面要证的 $\lim\dfrac{f(x)-P_n(x)}{(x-x_0)^n}=0$。</p>`,
         steps: [
           { s: R`<p>记 $P_n(x)=\sum_{k=0}^{n}\dfrac{f^{(k)}(x_0)}{k!}(x-x_0)^k$，$R_n(x)=f(x)-P_n(x)$。要证 $\lim_{x\to x_0}\dfrac{R_n(x)}{(x-x_0)^n}=0$。直接验证可知 $R_n(x_0)=R_n'(x_0)=\cdots=R_n^{(n-1)}(x_0)=0$，且 $R_n^{(n)}(x_0)=0$。</p>`, why: R`<p>$P_n$ 的构造恰好让它与 $f$ 在 $x_0$ 处前 $n$ 阶导数全部相同：$P_n^{(k)}(x_0)=f^{(k)}(x_0)$。这是多项式逼近的出发点。</p>` },
           { s: R`<p>$\dfrac{R_n(x)}{(x-x_0)^n}$ 是 $\dfrac00$ 型。在 $x_0$ 的去心邻域内 $R_n$ 有 $n-1$ 阶导数，$(x-x_0)^n$ 的各阶导数非零，对它<b>连续用 $n-1$ 次洛必达法则</b>（每次都是 $\dfrac00$ 型），化为</p>
-$$\lim_{x\to x_0}\frac{R_n^{(n-1)}(x)}{n!\,(x-x_0)}.$$`, why: R`<p>每用一次洛必达，分子导数在 $x_0$ 处仍为 $0$（由第一步），分母变成 $n(n-1)\cdots(x-x_0)^{n-k}$ 仍趋于 $0$，所以仍是 $\dfrac00$ 型。洛必达法则的逻辑是"后一个极限存在 ⇒ 前一个极限存在且相等"，所以只要最后这个极限算出来，整条链就都成立。</p>` },
+$$\lim_{x\to x_0}\frac{R_n^{(n-1)}(x)}{n!\,(x-x_0)}.$$`, why: R`<p>为什么 $R_n$ 在去心邻域内有 $n-1$ 阶导数：$f^{(n-1)}$ 在 $x_0$ 的邻域内存在（定理条件），多项式 $P_n$ 更是无穷次可导。每用一次洛必达（第 $k$ 次之后分子是 $R_n^{(k)}$，$k\le n-1$），分子仍趋于 $0$：因为 $R_n^{(k+1)}(x_0)$ 存在，$R_n^{(k)}$ 在 $x_0$ 处连续，故 $R_n^{(k)}(x)\to R_n^{(k)}(x_0)=0$（由第一步）；分母变成 $n(n-1)\cdots(n-k+1)(x-x_0)^{n-k}$ 仍趋于 $0$，所以仍是 $\dfrac00$ 型。洛必达法则的逻辑是"后一个极限存在 ⇒ 前一个极限存在且相等"，所以只要最后这个极限算出来，整条链就都成立。</p>` },
           { s: R`<p>由 $R_n^{(n-1)}(x)=f^{(n-1)}(x)-f^{(n-1)}(x_0)-f^{(n)}(x_0)(x-x_0)$（$P_n$ 的 $n-1$ 阶导数只剩这两项），</p>
 $$\lim_{x\to x_0}\frac{R_n^{(n-1)}(x)}{n!\,(x-x_0)}=\frac{1}{n!}\left[\lim_{x\to x_0}\frac{f^{(n-1)}(x)-f^{(n-1)}(x_0)}{x-x_0}-f^{(n)}(x_0)\right]=\frac{1}{n!}\big[f^{(n)}(x_0)-f^{(n)}(x_0)\big]=0 .$$`, why: R`<p>最后一步不能再用洛必达（$f^{(n)}$ 在邻域内未必存在），而是直接用<b>导数的定义</b>：$f^{(n)}(x_0)$ 就是 $f^{(n-1)}$ 的差商极限。这就是为什么定理只需要 $f^{(n)}(x_0)$ 在一点存在。</p>` }
         ],
@@ -210,7 +252,7 @@ $$\lim u(x)^{v(x)}=\mathrm e^{A}=\mathrm e^{\lim v(x)[u(x)-1]}.$$`,
 $$v\ln u=v(u-1)\cdot\frac{\ln(1+(u-1))}{u-1}\to A\cdot1=A .$$`, why: R`<p>这正是乘积因子的等价代换：$\ln u\sim u-1$。$\ln(1+t)\sim t$ 的证明：$\lim_{t\to0}\dfrac{\ln(1+t)}{t}=\lim\ln(1+t)^{1/t}=\ln\mathrm e=1$，用的是第二个重要极限与 $\ln$ 的连续性（见 lim.rules）。</p>` },
           { s: R`<p>$\mathrm e^t$ 在 $(-\infty,+\infty)$ 上连续，且 $t\to+\infty$ 时 $\mathrm e^t\to+\infty$、$t\to-\infty$ 时 $\mathrm e^t\to0$，由复合函数极限法则 $\lim u^v=\mathrm e^{A}$。</p>`, why: R`<p>"极限号穿过连续函数"是复合函数极限法则，这里外层函数是 $\mathrm e^t$。</p>` }
         ],
-        remark: R`<p><b>使用步骤</b>：① 确认是 $1^\infty$ 型（底数 $\to1$、指数 $\to\infty$）；② 算 $\lim v(u-1)$，这通常是一个 $0\cdot\infty$ 型，倒下去用等价代换或洛必达；③ 答案是 $\mathrm e^{\text{该极限}}$。<b>不要</b>对不是 $1^\infty$ 型的极限用此公式，例如 $\lim_{x\to+\infty}\left(1+\dfrac1x\right)^{\sqrt x}$ 底数 $\to1$、指数 $\to+\infty$，可用，$v(u-1)=\dfrac{1}{\sqrt x}\to0$，极限为 $\mathrm e^0=1$；而 $\lim_{x\to0}(1+x)^{1/x^2}$ 中 $v(u-1)=\dfrac1x$，右极限 $A=+\infty$、左极限 $A=-\infty$，分别对两个单侧极限用公式得 $+\infty$ 与 $0$，故双侧极限不存在——公式允许 $A=\pm\infty$，但必须是带符号的无穷，不带符号的 $\infty$ 要拆成单侧处理。</p>
+        remark: R`<p><b>使用步骤</b>：① 确认是 $1^\infty$ 型（底数 $\to1$、指数 $\to\infty$）；② 算 $\lim v(u-1)$，这通常是一个 $0\cdot\infty$ 型，倒下去用等价代换或洛必达；③ 答案是 $\mathrm e^{\text{该极限}}$。<b>不要</b>对不是 $1^\infty$ 型的极限用此公式（如 $\lim_{x\to+\infty}\left(1+\dfrac1x\right)^{x^2}$ 可用，但 $\lim_{x\to+\infty}\left(2+\dfrac1x\right)^{x}$ 底数 $\to2$，不是 $1^\infty$ 型，它就是 $+\infty$）。两个说明 $A$ 取值的例子：$\lim_{x\to+\infty}\left(1+\dfrac1x\right)^{\sqrt x}$ 底数 $\to1$、指数 $\to+\infty$，可用，$v(u-1)=\dfrac{1}{\sqrt x}\to0$，极限为 $\mathrm e^0=1$——$1^\infty$ 型的答案完全可以是 $1$；而 $\lim_{x\to0}(1+x)^{1/x^2}$ 中 $v(u-1)=\dfrac1x$，右极限 $A=+\infty$、左极限 $A=-\infty$，分别对两个单侧极限用公式得 $+\infty$ 与 $0$，故双侧极限不存在——公式允许 $A=\pm\infty$，但必须是带符号的无穷，不带符号的 $\infty$ 要拆成单侧处理。</p>
 <p>$0^0$ 与 $\infty^0$ 型<b>没有</b>类似的简便公式，必须老老实实写 $\mathrm e^{v\ln u}$ 然后算 $\lim v\ln u$。</p>`
       },
       {
@@ -228,7 +270,24 @@ $$\cos x=1-\frac{x^2}{2}+\frac{x^4}{24}+o(x^4),\qquad \mathrm e^{-x^2/2}=1-\frac
 <p><b>例 4（$\dfrac\infty\infty$ 型：无穷大的速度）.</b> 求 $\lim_{x\to+\infty}\dfrac{x^3}{\mathrm e^x}$ 与 $\lim_{x\to+\infty}\dfrac{\ln x}{\sqrt x}$。</p>
 <p>前者连用三次洛必达：$\dfrac{3x^2}{\mathrm e^x}\to\dfrac{6x}{\mathrm e^x}\to\dfrac{6}{\mathrm e^x}\to0$。后者一次：$\dfrac{1/x}{\frac{1}{2\sqrt x}}=\dfrac{2}{\sqrt x}\to0$。结论：幂函数跑不过指数函数，对数函数跑不过任何正幂函数。</p>
 <p><b>例 5（左右极限不同的 $\dfrac\infty\infty$ 型）.</b> 求 $\lim_{x\to0}\dfrac{2+\mathrm e^{1/x}}{1+\mathrm e^{2/x}}$。</p>
-<p><b>怎么想：</b>看到 $\mathrm e^{1/x}$ 要立刻警觉：$x\to0^+$ 时它 $\to+\infty$，$x\to0^-$ 时它 $\to0$，<b>必须分左右</b>。$x\to0^-$：直接代入得 $\dfrac{2+0}{1+0}=2$。$x\to0^+$：是 $\dfrac\infty\infty$ 型，分子分母同除以最大的 $\mathrm e^{2/x}$，得 $\dfrac{2\mathrm e^{-2/x}+\mathrm e^{-1/x}}{\mathrm e^{-2/x}+1}\to\dfrac{0+0}{0+1}=0$。左右极限不等，<b>极限不存在</b>。这题洛必达反而越做越复杂，"同除以最高阶无穷大"才是正路。</p>`
+<p><b>怎么想：</b>看到 $\mathrm e^{1/x}$ 要立刻警觉：$x\to0^+$ 时它 $\to+\infty$，$x\to0^-$ 时它 $\to0$，<b>必须分左右</b>。$x\to0^-$：直接代入得 $\dfrac{2+0}{1+0}=2$。$x\to0^+$：是 $\dfrac\infty\infty$ 型，分子分母同除以最大的 $\mathrm e^{2/x}$，得 $\dfrac{2\mathrm e^{-2/x}+\mathrm e^{-1/x}}{\mathrm e^{-2/x}+1}\to\dfrac{0+0}{0+1}=0$。左右极限不等，<b>极限不存在</b>。这题洛必达反而越做越复杂，"同除以最高阶无穷大"才是正路。</p>
+<svg viewBox="0 0 420 260" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+  <line x1="30" y1="230" x2="400" y2="230" stroke="currentColor" stroke-width="1"/>
+  <line x1="210" y1="245" x2="210" y2="15" stroke="currentColor" stroke-width="1"/>
+  <line x1="30" y1="60" x2="210" y2="60" stroke="currentColor" stroke-width="1" stroke-dasharray="2,3"/>
+  <polyline points="40,53 43,52 47,52 50,52 54,52 57,51 60,51 64,51 67,51 71,51 74,50 77,50 81,50 84,50 88,50 91,50 94,50 98,50 101,50 105,50 108,50 111,51 115,51 118,51 122,51 125,52 128,52 132,53 135,53 139,54 142,54 145,55 149,55 152,56 156,57 159,57 162,58 166,58 169,59 173,59 176,59 179,60 183,60 186,60 190,60 193,60 196,60 200,60 203,60 207,60 209,60" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <polyline points="211,230 213,230 217,230 220,230 224,230 227,230 230,230 234,230 237,230 241,230 244,229 247,229 251,229 254,228 258,227 261,227 264,226 268,225 271,224 275,223 278,222 281,221 285,220 288,218 292,217 295,216 298,214 302,213 305,211 309,210 312,209 315,207 319,206 322,204 326,203 329,202 332,200 336,199 339,197 343,196 346,195 349,193 353,192 356,191 360,189 363,188 366,187 370,186 373,185 377,183 380,182" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <circle cx="210" cy="60" r="3.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <circle cx="210" cy="230" r="3.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="192" y="56" font-size="12" fill="currentColor">2</text>
+  <text x="60" y="88" font-size="12" fill="currentColor">x→0⁻ 时 → 2</text>
+  <text x="240" y="170" font-size="12" fill="currentColor">x→0⁺ 时 → 0</text>
+  <text x="392" y="246" font-size="12" fill="currentColor">x</text>
+  <text x="36" y="246" font-size="12" fill="currentColor">−1</text>
+  <text x="376" y="246" font-size="12" fill="currentColor">1</text>
+  <text x="214" y="246" font-size="12" fill="currentColor">O</text>
+</svg>
+<p>图中看什么：$y=\dfrac{2+\mathrm e^{1/x}}{1+\mathrm e^{2/x}}$ 的图像在 $x=0$ 处断成两截，左边贴着 $y=2$ 过来，右边贴着 $y=0$ 过来，两个空心圆点就是左、右极限。凡含 $\mathrm e^{1/x}$ 的题都可能出现这种"跳"，这是必须分左右算的原因。</p>`
       },
       {
         kind: 'example', title: '例题：0·∞ 与 ∞−∞ 型——先变形再动手',
@@ -260,7 +319,7 @@ $$\frac{x^2-\sin^2x}{x^2\sin^2x}=\frac{(x-\sin x)(x+\sin x)}{x^2\sin^2x}.$$
 <p><b>例 15（$\infty^0$ 型）.</b> 求 $\lim_{x\to+\infty}x^{1/x}$ 与 $\lim_{x\to0^+}\left(\dfrac1x\right)^{\tan x}$。</p>
 <p>前者 $=\mathrm e^{\frac{\ln x}{x}}$，指数由例 4 为 $0$，极限为 $1$。后者 $=\mathrm e^{-\tan x\ln x}$，指数 $=-\dfrac{\tan x}{x}\cdot x\ln x\to0$，极限为 $1$。</p>
 <p><b>例 16（$1^\infty$ 的进阶：$(1+x)^{1/x}$ 与 $\mathrm e$ 的差）.</b> 求 $\lim_{x\to0}\dfrac{(1+x)^{1/x}-\mathrm e}{x}$。</p>
-<p><b>怎么想：</b>这不是 $1^\infty$ 型，而是分子中含一个 $1^\infty$ 型的函数再减去它的极限，是 $\dfrac00$ 型。办法还是化指数：$(1+x)^{1/x}=\mathrm e^{\frac{\ln(1+x)}{x}}$，而 $\dfrac{\ln(1+x)}{x}=1-\dfrac x2+o(x)$，所以</p>
+<p><b>怎么想：</b>这不是 $1^\infty$ 型，而是分子中含一个 $1^\infty$ 型的函数再减去它的极限，是 $\dfrac00$ 型。办法还是化指数：$(1+x)^{1/x}=\mathrm e^{\frac{\ln(1+x)}{x}}$，而由 $\ln(1+x)=x-\dfrac{x^2}{2}+o(x^2)$ 除以 $x$ 得 $\dfrac{\ln(1+x)}{x}=1-\dfrac x2+o(x)$（这里要展到二阶，因为一阶只告诉我们指数 $\to1$，即 $(1+x)^{1/x}\to\mathrm e$，正是分子要减掉的那个主部），所以</p>
 $$(1+x)^{1/x}-\mathrm e=\mathrm e\left(\mathrm e^{-\frac x2+o(x)}-1\right)\sim\mathrm e\cdot\left(-\frac x2\right),$$
 <p>极限为 $-\dfrac{\mathrm e}{2}$。关键一步是<b>提出 $\mathrm e$ 之后把 $\mathrm e^{t}-1\sim t$ 用上</b>，这种"提出极限值再用 $\mathrm e^t-1\sim t$"的手法在幂指函数题里极其常见。</p>`
       },
@@ -292,7 +351,7 @@ $$(1+x)^{1/x}-\mathrm e=\mathrm e\left(\mathrm e^{-\frac x2+o(x)}-1\right)\sim\m
 <p><b>反例 2（导数之比极限不存在，但原极限存在）.</b> $\lim_{x\to0}\dfrac{x^2\sin(1/x)}{\sin x}$。是 $\dfrac00$ 型。洛必达：$\dfrac{2x\sin(1/x)-\cos(1/x)}{\cos x}$，其中 $\cos(1/x)$ 在 $x\to0$ 时振荡无极限，所以洛必达<b>失效</b>。正确做法：$\dfrac{x^2\sin(1/x)}{\sin x}=\dfrac{x}{\sin x}\cdot x\sin\dfrac1x\to1\cdot0=0$（有界乘无穷小）。洛必达失效不等于极限不存在。</p>
 <p><b>反例 3（加减项等价代换）.</b> $\lim_{x\to0}\dfrac{\mathrm e^x-1-x}{x^2}$。错误做法：$\mathrm e^x-1\sim x$，分子 $\sim x-x=0$，极限为 $0$。正确：$\mathrm e^x-1-x=\dfrac{x^2}{2}+o(x^2)$，极限为 $\dfrac12$。错因是 $\mathrm e^x-1$ 与 $x$ 的比值趋于 $1$，相减后主部抵消。</p>
 <p><b>反例 4（复合函数中内层不趋于 $0$ 却用等价）.</b> $\lim_{x\to\infty}x\sin\dfrac{1}{x}$ 中 $\sin\dfrac1x\sim\dfrac1x$ 是对的，因为 $\dfrac1x\to0$；但 $\lim_{x\to\infty}\dfrac{\sin x}{x}$ 不能写 $\sin x\sim x$，因为 $x\not\to0$。等价表只在"自变量趋于 $0$"时成立。</p>
-<p><b>反例 5（$1^\infty$ 公式用在非 $1^\infty$ 型上）.</b> $\lim_{x\to0^+}(1+x)^{1/x^2}$：$v(u-1)=\dfrac{x}{x^2}=\dfrac1x\to+\infty$，极限是 $+\infty$ 而不是某个有限的 $\mathrm e^A$——公式本身允许 $A=+\infty$，但如果你机械地认为"$1^\infty$ 型答案一定是 $\mathrm e$ 的有限次幂"就错了。</p>
+<p><b>反例 5（$1^\infty$ 型的答案未必是 $\mathrm e$ 的有限次幂）.</b> $\lim_{x\to0^+}(1+x)^{1/x^2}$ 确实是 $1^\infty$ 型，但 $v(u-1)=\dfrac{x}{x^2}=\dfrac1x\to+\infty$，极限是 $+\infty$ 而不是某个有限的 $\mathrm e^A$——公式本身允许 $A=+\infty$，但如果你机械地认为"$1^\infty$ 型答案一定是 $\mathrm e$ 的有限次幂"，或者算出 $A=\infty$ 就断言"极限不存在"，都错了（左极限 $x\to0^-$ 时 $A=-\infty$，极限为 $0$，所以双侧极限才不存在）。</p>
 <p><b>反例 6（$x\to\infty$ 时忘记分正负）.</b> $\lim_{x\to\infty}\dfrac{\sqrt{x^2+1}}{x}$：$x\to+\infty$ 时为 $1$，$x\to-\infty$ 时 $\sqrt{x^2+1}=|x|\sqrt{1+1/x^2}=-x\sqrt{1+1/x^2}$，极限为 $-1$；双侧极限不存在。凡含 $\sqrt{x^2}$、$\mathrm e^{x}$、$\arctan x$、$\dfrac{|x|}{x}$ 且 $x\to\infty$ 的题，都要分 $\pm\infty$。</p>`
       },
       {
@@ -387,10 +446,10 @@ $$\text{原式}=\lim_{x\to0}\frac{\left(1+\int_0^x\mathrm e^{t^2}\mathrm dt\righ
 <p><b>第二步：变限积分的展开。</b> 由 $\mathrm e^{u}=1+u+o(u)$ 取 $u=t^2$ 得 $\mathrm e^{t^2}=1+t^2+o(t^2)$，逐项积分：</p>
 $$\int_0^x\mathrm e^{t^2}\mathrm dt=x+\frac{x^3}{3}+o(x^3)=x+o(x^2).$$
 <p>（为什么可以逐项积分 $o$：若 $|r(t)|\le\varepsilon t^2$ 当 $|t|$ 小，则 $\left|\int_0^xr(t)\mathrm dt\right|\le\varepsilon\dfrac{|x|^3}{3}$，故积分后是 $o(x^3)$。）既然目标只到 $x^2$，写 $x+o(x^2)$ 就够了。</p>
-<p><b>第三步：分子展开到 $x^2$。</b></p>
+<p><b>第三步：分子展开到 $x^2$。</b> 由第二步 $1+\int_0^x\mathrm e^{t^2}\mathrm dt=1+x+o(x^2)$，又 $\sin x=x-\dfrac{x^3}{6}+o(x^3)=x+o(x^2)$（三阶项对本题无用，不必写），于是</p>
 $$\left(1+x+o(x^2)\right)\left(x+o(x^2)\right)=x+x^2+o(x^2),\qquad \mathrm e^x-1=x+\frac{x^2}{2}+o(x^2),$$
 $$\text{分子}=x+x^2-x-\frac{x^2}{2}+o(x^2)=\frac{x^2}{2}+o(x^2).$$
-<p>注意 $\sin x=x-\dfrac{x^3}{6}+o(x^3)=x+o(x^2)$，三阶项对本题无用，不必写。</p>
+<p>乘开时 $1\cdot o(x^2)$、$x\cdot x$、$x\cdot o(x^2)$、$o(x^2)\cdot o(x^2)$ 分别是 $o(x^2)$、$x^2$、$o(x^3)$、$o(x^4)$，后两者都可并入 $o(x^2)$——这就是前面"$o$ 的运算规则"。</p>
 <p><b>第四步：相除。</b> 原式 $=\lim_{x\to0}\dfrac{\frac{x^2}{2}+o(x^2)}{x^2}=\dfrac12$。</p>
 <p><b>另一条路（洛必达）：</b>对第一步得到的 $\dfrac00$ 型分式求导，分子导数为 $\mathrm e^{x^2}\sin x+\left(1+\int_0^x\mathrm e^{t^2}\mathrm dt\right)\cos x-\mathrm e^x$（变限积分求导公式，见 int.ftc），分母导数 $2x$。这仍是 $\dfrac00$ 型，再求一次导会出现 $2x\mathrm e^{x^2}\sin x+2\mathrm e^{x^2}\cos x-\left(1+\int_0^x\mathrm e^{t^2}\mathrm dt\right)\sin x-\mathrm e^x$，代入 $x=0$ 得 $0+2-0-1=1$，除以 $2$ 得 $\dfrac12$。可行，但比泰勒繁琐且容易算错，这正是"加减结构优先泰勒"的理由。</p>
 <p><b>这道题告诉我们：</b>解答题的得分点在于"每一步合法"：通分后的分母等价代换要说明是乘积因子；变限积分要么展开、要么求导；分子展开的阶数要和分母匹配。写清楚 $o(x^2)$ 的运算，比最后那个 $\dfrac12$ 更重要。</p>

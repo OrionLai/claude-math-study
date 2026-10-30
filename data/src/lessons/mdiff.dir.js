@@ -51,7 +51,8 @@ $$\left.\frac{\partial f}{\partial \mathbf{l}}\right|_{P_0}=\lim_{t\to0^+}\frac{
 <li><b>"某邻域内有定义"</b>：要让点 $P_0$ 沿任何方向走一小段都不出定义域，否则极限中的函数值无从谈起。</li>
 <li><b>"单位向量 $\mathbf{e}_l$"</b>：方向导数只与<b>方向</b>有关，与 $\mathbf{l}$ 的长度无关。题目给的往往是非单位向量（如 $\mathbf{n}=(1,2,2)$），<b>必须先除以模长</b>，否则求出的是"沿 $\mathbf{l}$ 走参数 $t$ 的变化率"而非"沿单位距离的变化率"，数值会差 $|\mathbf{l}|$ 倍。这是本考点失分第一大原因。</li>
 <li><b>"$t\to0^+$"</b>：单侧极限。当 $t>0$ 时点 $(x_0+t\cos\alpha,y_0+t\cos\beta)$ 确实在从 $P_0$ 出发沿 $\mathbf{l}$ 的<b>射线</b>上；若允许 $t<0$，点就跑到相反方向去了。所以沿 $\mathbf{l}$ 与沿 $-\mathbf{l}$ 的方向导数是<b>两个不同的极限</b>，一般没有必然关系（可微时才有 $\partial f/\partial(-\mathbf{l})=-\partial f/\partial\mathbf{l}$，见下一节定理）。</li>
-<li><b>平面上用一个角就够了</b>：若 $\mathbf{l}$ 从 $x$ 轴正向<b>逆时针</b>转过角 $\varphi$（$0\le\varphi&lt;2\pi$），则 $\mathbf{e}_l=(\cos\varphi,\sin\varphi)$。这与方向角写法一致：$\cos\alpha=\cos\varphi$，而 $\cos\beta=\pm\sin\varphi$，正负号由 $\mathbf{l}$ 在 $x$ 轴上方还是下方决定——所以题目说"与 $x$ 轴夹角为 $\alpha$"时，还要看清方向指向哪一侧。</li>
+<li><b>为什么单位向量的分量是"夹角的余弦"</b>：单位向量 $\mathbf{e}_l$ 与 $x$ 轴单位向量 $\mathbf{i}$ 的内积 $\mathbf{e}_l\cdot\mathbf{i}=|\mathbf{e}_l||\mathbf{i}|\cos\alpha=\cos\alpha$，而 $\mathbf{e}_l\cdot\mathbf{i}$ 又恰是 $\mathbf{e}_l$ 的第一个分量；同理第二个分量是 $\cos\beta$。所以 $\mathbf{e}_l=(\cos\alpha,\cos\beta)$ 不是额外假设，而是"单位向量的分量"本来的含义，$\cos^2\alpha+\cos^2\beta=1$ 就是 $|\mathbf{e}_l|=1$。$\cos\alpha,\cos\beta$ 称为 $\mathbf{l}$ 的<b>方向余弦</b>，对任意非零向量 $\mathbf{l}=(l_1,l_2)$ 有 $\cos\alpha=\dfrac{l_1}{|\mathbf{l}|},\ \cos\beta=\dfrac{l_2}{|\mathbf{l}|}$——这就是"单位化"。</li>
+<li><b>平面上用一个角就够了</b>：若 $\mathbf{l}$ 从 $x$ 轴正向<b>逆时针</b>转过角 $\varphi$（$0\le\varphi&lt;2\pi$），则 $\mathbf{e}_l=(\cos\varphi,\sin\varphi)$。这与方向角写法一致：$\cos\alpha=\cos\varphi$，$\cos\beta=\sin\varphi$（$\varphi$ 在 $(\pi,2\pi)$ 内时 $\sin\varphi&lt;0$，对应 $\beta$ 为钝角）。但若题目只说"与 $x$ 轴正向的夹角为 $\alpha$"（$0\le\alpha\le\pi$），这只确定了 $\cos\alpha$，方向可能在 $x$ 轴上方（$\mathbf{e}_l=(\cos\alpha,\sin\alpha)$）也可能在下方（$\mathbf{e}_l=(\cos\alpha,-\sin\alpha)$），要看清指向哪一侧。</li>
 <li><b>分母是 $t$ 而不是 $t\cos\alpha$</b>：$t$ 正是点 $P$ 到 $P_0$ 的距离 $|P_0P|=\sqrt{(t\cos\alpha)^2+(t\cos\beta)^2}=t$（这正是要求单位向量的原因），所以方向导数的含义是"每走单位距离函数变化多少"。</li>
 </ul>
 <p><b>方向导数与偏导数的关系。</b>取 $\mathbf{l}=\mathbf{i}=(1,0)$，则 $\dfrac{\partial f}{\partial \mathbf{i}}=\lim\limits_{t\to0^+}\dfrac{f(x_0+t,y_0)-f(x_0,y_0)}{t}$，这是关于 $x$ 的<b>右</b>导数；取 $\mathbf{l}=-\mathbf{i}$ 得 $\lim\limits_{t\to0^+}\dfrac{f(x_0-t,y_0)-f(x_0,y_0)}{t}$，它等于关于 $x$ 的左导数的<b>相反数</b>。因此：</p>
@@ -59,7 +60,25 @@ $$f_x(x_0,y_0)\ \text{存在}\iff \frac{\partial f}{\partial \mathbf{i}}\ \text{
 <p>所以<b>偏导数存在 ⇒ 沿坐标轴正负方向的方向导数存在</b>，反之不成立。</p>
 <p><b>正例。</b>$f(x,y)=\sqrt{x^2+y^2}$（圆锥面）在原点沿任意方向 $\mathbf{e}_l=(\cos\alpha,\cos\beta)$：</p>
 $$\frac{\partial f}{\partial\mathbf{l}}\bigg|_{(0,0)}=\lim_{t\to0^+}\frac{\sqrt{t^2\cos^2\alpha+t^2\cos^2\beta}-0}{t}=\lim_{t\to0^+}\frac{t}{t}=1.$$
-<p>沿每个方向的方向导数都存在且等于 $1$（圆锥面上每条母线的坡度都是 $1$），但 $f_x(0,0)=\lim\limits_{t\to0}\dfrac{|t|}{t}$ 不存在。这说明：<b>方向导数处处存在，偏导数却可以不存在</b>，更谈不上可微。</p>
+<p>沿每个方向的方向导数都存在且等于 $1$（圆锥面上每条母线的坡度都是 $1$），但 $f_x(0,0)=\lim\limits_{t\to0}\dfrac{|t|}{t}$ 不存在。这说明：<b>方向导数处处存在，偏导数却可以不存在</b>，更谈不上可微。下图把这件事画在一条直线上：</p>
+<svg viewBox="0 0 420 240" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-dir3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" fill="none" stroke-width="1.2">
+<line x1="30" y1="190" x2="395" y2="190" marker-end="url(#arr-dir3)"/>
+<line x1="210" y1="190" x2="210" y2="20" marker-end="url(#arr-dir3)"/>
+<polyline points="60,40 210,190 360,40" stroke-width="1.8"/>
+<line x1="210" y1="190" x2="296" y2="104" stroke-width="2.4" marker-end="url(#arr-dir3)"/>
+<line x1="210" y1="190" x2="124" y2="104" stroke-width="2.4" marker-end="url(#arr-dir3)"/>
+</g>
+<g fill="currentColor"><circle cx="210" cy="190" r="3"/></g>
+<g fill="currentColor" font-size="13" font-family="serif">
+<text x="398" y="205">t</text><text x="218" y="32">φ(t) = f(P₀ + t eₗ) = |t|</text>
+<text x="200" y="207">O</text>
+<text x="298" y="124">斜率 +1</text><text x="64" y="124">斜率 −1</text>
+<text x="236" y="222">t&gt;0：沿 l 走，上坡</text><text x="24" y="222">t&lt;0：沿 −l 走，也上坡</text>
+</g>
+</svg>
+<p>图中画的是把 $f$ 限制在过原点、方向为 $\mathbf{e}_l$ 的直线上得到的一元函数 $\varphi(t)=f(t\cos\alpha,t\cos\beta)=|t|$。沿 $\mathbf{l}$ 的方向导数就是 $\varphi$ 在 $0$ 处的<b>右</b>导数 $+1$；沿 $-\mathbf{l}$ 的方向导数是"向左走每单位距离的增量"，即左导数的相反数，也是 $+1$。而取 $\mathbf{l}=\mathbf{i}$ 时 $\varphi(t)=f(t,0)$，偏导数 $f_x(0,0)=\varphi'(0)$ 要求左右导数<b>相等</b>，这里左 $-1$、右 $+1$，所以不存在。一句话：方向导数只看一侧的坡度，偏导数要看两侧是否接成一条直线。</p>
 <p><b>反例（方向导数不存在）。</b>$f(x,y)=\begin{cases}\dfrac{xy}{x^2+y^2},&(x,y)\ne(0,0)\\ 0,&(x,y)=(0,0)\end{cases}$ 在原点沿 $\mathbf{e}_l=\left(\tfrac{1}{\sqrt2},\tfrac{1}{\sqrt2}\right)$：$f\!\left(\tfrac{t}{\sqrt2},\tfrac{t}{\sqrt2}\right)=\tfrac12$（$t\ne0$），于是差商为 $\dfrac{1/2-0}{t}\to+\infty$，方向导数不存在。但 $f_x(0,0)=f_y(0,0)=0$ 都存在。所以<b>偏导数存在也推不出任意方向的方向导数存在</b>——偏导存在只管两条坐标轴。</p>
 <blockquote><p>一句话：方向导数是"沿一条射线的单侧导数"，它和偏导数、可微性之间的蕴含关系只有一条可靠的箭头——<b>可微 ⇒ 沿任何方向的方向导数都存在</b>（下一节定理），其余方向都有反例。</p></blockquote>`
       },
@@ -72,7 +91,7 @@ $$\left.\frac{\partial f}{\partial\mathbf{l}}\right|_{P_0}=f_x(P_0)\cos\alpha+f_
         intuition: R`<p>可微的意思是：在 $P_0$ 附近 $f$ 近似于一个线性函数（切平面）$f(P_0)+f_x\,\Delta x+f_y\,\Delta y$。线性函数沿任何方向的变化率当然就是"每个坐标方向的变化率 $\times$ 该方向在这个坐标上的分量"再相加。换句话说，<b>切平面的坡度</b>沿方向 $\mathbf{e}_l$ 的分量就是 $f_x\cos\alpha+f_y\cos\beta$。用向量语言：这是向量 $(f_x,f_y)$ 与 $\mathbf{e}_l$ 的内积，这正是下文"梯度"的由来。</p>`,
         steps: [
           { s: R`<p>由 $f$ 在 $P_0$ 可微，对任意增量 $(\Delta x,\Delta y)$ 有
-$$f(x_0+\Delta x,\ y_0+\Delta y)-f(x_0,y_0)=f_x(x_0,y_0)\Delta x+f_y(x_0,y_0)\Delta y+o(\rho),\quad \rho=\sqrt{\Delta x^2+\Delta y^2}\to0.$$</p>`, why: R`<p>这就是可微的定义（见 mdiff.diffable）：全增量 $=$ 线性主部 $+$ 比 $\rho$ 高阶的无穷小。证明的思路是把"沿方向 $\mathbf{l}$ 的增量"当作全增量的特殊情形代入。</p>` },
+$$f(x_0+\Delta x,\ y_0+\Delta y)-f(x_0,y_0)=f_x(x_0,y_0)\Delta x+f_y(x_0,y_0)\Delta y+o(\rho),\quad \rho=\sqrt{\Delta x^2+\Delta y^2}\to0.$$</p>`, why: R`<p>这就是可微的定义（见 mdiff.diffable）：全增量 $=$ 线性主部 $+$ 比 $\rho$ 高阶的无穷小。记号 $o(\rho)$ 表示某个量 $\varepsilon$，它满足 $\dfrac{\varepsilon}{\rho}\to0$（$\rho\to0$），而且这个趋于零<b>不依赖</b>于 $(\Delta x,\Delta y)$ 以什么方式趋于 $(0,0)$。为什么想到从这里下手：方向导数的分子 $f(x_0+t\cos\alpha,y_0+t\cos\beta)-f(x_0,y_0)$ 本身就是一个全增量，只不过增量 $(\Delta x,\Delta y)$ 被限制在一条射线上；可微定义恰好告诉我们任何全增量长什么样，所以直接代入即可。</p>` },
           { s: R`<p>取 $\Delta x=t\cos\alpha$，$\Delta y=t\cos\beta$，$t>0$。此时 $\rho=\sqrt{t^2\cos^2\alpha+t^2\cos^2\beta}=t\sqrt{\cos^2\alpha+\cos^2\beta}=t$。</p>`, why: R`<p>方向导数定义中的点正是 $(x_0+t\cos\alpha,y_0+t\cos\beta)$。这里用到了 $\mathbf{e}_l$ 是单位向量：$\cos^2\alpha+\cos^2\beta=1$，于是 $\rho=t$，分母刚好对上。若 $\mathbf{l}$ 不是单位向量，$\rho=t|\mathbf{l}|$，公式就会多出一个因子——这就是必须单位化的根本原因。</p>` },
           { s: R`<p>代入得
 $$\frac{f(x_0+t\cos\alpha,\ y_0+t\cos\beta)-f(x_0,y_0)}{t}=f_x(x_0,y_0)\cos\alpha+f_y(x_0,y_0)\cos\beta+\frac{o(t)}{t}.$$
@@ -84,11 +103,29 @@ $$\frac{f(x_0+t\cos\alpha,\ y_0+t\cos\beta)-f(x_0,y_0)}{t}=f_x(x_0,y_0)\cos\alph
 <li>反过来，上一节的 $\sqrt{x^2+y^2}$ 说明方向导数全存在也推不出可微；甚至"沿各方向方向导数都存在且满足线性关系 $\partial f/\partial\mathbf{l}=a\cos\alpha+b\cos\beta$"也推不出可微。例：$f=\dfrac{x^3y}{x^6+y^2}$（原点补 $0$），沿 $(\cos\theta,\sin\theta)$ 有 $\dfrac{f(t\cos\theta,t\sin\theta)}{t}=\dfrac{t\cos^3\theta\sin\theta}{t^4\cos^6\theta+\sin^2\theta}\to0$（$\sin\theta\ne0$ 时分母趋于 $\sin^2\theta>0$；$\sin\theta=0$ 时 $f\equiv0$），所以沿每个方向的方向导数都是 $0=0\cdot\cos\theta+0\cdot\sin\theta$，完全"线性"；但沿曲线 $y=x^3$ 有 $f=\dfrac12$，$f$ 在原点连续都谈不上，更不可微。原因是可微要求 $o(\rho)$ 对所有趋近方式<b>一致</b>成立，而方向导数只检查了直线方式。</li>
 <li>公式表明可微时 $\dfrac{\partial f}{\partial(-\mathbf{l})}=-\dfrac{\partial f}{\partial\mathbf{l}}$：把 $(\cos\alpha,\cos\beta)$ 换成 $(-\cos\alpha,-\cos\beta)$ 即可。所以可微函数的方向导数"正反方向相反"，这时按 $t\to0^+$ 还是 $t\to0$ 定义都无所谓。</li>
 <li>考研题目中给的函数几乎都是初等函数，在所给点偏导数连续，从而可微（可微的充分条件，见 mdiff.diffable），可以放心用公式；但<b>求解题中应说明一句"$f$ 的偏导数连续，故可微"</b>。</li>
-</ul>`
+</ul>
+<svg viewBox="0 0 420 240" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-dir4" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" fill="none" stroke-width="1">
+<line x1="30" y1="120" x2="400" y2="120" marker-end="url(#arr-dir4)"/>
+<line x1="40" y1="225" x2="40" y2="15" marker-end="url(#arr-dir4)"/>
+<line x1="40.0" y1="117" x2="40.0" y2="123"/><line x1="125.0" y1="117" x2="125.0" y2="123"/><line x1="210.0" y1="117" x2="210.0" y2="123"/><line x1="295.0" y1="117" x2="295.0" y2="123"/><line x1="380.0" y1="117" x2="380.0" y2="123"/>
+<polyline points="40.0,59.9 41.7,58.0 43.4,56.2 45.1,54.5 46.8,52.8 48.5,51.2 50.2,49.7 51.9,48.2 53.6,46.8 55.3,45.5 57.0,44.3 58.7,43.1 60.4,42.0 62.1,41.0 63.8,40.0 65.5,39.2 67.2,38.4 68.9,37.7 70.6,37.0 72.3,36.5 74.0,36.0 75.7,35.7 77.4,35.4 79.1,35.2 80.8,35.0 82.5,35.0 84.2,35.0 85.9,35.2 87.6,35.4 89.3,35.7 91.0,36.0 92.7,36.5 94.4,37.0 96.1,37.7 97.8,38.4 99.5,39.2 101.2,40.0 102.9,41.0 104.6,42.0 106.3,43.1 108.0,44.3 109.7,45.5 111.4,46.8 113.1,48.2 114.8,49.7 116.5,51.2 118.2,52.8 119.9,54.5 121.6,56.2 123.3,58.0 125.0,59.9 126.7,61.8 128.4,63.8 130.1,65.8 131.8,67.9 133.5,70.0 135.2,72.2 136.9,74.5 138.6,76.7 140.3,79.1 142.0,81.4 143.7,83.8 145.4,86.2 147.1,88.7 148.8,91.2 150.5,93.7 152.2,96.3 153.9,98.9 155.6,101.5 157.3,104.1 159.0,106.7 160.7,109.3 162.4,112.0 164.1,114.7 165.8,117.3 167.5,120.0 169.2,122.7 170.9,125.3 172.6,128.0 174.3,130.7 176.0,133.3 177.7,135.9 179.4,138.5 181.1,141.1 182.8,143.7 184.5,146.3 186.2,148.8 187.9,151.3 189.6,153.8 191.3,156.2 193.0,158.6 194.7,160.9 196.4,163.3 198.1,165.5 199.8,167.8 201.5,170.0 203.2,172.1 204.9,174.2 206.6,176.2 208.3,178.2 210.0,180.1 211.7,182.0 213.4,183.8 215.1,185.5 216.8,187.2 218.5,188.8 220.2,190.3 221.9,191.8 223.6,193.2 225.3,194.5 227.0,195.7 228.7,196.9 230.4,198.0 232.1,199.0 233.8,200.0 235.5,200.8 237.2,201.6 238.9,202.3 240.6,203.0 242.3,203.5 244.0,204.0 245.7,204.3 247.4,204.6 249.1,204.8 250.8,205.0 252.5,205.0 254.2,205.0 255.9,204.8 257.6,204.6 259.3,204.3 261.0,204.0 262.7,203.5 264.4,203.0 266.1,202.3 267.8,201.6 269.5,200.8 271.2,200.0 272.9,199.0 274.6,198.0 276.3,196.9 278.0,195.7 279.7,194.5 281.4,193.2 283.1,191.8 284.8,190.3 286.5,188.8 288.2,187.2 289.9,185.5 291.6,183.8 293.3,182.0 295.0,180.1 296.7,178.2 298.4,176.2 300.1,174.2 301.8,172.1 303.5,170.0 305.2,167.8 306.9,165.5 308.6,163.3 310.3,160.9 312.0,158.6 313.7,156.2 315.4,153.8 317.1,151.3 318.8,148.8 320.5,146.3 322.2,143.7 323.9,141.1 325.6,138.5 327.3,135.9 329.0,133.3 330.7,130.7 332.4,128.0 334.1,125.3 335.8,122.7 337.5,120.0 339.2,117.3 340.9,114.7 342.6,112.0 344.3,109.3 346.0,106.7 347.7,104.1 349.4,101.5 351.1,98.9 352.8,96.3 354.5,93.7 356.2,91.2 357.9,88.7 359.6,86.2 361.3,83.8 363.0,81.4 364.7,79.1 366.4,76.7 368.1,74.5 369.8,72.2 371.5,70.0 373.2,67.9 374.9,65.8 376.6,63.8 378.3,61.8 380.0,59.9" stroke-width="1.8"/>
+<polyline points="40.0,120.0 41.7,117.3 43.4,114.7 45.1,112.1 46.8,109.5 48.5,107.0 50.2,104.6 51.9,102.3 53.6,100.2 55.3,98.1 57.0,96.2 58.7,94.5 60.4,92.9 62.1,91.6 63.8,90.4 65.5,89.4 67.2,88.6 68.9,87.9 70.6,87.5 72.3,87.3 74.0,87.3 75.7,87.5 77.4,87.8 79.1,88.4 80.8,89.1 82.5,89.9 84.2,91.0 85.9,92.1 87.6,93.4 89.3,94.8 91.0,96.2 92.7,97.8 94.4,99.4 96.1,101.0 97.8,102.7 99.5,104.4 101.2,106.1 102.9,107.7 104.6,109.3 106.3,110.8 108.0,112.3 109.7,113.6 111.4,114.9 113.1,116.1 114.8,117.1 116.5,117.9 118.2,118.7 119.9,119.3 121.6,119.7 123.3,119.9 125.0,120.0 126.7,119.9 128.4,119.7 130.1,119.3 131.8,118.7 133.5,117.9 135.2,117.1 136.9,116.1 138.6,114.9 140.3,113.6 142.0,112.3 143.7,110.8 145.4,109.3 147.1,107.7 148.8,106.1 150.5,104.4 152.2,102.7 153.9,101.0 155.6,99.4 157.3,97.8 159.0,96.2 160.7,94.8 162.4,93.4 164.1,92.1 165.8,91.0 167.5,89.9 169.2,89.1 170.9,88.4 172.6,87.8 174.3,87.5 176.0,87.3 177.7,87.3 179.4,87.5 181.1,87.9 182.8,88.6 184.5,89.4 186.2,90.4 187.9,91.6 189.6,92.9 191.3,94.5 193.0,96.2 194.7,98.1 196.4,100.2 198.1,102.3 199.8,104.6 201.5,107.0 203.2,109.5 204.9,112.1 206.6,114.7 208.3,117.3 210.0,120.0 211.7,122.7 213.4,125.3 215.1,127.9 216.8,130.5 218.5,133.0 220.2,135.4 221.9,137.7 223.6,139.8 225.3,141.9 227.0,143.8 228.7,145.5 230.4,147.1 232.1,148.4 233.8,149.6 235.5,150.6 237.2,151.4 238.9,152.1 240.6,152.5 242.3,152.7 244.0,152.7 245.7,152.5 247.4,152.2 249.1,151.6 250.8,150.9 252.5,150.1 254.2,149.0 255.9,147.9 257.6,146.6 259.3,145.2 261.0,143.8 262.7,142.2 264.4,140.6 266.1,139.0 267.8,137.3 269.5,135.6 271.2,133.9 272.9,132.3 274.6,130.7 276.3,129.2 278.0,127.7 279.7,126.4 281.4,125.1 283.1,123.9 284.8,122.9 286.5,122.1 288.2,121.3 289.9,120.7 291.6,120.3 293.3,120.1 295.0,120.0 296.7,120.1 298.4,120.3 300.1,120.7 301.8,121.3 303.5,122.1 305.2,122.9 306.9,123.9 308.6,125.1 310.3,126.4 312.0,127.7 313.7,129.2 315.4,130.7 317.1,132.3 318.8,133.9 320.5,135.6 322.2,137.3 323.9,139.0 325.6,140.6 327.3,142.2 329.0,143.8 330.7,145.2 332.4,146.6 334.1,147.9 335.8,149.0 337.5,150.1 339.2,150.9 340.9,151.6 342.6,152.2 344.3,152.5 346.0,152.7 347.7,152.7 349.4,152.5 351.1,152.1 352.8,151.4 354.5,150.6 356.2,149.6 357.9,148.4 359.6,147.1 361.3,145.5 363.0,143.8 364.7,141.9 366.4,139.8 368.1,137.7 369.8,135.4 371.5,133.0 373.2,130.5 374.9,127.9 376.6,125.3 378.3,122.7 380.0,120.0" stroke-width="1.8" stroke-dasharray="6,3"/>
+</g>
+<g fill="currentColor" font-size="12" font-family="serif">
+<text x="32.0" y="138">0</text><text x="117.0" y="138">π/2</text><text x="202.0" y="138">π</text><text x="287.0" y="138">3π/2</text><text x="372.0" y="138">2π</text>
+<text x="404" y="124">θ</text><text x="46" y="22">∂f/∂l</text>
+<text x="47" y="39">1</text><text x="42" y="209">−1</text>
+<text x="150" y="30">实线：可微，∂f/∂l = |∇f| cos(θ−θ₀)</text>
+<text x="150" y="48">虚线：反例，∂f/∂l = cos²θ sinθ</text>
+</g>
+</svg>
+<p>上图把方向导数画成方向角 $\theta$ 的函数（$\mathbf{e}_l=(\cos\theta,\sin\theta)$）。可微时 $\dfrac{\partial f}{\partial\mathbf{l}}=f_x\cos\theta+f_y\sin\theta=|\nabla f|\cos(\theta-\theta_0)$（$\theta_0$ 是梯度的方向角），必定是一条<b>余弦曲线</b>：一个周期内只有一个最高点、一个最低点，二者相差 $\pi$。虚线是反例 $\dfrac{x^2y}{x^2+y^2}$ 在原点的方向导数 $\cos^2\theta\sin\theta$，它在 $(0,\pi)$ 内有两个峰，不可能写成任何 $a\cos\theta+b\sin\theta$ 的形式——所以无论把 $(a,b)$ 取成什么，"梯度点乘方向"的公式都对不上它。</p>`
       },
       {
         kind: 'def', title: '梯度的定义',
-        html: R`<p>观察计算公式 $\dfrac{\partial f}{\partial\mathbf{l}}=f_x\cos\alpha+f_y\cos\beta$：右端恰是两个向量 $(f_x,f_y)$ 与 $(\cos\alpha,\cos\beta)$ 的内积。前一个向量只与函数和点有关，与方向无关，值得单独命名。</p>
+        html: R`<p>观察计算公式 $\dfrac{\partial f}{\partial\mathbf{l}}=f_x\cos\alpha+f_y\cos\beta$：右端恰是两个向量 $(f_x,f_y)$ 与 $(\cos\alpha,\cos\beta)$ 的内积（数量积：$(a_1,a_2)\cdot(b_1,b_2)=a_1b_1+a_2b_2$，几何上等于 $|\mathbf{a}||\mathbf{b}|\cos\theta$，$\theta$ 为两向量夹角）。前一个向量只与函数和点有关，与方向无关，值得单独命名。</p>
 <p><b>定义（梯度）</b>　设 $z=f(x,y)$ 在点 $P_0(x_0,y_0)$ 的偏导数 $f_x,f_y$ 都存在，则称向量</p>
 $$\mathbf{grad}\,f(x_0,y_0)=\nabla f(x_0,y_0)=f_x(x_0,y_0)\,\mathbf{i}+f_y(x_0,y_0)\,\mathbf{j}=\big(f_x(x_0,y_0),\ f_y(x_0,y_0)\big)$$
 <p>为 $f$ 在 $P_0$ 处的<b>梯度</b>。对三元函数 $u=f(x,y,z)$，</p>
@@ -118,7 +155,7 @@ $$\frac{\partial f}{\partial\mathbf{l}}\bigg|_{P_0}=\nabla f(P_0)\cdot\mathbf{e}
 </ol>
 <p>若 $\nabla f(P_0)=\mathbf{0}$，则沿任何方向的方向导数都为 $0$。</p>`,
         intuition: R`<p>方向导数 $=$ 梯度向量在 $\mathbf{e}_l$ 上的<b>投影</b>。一个固定长度的向量往各个方向投影，投影最长的方向当然是它自己的方向，最短（最负）是反方向，垂直方向投影为零。所以"梯度"这个名字（gradient，坡度）的含义就是：<b>方向指向最陡上坡，模长等于最陡坡度</b>。</p>
-<svg viewBox="0 0 420 300" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 420 320" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
 <defs><marker id="arr-dir2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
 <g stroke="currentColor" fill="none" stroke-width="1">
 <circle cx="190" cy="170" r="40" stroke-dasharray="5,3"/>
@@ -136,8 +173,8 @@ $$\frac{\partial f}{\partial\mathbf{l}}\bigg|_{P_0}=\nabla f(P_0)\cdot\mathbf{e}
 <text x="312" y="118">l</text>
 <text x="274" y="100">θ</text>
 <text x="288" y="162">等值线切线</text>
-<text x="150" y="60">f = c₃</text><text x="150" y="100">f = c₂</text><text x="172" y="140">f = c₁</text>
-<text x="30" y="285">∂f/∂l = |∇f| cosθ，等值线上 f 不变</text>
+<text x="172" y="226">f = c₁</text><text x="172" y="266">f = c₂</text><text x="172" y="306">f = c₃</text>
+<text x="20" y="24">∂f/∂l = |∇f| cosθ，等值线上 f 不变</text>
 </g>
 </svg>
 <p>图中虚线圆是 $f$ 的等值线（$c_1<c_2<c_3$），$P_0$ 在中间那条上。梯度 $\nabla f$ 垂直于等值线指向外（$f$ 增大的一侧），任一方向 $\mathbf{l}$ 的方向导数就是 $|\nabla f|\cos\theta$。</p>`,
@@ -149,7 +186,7 @@ $$\frac{\partial f}{\partial\mathbf{l}}\bigg|_{P_0}=\nabla f(P_0)\cdot\mathbf{e}
         ],
         remark: R`<ul>
 <li>这个定理是本考点<b>最常考的结论</b>：题目问"最大方向导数"就是求 $|\nabla f|$；问"沿哪个方向方向导数最大"就是求 $\nabla f$ 的方向（单位向量）；问"方向导数最大值为 $M$ 且方向为 $\mathbf{l}$"就是条件 $\nabla f=M\cdot\dfrac{\mathbf{l}}{|\mathbf{l}|}$（既给出方向又给出模长，见真题 <span class="qref" data-q="2019-16">2019 年第 16 题</span>）。</li>
-<li>条件"可微"同样不可少。没有可微性，方向导数不一定是梯度的投影，"沿梯度方向最大"就可能失效：上一节的反例 $f=\dfrac{x^2y}{x^2+y^2}$ 在原点梯度为 $\mathbf{0}$，但 $\dfrac{\partial f}{\partial\mathbf{l}}=\cos^2\theta\sin\theta$ 并不恒为 $0$，最大值 $\dfrac{2}{3\sqrt3}$ 在 $\tan\theta=\dfrac{1}{\sqrt2}$ 处取得，与梯度无关。</li>
+<li>条件"可微"同样不可少。没有可微性，方向导数不一定是梯度的投影，"沿梯度方向最大"就可能失效：上一节的反例 $f=\dfrac{x^2y}{x^2+y^2}$ 在原点梯度为 $\mathbf{0}$，但 $\dfrac{\partial f}{\partial\mathbf{l}}=\cos^2\theta\sin\theta$ 并不恒为 $0$，最大值 $\dfrac{2}{3\sqrt3}$ 在 $\sin\theta=\dfrac{1}{\sqrt3}$ 处取得（即两个方向 $\left(\pm\sqrt{\tfrac23},\ \tfrac{1}{\sqrt3}\right)$，可对 $\cos^2\theta\sin\theta$ 求导验证），与梯度无关。</li>
 <li>"最大方向导数"与"函数的最大值"是两回事：前者是某一点处各方向变化率的最大值（等于 $|\nabla f|$），后者是函数值。初学者看到"最大"容易去求极值，这是误解。</li>
 <li>这个定理与 mdiff.extreme 的联系：在极值点（可微）处 $\nabla f=\mathbf{0}$，正对应"沿任何方向变化率为零"。与 mdiff.geo 的联系见下一节。</li>
 </ul>`
@@ -238,6 +275,30 @@ $$\frac{\partial u}{\partial\mathbf{l}}=-2\cdot\frac12-1\cdot\frac{\sqrt2}{2}+2\
 <li>$\nabla f=(2x,\ 4y)\big|_{(0,1)}=(0,4)$。</li>
 <li>由定理，最大方向导数 $=|\nabla f(0,1)|=\sqrt{0^2+4^2}=4$，在方向 $(0,1)$（即 $y$ 轴正向）取得。</li>
 </ol>
+<svg viewBox="0 0 420 300" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-dir5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" fill="none" stroke-width="1">
+<line x1="30" y1="180" x2="400" y2="180" marker-end="url(#arr-dir5)"/>
+<line x1="210" y1="290" x2="210" y2="15" marker-end="url(#arr-dir5)"/>
+<ellipse cx="210" cy="180" rx="49.5" ry="35.0" stroke-dasharray="5,3"/><ellipse cx="210" cy="180" rx="70.0" ry="49.5" stroke-dasharray="5,3"/><ellipse cx="210" cy="180" rx="99.0" ry="70.0" stroke-dasharray="5,3"/><ellipse cx="210" cy="180" rx="140.0" ry="99.0" stroke-dasharray="5,3"/>
+<line x1="140" y1="110" x2="280" y2="110" stroke-dasharray="2,3"/>
+<line x1="210" y1="110" x2="210" y2="42" stroke-width="2.4" marker-end="url(#arr-dir5)"/>
+<line x1="210" y1="110" x2="258" y2="62" stroke-width="1.6" marker-end="url(#arr-dir5)"/>
+<path d="M210,80 A30,30 0 0 1 231.2,88.8"/>
+</g>
+<g fill="currentColor"><circle cx="210" cy="110" r="3"/></g>
+<g fill="currentColor" font-size="12" font-family="serif">
+<text x="402" y="195">x</text><text x="218" y="22">y</text>
+<text x="160" y="106">P(0,1)</text>
+<text x="134" y="56">∇f = (0,4)</text>
+<text x="262" y="60">l = (1,1)/√2</text>
+<text x="240" y="100">θ = 45°</text>
+<text x="284" y="114">方向导数为 0</text>
+<text x="354" y="196">c = 4</text><text x="312" y="196">c = 2</text>
+<text x="30" y="30">等值线 x² + 2y² = c</text>
+</g>
+</svg>
+<p>图中虚线是 $f=x^2+2y^2$ 的等值线（椭圆，$c=\tfrac12,1,2,4$ 由内到外），$P(0,1)$ 在 $c=2$ 那条上。梯度 $(0,4)$ 竖直向上、垂直于等值线并指向 $f$ 变大的外侧，所以最大方向导数 $4$ 沿 $y$ 轴正向取得；沿水平的切线方向方向导数为 $0$；沿 $\mathbf{l}=(1,1)/\sqrt2$（$\theta=45^\circ$）则是 $4\cos45^\circ=2\sqrt2$。</p>
 <p><b>答案：</b>$4$。</p>
 <p><b>这道题告诉我们：</b>这是本考点最"裸"的考法，两行就能做完，5 分。易错点是把梯度 $(0,4)$ 当成答案（答案应是数），或者误以为要求 $f$ 的最大值。</p>
 
@@ -269,7 +330,7 @@ $$S=\iint_D\sqrt{1+z_x^2+z_y^2}\,\mathrm{d}\sigma=\iint_D\sqrt{1+4x^2+4y^2}\,\ma
 <li><b>把方向导数写成 $\dfrac{\partial f}{\partial\mathbf{l}}=\sqrt{f_x^2+f_y^2}$。</b>这只在 $\mathbf{l}$ 恰是梯度方向时才对；一般方向要乘 $\cos\theta$。</li>
 <li><b>混淆"二元函数梯度"与"曲面法向量"。</b>$z=f(x,y)$ 的梯度 $(f_x,f_y)$ 是 $xOy$ 平面内的向量，垂直于等值线 $f(x,y)=c$；曲面 $z=f(x,y)$ 的法向量是三维向量 $(f_x,f_y,-1)$，两者维数都不同。</li>
 <li><b>梯度为零时谈"梯度方向"。</b>$\nabla f(P_0)=\mathbf{0}$ 时沿任何方向的方向导数都为零，没有"增长最快的方向"可言，此时也不能说梯度垂直于等值线（等值线可能不光滑）。</li>
-<li><b>方向角与方向余弦。</b>给方向角 $\alpha,\beta,\gamma$ 时，$\mathbf{e}_l=(\cos\alpha,\cos\beta,\cos\gamma)$ 本身已是单位向量；给"从 $x$ 轴正向逆时针转角 $\varphi$"的平面方向时，$\mathbf{e}_l=(\cos\varphi,\sin\varphi)$，注意第二个分量是 $\sin\varphi$ 而不是 $\cos\varphi$；若只说"与 $x$ 轴夹角为 $\alpha$"而方向指向 $x$ 轴下方，则第二个分量是 $-\sin\alpha$（因为此时 $\beta=\dfrac{\pi}{2}+\alpha$，$\cos\beta=-\sin\alpha$）。</li>
+<li><b>方向角与方向余弦。</b>给方向角 $\alpha,\beta,\gamma$ 时，$\mathbf{e}_l=(\cos\alpha,\cos\beta,\cos\gamma)$ 本身已是单位向量；给"从 $x$ 轴正向逆时针转角 $\varphi$"的平面方向时，$\mathbf{e}_l=(\cos\varphi,\sin\varphi)$，注意第二个分量是 $\sin\varphi$ 而不是 $\cos\varphi$；若只说"与 $x$ 轴正向夹角为 $\alpha$"而方向指向 $x$ 轴下方，则第二个分量是 $-\sin\alpha$（此时与 $y$ 轴正向的夹角 $\beta$ 是钝角，$\cos\beta=-\sin\alpha$；例如 $\alpha=\dfrac{\pi}{6}$ 时 $\beta=\dfrac{2\pi}{3}$）。</li>
 </ul>`
       },
       {
@@ -283,7 +344,7 @@ $$S=\iint_D\sqrt{1+z_x^2+z_y^2}\,\mathrm{d}\sigma=\iint_D\sqrt{1+4x^2+4y^2}\,\ma
 <li>看到"沿曲线 $\Gamma$ 在该点的切线方向"或"沿曲面的外法线方向" → 先用 mdiff.geo 求切向量/法向量，单位化后再作内积（注意"外"法线的指向要判断正负）。</li>
 <li>看到"最大方向导数"、"增长最快的速率" → 答 $|\nabla f(P_0)|$；"沿哪个方向增长最快" → 答 $\nabla f/|\nabla f|$；"减少最快" → 负梯度方向，值为 $-|\nabla f|$；"方向导数为零的方向" → 与梯度垂直的方向。</li>
 <li>看到"沿 $\mathbf{l}$ 方向导数最大且最大值为 $M$"（含参数） → 列向量方程 $\nabla f(P_0)=M\,\mathbf{l}/|\mathbf{l}|$，按分量解参数（<span class="qref" data-q="2019-16">2019 年第 16 题</span>）。</li>
-<li>看到"在曲线（曲面、区域）上求最大方向导数的最大值" → 先写出 $|\nabla f|^2=f_x^2+f_y^2$ 作为目标函数，再用条件极值/拉格朗日乘数法（mdiff.extreme）在约束下求最大，如 <span class="qref" data-q="2015-17">2015 年第 17 题</span>：$f=x+y+xy$ 在 $x^2+y^2+xy=3$ 上最大方向导数为 $3$。注意求的是 $|\nabla f|$ 的最大值，最后记得开方。</li>
+<li>看到"在曲线（曲面、区域）上求最大方向导数的最大值" → 先写出 $|\nabla f|^2=f_x^2+f_y^2$ 作为目标函数，再用条件极值/拉格朗日乘数法（mdiff.extreme）在约束下求最大，如 <span class="qref" data-q="2015-17">2015 年第 17 题</span>：$f=x+y+xy$ 在 $x^2+y^2+xy=3$ 上最大方向导数为 $3$。思路：点 $(x,y)$ 处的最大方向导数是 $|\nabla f|=\sqrt{(1+y)^2+(1+x)^2}$，于是问题变成在曲线上求 $g=(1+x)^2+(1+y)^2$ 的最大值。可用拉格朗日乘数法，也可用对称性：令 $s=x+y$，由约束 $xy=s^2-3$，得 $g=2+2s+x^2+y^2=2+2s+s^2-2xy=8+2s-s^2$；而 $x,y$ 为实数要求 $s^2\ge4xy=4s^2-12$，即 $|s|\le2$，故 $g$ 在 $s=1$ 处取最大值 $9$（对应点 $(2,-1),(-1,2)$），最大方向导数 $=\sqrt9=3$。注意求的是 $|\nabla f|$ 的最大值，最后记得开方。</li>
 <li>看到"$\mathbf{grad}\,f$ 等于" → 写向量 $(f_x,f_y,f_z)$，用 $\mathbf{i},\mathbf{j},\mathbf{k}$ 或坐标形式均可。</li>
 <li>看到"分段定义、含 $|x|$ 或根号的点处的方向导数" → 先判断可微性；不可微则<b>回到定义</b>：把 $(x_0+t\cos\alpha,y_0+t\cos\beta)$ 代入，求 $t\to0^+$ 的一元极限。</li>
 <li>看到"判断方向导数存在、偏导存在、可微三者关系"的选择题 → 记住唯一可靠的蕴含链：可微 ⇒ 所有方向导数存在；可微 ⇒ 偏导存在；其余方向均有反例（$\sqrt{x^2+y^2}$、$\dfrac{xy}{x^2+y^2}$、$\dfrac{x^2y}{x^2+y^2}$ 三个标准反例要会）。</li>
