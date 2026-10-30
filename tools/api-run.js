@@ -162,7 +162,12 @@ function parseTask(opts) {
 function extractJson(text) {
   if (!text) return null;
   const tries = [text.trim(), (text.match(/\{[\s\S]*\}/) || [''])[0], text.slice(text.lastIndexOf('{'))];
-  for (const s of tries) { try { const o = JSON.parse(s); if (o && typeof o === 'object') return o; } catch (e) { /* 下一种 */ } }
+  // 模型常在 JSON 字符串里直接写 LaTeX（\cos、\lambda），这是非法转义：把不合法的反斜杠补成 \\ 再试
+  const fix = (s) => s.replace(/\\(?!["\\/bfnrtu])/g, '\\\\');
+  for (const s of tries.concat(tries.map(fix))) { try { const o = JSON.parse(s); if (o && typeof o === 'object') return o; } catch (e) { /* 下一种 */ } }
+  // 还解析不了（例如字符串里有没转义的引号）：至少认出 "ok": true/false，摘要用原文
+  const m = /"ok"\s*:\s*(true|false)/.exec(text);
+  if (m) return { ok: m[1] === 'true', summary: text.slice(0, 1200), issues: ['（模型返回的 JSON 格式不规范，以上摘要为原文）'] };
   return null;
 }
 

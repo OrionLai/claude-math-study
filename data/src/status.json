@@ -16,6 +16,7 @@
     "ode.first",
     "series.sum",
     "diff.calc",
-    "mdiff.dir"
+    "mdiff.dir",
+    "ode.const"
   ]
 }
