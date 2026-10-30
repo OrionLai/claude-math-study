@@ -38,6 +38,10 @@
       '<p class="lede">按考试大纲分成 ' + KY.tax.chapters.length + ' 章、' + KY.tax.kps.length + ' 个考点，目前写好了 ' + ready + ' 篇，按近十年考频从高到低陆续补全。每篇都从"这个概念要解决什么问题"讲起，给出严格定义的逐字拆解、定理的完整分步证明、近年真题精讲、常见误区和自测题。看不懂的地方随时点「问 AI」。</p>' +
       KY.meter({ ok: done, bad: 0, n: ready }, '已学完') + KY.continueCard() +
       '<div class="head-row"><label class="toggle"><input type="checkbox" id="learn-ready"' + (learnReadyOnly ? ' checked' : '') + '> 只看已写好的讲解</label></div></header>';
+    // 每篇讲解精讲 / 引用了多少道真题
+    var worked = {};
+    Object.keys(KY.meta.refs || {}).forEach(function (q) { KY.meta.refs[q].forEach(function (r) { worked[r[0]] = (worked[r[0]] || 0) + 1; }); });
+    var reviewed = (KY.meta.status && KY.meta.status.reviewedLessons) || [];
     KY.tax.chapters.forEach(function (c) {
       var kps = KY.tax.kps.filter(function (k) { return k.ch === c.id && (!learnReadyOnly || L[k.id]); });
       if (!kps.length) return;
@@ -46,7 +50,7 @@
         var ready = !!L[k.id];
         var inner = '<span class="kp-title">' + KY.esc(k.title) + (KY.lessonDone(k.id) ? '<span class="done-mark">已学完</span>' : '') + '</span>' +
           '<span class="kp-scope">' + KY.esc(k.scope) + '</span>' +
-          '<span class="kp-foot">' + freqLine(k.id) + (ready ? '' : '<span class="freq freq-0">讲解整理中</span>') + '</span>';
+          '<span class="kp-foot">' + freqLine(k.id) + (ready ? (worked[k.id] ? '<span class="freq">引用真题 ' + worked[k.id] + ' 道</span>' : '') + (reviewed.indexOf(k.id) >= 0 ? '<span class="freq freq-ok">已审校</span>' : '') : '<span class="freq freq-0">讲解整理中</span>') + '</span>';
         h += ready ? KY.link('l-' + k.id, inner, 'kp-item') : '<div class="kp-item is-pending">' + inner + '</div>';
       });
       h += '</div></section>';

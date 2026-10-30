@@ -128,6 +128,7 @@ a.chip:hover, button.chip:hover { color: var(--accent); border-color: var(--acce
 .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .freq { font-family: var(--f-mono); font-size: 0.75rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
 .freq-0 { opacity: 0.75; }
+.freq-ok { color: var(--ok); }
 
 /* ── 首页 ── */
 .hero { display: grid; gap: 1rem; padding-top: 1rem; }
