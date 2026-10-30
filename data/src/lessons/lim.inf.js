@@ -1,0 +1,324 @@
+registerLesson(function (R) {
+  return {
+    id: 'lim.inf', ch: 'lim', title: '无穷小与无穷大',
+    summary: R`无穷小就是"极限为 0 的量"，无穷大就是"绝对值无限增大的量"，两者互为倒数。真正有用的是无穷小的比较：高阶、同阶、等价、k 阶，它们刻画"趋于 0 的快慢"。等价无穷小代换定理是整个极限计算的核心工具，但只能在乘除因子上用，加减里要小心。`,
+    prereq: ['lim.funcdef', 'lim.rules'],
+    sections: [
+      {
+        kind: 'why', title: '为什么要研究无穷小：极限计算的本质是"比快慢"',
+        html: R`<p>学完函数极限的定义之后，我们已经知道 $\lim\limits_{x\to0}x=0$、$\lim\limits_{x\to0}\sin x=0$、$\lim\limits_{x\to0}(1-\cos x)=0$。它们都趋于 $0$，但<b>趋于 $0$ 的速度一样吗</b>？看一组数据（$x=0.1$）：</p>
+<table><thead><tr><th>$x$</th><th>$\sin x$</th><th>$1-\cos x$</th><th>$x^3$</th></tr></thead>
+<tbody><tr><td>$0.1$</td><td>$0.0998\cdots$</td><td>$0.00499\cdots$</td><td>$0.001$</td></tr>
+<tr><td>$0.01$</td><td>$0.0099998\cdots$</td><td>$0.0000499\cdots$</td><td>$0.000001$</td></tr></tbody></table>
+<p>可以看出：$\sin x$ 和 $x$ 几乎一样；$1-\cos x$ 差不多是 $x^2$ 的一半；$x^3$ 比它们都小得多。也就是说，趋于 $0$ 的量有"快慢之分"。下图画出了 $y=\sqrt{x}$、$y=x$、$y=x^2$、$y=x^3$ 在 $x\to0^+$ 时的样子：越贴近 $x$ 轴的，趋于 $0$ 越快。</p>
+<svg viewBox="0 0 420 260" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+<line x1="40" y1="230" x2="400" y2="230" stroke="currentColor" stroke-width="1"/>
+<line x1="40" y1="230" x2="40" y2="10" stroke="currentColor" stroke-width="1"/>
+<text x="392" y="248" fill="currentColor" font-size="12">x</text>
+<text x="28" y="22" fill="currentColor" font-size="12">y</text>
+<text x="30" y="244" fill="currentColor" font-size="12">O</text>
+<polyline fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4,3" points="40,230 57,183 74,164 91,149 108,136 125,125 142,115 159,106 176,97 193,89 210,82 227,74 244,67 261,61 278,54 295,48 312,42 329,36 346,31 363,25 380,20"/>
+<polyline fill="none" stroke="currentColor" stroke-width="1.5" points="40,230 57,220 74,209 91,198 108,188 125,178 142,167 159,156 176,146 193,136 210,125 227,114 244,104 261,94 278,83 295,72 312,62 329,52 346,41 363,30 380,20"/>
+<polyline fill="none" stroke="currentColor" stroke-width="1.5" points="40,230 57,229 74,228 91,225 108,222 125,217 142,211 159,204 176,196 193,187 210,178 227,166 244,154 261,141 278,127 295,112 312,96 329,78 346,60 363,40 380,20"/>
+<polyline fill="none" stroke="currentColor" stroke-width="1.5" points="40,230 57,230 74,230 91,229 108,228 125,227 142,224 159,221 176,217 193,211 210,204 227,195 244,185 261,172 278,158 295,141 312,122 329,101 346,77 363,50 380,20"/>
+<text x="120" y="110" fill="currentColor" font-size="12">y=√x（最慢）</text>
+<text x="250" y="78" fill="currentColor" font-size="12">y=x</text>
+<text x="300" y="140" fill="currentColor" font-size="12">y=x²</text>
+<text x="318" y="195" fill="currentColor" font-size="12">y=x³（最快）</text>
+</svg>
+<p>为什么要在乎快慢？因为极限计算里最常见的 $\dfrac{0}{0}$ 型未定式，本质上就是<b>分子分母两个趋于 $0$ 的量在比快慢</b>：</p>
+<ul>
+<li>分子比分母快（分子更小）→ 比值趋于 $0$；</li>
+<li>分子比分母慢 → 比值趋于 $\infty$；</li>
+<li>一样快 → 比值趋于一个非零常数。</li>
+</ul>
+<p>所以"无穷小的比较"就是给"快慢"下一个精确定义，而"等价无穷小代换"则是把复杂的无穷小换成一样快的简单无穷小（比如把 $\sin x$ 换成 $x$），从而让计算变得容易。这一篇所有的概念都围绕这一个目的展开。</p>
+<p>另一方面，"无穷大"则是镜像的概念：$x\to0$ 时 $\dfrac1x$ 的绝对值无限变大。它和无穷小互为倒数，所以研究清楚一个，另一个也就清楚了。</p>`
+      },
+      {
+        kind: 'def', title: '无穷小的定义',
+        html: R`<p><b>定义（无穷小）.</b> 设函数 $f(x)$ 在 $x_0$ 的某去心邻域内有定义。若</p>
+$$\lim_{x\to x_0}f(x)=0,$$
+<p>则称 $f(x)$ 是当 $x\to x_0$ 时的<b>无穷小</b>（或无穷小量）。把 $x\to x_0$ 换成 $x\to x_0^+$、$x\to x_0^-$、$x\to\infty$、$x\to+\infty$、$x\to-\infty$ 或数列的 $n\to\infty$，可以类似地定义相应过程下的无穷小。</p>
+<p>按函数极限的 $\varepsilon$-$\delta$ 语言展开，就是：对任意 $\varepsilon>0$，存在 $\delta>0$，当 $0<|x-x_0|<\delta$ 时，$|f(x)|<\varepsilon$。</p>
+<p><b>逐字拆解：</b></p>
+<ul>
+<li><b>"当 $x\to x_0$ 时"</b>——无穷小一定要指明自变量的变化过程。同一个函数在一个过程下是无穷小，在另一个过程下可能不是：$\dfrac1x$ 当 $x\to\infty$ 时是无穷小，当 $x\to1$ 时极限为 $1$，不是无穷小。去掉"过程"这几个字，"无穷小"就没有意义。</li>
+<li><b>"极限为 $0$"</b>——无穷小描述的是一个<b>变化趋势</b>，不是一个"很小的数"。$10^{-100}$ 再小也是个固定的数，极限是它自己而不是 $0$，所以它不是无穷小。</li>
+<li><b>唯一的常数无穷小是 $0$</b>——常函数 $f(x)\equiv0$ 在任何过程下极限都是 $0$，所以 $0$ 可以看成无穷小；其他常数都不行。</li>
+<li>定义里的 $|f(x)|<\varepsilon$ 不要求 $f(x)\ne0$，也不要求 $f$ 保持某个符号：无穷小可以是正的、负的，也可以在 $0$ 附近来回振荡（如 $x\sin\frac1x$）。</li>
+</ul>
+<p><b>正例：</b>$x\to0$ 时，$x$、$\sin x$、$1-\cos x$、$\mathrm{e}^x-1$、$x^2\sin\frac1x$ 都是无穷小；$x\to\infty$ 时 $\dfrac1x$、$\dfrac{\sin x}{x}$ 是无穷小；$n\to\infty$ 时 $\dfrac1n$、$q^n\ (|q|<1)$ 是无穷小。</p>
+<p><b>反例：</b>$x\to0$ 时 $\cos x$ 不是无穷小（极限是 $1$）；$x\to0$ 时 $\sin\dfrac1x$ 不是无穷小（极限不存在，尽管它有界）；$x\to0^+$ 时 $x^x$ 不是无穷小（极限是 $1$）。</p>`
+      },
+      {
+        kind: 'def', title: '无穷大的定义',
+        html: R`<p><b>定义（无穷大）.</b> 设 $f(x)$ 在 $x_0$ 的某去心邻域内有定义。若对任意给定的正数 $M$（无论多大），总存在 $\delta>0$，使得当 $0<|x-x_0|<\delta$ 时恒有</p>
+$$|f(x)|>M,$$
+<p>则称 $f(x)$ 是当 $x\to x_0$ 时的<b>无穷大</b>，记作 $\lim\limits_{x\to x_0}f(x)=\infty$。若把 $|f(x)|>M$ 换成 $f(x)>M$（或 $f(x)<-M$），则称为<b>正无穷大</b>（或<b>负无穷大</b>），记作 $\lim f(x)=+\infty$（或 $-\infty$）。其他变化过程类似。</p>
+<p><b>逐字拆解：</b></p>
+<ul>
+<li><b>"对任意 $M$"</b>——无论你给多大的门槛，$f$ 最终都能超过它。这是"无限变大"的精确说法。只对某个固定 $M$ 成立（例如 $|f(x)|>100$）说明不了什么。</li>
+<li><b>"存在 $\delta$，当 $0<|x-x_0|<\delta$ 时恒有"</b>——是在 $x_0$ 附近<b>所有</b>的点上都超过 $M$，而不是"有些点超过 $M$"。这一条正是区分"无穷大"和"无界"的关键（见下面的反例）。</li>
+<li><b>记号 $\lim f(x)=\infty$ 只是一种写法</b>——按极限的定义，这时极限是<b>不存在</b>的（极限必须是一个确定的实数）。写 $=\infty$ 是为了描述"不存在的方式"。考研里说"极限存在"一律指极限是有限数。</li>
+<li>$|f(x)|>M$ 不限定符号，所以 $x\to0$ 时 $\dfrac1x$ 是无穷大（$\to\infty$），虽然它左边趋于 $-\infty$、右边趋于 $+\infty$。</li>
+</ul>
+<p><b>正例：</b>$x\to0$ 时 $\dfrac1x$、$\dfrac1{\sin x}$ 是无穷大；$x\to0^+$ 时 $\ln x\to-\infty$；$x\to+\infty$ 时 $\mathrm{e}^x\to+\infty$；$x\to\frac\pi2^-$ 时 $\tan x\to+\infty$。</p>
+<p><b>反例（无界但不是无穷大）：</b>$f(x)=x\sin x$ 在 $x\to+\infty$ 时无界（取 $x_n=2n\pi+\frac\pi2$ 得 $f(x_n)=x_n\to+\infty$），但不是无穷大：取 $x_n'=n\pi$ 得 $f(x_n')=0$，所以不可能对"所有充分大的 $x$"都有 $|f(x)|>M$。类似地，$x\to0$ 时 $\dfrac1x\sin\dfrac1x$ 无界但不是无穷大。</p>
+<p>所以：<b>无穷大 ⟹ 无界，无界 ⟸̸ 无穷大</b>。考研选择题常常拿这一点做文章。</p>`
+      },
+      {
+        kind: 'thm', title: '极限与无穷小的关系',
+        statement: R`<p>在自变量的同一变化过程中，$\lim f(x)=A$（$A$ 为有限数）的充分必要条件是</p>
+$$f(x)=A+\alpha(x),$$
+<p>其中 $\alpha(x)$ 是该过程下的无穷小。</p>`,
+        intuition: R`<p>"$f$ 趋于 $A$"就是"$f$ 与 $A$ 的差趋于 $0$"。这条定理把"极限"翻译成"常数 + 无穷小"，是后面所有运算法则证明的桥梁：研究极限，只要研究无穷小就够了。</p>`,
+        steps: [
+          { s: R`<p>必要性：设 $\lim\limits_{x\to x_0}f(x)=A$，令 $\alpha(x)=f(x)-A$。对任意 $\varepsilon>0$，存在 $\delta>0$，当 $0<|x-x_0|<\delta$ 时 $|f(x)-A|<\varepsilon$，即 $|\alpha(x)|<\varepsilon$。所以 $\alpha$ 是无穷小，且 $f=A+\alpha$。</p>`, why: R`<p>极限定义里的 $|f(x)-A|<\varepsilon$ 本来就是 $|\alpha(x)-0|<\varepsilon$，两句话只是换了个记号。</p>` },
+          { s: R`<p>充分性：设 $f(x)=A+\alpha(x)$，$\alpha$ 为无穷小。对任意 $\varepsilon>0$，存在 $\delta>0$，当 $0<|x-x_0|<\delta$ 时 $|\alpha(x)|<\varepsilon$，即 $|f(x)-A|<\varepsilon$，故 $\lim f(x)=A$。</p>`, why: R`<p>反过来读同一个不等式。这两步说明定理其实是极限定义的"改写"，没有新的数学内容，但提供了新的视角。</p>` }
+        ],
+        remark: R`<p>以后写 $\sin x=x+o(x)$、$\mathrm{e}^x=1+x+\frac{x^2}{2}+o(x^2)$ 这类带"余项"的式子，背后都是这个定理：把一个量写成"主要部分 + 无穷小"。</p>`
+      },
+      {
+        kind: 'thm', title: '无穷小的运算性质',
+        statement: R`<p>在同一变化过程中：</p>
+<ol>
+<li>有限个无穷小的和是无穷小；</li>
+<li>有限个无穷小的积是无穷小；</li>
+<li>有界函数与无穷小的积是无穷小。特别地，常数与无穷小的积是无穷小。</li>
+</ol>`,
+        intuition: R`<p>两个"要变成 $0$"的量加起来还是"要变成 $0$"；一个有界的量（比如 $\sin\frac1x$，绝对值不超过 $1$）乘上一个趋于 $0$ 的量，被"压"到 $0$。第 3 条特别有用，因为它允许乘积中有一个因子<b>没有极限</b>（只要有界）。</p>`,
+        steps: [
+          { s: R`<p>证 1（两个的情形）：设 $\alpha,\beta$ 是 $x\to x_0$ 时的无穷小。对任意 $\varepsilon>0$，存在 $\delta_1>0$，当 $0<|x-x_0|<\delta_1$ 时 $|\alpha(x)|<\frac\varepsilon2$；存在 $\delta_2>0$，当 $0<|x-x_0|<\delta_2$ 时 $|\beta(x)|<\frac\varepsilon2$。取 $\delta=\min\{\delta_1,\delta_2\}$，则当 $0<|x-x_0|<\delta$ 时 $|\alpha+\beta|\le|\alpha|+|\beta|<\varepsilon$。有限个的情形对个数作归纳即可。</p>`, why: R`<p>目标是 $|\alpha+\beta|<\varepsilon$，三角不等式把它拆成两个各自小于 $\frac\varepsilon2$ 的量；两个 $\delta$ 取最小值是为了让两个条件同时满足。"有限个"是归纳法能做到的；无限个做不到，因为取 $\delta=\min$ 时无穷多个 $\delta_i$ 的下确界可能是 $0$。</p>` },
+          { s: R`<p>证 3：设 $|g(x)|\le K$ 在 $x_0$ 的某去心邻域 $0<|x-x_0|<\delta_1$ 内成立，$\alpha$ 是无穷小。对任意 $\varepsilon>0$，存在 $\delta_2>0$，当 $0<|x-x_0|<\delta_2$ 时 $|\alpha(x)|<\frac{\varepsilon}{K}$。取 $\delta=\min\{\delta_1,\delta_2\}$，当 $0<|x-x_0|<\delta$ 时 $|g\alpha|=|g|\cdot|\alpha|<K\cdot\frac\varepsilon K=\varepsilon$。</p>`, why: R`<p>有界给了一个固定的上限 $K$，无穷小可以任意小，于是乘积可以任意小。这里 $\varepsilon/K$ 的"配凑"是 $\varepsilon$-$\delta$ 证明的常规手法：先看结论要什么，倒推要把 $|\alpha|$ 控制到多小。</p>` },
+          { s: R`<p>证 2：无穷小 $\beta$ 的极限为 $0$，由极限的局部有界性，$\beta$ 在 $x_0$ 的某去心邻域内有界。于是 $\alpha\beta$ 是"有界函数乘无穷小"，由 3 知为无穷小。有限个再归纳。</p>`, why: R`<p>把 2 归结为 3，省一次 $\varepsilon$-$\delta$。这是数学里常见的"用已证的结论推新结论"。</p>` }
+        ],
+        remark: R`<p><b>"有限个"不能改成"无限个"</b>：$n\to\infty$ 时每个 $\dfrac1n$ 都是无穷小，但 $n$ 个 $\dfrac1n$ 相加等于 $1$，不是无穷小。<b>两个无穷小的商</b>没有一般结论——这正是"无穷小比较"要研究的问题。<b>两个无穷大的和</b>也没有一般结论（$\frac1x$ 与 $-\frac1x$ 的和是 $0$），但<b>两个无穷大的积仍是无穷大</b>，无穷大与"极限非零的量"的积也是无穷大。</p>
+<p>典型应用：$\lim\limits_{x\to0}x\sin\dfrac1x=0$（有界 $\times$ 无穷小），$\lim\limits_{x\to\infty}\dfrac{\arctan x}{x}=0$。注意不能写成"$\lim x\cdot\lim\sin\frac1x$"，因为后一个极限不存在。</p>`
+      },
+      {
+        kind: 'thm', title: '无穷小与无穷大的关系',
+        statement: R`<p>在同一变化过程中：</p>
+<ol>
+<li>若 $f(x)$ 是无穷大，则 $\dfrac1{f(x)}$ 是无穷小；</li>
+<li>若 $f(x)$ 是无穷小，且 $f(x)\ne0$，则 $\dfrac1{f(x)}$ 是无穷大。</li>
+</ol>`,
+        intuition: R`<p>"很大"的倒数"很小"，反之亦然。这让我们可以把 $\infty$ 的问题都转化为 $0$ 的问题处理，例如 $\dfrac{\infty}{\infty}$ 型可以上下同除化成 $\dfrac00$ 型。</p>`,
+        steps: [
+          { s: R`<p>证 1：设 $x\to x_0$ 时 $f\to\infty$。任取 $\varepsilon>0$，令 $M=\dfrac1\varepsilon$，由无穷大定义存在 $\delta>0$，当 $0<|x-x_0|<\delta$ 时 $|f(x)|>M=\dfrac1\varepsilon$，从而 $\left|\dfrac1{f(x)}\right|<\varepsilon$。故 $\dfrac1f$ 是无穷小。</p>`, why: R`<p>两个定义是"镜像"的：$|f|>M$ 和 $|1/f|<1/M$ 是同一个不等式。注意 $|f|>M>0$ 保证了 $f\ne0$，$1/f$ 有定义。</p>` },
+          { s: R`<p>证 2：设 $f\to0$ 且 $f\ne0$。任取 $M>0$，令 $\varepsilon=\dfrac1M$，存在 $\delta>0$，当 $0<|x-x_0|<\delta$ 时 $|f(x)|<\varepsilon=\dfrac1M$；又 $f(x)\ne0$，所以 $\left|\dfrac1{f(x)}\right|>M$。故 $\dfrac1f$ 是无穷大。</p>`, why: R`<p>条件 $f(x)\ne0$ 不能去掉：若 $f\equiv0$，$1/f$ 根本没有定义；若 $f$ 在 $x_0$ 附近有无穷多个零点（如 $x\sin\frac1x$），$1/f$ 在这些点没定义，也谈不上无穷大。</p>` }
+        ],
+        remark: R`<p>由此可知"$\lim\limits_{x\to a}\dfrac{f(x)}{g(x)}=\infty$"就等价于"$\lim\limits_{x\to a}\dfrac{g(x)}{f(x)}=0$"（在 $f,g$ 均不为零时），这是已知极限反求参数时常用的转换。</p>`
+      },
+      {
+        kind: 'def', title: '无穷小的比较：高阶、低阶、同阶、等价、k 阶',
+        html: R`<p>设 $\alpha(x)$、$\beta(x)$ 都是同一变化过程（例如 $x\to x_0$）下的无穷小，且在 $x_0$ 的某去心邻域内 $\beta(x)\ne0$。</p>
+<ul>
+<li>若 $\lim\dfrac{\alpha}{\beta}=0$，称 $\alpha$ 是比 $\beta$ <b>高阶</b>的无穷小，记作 $\alpha=o(\beta)$；此时也称 $\beta$ 是比 $\alpha$ <b>低阶</b>的无穷小。</li>
+<li>若 $\lim\dfrac{\alpha}{\beta}=\infty$，称 $\alpha$ 是比 $\beta$ 低阶的无穷小。</li>
+<li>若 $\lim\dfrac{\alpha}{\beta}=C\ne0$（$C$ 为有限常数），称 $\alpha$ 与 $\beta$ 是<b>同阶</b>无穷小。</li>
+<li>若 $\lim\dfrac{\alpha}{\beta}=1$，称 $\alpha$ 与 $\beta$ 是<b>等价</b>无穷小，记作 $\alpha\sim\beta$。</li>
+<li>若 $\lim\dfrac{\alpha}{\beta^k}=C\ne0$（$k>0$），称 $\alpha$ 是关于 $\beta$ 的 <b>$k$ 阶</b>无穷小。最常用的是取 $\beta=x-x_0$（或 $x\to0$ 时的 $x$）：若 $\lim\limits_{x\to0}\dfrac{\alpha(x)}{x^k}=C\ne0$，就说 $\alpha$ 是 $k$ 阶无穷小，也说 $\alpha\sim Cx^k$。</li>
+</ul>
+<p><b>逐字拆解：</b></p>
+<ul>
+<li><b>"比值的极限"是衡量快慢的尺子</b>。$\alpha/\beta\to0$ 意思是 $\alpha$ 比 $\beta$ 小得多，即 $\alpha$ 趋于 $0$ 更快——"高阶"就是"更快、更小"。初学者容易把"高阶"误会成"更大"，记住：$x^3$ 比 $x$ 高阶，而 $x\to0$ 时 $x^3$ 远小于 $x$。</li>
+<li><b>$C\ne0$ 是同阶定义的灵魂</b>。$C=0$ 就退化为高阶；$C$ 不存在（也不是 $\infty$）就是"不可比较"。$\alpha\sim\beta$ 是同阶的特例（$C=1$）。</li>
+<li><b>等价是一种等价关系</b>：自反（$\alpha\sim\alpha$）、对称（$\alpha\sim\beta\Rightarrow\beta\sim\alpha$，因为 $\beta/\alpha=1/(\alpha/\beta)\to1$）、传递（$\alpha\sim\beta,\beta\sim\gamma\Rightarrow\alpha\sim\gamma$，因为 $\frac\alpha\gamma=\frac\alpha\beta\cdot\frac\beta\gamma\to1$）。所以可以"链式"换：$\tan x\sim\sin x\sim x$。</li>
+<li><b>$k$ 阶中的 $k$ 不必是整数</b>：$x\to0^+$ 时 $\sqrt{x}$ 是 $\frac12$ 阶无穷小；$x^{5/2}$ 是 $\frac52$ 阶。</li>
+<li><b>"$\beta\ne0$"是为了比值有意义</b>。像 $x\sin\frac1x$ 这种在 $0$ 附近有无穷多零点的无穷小，不能放在分母上比较。</li>
+<li><b>不是任意两个无穷小都能比较</b>：$\alpha=x\sin\frac1x$，$\beta=x$，比值 $\sin\frac1x$ 在 $x\to0$ 时极限不存在，所以 $\alpha$ 既不比 $\beta$ 高阶，也不同阶，也不低阶。无穷小的"阶"并不总是有定义的。</li>
+</ul>
+<p><b>记号 $o(\cdot)$ 的含义：</b>$o(x^k)$ 表示"某个比 $x^k$ 高阶的无穷小"，它是一类函数的统称，不是一个固定的函数。所以 $o(x^2)+o(x^2)=o(x^2)$、$x\cdot o(x^2)=o(x^3)$、$o(x^3)=o(x^2)$（高阶的更高阶）这些"运算"是允许的，但 $o(x^2)-o(x^2)=0$ 是<b>错</b>的（两个 $o(x^2)$ 可以是不同的函数）。</p>
+<p><b>正例：</b>$x\to0$ 时：$1-\cos x$ 是 $x$ 的二阶无穷小（$\frac{1-\cos x}{x^2}\to\frac12$），$x-\sin x$ 是三阶（$\to\frac16$），$\sqrt{1+x}-1$ 是一阶（$\to\frac12$）；$x^2=o(x)$；$\tan x\sim x$。</p>
+<p><b>常用等价无穷小（$x\to0$，必须背熟）：</b></p>
+<table>
+<thead><tr><th>一阶</th><th>二阶</th><th>三阶</th></tr></thead>
+<tbody>
+<tr><td>$\sin x\sim x$</td><td>$1-\cos x\sim\dfrac{x^2}{2}$</td><td>$x-\sin x\sim\dfrac{x^3}{6}$</td></tr>
+<tr><td>$\tan x\sim x$</td><td>$x-\ln(1+x)\sim\dfrac{x^2}{2}$</td><td>$\tan x-x\sim\dfrac{x^3}{3}$</td></tr>
+<tr><td>$\arcsin x\sim x$</td><td>$\mathrm{e}^x-1-x\sim\dfrac{x^2}{2}$</td><td>$x-\arctan x\sim\dfrac{x^3}{3}$</td></tr>
+<tr><td>$\arctan x\sim x$</td><td>$\sqrt{1+x}-1-\dfrac x2\sim-\dfrac{x^2}{8}$</td><td>$\arcsin x-x\sim\dfrac{x^3}{6}$</td></tr>
+<tr><td>$\mathrm{e}^x-1\sim x$</td><td>$1-\cos^a x\sim\dfrac{a}{2}x^2$</td><td>$\tan x-\sin x\sim\dfrac{x^3}{2}$</td></tr>
+<tr><td>$\ln(1+x)\sim x$</td><td></td><td></td></tr>
+<tr><td>$(1+x)^a-1\sim ax$</td><td></td><td></td></tr>
+<tr><td>$a^x-1\sim x\ln a$</td><td></td><td></td></tr>
+</tbody></table>
+<p>这些结论的来源有两个：一阶的来自两个重要极限和导数定义（见 lim.rules），高阶的来自泰勒公式（见 diff.taylor）。真正理解后，它们就是"$f(x)$ 在 $0$ 处的泰勒展开的第一个非零项"。</p>
+<p><b>更一般的形式：</b>表中的 $x$ 可以换成任何趋于 $0$ 的量 $u(x)$（$u\ne0$）。例如 $x\to0$ 时 $\sin x^2\sim x^2$，$\mathrm{e}^{\sin x}-1\sim\sin x\sim x$，$1-\cos\sqrt{x}\sim\frac x2$（$x\to0^+$）。这是因为复合函数极限定理：$u\to0$ 且 $u\ne0$ 时 $\dfrac{\sin u}{u}\to1$。</p>`
+      },
+      {
+        kind: 'thm', title: '等价无穷小的充要条件',
+        statement: R`<p>设 $\alpha,\beta$ 是同一过程下的无穷小，$\alpha\ne0$。则</p>
+$$\alpha\sim\beta\iff\beta=\alpha+o(\alpha),$$
+<p>即 $\beta$ 与 $\alpha$ 等价当且仅当它们的差是比 $\alpha$ 高阶的无穷小。</p>`,
+        intuition: R`<p>"等价"就是"主要部分相同，差别只在更高阶的小量上"。$\sin x=x+o(x)$ 就是说：在一阶精度下 $\sin x$ 和 $x$ 没有区别。这也解释了为什么等价代换在加减时会出问题——加减可能把主要部分 $\alpha$ 消掉，剩下的恰恰是被忽略的 $o(\alpha)$。</p>`,
+        steps: [
+          { s: R`<p>必要性：设 $\alpha\sim\beta$，即 $\lim\dfrac\beta\alpha=1$。则 $\lim\dfrac{\beta-\alpha}{\alpha}=\lim\left(\dfrac\beta\alpha-1\right)=1-1=0$，所以 $\beta-\alpha=o(\alpha)$，即 $\beta=\alpha+o(\alpha)$。</p>`, why: R`<p>直接用极限的减法法则。"$\beta-\alpha$ 比 $\alpha$ 高阶"按定义就是比值趋于 $0$。</p>` },
+          { s: R`<p>充分性：设 $\beta=\alpha+\gamma$，$\gamma=o(\alpha)$。则 $\dfrac\beta\alpha=1+\dfrac\gamma\alpha\to1+0=1$，故 $\alpha\sim\beta$。</p>`, why: R`<p>反过来用加法法则。两步合起来说明"等价"和"差为高阶无穷小"是一回事。</p>` }
+        ],
+        remark: R`<p>由此可以给出很多等价式的来源：例如由 $\cos x=1-\frac{x^2}{2}+o(x^2)$ 得 $1-\cos x=\frac{x^2}2+o(x^2)$，所以 $1-\cos x\sim\frac{x^2}2$。反过来，只要记住 $\alpha\sim Cx^k$ 就等于 $\alpha=Cx^k+o(x^k)$，等价无穷小表和泰勒展开表就能互相翻译。</p>`
+      },
+      {
+        kind: 'thm', title: '等价无穷小代换定理',
+        statement: R`<p>设在同一变化过程中 $\alpha\sim\alpha'$，$\beta\sim\beta'$，且 $\lim\dfrac{\alpha'}{\beta'}$ 存在（或为 $\infty$），则</p>
+$$\lim\frac{\alpha}{\beta}=\lim\frac{\alpha'}{\beta'}.$$
+<p>更一般地，若 $\alpha\sim\alpha'$，且 $\lim\alpha'\cdot g$ 存在（或为 $\infty$），则 $\lim\alpha g=\lim\alpha' g$：<b>乘积（或商）中的无穷小因子可以换成它的等价无穷小</b>。</p>`,
+        intuition: R`<p>$\alpha$ 和 $\alpha'$ 在极限意义下"比值是 $1$"，而乘 $1$ 不改变任何东西。所以只要 $\alpha$ 是以<b>乘除因子</b>的身份出现，就可以换掉。这是把复杂极限化简的第一利器：分子分母里的 $\sin$、$\tan$、$\ln(1+\cdot)$、$\mathrm{e}^{\cdot}-1$ 等全部换成幂函数。</p>`,
+        steps: [
+          { s: R`<p>写出恒等式（在 $\beta,\alpha',\beta'$ 都不为零的去心邻域内）：</p>
+$$\frac{\alpha}{\beta}=\frac{\alpha}{\alpha'}\cdot\frac{\alpha'}{\beta'}\cdot\frac{\beta'}{\beta}.$$`, why: R`<p>想法：要把 $\alpha$ 换成 $\alpha'$，就乘上 $\dfrac{\alpha'}{\alpha'}$（等于 $1$），再把分子分母重新搭配。$\alpha\sim\alpha'$ 意味着 $\alpha'\ne0$ 在某去心邻域内成立（否则比值无定义），所以这样拆是合法的。</p>` },
+          { s: R`<p>三个因子的极限分别为：$\lim\dfrac\alpha{\alpha'}=1$（由 $\alpha\sim\alpha'$），$\lim\dfrac{\beta'}\beta=1$（由 $\beta\sim\beta'$ 及等价的对称性），$\lim\dfrac{\alpha'}{\beta'}$ 存在（设为 $A$）。由极限的乘法法则，</p>
+$$\lim\frac\alpha\beta=1\cdot A\cdot1=A=\lim\frac{\alpha'}{\beta'}.$$`, why: R`<p>乘法法则要求每个因子的极限都存在，这正是定理里"$\lim\frac{\alpha'}{\beta'}$ 存在"这个条件的用处。</p>` },
+          { s: R`<p>若 $\lim\dfrac{\alpha'}{\beta'}=\infty$，则 $\lim\dfrac{\beta'}{\alpha'}=0$，由已证结论 $\lim\dfrac\beta\alpha=0$，再由无穷小与无穷大的关系得 $\lim\dfrac\alpha\beta=\infty$。</p>`, why: R`<p>$\infty$ 的情形不能直接用乘法法则（$\infty$ 不是数），所以取倒数化为 $0$ 的情形。这正是上一节"无穷小与无穷大的关系"的用武之地。</p>` },
+          { s: R`<p>一般形式 $\lim\alpha g=\lim\alpha'g$ 的证明完全一样：$\alpha g=\dfrac{\alpha}{\alpha'}\cdot(\alpha'g)$，第一个因子趋于 $1$。</p>`, why: R`<p>定理的本质只有一句话：乘一个趋于 $1$ 的因子不改变极限。</p>` }
+        ],
+        remark: R`<p><b>1. 只能换"整体的乘除因子"。</b>$\lim\limits_{x\to0}\dfrac{\tan x-\sin x}{x^3}$ 中，$\tan x$ 和 $\sin x$ 是分子里"相减"的两项，不是整个分子的因子，不能分别换成 $x$（那样会得到 $0$，而正确答案是 $\frac12$）。正确做法：$\tan x-\sin x=\tan x(1-\cos x)$，这时 $\tan x$ 和 $1-\cos x$ 都是分子的乘法因子，换成 $x\cdot\frac{x^2}2$，极限为 $\frac12$。</p>
+<p><b>2. 加减中什么时候能换？</b>有如下结论（可作为补充定理）：若 $\alpha\sim\alpha'$，$\beta\sim\beta'$，且 $\lim\dfrac{\alpha'}{\beta'}=A\ne1$，则 $\alpha-\beta\sim\alpha'-\beta'$。证明：$\dfrac{\alpha-\beta}{\alpha'-\beta'}=\dfrac{\frac{\alpha}{\beta'}-\frac{\beta}{\beta'}}{\frac{\alpha'}{\beta'}-1}$，分子中 $\dfrac\alpha{\beta'}=\dfrac\alpha{\alpha'}\cdot\dfrac{\alpha'}{\beta'}\to A$，$\dfrac\beta{\beta'}\to1$，故整个比值 $\to\dfrac{A-1}{A-1}=1$（这里用到 $A\ne1$ 保证分母不为零）。同样，若 $\lim\dfrac{\alpha'}{\beta'}=A\ne-1$，则 $\alpha+\beta\sim\alpha'+\beta'$。口诀："<b>加减可换的条件是换完之后不抵消</b>"。$\tan x-\sin x$ 中 $x/x=1$，恰好抵消，所以不能换。</p>
+<p><b>3. 换完以后极限要存在。</b>定理要求 $\lim\frac{\alpha'}{\beta'}$ 存在或为 $\infty$，如果换完后的极限不存在，不能反推原极限也不存在（不过在实际题目中这种情况极少出现）。</p>
+<p><b>4. 与洛必达、泰勒的关系。</b>等价代换是泰勒展开的"一阶截断"，当加减把一阶项消掉时，要么因式分解创造乘积结构，要么改用泰勒展开到足够高的阶（见 lim.compute）。</p>`
+      },
+      {
+        kind: 'example', title: '例题：比较阶与等价代换',
+        html: R`<p><b>例 1.</b> $x\to0$ 时，比较 $\alpha=\sqrt{1+x\sin x}-1$ 与 $\beta=x\tan x$ 的阶。</p>
+<p><b>怎么想：</b>$\alpha$ 的形式是 $(1+u)^{1/2}-1$，$u=x\sin x\to0$，所以 $\alpha\sim\frac12u=\frac12x\sin x\sim\frac12x^2$；$\beta=x\tan x\sim x^2$。两者都是二阶，比值 $\to\frac12$，<b>同阶但不等价</b>。</p>
+<p><b>严格写法：</b>$\lim\limits_{x\to0}\dfrac{\alpha}{\beta}=\lim\dfrac{\frac12x\sin x}{x\tan x}=\dfrac12\lim\dfrac{\sin x}{\tan x}=\dfrac12$。每一步换的都是整体的乘除因子，符合代换定理。</p>
+<p><b>例 2.</b> 求 $\lim\limits_{x\to0}\dfrac{\ln(1+x)\,(\mathrm{e}^{2x}-1)}{1-\cos x}$。</p>
+<p><b>怎么想：</b>$\frac00$ 型，分子是两个无穷小的乘积，分母是一个无穷小，每一个都是"整体的乘除因子"，全部可以换：$\ln(1+x)\sim x$，$\mathrm{e}^{2x}-1\sim2x$，$1-\cos x\sim\frac{x^2}2$。</p>
+$$\lim_{x\to0}\frac{x\cdot2x}{\frac{x^2}{2}}=4.$$
+<p><b>例 3（加减中的陷阱）.</b> 求 $\lim\limits_{x\to0}\dfrac{\tan x-x}{x-\sin x}$。</p>
+<p><b>错误做法：</b>$\tan x\sim x$，于是分子"$\sim x-x=0$"——错！分子分母都是加减结构，一阶项抵消后真正起作用的是三阶项。</p>
+<p><b>正确做法：</b>用三阶等价式 $\tan x-x\sim\frac{x^3}3$、$x-\sin x\sim\frac{x^3}6$（它们各自是分子、分母的整体，可以换）：极限 $=\dfrac{1/3}{1/6}=2$。也可以用洛必达法则验证：$\dfrac{\sec^2x-1}{1-\cos x}=\dfrac{\tan^2x}{1-\cos x}\to\dfrac{x^2}{x^2/2}=2$。</p>
+<p><b>例 4（用定义求阶）.</b> $x\to0$ 时，$\mathrm{e}^{\sin x}-1-x$ 是 $x$ 的几阶无穷小？</p>
+<p><b>怎么想：</b>直接看不出来，就按定义求 $\lim\dfrac{\mathrm{e}^{\sin x}-1-x}{x^k}$，试 $k$ 使极限为非零常数。先用泰勒：$\mathrm{e}^{\sin x}=1+\sin x+\frac{\sin^2x}2+o(\sin^2x)=1+\left(x-\frac{x^3}6\right)+\frac{x^2}2+o(x^2)=1+x+\frac{x^2}2+o(x^2)$。所以 $\mathrm{e}^{\sin x}-1-x=\frac{x^2}2+o(x^2)$，是二阶无穷小，且 $\sim\frac{x^2}2$。用洛必达验证：$\lim\dfrac{\mathrm{e}^{\sin x}-1-x}{x^2}=\lim\dfrac{\mathrm{e}^{\sin x}\cos x-1}{2x}$，再求导一次得 $\lim\dfrac{\mathrm{e}^{\sin x}(\cos^2x-\sin x)}{2}=\dfrac12$。</p>
+<p><b>例 5（无穷大与无界的区别）.</b> 判断：$x\to+\infty$ 时 $f(x)=x\cos x$ 是无穷大吗？</p>
+<p>不是。取 $x_n=2n\pi$ 得 $f(x_n)=2n\pi\to+\infty$，说明 $f$ 无界；但取 $x_n'=2n\pi+\frac\pi2$ 得 $f(x_n')=0$，对于任何 $M>0$，在任何 $(X,+\infty)$ 内都有点使 $|f|=0<M$，不满足无穷大的定义。<b>这道题告诉我们：</b>验证"不是无穷大"只需找一列趋于 $+\infty$ 的点使 $f$ 不趋于 $\infty$。</p>
+<p><b>例 6（有界乘无穷小）.</b> 求 $\lim\limits_{x\to0}\dfrac{x^2\sin\frac1x}{\sin x}$。</p>
+<p>分母 $\sin x\sim x$ 是整体因子可以换，得 $\lim x\sin\frac1x$。注意这里<b>不能</b>再把 $\sin\frac1x$ 换成 $\frac1x$（$\frac1x$ 不趋于 $0$，不是无穷小，等价无穷小表用不上），而应该用"有界 $\times$ 无穷小 $=$ 无穷小"：$|\sin\frac1x|\le1$，$x\to0$，所以极限为 $0$。</p>`
+      },
+      {
+        kind: 'example', title: '近十年真题精讲（一）：阶的比较与反求参数',
+        html: R`<p><b>真题 1.</b> <span class="qref" data-q="2019-1">2019 年第 1 题</span>　当 $x\to0$ 时，若 $x-\tan x$ 与 $x^k$ 是同阶无穷小，则 $k=$（　　）.</p>
+<p>(A) $1$　(B) $2$　(C) $3$　(D) $4$</p>
+<p><b>这题考什么：</b>"同阶"的定义。按本篇定义，"$x-\tan x$ 与 $x^k$ 同阶"就是 $\lim\limits_{x\to0}\dfrac{x-\tan x}{x^k}=C\ne0$，所以问题是：$x-\tan x$ 是几阶无穷小？</p>
+<p><b>从题面哪个特征想到方法：</b>$x$ 与 $\tan x$ 是一对等价无穷小，相减之后一阶项抵消（这正是代换定理 remark 2 里"$A=1$ 不能换"的情形），剩下的是更高阶的部分，必须把 $\tan x$ 展开到更高一项才看得见。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>泰勒展开 $\tan x=x+\dfrac{x^3}{3}+o(x^3)$，于是 $x-\tan x=-\dfrac{x^3}3+o(x^3)$。（理由：由"等价无穷小的充要条件"，这等价于 $x-\tan x\sim-\frac{x^3}3$。）</li>
+<li>按定义验证：$\lim\limits_{x\to0}\dfrac{x-\tan x}{x^3}=-\dfrac13\ne0$，所以 $k=3$。若不记得展开式，可用洛必达：$\lim\dfrac{1-\sec^2x}{3x^2}=\lim\dfrac{-\tan^2x}{3x^2}=-\dfrac13$（这里 $\tan^2x$ 是整体乘法因子，可换成 $x^2$）。</li>
+</ol>
+<p><b>答案：C.</b></p>
+<p><b>这道题告诉我们：</b>遇到"等价无穷小相减"，一阶项一定抵消，阶数至少是 2，要么用三阶等价式（$\tan x-x\sim\frac{x^3}3$ 值得背下来），要么泰勒展开，要么洛必达。</p>
+<p><b>真题 2.</b> <span class="qref" data-q="2023-11">2023 年第 11 题</span>　当 $x\to0$ 时，函数 $f(x)=ax+bx^2+\ln(1+x)$ 与 $g(x)=\mathrm{e}^{x^2}-\cos x$ 是等价无穷小，则 $ab=$ ______.</p>
+<p><b>这题考什么：</b>"等价"的定义 $\lim\dfrac fg=1$，加上已知极限反求参数。</p>
+<p><b>从题面哪个特征想到方法：</b>$f$ 中带两个待定参数 $a,b$，而且是多项式加一个初等函数。要让 $f$ 与 $g$ 等价，由"等价无穷小的充要条件"，$f$ 与 $g$ 的<b>首个非零项必须完全相同</b>（系数和阶数都一样）。所以自然的做法是把 $f,g$ 都泰勒展开，逐阶比较系数。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>先定 $g$ 的阶：$\mathrm{e}^{x^2}=1+x^2+o(x^2)$，$\cos x=1-\dfrac{x^2}2+o(x^2)$，相减得 $g(x)=\dfrac32x^2+o(x^2)$，即 $g\sim\dfrac32x^2$，是二阶无穷小。（这里是两个展开式相减，一阶项都是 $0$，二阶项 $1$ 与 $-\frac12$ 不抵消，所以可以放心相减——对应 remark 2 中 $A\ne-1$ 的情形。）</li>
+<li>展开 $f$ 到二阶：$\ln(1+x)=x-\dfrac{x^2}2+o(x^2)$，所以 $f(x)=(a+1)x+\left(b-\dfrac12\right)x^2+o(x^2)$。</li>
+<li>要 $f\sim g$，须 $f$ 的一阶项系数为 $0$（否则 $f$ 是一阶，比 $g$ 低阶，$\frac fg\to\infty$），且二阶项系数等于 $\dfrac32$：$a+1=0$，$b-\dfrac12=\dfrac32$，得 $a=-1$，$b=2$。</li>
+<li>验证：$\lim\dfrac{f}{g}=\lim\dfrac{\frac32x^2+o(x^2)}{\frac32x^2+o(x^2)}=1$。故 $ab=-2$。</li>
+</ol>
+<p><b>答案：$-2$.</b></p>
+<p><b>这道题告诉我们：</b>"等价"是一个很强的条件——不仅阶数相同，首项系数也要相同；"同阶"只要求阶数相同。做反求参数题时，先确定不含参数那一边的阶和首项系数，再对含参数的一边逐阶"对齐"：低阶项系数归零，同阶项系数相等。展开到几阶由不含参数的那一边决定（"上下同阶"原则）。</p>`
+      },
+      {
+        kind: 'example', title: '近十年真题精讲（二）：变限积分比阶与等价代换求极限',
+        html: R`<p><b>真题 3.</b> <span class="qref" data-q="2020-1">2020 年第 1 题</span>　当 $x\to0^{+}$ 时，下列无穷小量中最高阶的是（　　）.</p>
+<p>(A) $\displaystyle\int_0^x\left(\mathrm{e}^{t^2}-1\right)\mathrm{d}t$　(B) $\displaystyle\int_0^x\ln\left(1+\sqrt{t^3}\right)\mathrm{d}t$　(C) $\displaystyle\int_0^{\sin x}\sin t^2\,\mathrm{d}t$　(D) $\displaystyle\int_0^{1-\cos x}\sqrt{\sin^3t}\,\mathrm{d}t$</p>
+<p><b>这题考什么：</b>$k$ 阶无穷小的定义，对象是四个变限积分。"最高阶"就是趋于 $0$ 最快的那个，即 $\sim Cx^k$ 中 $k$ 最大的。</p>
+<p><b>从题面哪个特征想到方法：</b>变限积分不好直接看阶，但求导之后就是普通函数（变限积分求导公式，见 int.ftc）。由洛必达法则，$\lim\dfrac{F(x)}{x^k}=\lim\dfrac{F'(x)}{kx^{k-1}}$，所以<b>$F$ 的阶 $=F'$ 的阶 $+1$</b>（"求导降一阶"）。而 $F'$ 的阶用等价无穷小一眼就能看出。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>(A)：导数 $\mathrm{e}^{x^2}-1\sim x^2$，二阶，所以积分是 $3$ 阶。</li>
+<li>(B)：导数 $\ln(1+\sqrt{x^3})\sim\sqrt{x^3}=x^{3/2}$，$\frac32$ 阶，所以积分是 $\frac52$ 阶。</li>
+<li>(C)：导数为 $\sin(\sin^2x)\cdot\cos x\sim\sin^2x\sim x^2$（$\cos x\to1$ 不影响阶），二阶，所以积分是 $3$ 阶。</li>
+<li>(D)：导数为 $\sqrt{\sin^3(1-\cos x)}\cdot\sin x$。其中 $1-\cos x\sim\frac{x^2}2$，$\sin(1-\cos x)\sim\frac{x^2}2$，所以 $\sqrt{\sin^3(1-\cos x)}\sim\left(\frac{x^2}2\right)^{3/2}=\frac{x^3}{2\sqrt2}$，再乘 $\sin x\sim x$，导数是 $4$ 阶，积分是 $5$ 阶。</li>
+<li>比较：$3,\ \frac52,\ 3,\ 5$，最高阶是 (D)。</li>
+</ol>
+<p><b>答案：D.</b></p>
+<p><b>这道题告诉我们：</b>每一步的等价代换都是对"整体乘法因子"做的（如 $\sqrt{\sin^3u}$ 中 $\sin u\sim u$，再整体取 $\frac32$ 次幂），完全符合代换定理；复合函数里只要内层 $u\to0$ 就可以套等价式；$k$ 可以是分数。另外要记住"高阶 = 更快 = 更小"，别选成 (B)。</p>
+<p><b>真题 4.</b> <span class="qref" data-q="2025-11">2025 年第 11 题</span>　$\displaystyle\lim_{x\to0^+}\frac{x^x-1}{\ln x\cdot\ln(1-x)}=$ ______．</p>
+<p><b>这题考什么：</b>等价无穷小代换定理的直接应用，考察能否识别"$\mathrm{e}^{u}-1\sim u$"和"$\ln(1+u)\sim u$"的结构。</p>
+<p><b>从题面哪个特征想到方法：</b>$x^x$ 是幂指函数，标准处理是写成 $\mathrm{e}^{x\ln x}$；$x\to0^+$ 时 $x\ln x\to0$（这是一个基本极限，可用洛必达 $\lim\frac{\ln x}{1/x}=\lim\frac{1/x}{-1/x^2}=0$ 得到），所以 $x^x-1=\mathrm{e}^{x\ln x}-1$ 正是"$\mathrm{e}^{u}-1$，$u\to0$"的形式。分母里 $\ln(1-x)$ 是"$\ln(1+u)$，$u=-x\to0$"的形式。它们都是整体乘除因子，可以换。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>$x^x-1=\mathrm{e}^{x\ln x}-1\sim x\ln x$（$x\to0^+$），因为 $u=x\ln x\to0$ 且 $u\ne0$，复合情形下 $\mathrm{e}^u-1\sim u$ 成立。</li>
+<li>$\ln(1-x)\sim-x$（$x\to0^+$）。</li>
+<li>代入：$\displaystyle\lim_{x\to0^+}\frac{x\ln x}{\ln x\cdot(-x)}=\lim_{x\to0^+}(-1)=-1$。注意 $\ln x$ 本身是无穷大，它在分子分母中直接约掉，不需要（也不能）对它做任何"等价代换"。</li>
+</ol>
+<p><b>答案：$-1$.</b></p>
+<p><b>这道题告诉我们：</b>等价代换的本质是"换掉趋于 $0$ 的乘除因子"，关键是认出"$u$"是什么（这里 $u=x\ln x$ 和 $u=-x$）；而本身不趋于 $0$ 的因子（$\ln x$）老老实实留着。</p>`
+      },
+      {
+        kind: 'pitfall', title: '常见误区',
+        html: R`<ul>
+<li><b>"无穷小是很小的数"。</b>错。无穷小是极限为 $0$ 的变量，和"过程"绑定。$0.000001$ 不是无穷小；$0$ 是唯一的常数无穷小。</li>
+<li><b>"高阶无穷小更大"。</b>错。"高阶"=趋于 $0$ 更快=更小。$x^3=o(x)$，$x\to0$ 时 $x^3$ 远小于 $x$。</li>
+<li><b>加减里随意等价代换。</b>$\lim\limits_{x\to0}\dfrac{\tan x-\sin x}{x^3}$ 换成 $\dfrac{x-x}{x^3}=0$ 是错的，正确答案是 $\frac12$。规则："只换整体的乘除因子"；加减两项换完后若恰好抵消，必须回头用更高阶的展开或者因式分解。</li>
+<li><b>把等价无穷小当成恒等式。</b>$\sin x\sim x$ 不是 $\sin x=x$，它是 $\sin x=x+o(x)$。所以在需要更高精度（如分子分母都是三阶）时，一阶等价式不够用。</li>
+<li><b>$u$ 不趋于 $0$ 也套公式。</b>$x\to\infty$ 时不能写 $\sin x\sim x$；$x\to0$ 时不能写 $\sin\frac1x\sim\frac1x$。等价无穷小表的前提是"括号里的量趋于 $0$"。$x\to\infty$ 时倒是可以写 $\sin\frac1x\sim\frac1x$。</li>
+<li><b>无界 $=$ 无穷大。</b>错。$x\sin x$ 在 $x\to+\infty$ 时无界但不是无穷大。无穷大要求"最终所有点"都大，无界只要求"有些点"大。</li>
+<li><b>"$\lim f=\infty$"当成极限存在。</b>按定义这时极限不存在。做"极限存在则……"类选择题时要注意。</li>
+<li><b>两个无穷小的和、商想当然。</b>无穷小 $+$ 无穷小 $=$ 无穷小（有限个），但无穷小 $\div$ 无穷小什么都可能，无穷多个无穷小之和也什么都可能（$n$ 个 $\frac1n$ 之和为 $1$）。</li>
+<li><b>$o(x^2)$ 当成一个确定的函数。</b>$o(x^2)-o(x^2)$ 不是 $0$，只能说仍是 $o(x^2)$。</li>
+<li><b>"同阶"与"等价"混淆。</b>同阶只要比值极限是非零常数；等价要求这个常数是 $1$。反求参数时，"同阶"条件少一个方程，"等价"条件多一个方程。</li>
+</ul>`
+      },
+      {
+        kind: 'method', title: '方法与题型识别',
+        html: R`<p><b>题型一：判断阶数 / 比较几个无穷小谁高阶。</b></p>
+<ul>
+<li>看到"$\alpha$ 是 $x$ 的几阶无穷小"→ 求 $\lim\dfrac{\alpha}{x^k}$ 使之为非零常数；工具按难度依次是：等价无穷小表 → 泰勒展开（找第一个非零项）→ 洛必达。</li>
+<li>看到"等价无穷小相减"（$x-\sin x$、$\tan x-x$、$\mathrm{e}^x-1-x$ 等）→ 一阶一定抵消，直接用三阶 / 二阶等价式或泰勒。</li>
+<li>看到"变限积分"→ 求导降一阶：$F(x)=\int_0^{\varphi(x)}g(t)\,\mathrm{d}t$ 的阶 $=$ $g(\varphi(x))\varphi'(x)$ 的阶 $+1$。</li>
+<li>看到"复合"（$\sin(\text{小量})$、$\ln(1+\text{小量})$、$(1+\text{小量})^a-1$）→ 内层趋于 $0$ 就套表，阶数相乘：$\sin(x^2)$ 是二阶，$\sqrt{1-\cos x}-$ 类注意开方后阶数减半。</li>
+</ul>
+<p><b>题型二：用等价代换求极限。</b></p>
+<ul>
+<li>看到 $\frac00$ 型且分子分母是乘积/商 → 每个因子换成 $Cx^k$，立刻得答案。</li>
+<li>看到加减结构 → 先问"换完会不会抵消"：不抵消（如 $\mathrm{e}^{x^2}-\cos x$，$x^2+\frac{x^2}2$）可以换；会抵消就改用因式分解（$\tan x-\sin x=\tan x(1-\cos x)$）或泰勒。</li>
+<li>看到有界振荡因子（$\sin\frac1x$、$\cos x$ 当 $x\to\infty$）→ 用"有界 $\times$ 无穷小 $=$ 无穷小"，不要试图求它的极限。</li>
+<li>看到幂指函数 $u^v$ → 写成 $\mathrm{e}^{v\ln u}$，于是 $u^v-1\sim v\ln u$（当 $v\ln u\to0$）；$1^\infty$ 型则 $u^v=\mathrm{e}^{v\ln u}$，$\ln u=\ln(1+(u-1))\sim u-1$。</li>
+</ul>
+<p><b>题型三：已知阶 / 等价关系反求参数。</b></p>
+<ul>
+<li>把不含参数的那一边展开，确定阶 $k$ 和首项系数 $C$；把含参数的一边展开到 $x^k$；"低于 $k$ 阶的系数 $=0$，$k$ 阶系数 $=C$（等价）或 $\ne0$（同阶）"列方程。</li>
+<li>也可以用"极限存在的必要条件"：若 $\lim\dfrac{A(x)}{B(x)}$ 存在且 $B\to0$，则必有 $A\to0$，可逐层剥出参数。</li>
+</ul>
+<p><b>题型四：概念辨析选择题。</b></p>
+<ul>
+<li>无穷大 vs 无界：举 $x\sin x$、$\frac1x\sin\frac1x$。</li>
+<li>无穷小的运算：有限和、有界乘积为无穷小；商不定。</li>
+<li>"$\lim\frac{f}{g}$ 存在且 $g\to0$ 推出 $f\to0$"是常用必要条件。</li>
+</ul>
+<p><b>一句口诀：</b>乘除放心换，加减看抵消，复合看内层，积分降一阶。</p>`
+      },
+      {
+        kind: 'exam', title: '考研怎么考',
+        html: R`<p>从 2016–2025 年数学一真题看，本考点几乎年年出现，而且基本都在<b>选择题或填空题</b>中（4–5 分），它要么单独成题，要么作为求极限、求导、求渐近线的基本工具。概括如下：</p>
+<ul>
+<li><b>直接考"阶的比较"（主考点）。</b>设问方式有两种：给一个无穷小问它是 $x$ 的几阶（<span class="qref" data-q="2019-1">2019 年第 1 题</span>，$x-\tan x$ 与 $x^k$ 同阶求 $k$）；给几个无穷小问哪一个阶最高（<span class="qref" data-q="2020-1">2020 年第 1 题</span>，四个变限积分比阶）。后者把本考点与变限积分求导、洛必达结合，是近年的典型综合方式。</li>
+<li><b>用"等价"条件反求参数（主考点）。</b><span class="qref" data-q="2023-11">2023 年第 11 题</span>给出含两个参数的 $f$ 与不含参数的 $g$ 等价，求 $ab$；核心是泰勒展开 + 逐阶对齐系数。这类题近几年分值升到 5 分。</li>
+<li><b>作为求极限的工具（主考点为 lim.compute）。</b>$\frac00$ 型用等价代换直接化简：<span class="qref" data-q="2025-11">2025 年第 11 题</span>（$x^x-1\sim x\ln x$，$\ln(1-x)\sim-x$）、<span class="qref" data-q="2024-11">2024 年第 11 题</span>（$(1+ax^2)^{\sin x}-1\sim ax^2\sin x$，已知极限求 $a$）、<span class="qref" data-q="2016-9">2016 年第 9 题</span>（分母 $1-\cos x^2\sim\frac{x^4}2$，分子是变限积分）、<span class="qref" data-q="2018-9">2018 年第 9 题</span>（$1^\infty$ 型，$\sin kx\sim kx$）、<span class="qref" data-q="2020-9">2020 年第 9 题</span>（$\infty-\infty$ 型通分后分母 $(\mathrm{e}^x-1)\ln(1+x)\sim x^2$）。</li>
+<li><b>与连续、可导结合（主考点为 lim.cont / diff.def）。</b><span class="qref" data-q="2017-1">2017 年第 1 题</span>分段函数在 $0$ 处连续，右极限用 $1-\cos\sqrt x\sim\frac x2$；<span class="qref" data-q="2018-1">2018 年第 1 题</span>判断含 $|x|$ 的函数在 $0$ 处是否可导，用"差商分子的阶"来数：分子比 $x$ 高阶则可导；<span class="qref" data-q="2020-2">2020 年第 2 题</span>考"$f$ 可导推出 $f(x)/\sqrt{|x|}\to0$"，本质是可导意味着 $f(x)-f(0)$ 至少是一阶无穷小。</li>
+<li><b>与其他章节结合。</b><span class="qref" data-q="2023-1">2023 年第 1 题</span>求斜渐近线，截距计算中用 $\ln\left(\mathrm{e}+\frac1{x-1}\right)-1=\ln\left(1+\frac{1}{\mathrm{e}(x-1)}\right)\sim\frac1{\mathrm{e}(x-1)}$；<span class="qref" data-q="2024-13">2024 年第 13 题</span>傅里叶系数 $a_{2n-1}\to0$，于是 $\sin a_{2n-1}\sim a_{2n-1}$，把级数题转化为无穷小的阶。</li>
+</ul>
+<p><b>近几年的变化：</b>2016–2018 年多为"等价代换求极限"的直接应用；2019 年以后更倾向于考"阶"本身的概念（求 $k$、比最高阶、等价反求参数），而且把对象换成变限积分、幂指函数、含参函数，要求同时熟练泰勒展开和洛必达。概念辨析（无穷大 vs 无界、无穷小的运算）近十年没有单独出题，但在选择题的选项设计里经常作为干扰项出现，仍需掌握。</p>`
+      },
+      {
+        kind: 'check', title: '自测',
+        items: [
+          { q: R`<p>判断对错并说理由：$x\to+\infty$ 时，$f(x)=x\sin x$ 是无穷大。</p>`, a: R`<p>错。取 $x_n=n\pi\to+\infty$，$f(x_n)=0$，所以对任何 $M>0$ 都不可能在 $(X,+\infty)$ 内恒有 $|f|>M$。$f$ 只是无界（取 $x_n=2n\pi+\frac\pi2$ 得 $f(x_n)\to+\infty$）。无穷大 ⟹ 无界，反之不成立。</p>` },
+          { q: R`<p>$x\to0$ 时，$\sqrt{1+x}-1-\dfrac x2$ 是 $x$ 的几阶无穷小？</p>`, a: R`<p>二阶。$(1+x)^{1/2}=1+\frac12x+\frac{\frac12\cdot(-\frac12)}{2}x^2+o(x^2)=1+\frac x2-\frac{x^2}8+o(x^2)$，所以 $\sqrt{1+x}-1-\frac x2=-\frac{x^2}8+o(x^2)\sim-\frac{x^2}8$。也可以用洛必达：$\lim\dfrac{\frac1{2\sqrt{1+x}}-\frac12}{2x}=\lim\dfrac{1-\sqrt{1+x}}{4x\sqrt{1+x}}=-\dfrac18$。</p>` },
+          { q: R`<p>下列做法是否正确：$\lim\limits_{x\to0}\dfrac{\sin x-x\cos x}{x^3}=\lim\limits_{x\to0}\dfrac{x-x\cdot1}{x^3}=0$。</p>`, a: R`<p>不正确。分子是两项相减，$\sin x\sim x$、$x\cos x\sim x$，换完恰好抵消，不满足"加减可换"的条件。正确做法：泰勒 $\sin x=x-\frac{x^3}6+o(x^3)$，$x\cos x=x-\frac{x^3}2+o(x^3)$，相减得 $\frac{x^3}3+o(x^3)$，极限为 $\dfrac13$。</p>` },
+          { q: R`<p>设 $x\to0$ 时 $\alpha\sim\beta$，$\beta\ne0$。下列哪一个一定成立？</p>`, options: [R`<p>$\alpha-\beta=o(\alpha)$ 且 $\alpha-\beta=o(\beta)$</p>`, R`<p>$\alpha=\beta$</p>`, R`<p>$\alpha^2$ 与 $\beta$ 同阶</p>`, R`<p>$\lim\dfrac{\alpha-\beta}{x}=0$</p>`], correct: 0, explain: R`<p>由等价的充要条件，$\alpha-\beta=o(\beta)$；又 $\alpha\sim\beta$ 所以 $o(\beta)=o(\alpha)$，(A) 成立。(B) 错：$\sin x\sim x$ 但不相等。(C) 错：$\alpha^2$ 比 $\beta$ 高阶。(D) 错：$\alpha-\beta$ 是比 $\beta$ 高阶，但 $\beta$ 可能比 $x$ 低阶，比如 $\alpha=\sqrt{|x|}+x$，$\beta=\sqrt{|x|}$，$\frac{\alpha-\beta}{x}=1\not\to0$。</p>` },
+          { q: R`<p>求 $\lim\limits_{x\to0}\dfrac{\mathrm{e}^{x^2}-1}{x\ln(1+x)}$。</p>`, a: R`<p>分子 $\mathrm{e}^{x^2}-1\sim x^2$（内层 $u=x^2\to0$），分母 $x\ln(1+x)\sim x\cdot x=x^2$，两者都是整体乘除因子，可换，极限为 $1$。</p>` },
+          { q: R`<p>判断对错并说理由：若 $\lim\limits_{x\to0}\dfrac{f(x)}{x^2}$ 存在，则 $\lim\limits_{x\to0}f(x)=0$ 且 $\lim\limits_{x\to0}\dfrac{f(x)}{x}=0$。</p>`, a: R`<p>对。$f(x)=\dfrac{f(x)}{x^2}\cdot x^2$，前者极限存在（设为 $A$），后者趋于 $0$，由乘法法则 $f\to A\cdot0=0$；同理 $\dfrac{f(x)}{x}=\dfrac{f(x)}{x^2}\cdot x\to A\cdot0=0$。这说明 $f=o(x)$——"$\lim\frac{A}{B}$ 存在且 $B\to0$ 则 $A\to0$"是反求参数题的基本工具。</p>` },
+          { q: R`<p>$x\to0^+$ 时，下列无穷小中阶最高的是</p>`, options: [R`<p>$\sqrt{x}$</p>`, R`<p>$1-\cos x$</p>`, R`<p>$x-\sin x$</p>`, R`<p>$\ln(1+x^2)$</p>`], correct: 2, explain: R`<p>阶分别是 $\frac12$、$2$、$3$、$2$，阶最高（趋于 $0$ 最快）的是 $x-\sin x\sim\frac{x^3}6$。</p>` },
+          { q: R`<p>$x\to0$ 时，$x\sin\dfrac1x$ 与 $x$ 是什么关系：高阶、低阶、同阶还是无法比较？$x\sin\frac1x$ 与 $\sqrt{|x|}$ 呢？</p>`, a: R`<p>与 $x$ 无法比较：比值 $\sin\frac1x$ 极限不存在。与 $\sqrt{|x|}$ 相比：$\dfrac{x\sin\frac1x}{\sqrt{|x|}}=\pm\sqrt{|x|}\sin\frac1x\to0$（有界乘无穷小），所以 $x\sin\frac1x$ 是比 $\sqrt{|x|}$ 高阶的无穷小。这说明"阶"不一定存在，但"高阶"关系可以单独成立。</p>` }
+        ]
+      }
+    ]
+  };
+});
