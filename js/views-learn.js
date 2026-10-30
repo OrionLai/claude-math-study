@@ -10,16 +10,37 @@
     return '<span class="freq">考过 ' + K.count + ' 次 · 最近 ' + K.last + '</span>';
   }
 
+  // 最近读过的一篇（用于「继续学习」）
+  KY.lastLesson = function () {
+    var best = null;
+    Object.keys(KY.prog.l).forEach(function (id) {
+      var r = KY.prog.l[id];
+      if (!r || !r.t || !KY.meta.lessons[id]) return;
+      if (!best || r.t > best.t) best = { id: id, t: r.t, sec: r.sec || 0, secTitle: r.secTitle || '' };
+    });
+    return best;
+  };
+  KY.continueCard = function () {
+    var last = KY.lastLesson();
+    if (!last || KY.lessonDone(last.id)) return '';
+    var k = KY.kpById[last.id];
+    return KY.link('l-' + last.id, '<span class="eyebrow">继续学习</span><b>' + KY.esc(k.title) + '</b>' +
+      (last.secTitle && last.sec > 0 ? '<span class="cont-sec">上次读到：' + KY.esc(last.secTitle) + '</span>' : ''), 'cont-card');
+  };
+
   /* ── 目录 ── */
   KY.views.learn = function () {
     var L = KY.meta.lessons;
+    var ready = Object.keys(L).length;
     var done = Object.keys(L).filter(KY.lessonDone).length;
     var h = '<div class="wrap">';
     h += '<header class="page-head"><p class="eyebrow">基础讲解 · 从零开始</p><h1>把每个概念学透</h1>' +
-      '<p class="lede">按考试大纲分成 ' + KY.tax.chapters.length + ' 章、' + KY.tax.kps.length + ' 个考点。每篇都从"这个概念要解决什么问题"讲起，给出严格定义的逐字拆解、定理的完整分步证明、例题、常见误区和自测题。看不懂的地方随时点「问 AI」。</p>' +
-      KY.meter({ ok: done, bad: 0, n: KY.tax.kps.length }, '已学完') + '</header>';
+      '<p class="lede">按考试大纲分成 ' + KY.tax.chapters.length + ' 章、' + KY.tax.kps.length + ' 个考点，目前写好了 ' + ready + ' 篇，按近十年考频从高到低陆续补全。每篇都从"这个概念要解决什么问题"讲起，给出严格定义的逐字拆解、定理的完整分步证明、近年真题精讲、常见误区和自测题。看不懂的地方随时点「问 AI」。</p>' +
+      KY.meter({ ok: done, bad: 0, n: ready }, '已学完') + KY.continueCard() +
+      '<div class="head-row"><label class="toggle"><input type="checkbox" id="learn-ready"' + (learnReadyOnly ? ' checked' : '') + '> 只看已写好的讲解</label></div></header>';
     KY.tax.chapters.forEach(function (c) {
-      var kps = KY.tax.kps.filter(function (k) { return k.ch === c.id; });
+      var kps = KY.tax.kps.filter(function (k) { return k.ch === c.id && (!learnReadyOnly || L[k.id]); });
+      if (!kps.length) return;
       h += '<section class="section"><h2><span class="eyebrow">第 ' + c.no + ' 章</span>' + c.title + '</h2><div class="kp-list">';
       kps.forEach(function (k) {
         var ready = !!L[k.id];
@@ -33,6 +54,13 @@
     h += '</div>';
     return h;
   };
+  var learnReadyOnly = !!KY.readJSON('ky2-learn-ready', false);
+  document.addEventListener('change', function (e) {
+    if (e.target.id !== 'learn-ready') return;
+    learnReadyOnly = e.target.checked;
+    KY.writeJSON('ky2-learn-ready', learnReadyOnly);
+    KY.render('learn', { keepScroll: true });
+  });
 
   /* ── 单篇讲解 ── */
   function secHead(s, i) {
@@ -87,7 +115,8 @@
     else if (s.kind === 'def') body = '<div class="box box-def">' + s.html + '</div>';
     else body = '<div class="sec-body">' + s.html + '</div>';
     if (s.kind === 'exam') body += examStats(lessonId);
-    return '<section class="sec sec-' + s.kind + '" id="s-' + i + '">' + secHead(s, i) + body + '</section>';
+    // 前两节直接排版，后面的快滚到眼前时再排（见 core.js 的 watchLazy）
+    return '<section class="sec sec-' + s.kind + (i >= 2 ? ' lazy-block mj-lazy' : '') + '" id="s-' + i + '">' + secHead(s, i) + body + '</section>';
   }
 
   function examStats(id) {
@@ -100,10 +129,14 @@
     var list = KY.problemsOfKp(id).sort(KY.byYearDesc);
     if (!list.length) return '';
     var show = list.slice(0, 8);
-    return '<section class="section related" id="s-rel"><h2>这个考点的真题<span class="eyebrow">共 ' + list.length + ' 道，按年份从新到旧</span></h2><ul class="mini-list">' +
+    return '<section class="section related lazy-block mj-lazy" id="s-rel"><h2>这个考点的真题<span class="eyebrow">共 ' + list.length + ' 道，按年份从新到旧 · 点题目在当前页打开</span></h2><ul class="mini-list">' +
       show.map(function (p) {
-        return '<li>' + KY.link('q-' + p.id, '<span class="yr">' + p.year + '</span><span class="tp">' + KY.esc(p.no) + ' · ' + p.type + '题</span>' + KY.dots(p.difficulty), 'mini-head') + '<div class="mini-stem">' + p.stem + '</div></li>';
+        return '<li>' + KY.link('q-' + p.id, '<span class="yr">' + p.year + '</span><span class="tp">' + KY.esc(p.no) + ' · ' + p.type + '题</span>' + KY.dots(p.difficulty) + statusTag(p.id), 'mini-head', ' data-peek="' + p.id + '"') + '<div class="mini-stem">' + p.stem + '</div></li>';
       }).join('') + '</ul>' + (list.length > show.length ? KY.link('kp-' + id, '查看全部 ' + list.length + ' 道', 'btn') : '') + '</section>';
+  }
+  function statusTag(pid) {
+    var st = KY.status(pid);
+    return st ? '<span class="st-tag st-' + st + '">' + (st === 'ok' ? '会了' : '错题') + '</span>' : '';
   }
 
   KY.views.lesson = function (r) {
@@ -127,6 +160,11 @@
         (L.prereq && L.prereq.length ? '<span class="prereq">先修：' + L.prereq.map(function (p) { return KY.meta.lessons[p] ? KY.link('l-' + p, KY.esc(KY.kpById[p].title), 'chip') : '<span class="chip">' + KY.esc(KY.kpById[p].title) + '</span>'; }).join('') + '</span>' : '') +
         '</div></header>';
       if (KY.meta.status && KY.meta.status.reviewedLessons.indexOf(id) < 0) m += '<p class="draft-note">本篇是作者初稿，还没经过第二人独立审校。读到可疑的地方，可以点那一节右上角的「问 AI」核对。</p>';
+      var rec = KY.prog.l[id];
+      if (rec && rec.sec >= 2 && L.sections[rec.sec]) {
+        m += '<p class="resume" id="resume"><span>上次读到第 ' + (rec.sec + 1) + ' 节「' + KY.esc(KY.plain(L.sections[rec.sec].title)) + '」</span>' +
+          '<button type="button" class="btn btn-small primary" data-scroll="s-' + rec.sec + '">接着读</button><button type="button" class="btn btn-small btn-quiet" data-resume-x>从头读</button></p>';
+      }
       m += L.sections.map(function (s, i) { return sectionHtml(s, i, id); }).join('');
       m += '<div class="lesson-done"><button type="button" class="btn ' + (KY.lessonDone(id) ? '' : 'primary') + '" data-lesson-done>' + (KY.lessonDone(id) ? '已学完（点击取消）' : '这一篇我学完了') + '</button></div>';
       m += relatedHtml(id);
@@ -211,4 +249,88 @@
     KY.prog.quiz[lid][key] = right;
     KY.saveProg();
   }
+
+  /* ── 阅读辅助：当前小节高亮、阅读进度条、记住读到哪里、手机目录 ── */
+  var reading = null; // { id, secs: [el], links: {i: a}, cur }
+  var saveTimer = null;
+  function updateReading() {
+    if (!reading) return;
+    var y = 0.3 * window.innerHeight;
+    var cur = -1;
+    for (var i = 0; i < reading.secs.length; i++) {
+      if (reading.secs[i].getBoundingClientRect().top <= y) cur = i; else break;
+    }
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight;
+    reading.bar.style.width = (max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0) + '%';
+    if (cur === reading.cur) return;
+    if (reading.links[reading.cur]) reading.links[reading.cur].removeAttribute('aria-current');
+    reading.cur = cur;
+    var a = reading.links[cur];
+    if (a) {
+      a.setAttribute('aria-current', 'location');
+      var nav = a.closest('.toc');
+      if (nav && nav.scrollHeight > nav.clientHeight) {
+        var top = a.offsetTop - nav.offsetTop;
+        if (top < nav.scrollTop + 40 || top > nav.scrollTop + nav.clientHeight - 60) nav.scrollTop = top - nav.clientHeight / 3;
+      }
+    }
+    // 记住读到哪一节（只记讲解正文里的小节）
+    var sec = reading.secs[cur];
+    if (sec && /^s-\d+$/.test(sec.id)) {
+      var id = reading.id;
+      var n = +sec.id.slice(2);
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(function () {
+        var L = KY.lessons[id];
+        KY.prog.l[id] = KY.prog.l[id] || {};
+        KY.prog.l[id].sec = n;
+        KY.prog.l[id].t = Date.now();
+        KY.prog.l[id].secTitle = L && L.sections[n] ? KY.plain(L.sections[n].title) : '';
+        KY.saveProg();
+      }, 800);
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (!reading || ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { ticking = false; updateReading(); });
+  }, { passive: true });
+  window.addEventListener('resize', function () { if (reading) updateReading(); });
+
+  KY.listen('rendered', function (r) {
+    var bar = document.getElementById('readbar');
+    var tocBtn = document.getElementById('toc-btn');
+    clearTimeout(saveTimer);
+    if (r.view !== 'lesson') { reading = null; bar.hidden = true; tocBtn.hidden = true; return; }
+    var main = document.querySelector('#view .lesson');
+    var secs = Array.prototype.slice.call(main.querySelectorAll('.sec, #s-rel'));
+    var links = {};
+    secs.forEach(function (s, i) {
+      var a = document.querySelector('.toc .in-page a[data-scroll="' + s.id + '"]');
+      if (a) links[i] = a;
+    });
+    reading = { id: r.id, secs: secs, links: links, cur: -2, bar: bar.firstElementChild };
+    bar.hidden = false;
+    tocBtn.hidden = false;
+    // 第一次打开就记下来（「继续学习」用）
+    KY.prog.l[r.id] = KY.prog.l[r.id] || {};
+    KY.prog.l[r.id].t = Date.now();
+    KY.writeJSON('ky2-progress', KY.prog);
+    updateReading();
+  });
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-resume-x]')) { var r = document.getElementById('resume'); if (r) r.remove(); return; }
+    if (e.target.closest('#toc-btn')) {
+      var sheet = document.getElementById('sheet');
+      var inPage = document.querySelector('.toc .in-page');
+      if (!inPage) return;
+      var body = sheet.querySelector('.sheet-body');
+      body.innerHTML = inPage.innerHTML;
+      if (typeof sheet.showModal === 'function') sheet.showModal(); else sheet.setAttribute('open', '');
+      var cur = body.querySelector('[aria-current]');
+      if (cur) cur.scrollIntoView({ block: 'center' });
+    }
+  });
 })();

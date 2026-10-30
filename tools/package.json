@@ -1,15 +1,21 @@
 {
   "name": "tools",
   "version": "1.0.0",
-  "description": "",
+  "description": "数一高数真题研习：内容校验、构建、端到端测试、用 API 额度补全内容的工具",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test-site.js",
+    "test:full": "node test-site.js --full",
+    "check": "node check.js all",
+    "build": "node build.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "mathjax-full": "^3.2.2"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
   }
 }

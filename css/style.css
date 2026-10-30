@@ -91,6 +91,7 @@ ul, ol { padding-left: 1.4rem; }
 .nav a:hover { color: var(--ink); background: var(--accent-soft); }
 .nav a[aria-current="page"] { color: var(--ink); background: var(--accent-soft); font-weight: 500; }
 @media (max-width: 40rem) {
+  :root { --top-h: 6rem; } /* 手机上导航换到第二行，顶栏约 95px；页内跳转的落点要躲开它 */
   .nav { margin-left: 0; width: 100%; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 0.15rem; }
 }
 .count { font-family: var(--f-mono); font-size: 0.72rem; font-variant-numeric: tabular-nums; min-width: 1.4em; padding: 0 0.35em; border-radius: 999px; text-align: center; background: var(--pen); color: var(--sheet); line-height: 1.5; }
@@ -191,12 +192,13 @@ a.kp-item:hover { border-color: var(--accent); }
 .done-mark { font-size: 0.72rem; color: var(--ok); background: var(--ok-soft); border-radius: 999px; padding: 0 0.5rem; font-weight: 500; }
 
 /* ── 讲解页 ── */
-.ch-layout { display: grid; gap: 2rem; }
+.ch-layout { display: grid; gap: 2rem; grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 64rem) {
   .ch-layout { grid-template-columns: 14rem minmax(0, 1fr); align-items: start; }
   .toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--top-h) + 1rem); max-height: calc(100vh - var(--top-h) - 2rem); overflow-y: auto; }
 }
-.toc { display: grid; gap: 1.25rem; font-size: 0.875rem; min-width: 0; align-content: start; }
+.toc { display: grid; gap: 1.25rem; font-size: 0.875rem; min-width: 0; align-content: start; grid-template-columns: minmax(0, 1fr); }
+.toc > div { min-width: 0; }
 .toc nav { display: grid; gap: 0.05rem; }
 .toc .eyebrow { margin-bottom: 0.25rem; }
 .toc a { color: var(--ink-2); text-decoration: none; padding: 0.15rem 0.5rem; border-radius: 4px; display: flex; align-items: baseline; gap: 0.5rem; line-height: 1.5; }
@@ -236,7 +238,8 @@ a.kp-item:hover { border-color: var(--accent); }
 .sec-body ul, .sec-body ol, .box ul, .box ol { margin: 0.4em 0; }
 .sec-body table, .box table { border-collapse: collapse; font-size: 0.9375rem; display: block; overflow-x: auto; max-width: 100%; }
 .sec-body th, .sec-body td, .box th, .box td { border-bottom: 1px solid var(--rule); padding: 0.35rem 1rem 0.35rem 0; text-align: left; vertical-align: top; }
-.sec-body svg, .box svg, .step-s svg { display: block; margin: 0.5rem auto; max-width: 100%; height: auto; color: var(--ink); }
+/* 讲解里的示意图居中成块；MathJax 的公式也是 svg，必须排除，否则行内公式会各占一行 */
+.sec-body svg:not(mjx-container svg), .box svg:not(mjx-container svg), .step-s svg:not(mjx-container svg) { display: block; margin: 0.5rem auto; max-width: 100%; height: auto; color: var(--ink); }
 .exam-data { font-size: 0.9375rem; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
 
 .proof { border-top: 1px dashed var(--rule); padding-top: 0.75rem; display: grid; gap: 0.6rem; }
@@ -255,7 +258,8 @@ a.kp-item:hover { border-color: var(--accent); }
 
 .quiz { margin: 0; padding-left: 1.6rem; display: grid; gap: 1.1rem; }
 .quiz > li::marker { font-family: var(--f-mono); color: var(--ok); font-weight: 500; }
-.qz { display: grid; gap: 0.5rem; min-width: 0; }
+.qz { display: grid; gap: 0.5rem; min-width: 0; grid-template-columns: minmax(0, 1fr); }
+.qz > * { min-width: 0; }
 .qz-opts { display: grid; gap: 0.35rem; }
 .qz-opt { display: flex; gap: 0.6rem; align-items: baseline; text-align: left; border: 1px solid var(--rule); background: var(--sheet); border-radius: var(--radius); padding: 0.4rem 0.75rem; cursor: pointer; min-width: 0; }
 .qz-opt:hover:not(:disabled) { border-color: var(--accent); }
@@ -327,6 +331,8 @@ a.yr:hover { background: var(--pen-soft); }
 .sol-part.tip { background: var(--pen-soft); border-radius: 4px; padding: 0.6rem 0.85rem; }
 .sol-part.sum { background: var(--ok-soft); border-radius: 4px; padding: 0.6rem 0.85rem; }
 .sol-part ul, .sol-part ol { margin: 0.2rem 0; }
+.sol-part table, .q-stem table, .q-panel table { border-collapse: collapse; font-size: 0.9375rem; display: block; overflow-x: auto; max-width: 100%; }
+.sol-part th, .sol-part td, .q-stem th, .q-stem td { border-bottom: 1px solid var(--rule); padding: 0.3rem 0.9rem 0.3rem 0; text-align: left; vertical-align: top; }
 .sol-foot { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
 .verify { font-size: 0.75rem; color: var(--ink-2); }
 
@@ -334,6 +340,8 @@ a.yr:hover { background: var(--pen-soft); }
 mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-block: 0.15rem; }
 mjx-container { font-size: 105% !important; }
 mjx-container.mjx-wide { display: block; overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-block: 0.2rem; }
+/* 还没排版的块里是 TeX 源码，长串不换行会把手机页面撑宽 */
+.mj-lazy { overflow-wrap: anywhere; }
 
 /* ── 筛选 ── */
 .filters { display: flex; flex-wrap: wrap; gap: 0.6rem 1.1rem; align-items: center; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--radius); padding: 0.75rem 1rem; margin-bottom: 1rem; }
@@ -449,6 +457,72 @@ body.ai-open .fab { display: none; }
   @keyframes reveal { from { opacity: 0.4; transform: translateY(-2px); } to { opacity: 1; transform: none; } }
   @keyframes slide { from { transform: translateX(24px); opacity: 0.6; } to { transform: none; opacity: 1; } }
 }
+
+/* ── 配色切换、阅读进度 ── */
+.theme-btn { flex: none; width: 2rem; height: 2rem; display: inline-grid; place-items: center; border: 1px solid var(--rule); border-radius: 999px; background: var(--sheet); color: var(--ink-2); cursor: pointer; padding: 0; }
+.theme-btn:hover { color: var(--ink); border-color: var(--accent); }
+.theme-btn svg { width: 1rem; height: 1rem; display: block; }
+@media (max-width: 40rem) {
+  .theme-btn { position: absolute; top: 0.55rem; right: 16px; }
+  .top-in { position: relative; }
+}
+.readbar { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; pointer-events: none; }
+.readbar i { display: block; height: 100%; width: 0; background: var(--accent); }
+
+/* ── 真题引用、看题浮层 ── */
+.qref { color: var(--accent); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; border-radius: 3px; padding: 0 0.1rem; font-weight: 500; }
+.qref:hover { background: var(--accent-soft); text-decoration-style: solid; }
+.qref::after { content: "↗"; font-size: 0.75em; margin-left: 0.1em; text-decoration: none; display: inline-block; }
+.qref-missing { color: inherit; text-decoration: none; cursor: default; }
+.qref-missing::after { content: none; }
+dialog { color: var(--ink); }
+.peek, .sheet { padding: 0; border: 1px solid var(--rule); border-radius: 10px; background: var(--paper); max-height: min(88vh, 60rem); width: min(52rem, calc(100vw - 24px)); box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28); overscroll-behavior: contain; }
+.peek::backdrop, .sheet::backdrop { background: rgba(10, 16, 30, 0.45); }
+.peek-in, .sheet-in { display: flex; flex-direction: column; max-height: min(88vh, 60rem); }
+.peek-head { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 1rem; border-bottom: 1px solid var(--rule); background: var(--sheet); }
+.peek-head b { font-family: var(--f-display); font-size: var(--step-1); margin-right: auto; min-width: 0; }
+.peek-x { background: none; border: none; font-size: 1.5rem; line-height: 1; cursor: pointer; color: var(--ink-2); padding: 0.1rem 0.4rem; }
+.peek-x:hover { color: var(--ink); }
+.peek-body { overflow-y: auto; padding: 1rem; display: grid; gap: 0.75rem; grid-template-columns: minmax(0, 1fr); }
+.sheet { width: min(26rem, calc(100vw - 24px)); }
+.sheet-body { overflow-y: auto; padding: 0.5rem; display: grid; gap: 0.1rem; }
+.sheet-body a { color: var(--ink-2); text-decoration: none; padding: 0.45rem 0.6rem; border-radius: 6px; display: flex; align-items: baseline; gap: 0.6rem; line-height: 1.5; }
+.sheet-body a:hover, .sheet-body a[aria-current] { color: var(--ink); background: var(--accent-soft); }
+@media (max-width: 40rem) {
+  .peek { width: 100vw; max-width: 100vw; max-height: 92vh; margin: auto 0 0; border-radius: 12px 12px 0 0; }
+  .peek-in { max-height: 92vh; }
+  .peek-head .peek-open { display: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .peek[open], .sheet[open] { animation: pop 0.18s ease-out; }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+}
+
+/* ── 讲解：当前小节、继续阅读、手机目录按钮 ── */
+.toc .in-page a[aria-current] { color: var(--ink); background: var(--accent-soft); font-weight: 500; }
+.toc .in-page a[aria-current] .kind-dot { box-shadow: 0 0 0 2px var(--accent-soft), 0 0 0 3px var(--accent); }
+.resume { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin-top: 0.75rem; padding: 0.55rem 0.85rem; border-radius: var(--radius); background: var(--accent-soft); font-size: 0.9rem; max-width: 50rem; }
+.resume span { margin-right: auto; }
+.fab-toc { right: auto; left: 16px; background: var(--sheet); color: var(--ink); border: 1px solid var(--rule); }
+@media (min-width: 64rem) { .fab-toc { display: none; } }
+body.ai-open .fab-toc { display: none; }
+.cont-card { display: grid; gap: 0.1rem; justify-self: start; max-width: 32rem; padding: 0.6rem 0.95rem; border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--rule)); border-left: 3px solid var(--accent); border-radius: var(--radius); background: var(--sheet); text-decoration: none; color: var(--ink); margin-top: 0.5rem; }
+.cont-card:hover { border-color: var(--accent); }
+.cont-card b { font-size: 1.05rem; }
+.cont-sec { font-size: 0.8125rem; color: var(--ink-2); }
+.toggle { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.875rem; color: var(--ink-2); cursor: pointer; }
+.st-tag { font-size: 0.7rem; border-radius: 999px; padding: 0 0.45rem; }
+.st-ok { background: var(--ok-soft); color: var(--ok); }
+.st-bad { background: var(--pen-soft); color: var(--pen); }
+
+/* ── 单题页标题、刷题、快捷键提示 ── */
+.q-h1 { font-size: var(--step-2); }
+.pr-nav { justify-content: space-between; }
+.pr-session { margin-left: 0.75rem; padding-left: 0.75rem; border-left: 1px solid var(--rule); }
+.kbd-hint { font-size: 0.75rem; color: var(--ink-2); margin-top: 0.25rem; }
+.peek-body .kbd-hint { margin-top: 0; }
+kbd { font-family: var(--f-mono); font-size: 0.72rem; border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 4px; padding: 0 0.3rem; background: var(--sheet); color: var(--ink); }
+@media (hover: none), (max-width: 40rem) { .kbd-hint { display: none; } }
 
 /* 初稿标注与完成度 */
 .verify.draft { color: var(--pen); }

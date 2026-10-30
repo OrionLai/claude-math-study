@@ -169,12 +169,17 @@
     var same = KY.meta.problems.filter(function (x) { return x.id !== p.id && x.kp[0] === p.kp[0]; }).sort(KY.byYearDesc).slice(0, 8);
     var yearList = KY.meta.problems.filter(function (x) { return x.year === p.year; }).sort(function (a, b) { return a.id.localeCompare(b.id, 'en', { numeric: true }); });
     var i = yearList.indexOf(p);
+    var lessons = p.kp.filter(function (k) { return KY.meta.lessons[k]; });
     var h = '<div class="wrap"><div class="narrow-wide">';
-    h += '<header class="page-head"><p class="eyebrow">' + KY.link('bank', '真题库', 'crumb') + ' / ' + KY.link('y' + p.year, p.year + ' 年', 'crumb') + ' / ' + KY.esc(p.no) + '</p></header>';
+    h += '<header class="page-head"><p class="eyebrow">' + KY.link('bank', '真题库', 'crumb') + ' / ' + KY.link('y' + p.year, p.year + ' 年', 'crumb') + ' / ' + KY.esc(p.no) + '</p>' +
+      '<h1 class="q-h1">' + p.year + ' 年数学一 · ' + KY.esc(p.no) + '</h1>' +
+      (lessons.length ? '<div class="head-row"><span class="prereq">相关讲解：' + lessons.map(function (k) { return KY.link('l-' + k, KY.esc(KY.kpById[k].title), 'chip'); }).join('') + '</span></div>' : '') +
+      '</header>';
     h += KY.card(p);
+    h += '<p class="kbd-hint">快捷键：<kbd>H</kbd> 思路　<kbd>A</kbd> 答案　<kbd>S</kbd> 解析　<kbd>Y</kbd> 会了　<kbd>N</kbd> 不会　<kbd>←</kbd> <kbd>→</kbd> 同年上一题 / 下一题</p>';
     h += '<nav class="pager" aria-label="同年上下题">' +
-      (i > 0 ? KY.link('q-' + yearList[i - 1].id, '← ' + KY.esc(yearList[i - 1].no), 'btn') : '<span></span>') +
-      (i < yearList.length - 1 ? KY.link('q-' + yearList[i + 1].id, KY.esc(yearList[i + 1].no) + ' →', 'btn') : '<span></span>') + '</nav>';
+      (i > 0 ? KY.link('q-' + yearList[i - 1].id, '← ' + KY.esc(yearList[i - 1].no), 'btn', ' data-dir="-1"') : '<span></span>') +
+      (i < yearList.length - 1 ? KY.link('q-' + yearList[i + 1].id, KY.esc(yearList[i + 1].no) + ' →', 'btn', ' data-dir="1"') : '<span></span>') + '</nav>';
     if (same.length) {
       h += '<section class="section"><h2>同一考点的其他真题<span class="eyebrow">' + KY.esc(KY.kpById[p.kp[0]].title) + '</span></h2><ul class="mini-list">' +
         same.map(function (x) { return '<li>' + KY.link('q-' + x.id, '<span class="yr">' + x.year + '</span><span class="tp">' + KY.esc(x.no) + ' · ' + x.type + '题</span>' + KY.dots(x.difficulty), 'mini-head') + '<div class="mini-stem">' + x.stem + '</div></li>'; }).join('') +
@@ -185,7 +190,8 @@
   };
 
   /* ── 随机刷题 ── */
-  var PR = { ch: '', type: '', mode: 'uniform', skip: true, cur: null, history: [] };
+  // history：做过的题（用来「上一道」）；pos：当前在 history 里的位置（-1 表示在最新一道）；done：本轮标记过的题
+  var PR = { ch: '', type: '', mode: 'uniform', skip: true, cur: null, history: [], back: 0, done: {} };
   function pool() {
     return KY.meta.problems.filter(function (p) {
       if (PR.ch && KY.kpById[p.kp[0]].ch !== PR.ch) return false;
@@ -210,13 +216,38 @@
     for (var i = 0; i < list.length; i++) { r -= weight(list[i]); if (r <= 0) { PR.cur = list[i].id; return; } }
     PR.cur = list[list.length - 1].id;
   }
+  function sessionLine() {
+    var ids = Object.keys(PR.done);
+    if (!ids.length) return '';
+    var ok = ids.filter(function (id) { return PR.done[id] === 'ok'; }).length;
+    var bad = ids.filter(function (id) { return PR.done[id] === 'bad'; }).length;
+    return '<span class="pr-session">本轮标记了 <b>' + ids.length + '</b> 道：会了 ' + ok + ' · 不会 ' + bad + '</span>';
+  }
   function slotHtml() {
     var n = pool().length;
     if (!PR.cur || !KY.pById[PR.cur]) pick();
-    var head = '<p class="result-count">题池 <b>' + n + '</b> 道</p>';
+    var head = '<p class="result-count">题池 <b>' + n + '</b> 道' + (PR.back ? ' · 正在回看上一道' : '') + sessionLine() + '</p>';
     if (!PR.cur) return head + '<div class="empty"><b>这个范围里没有题了</b><span>换个章节或题型，或者取消「跳过已掌握」。</span></div>';
     return head + KY.card(KY.pById[PR.cur]);
   }
+  // dir = 1 换一道（回看时先回到较新的那道），dir = -1 回到上一道
+  KY.practiceStep = function (dir) {
+    var hist = PR.history;
+    if (dir < 0) {
+      var idx = hist.length - 1 - PR.back - 1;
+      if (idx < 0) { KY.toast('已经是本轮第一道了'); return; }
+      PR.back++;
+      PR.cur = hist[idx];
+    } else if (PR.back > 0) {
+      PR.back--;
+      PR.cur = hist[hist.length - 1 - PR.back];
+    } else {
+      pick();
+      if (PR.cur) hist.push(PR.cur);
+      if (hist.length > 200) hist.shift();
+    }
+    refreshPractice(false);
+  };
   KY.views.practice = function () {
     var h = '<div class="wrap"><div class="narrow-wide">';
     h += '<header class="page-head"><p class="eyebrow">随机刷题</p><h1>抽一道，做一道</h1>' +
@@ -227,18 +258,24 @@
       '<label for="pr-mode">抽题方式 <select id="pr-mode">' + opt('uniform', '均匀随机', PR.mode) + opt('freq', '按考频加权', PR.mode) + opt('wrong', '只抽错题', PR.mode) + '</select></label>' +
       '<label for="pr-skip"><input type="checkbox" id="pr-skip"' + (PR.skip ? ' checked' : '') + '> 跳过已掌握</label>' +
       '</form>';
+    if (!PR.cur || !KY.pById[PR.cur]) { pick(); if (PR.cur) { PR.history.push(PR.cur); PR.back = 0; } }
     h += '<div id="pr-slot">' + slotHtml() + '</div>';
-    h += '<div class="pr-nav"><button type="button" class="btn primary" id="pr-next">换一道</button></div>';
+    h += '<div class="pr-nav"><button type="button" class="btn" id="pr-prev">← 上一道</button><button type="button" class="btn primary" id="pr-next">换一道 →</button></div>';
+    h += '<p class="kbd-hint">快捷键：<kbd>H</kbd> 思路　<kbd>A</kbd> 答案　<kbd>S</kbd> 解析　<kbd>Y</kbd> 会了　<kbd>N</kbd> 不会　<kbd>←</kbd> 上一道　<kbd>→</kbd> 换一道</p>';
     h += '</div></div>';
     return h;
   };
   function refreshPractice(repick) {
     var slot = document.getElementById('pr-slot');
     if (!slot) return;
-    if (repick) pick();
+    if (repick) { pick(); if (PR.cur) { PR.history.push(PR.cur); PR.back = 0; } }
     KY.untypeset(slot);
     slot.innerHTML = slotHtml();
     KY.typeset(slot);
+    var prev = document.getElementById('pr-prev');
+    if (prev) prev.disabled = PR.history.length - PR.back < 2;
+    var first = slot.querySelector('[data-act="hint"]');
+    if (first && document.activeElement && document.activeElement.closest && document.activeElement.closest('.pr-nav')) first.focus({ preventScroll: true });
   }
   document.addEventListener('change', function (e) {
     if (!e.target.closest('#pr-f')) return;
@@ -248,7 +285,30 @@
     PR.skip = document.getElementById('pr-skip').checked;
     refreshPractice(true);
   });
-  document.addEventListener('click', function (e) { if (e.target.id === 'pr-next') refreshPractice(true); });
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('#pr-next')) KY.practiceStep(1);
+    else if (e.target.closest('#pr-prev')) KY.practiceStep(-1);
+  });
+  // 首页「只抽错题」：先切换抽题方式，再由全局跳转处理去刷题页
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-practice-wrong]')) { PR.mode = 'wrong'; PR.cur = null; PR.history = []; PR.back = 0; }
+  }, true);
+  // 本轮做题记录：在刷题页标记「会了 / 不会」时计数
+  KY.listen('marked', function (d) {
+    if (!KY.route || KY.route.view !== 'practice') return;
+    if (d.st) PR.done[d.id] = d.st; else delete PR.done[d.id];
+    var line = document.querySelector('#pr-slot .result-count');
+    if (line) {
+      var old = line.querySelector('.pr-session');
+      if (old) old.remove();
+      line.insertAdjacentHTML('beforeend', sessionLine());
+    }
+  });
+  KY.listen('rendered', function (r) {
+    if (r.view !== 'practice') return;
+    var prev = document.getElementById('pr-prev');
+    if (prev) prev.disabled = PR.history.length - PR.back < 2;
+  });
 
   /* ── 错题本 ── */
   KY.views.wrong = function () {

@@ -122,19 +122,98 @@
     q.querySelector('[data-act="bad"]').setAttribute('aria-pressed', String(st === 'bad'));
   }
 
+  KY.markCard = function (q, act) {
+    KY.setStatus(q.dataset.id, act);
+    Array.prototype.forEach.call(document.querySelectorAll('.q[data-id="' + q.dataset.id + '"]'), syncCard);
+    if (act === 'bad' && KY.status(q.dataset.id) === 'bad') KY.toast('已加入错题本');
+    else if (act === 'ok' && KY.status(q.dataset.id) === 'ok') KY.toast('已标记为会了');
+    KY.emit('marked', { id: q.dataset.id, st: KY.status(q.dataset.id) });
+  };
+
   document.addEventListener('click', function (e) {
     var b = e.target.closest('.q [data-act]');
     if (!b) return;
     var q = b.closest('.q');
     var act = b.dataset.act;
     if (act === 'hint' || act === 'ans' || act === 'sol') KY.toggleCard(q, act);
-    else if (act === 'ok' || act === 'bad') {
-      KY.setStatus(q.dataset.id, act);
-      Array.prototype.forEach.call(document.querySelectorAll('.q[data-id="' + q.dataset.id + '"]'), syncCard);
-      if (act === 'bad' && KY.status(q.dataset.id) === 'bad') KY.toast('已加入错题本');
-    } else if (act === 'ai') {
+    else if (act === 'ok' || act === 'bad') KY.markCard(q, act);
+    else if (act === 'ai') {
       var p = KY.pById[q.dataset.id];
       withSolution(p, function () { KY.ai.open({ kind: 'problem', id: p.id }); }, b);
+    }
+  });
+
+  /* ── 看题浮层：在讲解里点真题引用时不离开当前页面 ── */
+  var peekEl = null;
+  var peekFrom = null;
+  KY.peek = function (id, from) {
+    var p = KY.pById[id];
+    if (!p) return;
+    peekEl = peekEl || document.getElementById('peek');
+    peekFrom = from || document.activeElement;
+    var body = peekEl.querySelector('.peek-body');
+    KY.untypeset(body);
+    body.innerHTML = KY.card(p) + '<p class="kbd-hint">快捷键：<kbd>H</kbd> 思路　<kbd>A</kbd> 答案　<kbd>S</kbd> 解析　<kbd>Y</kbd> 会了　<kbd>N</kbd> 不会　<kbd>Esc</kbd> 关闭</p>';
+    peekEl.querySelector('.peek-title').textContent = p.year + ' 年数学一 ' + p.no + ' · ' + p.type + '题';
+    var open = peekEl.querySelector('.peek-open');
+    open.setAttribute('href', '#q-' + p.id);
+    open.dataset.go = 'q-' + p.id;
+    if (!peekEl.open) {
+      if (typeof peekEl.showModal === 'function') peekEl.showModal(); else peekEl.setAttribute('open', '');
+    }
+    body.scrollTop = 0;
+    KY.typeset(body);
+    var first = body.querySelector('[data-act="hint"]');
+    if (first) first.focus({ preventScroll: true });
+  };
+  KY.closePeek = function () { if (peekEl && peekEl.open) peekEl.close(); };
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-peek-close]')) { KY.closePeek(); return; }
+    // 点浮层外面的灰色背景关闭
+    if (e.target.id === 'peek' || e.target.id === 'sheet') e.target.close();
+    if (e.target.closest('[data-sheet-close]')) document.getElementById('sheet').close();
+  });
+  document.addEventListener('close', function (e) {
+    if (e.target.id !== 'peek') return;
+    var body = peekEl.querySelector('.peek-body');
+    KY.untypeset(body);
+    body.innerHTML = '';
+    if (peekFrom && document.contains(peekFrom) && peekFrom.focus) peekFrom.focus({ preventScroll: true });
+    peekFrom = null;
+  }, true);
+
+  /* ── 快捷键：单题场景（看题浮层、单题页、随机刷题）里操作当前这道题 ── */
+  function currentCard() {
+    if (peekEl && peekEl.open) return peekEl.querySelector('.q');
+    var r = KY.route;
+    if (!r) return null;
+    if (r.view === 'problem') return document.querySelector('#view .q');
+    if (r.view === 'practice') return document.querySelector('#pr-slot .q');
+    return null;
+  }
+  var KEYS = { h: 'hint', a: 'ans', s: 'sol', y: 'ok', n: 'bad' };
+  document.addEventListener('keydown', function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return;
+    var t = e.target;
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable) return;
+    var ai = document.getElementById('ai');
+    if (ai && !ai.hidden && ai.contains(t)) return;
+    var q = currentCard();
+    if (!q) return;
+    var k = e.key.toLowerCase();
+    var act = KEYS[k];
+    if (act) {
+      e.preventDefault();
+      if (act === 'ok' || act === 'bad') KY.markCard(q, act); else KY.toggleCard(q, act);
+      return;
+    }
+    if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft') && !(peekEl && peekEl.open)) {
+      var dir = e.key === 'ArrowRight' ? 1 : -1;
+      if (KY.route.view === 'practice' && KY.practiceStep) { e.preventDefault(); KY.practiceStep(dir); }
+      else if (KY.route.view === 'problem') {
+        var nav = document.querySelector('#view .pager a[data-dir="' + dir + '"]');
+        if (nav) { e.preventDefault(); nav.click(); }
+      }
     }
   });
 })();

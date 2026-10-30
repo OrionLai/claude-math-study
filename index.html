@@ -4,12 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>数一高数真题研习</title>
-<meta name="description" content="考研数学一高等数学：1987–2025 年全部高数真题逐题详解、59 个考点从零讲起的基础讲解（含完整证明）、考频分析与预测、AI 辅导。">
+<meta name="description" content="考研数学一高等数学：1987–2025 年全部高数真题逐题详解、按考点从零讲起的基础讲解（含完整证明，陆续补全）、考频分析与预测、AI 辅导。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <script>
+  // 先应用保存的配色，避免页面闪一下
+  try { var t0 = JSON.parse(localStorage.getItem('ky2-theme')); if (t0 === 'light' || t0 === 'dark') document.documentElement.setAttribute('data-theme', t0); } catch (e) {}
   window.MathJax = {
     tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
     svg: { fontCache: 'global' },
@@ -41,7 +43,9 @@
       <a href="#practice" data-go="practice" data-nav="practice">随机刷题</a>
       <a href="#wrong" data-go="wrong" data-nav="wrong">错题本 <span class="count" id="wrong-count" data-zero>0</span></a>
     </nav>
+    <button type="button" class="theme-btn" id="theme-btn" aria-label="配色：跟随系统（点击切换）" title="配色：跟随系统（点击切换）"></button>
   </div>
+  <div class="readbar" id="readbar" hidden><i></i></div>
 </header>
 <main id="view" tabindex="-1"></main>
 <footer class="foot">
@@ -68,6 +72,23 @@
   </form>
   <details class="ai-settings" id="ai-settings"><summary>连接设置</summary><div id="ai-settings-body"></div></details>
 </aside>
+<dialog class="peek" id="peek" aria-labelledby="peek-title">
+  <div class="peek-in">
+    <header class="peek-head">
+      <b class="peek-title" id="peek-title"></b>
+      <a class="btn btn-small peek-open" href="#home" data-go="home">单独打开这道题</a>
+      <button type="button" class="peek-x" data-peek-close aria-label="关闭">×</button>
+    </header>
+    <div class="peek-body"></div>
+  </div>
+</dialog>
+<dialog class="sheet" id="sheet" aria-label="本篇目录">
+  <div class="sheet-in">
+    <header class="peek-head"><b>本篇目录</b><button type="button" class="peek-x" data-sheet-close aria-label="关闭">×</button></header>
+    <nav class="sheet-body" aria-label="本篇小节"></nav>
+  </div>
+</dialog>
+<button type="button" class="fab fab-toc" id="toc-btn" hidden aria-haspopup="dialog">目录</button>
 <div class="tip" id="tip" hidden role="tooltip"></div>
 <div class="toast" id="toast" hidden role="status"></div>
 

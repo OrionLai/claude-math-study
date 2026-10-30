@@ -37,14 +37,15 @@
     var h = '<div class="wrap">';
     h += '<section class="hero"><p class="eyebrow">考研数学一 · 高等数学</p>' +
       '<h1>从定义学起，<em>用真题</em>练透</h1>' +
-      '<p class="lede">收录 ' + S.years[0] + '–' + S.lastYear + ' 年共 ' + S.years.length + ' 年数学一的全部高数真题（' + M.problems.length + ' 道），每题配思路分析、详细解答、易错点和方法总结；' + KY.tax.kps.length + ' 个考点各有一篇从零讲起的基础讲解，定理都有分步证明。按 ' + S.years.length + ' 年考频统计出最可能考的考点。看不懂随时问 AI。</p>' +
+      '<p class="lede">收录 ' + S.years[0] + '–' + S.lastYear + ' 年共 ' + S.years.length + ' 年数学一的全部高数真题（' + M.problems.length + ' 道），每题配思路分析、详细解答、易错点和方法总结；' + KY.tax.kps.length + ' 个考点的基础讲解已写好 ' + lessonsReady + ' 篇（按近十年考频陆续补全），从零讲起，定理都有分步证明，并精讲近年真题。按 ' + S.years.length + ' 年考频统计出最可能考的考点。看不懂随时问 AI。</p>' +
       '<div class="stats">' +
       '<div class="stat"><b>' + M.problems.length + '</b><span>道真题</span></div>' +
       '<div class="stat"><b>' + lessonsReady + '</b><span>篇基础讲解</span></div>' +
       '<div class="stat"><b>' + t.ok + '</b><span>道已掌握</span></div>' +
       '<div class="stat"><b>' + lessonsDone + '</b><span>篇已学完</span></div>' +
       '</div>' +
-      '<div class="cta">' + KY.link('learn', '从零开始学', 'btn primary') + KY.link('bank', '进真题库', 'btn') + KY.link('stats', '看最可能考什么', 'btn') + '</div></section>';
+      '<div class="cta">' + KY.link('learn', '从零开始学', 'btn primary') + KY.link('bank', '进真题库', 'btn') + KY.link('stats', '看最可能考什么', 'btn') + '</div>' +
+      KY.continueCard() + wrongNudge() + '</section>';
 
     h += '<section class="section"><h2>建议的复习顺序</h2><ol class="route">' +
       '<li><b>' + KY.link('learn', '基础讲解') + '</b><span>按章节读，每篇先看"从问题出发"，再看定义和证明，最后做自测。</span></li>' +
@@ -84,6 +85,10 @@
     h += '</div>';
     return h;
   };
+  function wrongNudge() {
+    var n = KY.meta.problems.filter(function (p) { return KY.status(p.id) === 'bad'; }).length;
+    return n ? '<p class="note">错题本里还有 <b>' + n + '</b> 道题等着回炉。' + KY.link('wrong', '去重做', 'chip') + KY.link('practice', '只抽错题', 'chip', ' data-practice-wrong') + '</p>' : '';
+  }
   document.addEventListener('click', function (e) {
     var b = e.target.closest('[data-open-bank]');
     if (b) KY.openBank({ ch: b.dataset.openBank });

@@ -118,6 +118,7 @@
   }
 
   function open(c) {
+    if (KY.closePeek) KY.closePeek(); // 看题浮层是模态的，会挡住 AI 面板
     if (c && c.kind === 'lesson' && !KY.lessons[c.id]) {
       KY.ensureLesson(c.id).then(function () { open(c); });
       return;
