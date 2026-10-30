@@ -17,7 +17,8 @@
 //   --model …            默认 claude-opus-5-5；claude-sonnet-5-5 约为一半价钱
 //   --effort high        思考深度（low/medium/high/xhigh/max），默认不传
 //   --task-budget 8      单项任务的美元上限，防止失控（默认 8，用更贵的模型时自动放大）
-// 环境变量（与选项等价）：KY_MODEL KY_WORKERS KY_BUDGET KY_TASK_BUDGET KY_EFFORT KY_PYTHON KY_PAPERS
+//   --stop-after 70      跑了这么多分钟后不再开始新任务（正在跑的做完），适合在有时长限制的环境里分批跑
+// 环境变量（与选项等价）：KY_MODEL KY_WORKERS KY_BUDGET KY_TASK_BUDGET KY_EFFORT KY_PYTHON KY_PAPERS KY_STOP_AFTER
 //   KY_PAPERS：真题源仓库 TsekaLuk/Kaoyan-Math1-Papers 的本地路径。只有真题任务需要，没设就跳过真题任务。
 // 产物：data/src/ 下的新内容；tools/.api-run/ 下的台账（runs.jsonl）和每项任务的完整输出（已 gitignore）。
 'use strict';
@@ -52,6 +53,17 @@ const ONLY = (opt('only', null, '') || '').split(',').map((s) => s.trim()).filte
 const IDS = (opt('ids', null, '') || '').split(',').map((s) => s.trim()).filter(Boolean);
 const PAPERS = opt('papers', 'KY_PAPERS', '');
 const PYTHON_OPT = opt('python', 'KY_PYTHON', '');
+const STOP_AFTER = Number(opt('stop-after', 'KY_STOP_AFTER', 0)) || 0; // 分钟：超过就不再开始新任务（正在跑的照常做完）
+
+// 子进程的环境：去掉从外层 Claude Code 会话继承来的变量（CLAUDECODE、CLAUDE_CODE_ENTRYPOINT 等）和登录令牌。
+// 不去掉的话，在 Claude Code / 桌面 App 的终端里运行时，这些调用会被识别成那个会话的 Claude Code 用量，
+// API 额度不覆盖 Claude Code，结果就是「Credit balance is too low」。
+function childEnv() {
+  const env = { ...process.env };
+  for (const k of Object.keys(env)) if (/^CLAUDE/i.test(k) || k === 'ANTHROPIC_AUTH_TOKEN') delete env[k];
+  env.KY_PAPERS = PAPERS || process.env.KY_PAPERS || '';
+  return env;
+}
 
 // 模型价格差异（相对 Opus）：用来做估算和放大单项上限
 const factor = /haiku/.test(MODEL) ? 0.1 : /sonnet/.test(MODEL) ? 0.5 : /fable|mythos/.test(MODEL) ? 2.5 : 1;
@@ -117,6 +129,7 @@ function estimate(kind) {
 let spent = 0;
 let stopped = false;
 let cheapFailures = 0;
+const T0 = Date.now();
 const inflight = new Map();
 const ledger = [];
 const skipped = [];
@@ -161,7 +174,7 @@ function runClaude(prompt, task) {
     if (EFFORT) args.push('--effort', EFFORT);
     const spawnArgs = CLAUDE.shell ? args.map((a) => (/[\s"]/.test(a) ? '"' + a.replace(/"/g, '\\"') + '"' : a)) : args;
     const cmd = CLAUDE.shell && /\s/.test(CLAUDE.cmd) ? '"' + CLAUDE.cmd + '"' : CLAUDE.cmd;
-    const child = cp.spawn(cmd, spawnArgs, { cwd: ROOT, shell: CLAUDE.shell, env: { ...process.env, KY_PAPERS: PAPERS || process.env.KY_PAPERS || '' }, stdio: ['pipe', 'pipe', 'pipe'] });
+    const child = cp.spawn(cmd, spawnArgs, { cwd: ROOT, shell: CLAUDE.shell, env: childEnv(), stdio: ['pipe', 'pipe', 'pipe'] });
     children.add(child);
     let out = '', err = '';
     child.stdout.on('data', (d) => { out += d; });
@@ -221,6 +234,12 @@ const RETURN_FORMAT = `
 async function agent(prompt, opts = {}) {
   const task = parseTask(opts);
   if (stopped) { skipped.push(task.key); return null; }
+  if (STOP_AFTER && (Date.now() - T0) / 60000 > STOP_AFTER) {
+    stopped = true;
+    log(`已经跑了 ${Math.round((Date.now() - T0) / 60000)} 分钟，超过 --stop-after ${STOP_AFTER}：不再开始新任务`);
+    skipped.push(task.key);
+    return null;
+  }
   const est = estimate(task.kind);
   const pending = [...inflight.values()].reduce((a, b) => a + b, 0) * 0.5;
   if (spent + est + pending > BUDGET) {
@@ -245,6 +264,7 @@ async function agent(prompt, opts = {}) {
   if (done && agentOk && (task.kind === 'lessonReview' || task.kind === 'yearReview')) markReviewed(task);
   // 连续两项几乎没花钱就失败，多半是 Key、网络或环境的问题，别把整个清单都白跑一遍
   if (!done && (res.cost || 0) < 0.05) { if (++cheapFailures >= 2 && !stopped) { stopped = true; log('连续两项几乎没花钱就失败了，多半是 Key、网络或环境的问题，不再开始新任务'); } } else cheapFailures = 0;
+  if (!done && /credit balance is too low/i.test(res.resultText || '')) log('  提示：「Credit balance is too low」= 这个 Key 所在的组织没有可用额度，或者这次调用被算成了 Claude Code 用量。到 platform.claude.com 的 Billing 页确认组织里有 API 额度（Max 套餐要先在 claude.ai 账单页 Link organization）。');
   const row = {
     time: new Date().toISOString(), key: task.key, kind: task.kind, model: MODEL, cost: res.cost || 0, minutes: Math.round(res.minutes * 10) / 10,
     turns: res.turns, subtype: res.subtype, session: res.session, checkOk: chk.ok, agentOk, done,
