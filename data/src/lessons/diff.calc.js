@@ -76,7 +76,7 @@ $$\frac{f(g(x))-f(g(x_0))}{x-x_0}=\Phi(g(x))\cdot\frac{g(x)-g(x_0)}{x-x_0}\qquad
         statement: R`<p>设 $y=f(x)$ 在区间 $I$ 上连续、严格单调，在内点 $x_0\in I$ 处可导且 $f'(x_0)\neq0$，则其反函数 $x=f^{-1}(y)$ 在 $y_0=f(x_0)$ 处可导，且
 $$\big(f^{-1}\big)'(y_0)=\frac{1}{f'(x_0)},\qquad\text{即}\qquad \frac{\mathrm{d}x}{\mathrm{d}y}=\frac{1}{\dfrac{\mathrm{d}y}{\mathrm{d}x}}.$$</p>`,
         intuition: R`<p>$y=f(x)$ 和 $x=f^{-1}(y)$ 是同一条曲线，只是把横纵坐标互换。切线斜率 $\dfrac{\Delta y}{\Delta x}$ 互换后变成 $\dfrac{\Delta x}{\Delta y}$，自然互为倒数。$f'(x_0)\neq0$ 的意义：原曲线切线水平时，换个方向看切线就竖直，反函数在那里不可导（如 $y=x^3$ 在 $0$ 处，反函数 $x=\sqrt[3]{y}$ 在 $0$ 处导数为 $+\infty$）。</p>
-<svg viewBox="0 0 330 280" width="100%" style="max-width:330px" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="-70 0 400 280" width="100%" style="max-width:400px" xmlns="http://www.w3.org/2000/svg">
   <g stroke="currentColor" fill="none" stroke-width="1">
     <line x1="40.0" y1="200.0" x2="300.0" y2="200.0"/>
     <line x1="90.0" y1="250.0" x2="90.0" y2="5.0"/>
@@ -95,10 +95,10 @@ $$\big(f^{-1}\big)'(y_0)=\frac{1}{f'(x_0)},\qquad\text{即}\qquad \frac{\mathrm{
     <circle cx="190.0" cy="165.3" r="3"/>
   </g>
   <g fill="currentColor" font-size="12" stroke="none">
-    <text x="58.7" y="104.0">P(x₀, y₀)</text>
+    <text x="134.0" y="98.0">P(x₀, y₀)</text>
     <text x="198.0" y="181.3">P′(y₀, x₀)</text>
-    <text x="45.0" y="20.0">y = f(x) = eˣ</text>
-    <text x="45.0" y="37.5">P 处斜率 f′(x₀) = 2</text>
+    <text x="-64.0" y="20.0">y = f(x) = eˣ</text>
+    <text x="-64.0" y="37.5">P 处斜率 f′(x₀) = 2</text>
     <text x="195.0" y="222.5">反函数 f⁻¹（横轴为 y）</text>
     <text x="195.0" y="240.0">P′ 处斜率 1/f′(x₀) = 1/2</text>
     <text x="255.0" y="52.5">y = x</text>
@@ -344,8 +344,7 @@ $$y^{(20)}=\mathrm C_{20}^0u^{(20)}x^2+\mathrm C_{20}^1u^{(19)}\cdot2x+\mathrm C
     <line x1="320" y1="160" x2="320" y2="10"/>
   </g>
   <g stroke="currentColor" fill="none" stroke-width="1.8">
-    <path d="M 40 150 Q 110 85 180 20"/>
-    <path d="M 40 150 C 75 115 100 90 110 85 C 120 80 145 55 180 20"/>
+    <polyline points="40.0,150.0 43.5,143.7 47.0,137.7 50.5,132.0 54.0,126.6 57.5,121.6 61.0,116.8 64.5,112.5 68.0,108.4 71.5,104.7 75.0,101.2 78.5,98.2 82.0,95.4 85.5,93.0 89.0,90.9 92.5,89.1 96.0,87.6 99.5,86.5 103.0,85.7 106.5,85.2 110.0,85.0 113.5,84.8 117.0,84.3 120.5,83.5 124.0,82.4 127.5,80.9 131.0,79.1 134.5,77.0 138.0,74.6 141.5,71.8 145.0,68.8 148.5,65.3 152.0,61.6 155.5,57.5 159.0,53.2 162.5,48.4 166.0,43.4 169.5,38.0 173.0,32.4 176.5,26.3 180.0,20.0"/>
     <polyline points="250,60 320,140 390,60"/>
   </g>
   <g fill="currentColor" font-size="12" stroke="none">
@@ -354,8 +353,9 @@ $$y^{(20)}=\mathrm C_{20}^0u^{(20)}x^2+\mathrm C_{20}^1u^{(19)}\cdot2x+\mathrm C
     <text x="190" y="98">x</text>
     <text x="400" y="153">x</text>
     <text x="300" y="155">0</text>
-    <text x="125" y="80">0</text>
-    <text x="330" y="100" font-size="11">尖角：y'' (0) 不存在</text>
+    <text x="96" y="100">0</text>
+    <text x="356" y="116" font-size="11">尖角：</text>
+    <text x="344" y="132" font-size="11">y''(0) 不存在</text>
   </g>
 </svg>
 <p style="text-align:center"><small>左：$y=x|x|$ 在原点光滑过渡（切线水平）；右：其导函数 $2|x|$ 在原点有尖角，所以二阶导数在 $0$ 处不存在。</small></p>`

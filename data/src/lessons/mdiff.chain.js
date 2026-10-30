@@ -19,7 +19,7 @@ $$\frac{\mathrm{d}T}{\mathrm{d}t}=\frac{\partial T}{\partial x}\frac{\mathrm{d}x
   <g fill="currentColor" font-size="15" text-anchor="middle" font-style="italic">
     <text x="200" y="32">z</text>
     <text x="110" y="97">u</text><text x="292" y="97">v</text>
-    <text x="62" y="190">x</text><text x="178" y="190">y</text><text x="222" y="190">x</text><text x="338" y="190">y</text>
+    <text x="70" y="187">x</text><text x="170" y="187">y</text><text x="230" y="187">x</text><text x="330" y="187">y</text>
   </g>
   <g fill="currentColor" font-size="11" text-anchor="middle">
     <text x="140" y="62">∂z/∂u</text><text x="262" y="62">∂z/∂v</text>
@@ -55,21 +55,23 @@ $$\frac{\mathrm{d}z}{\mathrm{d}t}\bigg|_{t_0}=\frac{\partial f}{\partial u}(u_0,
           { s: R`<p>综上，$\lim\limits_{\Delta t\to0}\dfrac{\Delta z}{\Delta t}$ 存在且等于 $f_u\varphi'(t_0)+f_v\psi'(t_0)$。证毕。</p>`, why: R`<p>导数的定义。</p>` }
         ],
         remark: R`<p><b>条件"可微"不能减弱为"偏导数存在"。</b>反例：$f(x,y)=\dfrac{xy}{x^2+y^2}$（$(x,y)\neq(0,0)$），$f(0,0)=0$。在原点 $f_x=f_y=0$ 都存在。取 $u=v=t$，复合函数 $g(t)=f(t,t)$ 在 $t\neq0$ 时恒等于 $\dfrac12$，而 $g(0)=0$——$g$ 在 $0$ 处甚至不连续，更谈不上可导；但形式套公式会得到 $g'(0)=0\cdot1+0\cdot1=0$，荒谬。再如 $f(x,y)=\sqrt{|xy|}$，原点偏导为 $0$，而 $f(t,t)=|t|$ 在 $0$ 不可导。问题出在：仅有偏导数只控制了沿坐标轴方向的变化，而曲线 $(t,t)$ 是斜着穿过原点的。</p>
-<svg viewBox="0 0 400 250" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 400 275" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
   <g stroke="currentColor" stroke-width="2.2" fill="none">
     <line x1="40" y1="125" x2="360" y2="125"/><line x1="200" y1="240" x2="200" y2="10"/>
   </g>
   <line x1="95" y1="230" x2="305" y2="20" stroke="currentColor" stroke-width="1.4" stroke-dasharray="6,3"/>
   <circle cx="200" cy="125" r="3.5" fill="currentColor"/>
   <g fill="currentColor" font-size="12" text-anchor="middle">
-    <text x="330" y="118">f=0（x 轴上）</text>
+    <text x="318" y="118">f=0（x 轴上）</text>
     <text x="150" y="30">f=0（y 轴上）</text>
-    <text x="290" y="52" text-anchor="start">f≡1/2</text>
-    <text x="290" y="66" text-anchor="start">（直线 y=x 上）</text>
-    <text x="150" y="150">f(0,0)=0</text>
+    <text x="292" y="52" text-anchor="start">f≡1/2</text>
+    <text x="286" y="66" text-anchor="start">（直线 y=x 上，</text>
+    <text x="292" y="80" text-anchor="start">原点除外）</text>
+    <text x="208" y="145" text-anchor="start">f(0,0)=0</text>
     <text x="352" y="140">x</text><text x="210" y="16">y</text>
   </g>
-  <text x="200" y="248" fill="currentColor" font-size="11" text-anchor="middle">两条坐标轴上 f 恒为 0，故 f_x(0,0)=f_y(0,0)=0；但沿斜线 y=x 走，f 突然跳到 1/2</text>
+  <text x="200" y="255" fill="currentColor" font-size="11" text-anchor="middle">两条坐标轴上 f 恒为 0，故 f_x(0,0)=f_y(0,0)=0；</text>
+  <text x="200" y="270" fill="currentColor" font-size="11" text-anchor="middle">但沿斜线 y=x 走，一离开原点 f 就恒为 1/2</text>
 </svg>
 <p>图里看什么：第一个反例 $f=\dfrac{xy}{x^2+y^2}$ 在两条坐标轴上恒为 $0$，所以两个偏导数都"看不到"任何变化；但沿对角线 $y=x$ 走，$f$ 一离开原点就是 $\dfrac12$。偏导数只检查了坐标轴方向，对斜方向一无所知——这就是"偏导存在"远弱于"可微"的直观。</p>
 <p><b>为什么考题总写"具有一阶连续偏导数"？</b>因为"偏导数连续 ⇒ 可微"（mdiff.diffable），这是保证链式法则可用的最常见充分条件。若题目只说"$f$ 可微"，也足够。</p>
@@ -89,7 +91,7 @@ $$\frac{\partial w}{\partial x}=f_1'+f_3'\,\frac{\partial z}{\partial x},\qquad 
   <g fill="currentColor" font-size="15" text-anchor="middle" font-style="italic">
     <text x="200" y="32">w</text>
     <text x="90" y="128">x</text><text x="200" y="128">y</text><text x="322" y="108">z</text>
-    <text x="262" y="186">x</text><text x="358" y="186">y</text>
+    <text x="270" y="186">x</text><text x="350" y="186">y</text>
   </g>
   <g fill="currentColor" font-size="11" text-anchor="middle">
     <text x="128" y="70">f₁′</text><text x="214" y="80">f₂′</text><text x="272" y="70">f₃′</text>
@@ -175,8 +177,10 @@ $$x\frac{\partial f}{\partial x}+y\frac{\partial f}{\partial y}=k\,f(x,y).$$
   <g fill="currentColor">
     <circle cx="218.2" cy="127.2" r="3"/><circle cx="236.5" cy="114.5" r="3"/><circle cx="254.7" cy="101.7" r="3"/>
   </g>
+  <g fill="currentColor" font-size="11" text-anchor="end">
+    <text x="213" y="123">(x,y)</text><text x="231" y="110">2(x,y)</text><text x="249" y="97">3(x,y)</text>
+  </g>
   <g fill="currentColor" font-size="12" text-anchor="middle">
-    <text x="216" y="118">(x,y)</text><text x="231" y="105">2(x,y)</text><text x="248" y="92">3(x,y)</text>
     <text x="352" y="144">x</text><text x="206" y="18">y</text>
     
     <text x="300" y="70">射线 (tx,ty)</text>

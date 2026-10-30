@@ -268,7 +268,10 @@ async function agent(prompt, opts = {}) {
   log(`开始 ${task.key}（${KIND_NAME[task.kind] || task.kind}，预计约 ${money(est)}；已花 ${money(spent)}）`);
   const dir = path.join(RUNDIR, runStamp);
   fs.mkdirSync(dir, { recursive: true });
-  const extra = EXTRA.replace(/\{\{id\}\}/g, task.id || '').replace(/\{\{year\}\}/g, task.y || '').replace(/\{\{tmp\}\}/g, fwd(path.join(os.tmpdir(), 'kywork')));
+  // {{tmp}}：每项任务自己的临时目录，几个任务并行时不会互相覆盖同名文件
+  const taskTmp = path.join(os.tmpdir(), 'kywork', task.key.replace(/[:/\\]/g, '-'));
+  fs.mkdirSync(taskTmp, { recursive: true });
+  const extra = EXTRA.replace(/\{\{id\}\}/g, task.id || '').replace(/\{\{year\}\}/g, task.y || '').replace(/\{\{tmp\}\}/g, fwd(taskTmp));
   const full = prompt + (EXTRA ? '\n' + extra + '\n' : '') + RETURN_FORMAT;
   fs.writeFileSync(path.join(dir, task.key.replace(/[:/\\]/g, '_') + '.prompt.txt'), full);
   let res;

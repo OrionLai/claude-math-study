@@ -18,7 +18,7 @@ $$\lim_{x\to0}\frac{x}{x}=1,\qquad \lim_{x\to0}\frac{x^2}{x}=0,\qquad \lim_{x\to
   <polyline points="40,220 58,175 76,157 94,143 112,131 130,120 148,110 166,102 184,94 202,86 220,79 238,72 256,65 274,59 292,53 310,47 328,41 346,36 364,30 382,25 400,20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2,3"/>
   <text x="300" y="150" font-size="13" fill="currentColor">y = x²（最快）</text>
   <text x="205" y="150" font-size="13" fill="currentColor">y = x</text>
-  <text x="90" y="100" font-size="13" fill="currentColor">y = √x（最慢）</text>
+  <text x="58" y="92" font-size="13" fill="currentColor">y = √x（最慢）</text>
   <text x="400" y="238" font-size="12" fill="currentColor">x</text>
   <text x="25" y="225" font-size="12" fill="currentColor">O</text>
 </svg>
@@ -148,7 +148,7 @@ $$x-\arctan x\sim\frac{x^3}{3},\qquad \arcsin x-x\sim\frac{x^3}{6},\qquad \tan x
   <circle cx="210" cy="130" r="3" fill="currentColor"/>
   <circle cx="240" cy="101" r="2.5" fill="currentColor"/>
   <circle cx="240" cy="72" r="2.5" fill="currentColor"/>
-  <text x="200" y="146" font-size="12" fill="currentColor">a</text>
+  <text x="214" y="146" font-size="12" fill="currentColor">a</text>
   <text x="236" y="146" font-size="12" fill="currentColor">x</text>
   <text x="246" y="122" font-size="12" fill="currentColor">f(x)</text>
   <text x="207" y="70" font-size="12" fill="currentColor">g(x)</text>
