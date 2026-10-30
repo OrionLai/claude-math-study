@@ -13,6 +13,7 @@
 // 选项：
 //   --only lessonWrite,lessonReview,yearReview    只跑这些类型
 //   --ids mdiff.extreme,lim.compute,2020          只跑这些讲解 / 年份
+//   --kind lessonReview --ids a,b                 不看完成度，直接对这些讲解再审一轮（配合 --extra 写本轮重点）
 //   --workers 2          同时跑几项（默认 2；新 Console 组织速率限制较低，别开太多）
 //   --model …            默认 claude-opus-5-5；claude-sonnet-5-5 约为一半价钱
 //   --effort high        思考深度（low/medium/high/xhigh/max），默认不传
@@ -108,6 +109,13 @@ function ensureTools() {
 /* ── 任务清单 ── */
 function selectTasks() {
   const r = listTasks();
+  // --kind lessonReview --ids a,b：不管完成度清单，直接对这些考点 / 年份再做一遍（例如第二轮审校）
+  const KIND = opt('kind', null, '');
+  if (KIND) {
+    if (!IDS.length) { console.error('--kind 需要和 --ids 一起用'); process.exit(2); }
+    const tasks = IDS.map((x) => (KIND.startsWith('year') ? { kind: KIND, y: Number(x) } : { kind: KIND, id: x }));
+    return { tasks: LIMIT ? tasks.slice(0, LIMIT) : tasks, remaining: r };
+  }
   let tasks = r.tasks.slice();
   if (r.needAnalysis) tasks.unshift({ kind: 'analysisWrite' }, { kind: 'analysisReview' });
   if (ONLY.length) tasks = tasks.filter((t) => ONLY.includes(t.kind));
