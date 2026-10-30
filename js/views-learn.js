@@ -50,8 +50,9 @@
         var ready = !!L[k.id];
         var inner = '<span class="kp-title">' + KY.esc(k.title) + (KY.lessonDone(k.id) ? '<span class="done-mark">已学完</span>' : '') + '</span>' +
           '<span class="kp-scope">' + KY.esc(k.scope) + '</span>' +
-          '<span class="kp-foot">' + freqLine(k.id) + (ready ? (worked[k.id] ? '<span class="freq">引用真题 ' + worked[k.id] + ' 道</span>' : '') + (reviewed.indexOf(k.id) >= 0 ? '<span class="freq freq-ok">已审校</span>' : '') : '<span class="freq freq-0">讲解整理中</span>') + '</span>';
-        h += ready ? KY.link('l-' + k.id, inner, 'kp-item') : '<div class="kp-item is-pending">' + inner + '</div>';
+          '<span class="kp-foot">' + freqLine(k.id) + (ready ? (worked[k.id] ? '<span class="freq">引用真题 ' + worked[k.id] + ' 道</span>' : '') + (reviewed.indexOf(k.id) >= 0 ? '<span class="freq freq-ok">已审校</span>' : '') : '<span class="freq freq-0">讲解整理中 · 先看真题</span>') + '</span>';
+        // 还没写好讲解的考点链到它的考点页（那里有这个考点的全部真题）
+        h += ready ? KY.link('l-' + k.id, inner, 'kp-item') : KY.link('kp-' + k.id, inner, 'kp-item is-pending');
       });
       h += '</div></section>';
     });

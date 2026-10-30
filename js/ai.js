@@ -43,10 +43,13 @@
     threads: {},    // ctx.key → [{role, content}]
     busy: false,
     abort: null,
+    opener: null,   // 打开面板的按钮，关闭后焦点回到它
   };
   if (!state.cfg.model) state.cfg.model = MODELS[0][0];
   if (!state.cfg.tier) state.cfg.tier = 'default';
   function apiKey() { return state.cfg.key || state.sessionKey; }
+  // 没连上 AI 时，「发送」实际是复制问题
+  function copyMode() { return state.backend === 'copy' || state.backend === 'detecting'; }
   function saveCfg() { KY.writeJSON(CFG_KEY, state.cfg); }
 
   /* ── 检测可用的连接方式 ── */
@@ -113,27 +116,46 @@
     el.send = $('ai-send');
     el.stop = $('ai-stop');
     el.mode = $('ai-mode');
+    el.hint = $('ai-copy-hint');
     el.settings = $('ai-settings-body');
     $('ai-quick').innerHTML = QUICK.map(function (q, i) { return '<button type="button" class="chip" data-quick="' + i + '">' + q[0] + '</button>'; }).join('');
   }
 
   function open(c) {
+    var a = document.activeElement;
+    if (a && a !== document.body && !el.panel.contains(a)) state.opener = a;
     if (KY.closePeek) KY.closePeek(); // 看题浮层是模态的，会挡住 AI 面板
     if (c && c.kind === 'lesson' && !KY.lessons[c.id]) {
       KY.ensureLesson(c.id).then(function () { open(c); });
       return;
     }
     state.ctx = buildCtx(c || contextFromRoute());
-    el.panel.hidden = false;
-    document.body.classList.add('ai-open');
+    setOpen(true);
     renderCtx();
     renderLog();
     renderSettings();
     setTimeout(function () { el.input.focus(); }, 50);
   }
+  // 宽屏上打开面板时正文让到左边（见 style.css），版心变窄了就重新检查放不下的公式
+  function setOpen(on) {
+    var view = document.getElementById('view');
+    var w = view.clientWidth;
+    el.panel.hidden = !on;
+    document.body.classList.toggle('ai-open', on);
+    if (view.clientWidth !== w) KY.refit();
+  }
   function close() {
-    el.panel.hidden = true;
-    document.body.classList.remove('ai-open');
+    setOpen(false);
+    var o = state.opener;
+    state.opener = null;
+    if (o && document.contains(o) && o.focus) o.focus({ preventScroll: true });
+  }
+  // 面板里能用 Tab 走到的元素（收起的「连接设置」里的不算：新版 Chrome 里它们仍有布局盒子，要单独排除）
+  function focusables() {
+    return Array.prototype.filter.call(el.panel.querySelectorAll('button, [href], input, select, textarea, summary, [tabindex]:not([tabindex="-1"])'), function (x) {
+      var d = x.closest('details');
+      return !x.disabled && x.getClientRects().length > 0 && !(d && !d.open && x.tagName !== 'SUMMARY');
+    });
   }
   function renderCtx() {
     el.ctx.innerHTML = state.ctx.text
@@ -160,6 +182,10 @@
     var b = state.backend;
     el.mode.textContent = { detecting: '正在检测…', claude: '已连接 Claude', api: '使用你的 API Key', copy: '复制到其他 AI' }[b];
     el.mode.dataset.mode = b;
+    // 没连上 AI 时按钮直接叫「复制问题」，并说明粘贴到哪里
+    el.send.textContent = copyMode() ? '复制问题' : '发送';
+    el.input.placeholder = copyMode() ? '写下你卡在哪里，再点「复制问题」' : '说说你卡在哪里（Ctrl + Enter 发送）';
+    el.hint.hidden = !copyMode();
     var h = '';
     if (b === 'claude') {
       h += '<p>你正在 Claude 里打开这个页面，提问直接发给 Claude，<b>用的是你自己的 Claude 额度</b>；第一次提问时会请你确认。</p>' +
@@ -219,13 +245,15 @@
 
   function send(question) {
     question = (question || '').trim();
-    if (!question || state.busy) return;
-    if (state.backend === 'copy' || state.backend === 'detecting') {
+    if (state.busy) return;
+    if (copyMode()) {
+      // 还没写问题也可以复制：带上题目和一句「请在这里写下你的问题」
       KY.copy(copyText(question)).then(function (ok) {
-        KY.toast(ok ? '已复制。打开任意 AI（如 claude.ai），粘贴后发送即可。' : '复制失败，请手动选中输入框里的内容复制。');
+        KY.toast(ok ? '已复制。打开任意 AI 聊天（如 claude.ai），粘贴到输入框里发送即可。' : '复制失败，请手动选中输入框里的内容复制。');
       });
       return;
     }
+    if (!question) return;
     var t = thread();
     var turns = promptTurns(question);
     t.push({ role: 'user', content: question });
@@ -369,6 +397,13 @@
   document.addEventListener('keydown', function (e) {
     if (e.target.id === 'ai-input' && e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); send(el.input.value); }
     if (e.key === 'Escape' && el.panel && !el.panel.hidden) close();
+    // 焦点在面板里时 Tab / Shift+Tab 在面板内循环，不跑到后面的页面上
+    if (e.key === 'Tab' && el.panel && !el.panel.hidden && el.panel.contains(e.target)) {
+      var f = focusables();
+      if (!f.length) return;
+      if (e.shiftKey && e.target === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && e.target === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    }
   });
   document.addEventListener('change', function (e) {
     var id = e.target.id;

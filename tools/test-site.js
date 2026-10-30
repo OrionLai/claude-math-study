@@ -604,6 +604,10 @@ async function run() {
     await page.waitForTimeout(300);
     const groups = await page.evaluate(() => Array.from(document.querySelectorAll('#search-list .search-g')).map((g) => g.textContent));
     assert(groups.includes('考点') && groups.includes('真题'), '搜「泰勒」应有考点和真题两组结果，实际：' + groups.join('、'));
+    // 真题摘要里的公式要排版（截断时不切断 $…$），不能露出 LaTeX 源码
+    await settle(page);
+    const sr = await page.evaluate(() => ({ raw: (document.getElementById('search-list').innerText.match(/\$[^$\n]{1,60}\$|\\[a-z]{2,}/g) || []).slice(0, 3), mj: document.querySelectorAll('#search-list .search-it small mjx-container').length }));
+    assert(!sr.raw.length && sr.mj > 0, '搜索结果的真题摘要应排版公式、不露出 LaTeX 源码：' + JSON.stringify(sr));
     // 回车打开第一条（考点 → 讲解）
     await page.keyboard.press('Enter');
     await settle(page);
@@ -649,17 +653,64 @@ async function run() {
     await page.context().close();
   });
 
-  await test('AI 面板：打开、带上下文、设置、关闭', async () => {
+  await test('讲解目录：还没写好的考点链到考点页，标明「讲解整理中 · 先看真题」', async () => {
+    const page = await newPage(PHONE);
+    await open(page, 'learn');
+    const r = await page.evaluate(() => {
+      const all = Array.from(document.querySelectorAll('#view .kp-item.is-pending'));
+      return { n: all.length, ok: all.filter((a) => a.tagName === 'A' && /^kp-/.test(a.dataset.go) && /讲解整理中 · 先看真题/.test(a.textContent)).length, first: all.length ? all[0].dataset.go : '' };
+    });
+    if (!r.n) { await page.context().close(); return '所有考点都有讲解了'; }
+    assert(r.ok === r.n, `还没写好的考点卡片应链到考点页并标明「讲解整理中 · 先看真题」（${r.ok} / ${r.n}）`);
+    await page.click('#view .kp-item.is-pending');
+    await settle(page);
+    assert(await page.evaluate((go) => location.hash === '#' + go && document.querySelectorAll('#view .q').length > 0, r.first), '点还没写好的考点卡片没有打开它的考点页和真题');
+    await audit(page, '从讲解目录打开考点页');
+    await page.context().close();
+    return `${r.n} 个考点讲解整理中`;
+  });
+
+  await test('AI 面板：带上下文、没有 Key 时「复制问题」、宽屏让出位置、焦点不跑出面板、关闭', async () => {
     const page = await newPage(DESKTOP);
+    await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
     await open(page, 'q-2019-9');
     await page.click('#view .q [data-act="ai"]');
     await page.waitForFunction(() => !document.getElementById('ai').hidden);
     assert(await page.evaluate(() => /2019/.test(document.getElementById('ai-ctx').textContent)), 'AI 面板没有带上这道题');
     assert(await page.evaluate(() => document.querySelectorAll('#ai-quick [data-quick]').length >= 4), '快捷问题没有显示');
+    const a = await page.evaluate(() => {
+      const p = document.getElementById('ai');
+      const hint = document.getElementById('ai-copy-hint');
+      return { role: p.getAttribute('role'), label: p.getAttribute('aria-label'), send: document.getElementById('ai-send').textContent, hint: hint.hidden ? '' : hint.textContent };
+    });
+    assert(a.role === 'dialog' && a.label, 'AI 面板应有 role="dialog" 和 aria-label');
+    assert(a.send === '复制问题' && /粘贴/.test(a.hint), '没有 Key 时按钮应叫「复制问题」并说明粘贴到哪里：' + JSON.stringify(a));
+    // 1280 宽：面板不再盖住题目卡的「会了 / 不会」
+    const cover = await page.evaluate(() => document.querySelector('#view .q-act [data-act="bad"]').getBoundingClientRect().right - document.getElementById('ai').getBoundingClientRect().left);
+    assert(cover <= 0, `AI 面板盖住了题目卡的「不会」（重叠 ${Math.round(cover)}px）`);
+    await audit(page, '打开 AI 面板后');
+    // 复制问题：题目、上下文和问题一起复制
+    await page.fill('#ai-input', '第一步怎么想？');
+    await page.click('#ai-send');
+    await page.waitForFunction(() => /已复制/.test(document.getElementById('toast').textContent), null, { timeout: 3000 });
+    const clip = await page.evaluate(() => navigator.clipboard.readText());
+    assert(/2019 年数学一/.test(clip) && /第一步怎么想？/.test(clip), '「复制问题」复制的内容应包含题目和问题');
+    // Tab / Shift+Tab 在面板里循环（「连接设置」收起和展开时最后一个控件不同）
+    const inPanel = () => page.evaluate(() => document.getElementById('ai').contains(document.activeElement));
+    await page.focus('#ai-settings summary');
+    await page.keyboard.press('Tab');
+    assert(await inPanel(), '从面板最后一个控件按 Tab，焦点跑出了面板');
+    await page.focus('#ai-close');
+    await page.keyboard.press('Shift+Tab');
+    assert(await inPanel(), '从面板第一个控件按 Shift+Tab，焦点跑出了面板');
     await page.click('#ai-settings summary');
     assert(await page.evaluate(() => !!document.getElementById('ai-key') || !!document.getElementById('ai-tier')), '连接设置没有内容');
+    await page.focus('#ai-settings-body a');
+    await page.keyboard.press('Tab');
+    assert(await inPanel(), '展开「连接设置」后从最后一个控件按 Tab，焦点跑出了面板');
     await page.keyboard.press('Escape');
     assert(await page.evaluate(() => document.getElementById('ai').hidden), '按 Esc 没有关闭 AI 面板');
+    assert(await page.evaluate(() => document.activeElement && document.activeElement.matches('#view .q [data-act="ai"]')), '关闭 AI 面板后焦点没有回到打开它的「问 AI」');
     // 讲解小节的「问 AI」
     await open(page, 'l-' + meta.lessons[0]);
     await page.click('#s-0 [data-ai-sec]');

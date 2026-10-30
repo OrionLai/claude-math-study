@@ -251,10 +251,12 @@
     var els = (root || document).querySelectorAll('.lazy-block.mj-lazy');
     return Promise.all(Array.prototype.map.call(els, typesetLazy));
   };
+  // 版心宽度变了（窗口缩放、宽屏上开关 AI 面板）之后，重新检查放不下的公式
+  KY.refit = function () { if (window.__mjReady) fitMath(document.getElementById('view')); };
   var fitTimer = null;
   window.addEventListener('resize', function () {
     clearTimeout(fitTimer);
-    fitTimer = setTimeout(function () { if (window.__mjReady) fitMath(document.getElementById('view')); }, 150);
+    fitTimer = setTimeout(KY.refit, 150);
   });
 
   /* ── 路由 ── */

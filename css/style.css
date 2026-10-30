@@ -190,7 +190,8 @@ a.hb-label:hover { color: var(--accent); text-decoration: underline; }
 .kp-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 0.75rem; }
 .kp-item { display: grid; gap: 0.3rem; align-content: start; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--radius); padding: 0.85rem 1rem; text-decoration: none; color: var(--ink); min-width: 0; }
 a.kp-item:hover { border-color: var(--accent); }
-.kp-item.is-pending { opacity: 0.65; }
+.kp-item.is-pending { border-style: dashed; }
+.kp-item.is-pending .kp-title { color: var(--ink-2); }
 .kp-title { font-weight: 700; display: flex; gap: 0.5rem; align-items: baseline; flex-wrap: wrap; }
 .kp-scope { font-size: 0.8125rem; color: var(--ink-2); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .kp-foot { display: flex; flex-wrap: wrap; gap: 0.75rem; }
@@ -458,6 +459,16 @@ body.ai-open .fab { display: none; }
 .ai-form { padding: 0.6rem 1rem; display: grid; gap: 0.5rem; }
 .ai-form textarea { font: inherit; font-size: 0.9375rem; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); padding: 0.5rem 0.65rem; resize: vertical; min-height: 4rem; width: 100%; }
 .ai-send-row { display: flex; gap: 0.5rem; justify-content: flex-end; }
+.ai-copy-hint { font-size: 0.8125rem; line-height: 1.6; color: var(--ink-2); }
+/* 宽屏打开 AI 面板时正文让到左边，题目卡的「会了 / 不会」不被挡住；讲解页这时收起左侧目录，正文宽一些 */
+@media (min-width: 64rem) {
+  body.ai-open { padding-right: 28rem; }
+  body.ai-open .ch-layout { grid-template-columns: minmax(0, 1fr); }
+  body.ai-open .toc { display: none; }
+}
+@media (min-width: 64rem) and (max-width: 79.99rem) {
+  body.ai-open .nav-x, body.ai-open .brand small { display: none; } /* 剩下的宽度放不下完整顶栏，缩成一行 */
+}
 .ai-settings { border-top: 1px solid var(--rule); padding: 0.5rem 1rem 0.75rem; font-size: 0.8125rem; color: var(--ink-2); }
 .ai-settings summary { cursor: pointer; color: var(--ink); }
 .ai-settings > div { display: grid; gap: 0.5rem; margin-top: 0.5rem; }

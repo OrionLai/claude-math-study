@@ -74,7 +74,7 @@
 </footer>
 
 <button type="button" class="fab" data-ai-open aria-label="打开 AI 辅导">问 AI</button>
-<aside class="ai" id="ai" hidden aria-label="AI 辅导">
+<div class="ai" id="ai" hidden role="dialog" aria-label="AI 辅导">
   <header class="ai-head">
     <b>AI 辅导</b><span class="ai-mode" id="ai-mode">正在检测…</span>
     <button type="button" class="ai-x" id="ai-close" aria-label="关闭">×</button>
@@ -85,13 +85,14 @@
   <form class="ai-form" id="ai-form">
     <label class="sr" for="ai-input">你的问题</label>
     <textarea id="ai-input" rows="3" placeholder="说说你卡在哪里（Ctrl + Enter 发送）"></textarea>
+    <p class="ai-copy-hint" id="ai-copy-hint" hidden>现在没有连上 AI。点「复制问题」会把题目或讲解内容连同你的问题一起复制下来，打开任意 AI 聊天（如 claude.ai），粘贴到输入框里发送即可。想直接在这里问，在下面「连接设置」里填 API Key。</p>
     <div class="ai-send-row">
       <button type="submit" class="btn primary" id="ai-send">发送</button>
       <button type="button" class="btn" id="ai-stop" hidden>停止</button>
     </div>
   </form>
   <details class="ai-settings" id="ai-settings"><summary>连接设置</summary><div id="ai-settings-body"></div></details>
-</aside>
+</div>
 <dialog class="peek" id="peek" aria-labelledby="peek-title">
   <div class="peek-in">
     <header class="peek-head">
@@ -116,7 +117,7 @@
       <input type="search" id="search-q" placeholder="搜考点、讲解小节、真题…" autocomplete="off" role="combobox" aria-expanded="true" aria-controls="search-list">
       <button type="button" class="peek-x" data-search-close aria-label="关闭">×</button>
     </header>
-    <div class="search-list" id="search-list" role="listbox" aria-label="搜索结果"></div>
+    <div class="search-list" id="search-list" role="listbox" aria-label="搜索结果" data-nofit></div>
     <p class="search-foot"><kbd>↑</kbd> <kbd>↓</kbd> 选择　<kbd>Enter</kbd> 打开　<kbd>Esc</kbd> 关闭</p>
   </div>
 </dialog>

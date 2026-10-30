@@ -28,6 +28,14 @@
   }
   // 多个关键词（空格分开）都要命中
   function match(text, words) { for (var i = 0; i < words.length; i++) if (text.indexOf(words[i]) < 0) return false; return true; }
+  // 题干摘要：截到 n 个字左右，但不把 $…$ 切成两半（切断的公式没法排版）；独立公式改成行内，摘要保持一行
+  function snippet(s, n) {
+    s = s.replace(/\$\$([\s\S]*?)\$\$/g, function (_, t) { return '$' + t + '$'; }).replace(/\s+/g, ' ');
+    if (s.length <= n) return s;
+    var re = /\$[^$]*\$/g, m, end = n;
+    while ((m = re.exec(s)) && m.index < n) if (m.index + m[0].length > n) { end = m.index + m[0].length; break; }
+    return s.slice(0, end) + '…';
+  }
 
   function results(q) {
     var words = String(q).toLowerCase().split(/\s+/).filter(Boolean).map(norm);
@@ -49,8 +57,7 @@
     var ps = I.probs.filter(function (x) { return match(x.text, words); });
     ps.sort(function (a, b) { return KY.byYearDesc(a.p, b.p); });
     ps.slice(0, 10).forEach(function (x) {
-      var stem = KY.plain(x.p.stem).replace(/\s+/g, ' ');
-      out.push({ group: '真题', peek: x.p.id, html: '<b>' + x.p.year + ' 年 ' + KY.esc(x.p.no) + ' · ' + x.p.type + '题</b><small>' + KY.esc(stem.slice(0, 70)) + (stem.length > 70 ? '…' : '') + '</small>' });
+      out.push({ group: '真题', peek: x.p.id, html: '<b>' + x.p.year + ' 年 ' + KY.esc(x.p.no) + ' · ' + x.p.type + '题</b><small>' + KY.esc(snippet(KY.plain(x.p.stem), 70)) + '</small>' });
     });
     if (ps.length > 10) out.push({ group: '真题', bank: q, html: '<b>在真题库里看全部 ' + ps.length + ' 道</b><small>用真题库的筛选继续缩小范围</small>' });
     return out;
@@ -61,6 +68,7 @@
     renderedQ = q;
     items = results(q);
     active = items.length ? 0 : -1;
+    KY.untypeset(list);
     if (!q) { list.innerHTML = '<p class="search-empty">输入关键词，例如：拉格朗日、泰勒 极限、2019、渐近线。多个词用空格分开。</p>'; return; }
     if (!items.length) { list.innerHTML = '<p class="search-empty">没有找到「' + KY.esc(q) + '」。换个说法，或者少输几个字试试。</p>'; return; }
     var h = '';
@@ -70,6 +78,7 @@
       h += '<button type="button" class="search-it" role="option" id="sr-' + i + '" data-i="' + i + '" aria-selected="' + (i === active) + '">' + it.html + '</button>';
     });
     list.innerHTML = h;
+    KY.typeset(list); // 真题摘要、小节标题里的公式
     input.setAttribute('aria-activedescendant', 'sr-0');
   }
   function setActive(i) {
