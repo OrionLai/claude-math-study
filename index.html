@@ -28,6 +28,8 @@
     tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
     svg: { fontCache: 'global' },
     options: { enableMenu: false, ignoreHtmlClass: 'mj-lazy' },
+    // 自带的只有 tex-svg.js；AI 回答偶尔用到 \cancel 之类的扩展宏时，按需从 cdnjs 加载同版本扩展
+    loader: { paths: { mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5' } },
     startup: {
       typeset: false,
       ready: function () {
