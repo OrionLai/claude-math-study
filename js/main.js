@@ -27,7 +27,7 @@
   function summary(prog) {
     var ok = 0, bad = 0;
     Object.keys(prog.p).forEach(function (id) { if (prog.p[id] === 'ok') ok++; else bad++; });
-    var done = Object.keys(prog.l).filter(function (id) { return prog.l[id].done; }).length;
+    var done = Object.keys(prog.l).filter(function (id) { return prog.l[id] && prog.l[id].done; }).length;
     return '会了 ' + ok + ' 道、错题 ' + bad + ' 道、学完讲解 ' + done + ' 篇';
   }
   function download(name, text) {
