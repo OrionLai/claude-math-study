@@ -22,6 +22,8 @@
     "diff.def",
     "mint.line2",
     "diff.mvt",
-    "mint.double"
+    "mint.double",
+    "int.defcalc",
+    "lim.func"
   ]
 }
