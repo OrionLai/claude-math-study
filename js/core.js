@@ -64,13 +64,19 @@
   KY.readJSON = readJSON;
   KY.writeJSON = writeJSON;
   var PKEY = 'ky2-progress';
-  KY.prog = readJSON(PKEY, null) || { p: {}, l: {}, quiz: {} };
-  ['p', 'l', 'quiz'].forEach(function (k) { if (!KY.prog[k]) KY.prog[k] = {}; });
+  // p：题目状态（ok 会了 / bad 不会）；pt：标记时间（错题回炉按"多久没做"排序用）；l：讲解进度；quiz：自测记录
+  KY.prog = readJSON(PKEY, null) || { p: {}, pt: {}, l: {}, quiz: {} };
+  ['p', 'pt', 'l', 'quiz'].forEach(function (k) { if (!KY.prog[k]) KY.prog[k] = {}; });
   KY.saveProg = function () { writeJSON(PKEY, KY.prog); emit('progress'); };
   KY.status = function (id) { return KY.prog.p[id] || ''; };
   KY.setStatus = function (id, st) {
-    if (KY.prog.p[id] === st) delete KY.prog.p[id]; else KY.prog.p[id] = st;
+    if (KY.prog.p[id] === st) { delete KY.prog.p[id]; delete KY.prog.pt[id]; } else { KY.prog.p[id] = st; KY.prog.pt[id] = Date.now(); }
     KY.saveProg();
+  };
+  // 标记后过了几天（没有记录的旧数据当作很久以前）
+  KY.markedDays = function (id) {
+    var t = KY.prog.pt[id];
+    return t ? Math.floor((Date.now() - t) / 86400000) : 99;
   };
   KY.lessonDone = function (id) { return !!(KY.prog.l[id] && KY.prog.l[id].done); };
   KY.setLessonDone = function (id, done) {
@@ -78,7 +84,7 @@
     KY.prog.l[id].done = !!done;
     KY.saveProg();
   };
-  KY.resetProgress = function () { KY.prog = { p: {}, l: {}, quiz: {} }; KY.saveProg(); };
+  KY.resetProgress = function () { KY.prog = { p: {}, pt: {}, l: {}, quiz: {} }; KY.saveProg(); };
 
   /* ── 事件 ── */
   function emit(name, data) { (KY.on[name] || []).forEach(function (fn) { try { fn(data); } catch (e) { console.error(e); } }); }

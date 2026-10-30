@@ -328,7 +328,7 @@ a.yr:hover { background: var(--pen-soft); }
 .sol-part { display: grid; gap: 0.45rem; min-width: 0; }
 .sol-part > * { min-width: 0; }
 .sol-part + .sol-part { margin-top: 0.6rem; }
-.sol-part.tip { background: var(--pen-soft); border-radius: 4px; padding: 0.6rem 0.85rem; }
+.sol-part.pit { background: var(--pen-soft); border-radius: 4px; padding: 0.6rem 0.85rem; }
 .sol-part.sum { background: var(--ok-soft); border-radius: 4px; padding: 0.6rem 0.85rem; }
 .sol-part ul, .sol-part ol { margin: 0.2rem 0; }
 .sol-part table, .q-stem table, .q-panel table { border-collapse: collapse; font-size: 0.9375rem; display: block; overflow-x: auto; max-width: 100%; }
@@ -514,6 +514,17 @@ body.ai-open .fab-toc { display: none; }
 .st-tag { font-size: 0.7rem; border-radius: 999px; padding: 0 0.45rem; }
 .st-ok { background: var(--ok-soft); color: var(--ok); }
 .st-bad { background: var(--pen-soft); color: var(--pen); }
+
+/* ── 错题本 ── */
+.wr-sum { font-size: 0.9rem; color: var(--ink-2); margin-right: auto; }
+.seg { display: inline-flex; }
+.seg .btn { border-radius: 0; }
+.seg .btn:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.seg .btn:last-child { border-radius: 0 var(--radius) var(--radius) 0; margin-left: -1px; }
+.seg .btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); position: relative; }
+.wr-item { display: grid; gap: 0.25rem; min-width: 0; }
+.wr-age { font-family: var(--f-mono); font-size: 0.72rem; color: var(--ink-2); }
+.wr-age.due { color: var(--pen); }
 
 /* ── 单题页标题、刷题、快捷键提示 ── */
 .q-h1 { font-size: var(--step-2); }

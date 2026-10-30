@@ -58,6 +58,14 @@ function textLen(s) {
   const text = s.replace(MATH, (m) => { mathLen += m.length; return ''; }).replace(/<[^>]+>/g, '');
   return text.length + Math.round(mathLen / 4);
 }
+// 普通 JS 字符串里写 '$\sin x$'，\s 会被当成转义吃掉，变成 $sin x$：公式照样能解析，但显示成斜体的 s·i·n。
+// 这里找公式里没有反斜杠的常见命令名（先去掉 \text{…} 之类的文字参数）。
+const TEX_WORDS = /(?:^|[^\\a-zA-Z])(mathrm|mathbf|mathbb|mathcal|operatorname|frac|dfrac|tfrac|sqrt|sin|cos|tan|cot|sec|csc|arcsin|arccos|arctan|sinh|cosh|ln|log|lim|limits|infty|partial|sum|prod|iint|iiint|oint|cdot|cdots|ldots|alpha|beta|gamma|delta|varepsilon|epsilon|theta|lambda|varphi|omega|Delta|Sigma|Omega|leqslant|geqslant|neq|leq|geq|approx|forall|exists|quad|qquad|overline|underline|widehat|mathrm|displaystyle|begin|end)(?![a-zA-Z])/;
+function lostBackslash(tex) {
+  const stripped = tex.replace(/\\(text|mathrm|operatorname|textbf|mbox)\s*\{[^{}]*\}/g, ' ');
+  const m = TEX_WORDS.exec(stripped);
+  return m ? m[1] : '';
+}
 function checkText(label, s, errs, opts) {
   opts = opts || {};
   if (s == null) { if (!opts.optional) errs.push(`${label}: 缺失`); return; }
@@ -75,6 +83,8 @@ function checkText(label, s, errs, opts) {
     // 写入网页时 HTML 实体会先被浏览器解码，再交给 MathJax，这里同样先解码
     const p = texProblem(body.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'), display);
     if (p) errs.push(`${label}: 公式无法解析「${body.slice(0, 80)}」→ ${p}`);
+    const lost = lostBackslash(body);
+    if (lost) errs.push(`${label}: 公式「${body.slice(0, 60)}」里的 ${lost} 前面缺了反斜杠（多半是用了普通引号 '…' 而不是 R\`…\`，反斜杠被 JS 吃掉了）`);
   }
   const rest = s.replace(MATH, ' ');
   if (rest.includes('$')) errs.push(`${label}: 有落单的 $（公式定界符不成对）`);
@@ -188,6 +198,7 @@ function checkLesson(id) {
     const S = `${L}.sections[${i}]${s && s.title ? '「' + s.title + '」' : ''}`;
     if (!s || !KINDS.has(s.kind)) { errs.push(`${S} kind 必须是 ${[...KINDS].join('/')}`); return; }
     if (!s.title) errs.push(`${S} 缺 title`);
+    else checkText(`${S}.title`, s.title, errs);
     const count = (t) => { if (typeof t === 'string') chars += textLen(t); };
     if (s.kind === 'thm') {
       thm++;

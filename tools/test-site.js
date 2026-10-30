@@ -89,7 +89,10 @@ async function audit(page, where, opts = {}) {
     const blocks = Array.from(view.querySelectorAll('mjx-container:not([display])')).filter((c) => { const s = c.querySelector('svg'); return s && getComputedStyle(s).display === 'block'; }).length;
     const emptyBtn = Array.from(document.querySelectorAll('button:not([hidden])')).filter((b) => b.offsetParent && !b.textContent.trim() && !b.getAttribute('aria-label')).length;
     const h1 = view.querySelectorAll('h1').length;
-    return { overflow: document.documentElement.scrollWidth - vw, raw, merr, blocks, emptyBtn, h1, missingRefs: view.querySelectorAll('.qref-missing').length };
+    // 正文里不该有 position: fixed 的元素（例如类名撞上了浮动提示框的样式）
+    const fixed = Array.from(document.querySelectorAll('#view *:not(svg *):not(mjx-container *), #peek .peek-body *:not(svg *):not(mjx-container *)'))
+      .filter((e) => getComputedStyle(e).position === 'fixed').slice(0, 3).map((e) => e.tagName.toLowerCase() + '.' + e.className);
+    return { overflow: document.documentElement.scrollWidth - vw, raw, merr, blocks, emptyBtn, h1, fixed, missingRefs: view.querySelectorAll('.qref-missing').length };
   });
   const errs = [];
   if (page.errors.length) errs.push(...page.errors.splice(0));
@@ -100,6 +103,7 @@ async function audit(page, where, opts = {}) {
   if (r.emptyBtn) errs.push(r.emptyBtn + ' 个按钮没有文字或 aria-label');
   if (r.h1 !== 1) errs.push('页面 h1 数量为 ' + r.h1 + '（应为 1）');
   if (r.missingRefs) errs.push(r.missingRefs + ' 个真题引用指向不存在的题');
+  if (r.fixed.length) errs.push('正文里有浮在页面上的 position:fixed 元素 ' + JSON.stringify(r.fixed));
   if (errs.length) throw new Error(where + '：' + errs.join('；'));
 }
 
@@ -313,9 +317,20 @@ async function run() {
     await page.keyboard.press('ArrowLeft');
     await settle(page);
     assert(await page.evaluate(() => location.hash === '#q-2019-9'), '按 ← 没有回到上一题');
-    // 错题本
+    // 错题本：标记时间、按「最久没做」排序
     await open(page, 'wrong');
     assert(await page.evaluate(() => !!document.querySelector('#view .q[data-id="2019-9"]')), '错题本里没有刚标记的题');
+    assert(await page.evaluate(() => /今天标记/.test(document.querySelector('.wr-age').textContent)), '错题没有显示标记时间');
+    await page.evaluate(() => { KY.setStatus('2009-17', 'bad'); KY.prog.pt['2009-17'] = Date.now() - 5 * 86400000; KY.saveProg(); });
+    await page.click('[data-wr-sort="due"]');
+    await settle(page);
+    const order = await page.evaluate(() => Array.from(document.querySelectorAll('#view .q')).map((q) => q.dataset.id));
+    assert(order[0] === '2009-17', '「最久没做的在前」排序不对：' + order.join(','));
+    assert(await page.evaluate(() => /该回炉了/.test(document.querySelector('.topic-h').textContent) && /1<\/b> 道已经/.test(document.querySelector('.wr-sum').innerHTML)), '没有提示该回炉的错题');
+    await audit(page, '错题本');
+    await page.click('[data-wr-sort="chapter"]');
+    await settle(page);
+    await page.evaluate(() => KY.setStatus('2009-17', 'bad')); // 再点一次「不会」= 取消标记
     await page.click('#view .q[data-id="2019-9"] [data-act="ok"]');
     assert(await page.evaluate(() => KY.status('2019-9') === 'ok' && document.getElementById('wrong-count').hasAttribute('data-zero')), '点「会了」后状态或错题数不对');
     // 清空记录（页面内二次确认）

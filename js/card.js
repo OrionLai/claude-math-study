@@ -50,7 +50,7 @@
   function solHtml(p, s) {
     var h = '<section class="sol-part"><span class="lbl lbl-accent">详细解答</span>' + s.solution + '</section>';
     if (s.alt) h += '<section class="sol-part"><span class="lbl lbl-accent">另解</span>' + s.alt + '</section>';
-    h += '<section class="sol-part tip"><span class="lbl">易错点</span>' + s.pitfalls + '</section>';
+    h += '<section class="sol-part pit"><span class="lbl">易错点</span>' + s.pitfalls + '</section>';
     h += '<section class="sol-part sum"><span class="lbl lbl-ok">方法总结</span>' + s.summary + '</section>';
     var foot = [];
     p.kp.forEach(function (k) { if (KY.meta.lessons[k]) foot.push(KY.link('l-' + k, '回顾讲解：' + KY.esc(KY.kpById[k].title), 'chip')); });

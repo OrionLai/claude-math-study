@@ -201,8 +201,10 @@
       return true;
     });
   }
-  // 按考频加权：每道题的权重 = 主考点的考频指数（近年、解答题权重更高）
+  // 按考频加权：每道题的权重 = 主考点的考频指数（近年、解答题权重更高）；
+  // 只抽错题时，越久没重做的错题越容易抽到
   function weight(p) {
+    if (PR.mode === 'wrong') return 1 + Math.min(10, KY.markedDays(p.id) / 2);
     if (PR.mode !== 'freq') return 1;
     var K = KY.meta.stats.byKp[p.kp[0]];
     return 0.5 + (K ? K.index : 0) + Math.max(0, 6 - (KY.meta.stats.lastYear - p.year) / 3);
@@ -289,6 +291,13 @@
     if (e.target.closest('#pr-next')) KY.practiceStep(1);
     else if (e.target.closest('#pr-prev')) KY.practiceStep(-1);
   });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-wr-sort]');
+    if (!b) return;
+    wrSort = b.dataset.wrSort;
+    KY.writeJSON('ky2-wrong-sort', wrSort);
+    KY.render('wrong', { keepScroll: true });
+  });
   // 首页「只抽错题」：先切换抽题方式，再由全局跳转处理去刷题页
   document.addEventListener('click', function (e) {
     if (e.target.closest('[data-practice-wrong]')) { PR.mode = 'wrong'; PR.cur = null; PR.history = []; PR.back = 0; }
@@ -311,25 +320,39 @@
   });
 
   /* ── 错题本 ── */
+  var WR_DUE = 3; // 标记后满 3 天算「该回炉了」
+  var wrSort = KY.readJSON('ky2-wrong-sort', 'chapter') || 'chapter';
+  function ageText(d) { return d >= 99 ? '较早标记' : d === 0 ? '今天标记' : d + ' 天前标记'; }
   KY.views.wrong = function () {
-    var list = KY.meta.problems.filter(function (p) { return KY.status(p.id) === 'bad'; }).sort(function (a, b) {
-      return KY.chOrder[KY.kpById[a.kp[0]].ch] - KY.chOrder[KY.kpById[b.kp[0]].ch] || KY.byYearDesc(a, b);
-    });
+    var list = KY.meta.problems.filter(function (p) { return KY.status(p.id) === 'bad'; });
+    var byCh = function (a, b) { return KY.chOrder[KY.kpById[a.kp[0]].ch] - KY.chOrder[KY.kpById[b.kp[0]].ch] || KY.byYearDesc(a, b); };
+    list.sort(wrSort === 'due' ? function (a, b) { return KY.markedDays(b.id) - KY.markedDays(a.id) || byCh(a, b); } : byCh);
+    var due = list.filter(function (p) { return KY.markedDays(p.id) >= WR_DUE; }).length;
     var h = '<div class="wrap"><div class="narrow-wide">';
     h += '<header class="page-head"><p class="eyebrow">错题本</p><h1>还没吃透的题</h1>' +
-      '<p class="lede">做题时点「不会」，题目就会收进这里，按章节分组。隔几天重做一遍，做对了点「会了」移出去。哪一步想不通，点「问 AI」。</p></header>';
+      '<p class="lede">做题时点「不会」，题目就会收进这里。隔几天重做一遍，做对了点「会了」移出去。哪一步想不通，点「问 AI」。</p>';
+    if (list.length) {
+      h += '<div class="head-row"><span class="wr-sum">共 <b>' + list.length + '</b> 道' + (due ? '，其中 <b>' + due + '</b> 道已经 ' + WR_DUE + ' 天以上没重做，适合今天回炉' : '') + '</span>' +
+        '<span class="seg" role="group" aria-label="排序"><button type="button" class="btn btn-small" data-wr-sort="chapter" aria-pressed="' + (wrSort === 'chapter') + '">按章节</button>' +
+        '<button type="button" class="btn btn-small" data-wr-sort="due" aria-pressed="' + (wrSort === 'due') + '">最久没做的在前</button></span>' +
+        KY.link('practice', '随机抽错题', 'btn btn-small', ' data-practice-wrong') + '</div>';
+    }
+    h += '</header>';
     if (!list.length) {
       h += '<div class="empty"><b>错题本是空的</b><span>去做几道题吧，标成「不会」的题会出现在这里。</span>' + KY.link('practice', '随机刷一道', 'btn primary') + '</div>';
     } else {
-      var cur = '';
+      var cur = null;
       list.forEach(function (p) {
         var ch = KY.kpById[p.kp[0]].ch;
-        if (ch !== cur) {
-          if (cur) h += '</div>';
-          cur = ch;
-          h += '<h2 class="topic-h">第 ' + KY.chById[ch].no + ' 章 ' + KY.chById[ch].title + '</h2><div class="qs">';
+        var d = KY.markedDays(p.id);
+        var group = wrSort === 'due' ? (d >= WR_DUE ? 'due' : 'recent') : ch;
+        if (group !== cur) {
+          if (cur !== null) h += '</div>';
+          cur = group;
+          var title = wrSort === 'due' ? (group === 'due' ? '该回炉了（' + WR_DUE + ' 天以上没重做）' : '最近标记的') : '第 ' + KY.chById[ch].no + ' 章 ' + KY.chById[ch].title;
+          h += '<h2 class="topic-h">' + title + '</h2><div class="qs">';
         }
-        h += KY.card(p);
+        h += '<div class="wr-item"><span class="wr-age' + (d >= WR_DUE ? ' due' : '') + '">' + ageText(d) + '</span>' + KY.card(p) + '</div>';
       });
       h += '</div>';
     }
