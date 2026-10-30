@@ -169,10 +169,13 @@
     var same = KY.meta.problems.filter(function (x) { return x.id !== p.id && x.kp[0] === p.kp[0]; }).sort(KY.byYearDesc).slice(0, 8);
     var yearList = KY.meta.problems.filter(function (x) { return x.year === p.year; }).sort(function (a, b) { return a.id.localeCompare(b.id, 'en', { numeric: true }); });
     var i = yearList.indexOf(p);
-    var lessons = p.kp.filter(function (k) { return KY.meta.lessons[k]; });
+    var refs = KY.refsOf(p.id);
+    var refIds = refs.map(function (x) { return x.id; });
+    var lessons = p.kp.filter(function (k) { return KY.meta.lessons[k] && refIds.indexOf(k) < 0; });
     var h = '<div class="wrap"><div class="narrow-wide">';
     h += '<header class="page-head"><p class="eyebrow">' + KY.link('bank', '真题库', 'crumb') + ' / ' + KY.link('y' + p.year, p.year + ' 年', 'crumb') + ' / ' + KY.esc(p.no) + '</p>' +
       '<h1 class="q-h1">' + p.year + ' 年数学一 · ' + KY.esc(p.no) + '</h1>' +
+      (refs.length ? '<div class="head-row"><span class="prereq">讲解里' + (refs[0].worked ? '有这道题的精讲' : '提到了这道题') + '：' + refs.map(function (x) { return KY.link(x.tok, KY.esc(x.title) + (x.secTitle ? ' · ' + KY.esc(x.secTitle) : ''), 'chip chip-ref'); }).join('') + '</span></div>' : '') +
       (lessons.length ? '<div class="head-row"><span class="prereq">相关讲解：' + lessons.map(function (k) { return KY.link('l-' + k, KY.esc(KY.kpById[k].title), 'chip'); }).join('') + '</span></div>' : '') +
       '</header>';
     h += KY.card(p);

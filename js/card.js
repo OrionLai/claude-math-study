@@ -5,6 +5,15 @@
   var LET = ['A', 'B', 'C', 'D'];
   var FLAG = { ok: '已掌握', bad: '错题本' };
 
+  // 这道题在哪些讲解里被引用：[{id, title, secTitle, tok, worked}]，有完整精讲的在前
+  KY.refsOf = function (pid) {
+    return ((KY.meta.refs || {})[pid] || []).filter(function (r) { return KY.meta.lessons[r[0]]; }).map(function (r) {
+      var L = KY.meta.lessons[r[0]];
+      var sec = L.sections[r[1]];
+      return { id: r[0], title: L.title, secTitle: sec ? KY.plain(sec.title) : '', tok: 'l-' + r[0] + '~s-' + r[1], worked: !!r[2] };
+    });
+  };
+
   KY.answerHtml = function (p) {
     if (p.options && /^[A-D]$/.test(p.answer)) return '<b>' + p.answer + '</b>　' + p.options[LET.indexOf(p.answer)];
     return p.answer;
@@ -53,7 +62,12 @@
     h += '<section class="sol-part pit"><span class="lbl">易错点</span>' + s.pitfalls + '</section>';
     h += '<section class="sol-part sum"><span class="lbl lbl-ok">方法总结</span>' + s.summary + '</section>';
     var foot = [];
-    p.kp.forEach(function (k) { if (KY.meta.lessons[k]) foot.push(KY.link('l-' + k, '回顾讲解：' + KY.esc(KY.kpById[k].title), 'chip')); });
+    var refLessons = {};
+    KY.refsOf(p.id).forEach(function (r) {
+      refLessons[r.id] = true;
+      foot.push(KY.link(r.tok, (r.worked ? '讲解里的精讲：' : '讲解里提到：') + KY.esc(r.title), 'chip chip-ref', ' title="' + KY.esc(r.secTitle) + '"'));
+    });
+    p.kp.forEach(function (k) { if (KY.meta.lessons[k] && !refLessons[k]) foot.push(KY.link('l-' + k, '回顾讲解：' + KY.esc(KY.kpById[k].title), 'chip')); });
     foot.push(KY.link('q-' + p.id, '单独打开这道题', 'chip'));
     h += '<div class="sol-foot">' + foot.join('') + '</div>';
     if (s.verify) {

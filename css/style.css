@@ -511,6 +511,7 @@ body.ai-open .fab-toc { display: none; }
 .cont-card b { font-size: 1.05rem; }
 .cont-sec { font-size: 0.8125rem; color: var(--ink-2); }
 .toggle { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.875rem; color: var(--ink-2); cursor: pointer; }
+.chip-ref { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, var(--rule)); }
 .st-tag { font-size: 0.7rem; border-radius: 999px; padding: 0 0.45rem; }
 .st-ok { background: var(--ok-soft); color: var(--ok); }
 .st-bad { background: var(--pen-soft); color: var(--pen); }

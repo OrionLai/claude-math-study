@@ -126,11 +126,25 @@ for (const y of years) {
   fs.writeFileSync(path.join(OUT, 'sol', `${y}.js`), js('KY_addSolutions', { year: y, sol }));
 }
 const lessonIndex = {};
+// 反向索引：每道真题在哪些讲解的哪一节被引用（讲解里的 <span class="qref" data-q="…">）。
+// 每篇讲解只取一节：优先标题含「真题」的例题节（那里有完整精讲），其次其他例题节，再次第一次出现的节。
+const refs = {};
 for (const id of Object.keys(lessons)) {
   const l = lessons[id];
   lessonIndex[id] = { title: l.title, summary: l.summary, prereq: l.prereq || [], sections: l.sections.map((s) => ({ kind: s.kind, title: s.title })) };
   fs.writeFileSync(path.join(OUT, 'lessons', `${id}.js`), js('KY_addLesson', l));
+  const best = {};
+  l.sections.forEach((s, i) => {
+    const rank = s.kind === 'example' && /真题/.test(s.title) ? 3 : s.kind === 'example' ? 2 : 1;
+    for (const m of JSON.stringify(s).matchAll(/data-q=\\"([^"\\]+)\\"/g)) {
+      const q = m[1];
+      if (!best[q] || rank > best[q].rank) best[q] = { i, rank };
+    }
+  });
+  for (const q of Object.keys(best)) (refs[q] = refs[q] || []).push([id, best[q].i, best[q].rank === 3 ? 1 : 0]);
 }
+// 有完整精讲的排在前面
+for (const q of Object.keys(refs)) refs[q].sort((a, b) => b[2] - a[2]);
 const status = fs.existsSync(path.join(SRC, 'status.json')) ? JSON.parse(fs.readFileSync(path.join(SRC, 'status.json'), 'utf8')) : {};
 const meta = {
   built: new Date().toISOString().slice(0, 10),
@@ -138,6 +152,7 @@ const meta = {
   taxonomy: TAX,
   problems: index,
   lessons: lessonIndex,
+  refs,
   stats,
   analysis,
 };

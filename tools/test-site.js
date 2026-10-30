@@ -50,7 +50,8 @@ let browser;
 function assert(cond, msg) { if (!cond) throw new Error(msg); }
 
 async function newPage(viewport, opts = {}) {
-  const ctx = await browser.newContext({ viewport, colorScheme: opts.colorScheme || 'light', deviceScaleFactor: 1 });
+  // ignoreHTTPSErrors：只给实测 AI 用（有些 CI / 公司网络用自签证书的代理转发 HTTPS）
+  const ctx = await browser.newContext({ viewport, colorScheme: opts.colorScheme || 'light', deviceScaleFactor: 1, ignoreHTTPSErrors: !!opts.ignoreHTTPSErrors });
   await ctx.route(/cdnjs\.cloudflare\.com\/ajax\/libs\/mathjax\//, (r) => r.fulfill({ path: MJ, contentType: 'text/javascript' }));
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
   const page = await ctx.newPage();
@@ -247,6 +248,31 @@ async function run() {
     return note;
   });
 
+  await test('真题 → 讲解精讲：单题页与解析里的反向链接', async () => {
+    const page = await newPage(DESKTOP);
+    const pid = await (async () => { await open(page, 'home'); return page.evaluate(() => Object.keys(KY.meta.refs || {}).find((q) => KY.meta.refs[q].some((r) => r[2]))); })();
+    if (!pid) return '还没有讲解精讲真题，跳过';
+    await open(page, 'q-' + pid);
+    const chip = await page.$('#view .page-head .chip-ref');
+    assert(chip, `单题页 ${pid} 没有显示「讲解里有这道题的精讲」`);
+    const tok = await chip.getAttribute('data-go');
+    await chip.click();
+    await settle(page);
+    await page.waitForTimeout(700);
+    const anchor = tok.split('~')[1];
+    const pos = await page.evaluate((a) => ({ hash: location.hash, top: document.getElementById(a).getBoundingClientRect().top, head: document.querySelector('.top').getBoundingClientRect().bottom }), anchor);
+    assert(pos.hash === '#' + tok, '跳转后地址不对：' + pos.hash);
+    assert(pos.top >= pos.head - 2 && pos.top < pos.head + 80, `没有定位到精讲那一节（节标题在 ${Math.round(pos.top)}px）`);
+    assert(await page.evaluate((q) => !!document.querySelector('#' + CSS.escape(location.hash.split('~')[1]) + ' [data-q="' + q + '"]'), pid), '定位到的那一节里没有引用这道题');
+    // 解析底部也有链接
+    await open(page, 'q-' + pid);
+    await page.keyboard.press('s');
+    await settle(page);
+    assert(await page.evaluate(() => !!document.querySelector('#view .sol-foot .chip-ref')), '解析底部没有「讲解里的精讲」链接');
+    await page.context().close();
+    return `${pid} → ${tok}`;
+  });
+
   await test('手机：目录按钮、跳转落点、记住读到哪里', async () => {
     const page = await newPage(PHONE);
     const id = meta.lessons[0];
@@ -430,7 +456,7 @@ async function run() {
     await test('AI 实测：用 API Key 真实提问一次（Haiku）', async () => {
       const key = process.env.ANTHROPIC_API_KEY;
       assert(key, '没有设置 ANTHROPIC_API_KEY');
-      const page = await newPage(DESKTOP);
+      const page = await newPage(DESKTOP, { ignoreHTTPSErrors: true });
       await open(page, 'q-2019-9');
       await page.click('#view .q [data-act="ai"]');
       await page.click('#ai-settings summary');
@@ -440,9 +466,11 @@ async function run() {
       await page.dispatchEvent('#ai-model', 'change');
       await page.fill('#ai-input', '这道题第一步应该做什么？只用一句话回答。');
       await page.click('#ai-send');
-      await page.waitForFunction(() => !document.querySelector('#ai-log .streaming') && document.querySelectorAll('#ai-log .ai-msg.bot').length > 0, null, { timeout: 90000 });
-      const text = await page.evaluate(() => document.querySelector('#ai-log .ai-msg.bot').textContent);
-      assert(text && text.length > 5, 'AI 没有返回内容');
+      // 等到回答写完，或者出错提示弹出
+      await page.waitForFunction(() => (!document.querySelector('#ai-log .streaming') && document.querySelectorAll('#ai-log .ai-msg.bot').length > 0) || !document.getElementById('toast').hidden, null, { timeout: 90000 });
+      const r = await page.evaluate(() => ({ text: (document.querySelector('#ai-log .ai-msg.bot') || {}).textContent, toast: document.getElementById('toast').hidden ? '' : document.getElementById('toast').textContent }));
+      assert(r.text && r.text.length > 5, 'AI 没有返回内容' + (r.toast ? '：' + r.toast : ''));
+      const text = r.text;
       await page.context().close();
       return '回答：' + text.slice(0, 60).replace(/\s+/g, ' ');
     });

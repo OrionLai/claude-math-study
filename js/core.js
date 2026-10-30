@@ -220,7 +220,8 @@
     tok = tok || 'home';
     var m;
     if (tok === 'home' || tok === 'learn' || tok === 'bank' || tok === 'stats' || tok === 'practice' || tok === 'wrong') return { view: tok, tok: tok };
-    if ((m = /^l-(.+)$/.exec(tok)) && KY.kpById[m[1]]) return { view: 'lesson', id: m[1], tok: tok };
+    // l-考点id 或 l-考点id~s-7（直接定位到第 8 节）
+    if ((m = /^l-([^~]+)(?:~(s-\d+|s-rel))?$/.exec(tok)) && KY.kpById[m[1]]) return { view: 'lesson', id: m[1], tok: tok, anchor: m[2] || '' };
     if ((m = /^kp-(.+)$/.exec(tok)) && KY.kpById[m[1]]) return { view: 'kp', id: m[1], tok: tok };
     if ((m = /^q-(.+)$/.exec(tok)) && KY.pById[m[1]]) return { view: 'problem', id: m[1], tok: tok };
     if ((m = /^y(\d{4})$/.exec(tok)) && KY.meta.stats.years.indexOf(+m[1]) >= 0) return { view: 'year', year: +m[1], tok: tok };
@@ -249,7 +250,8 @@
       emit('rendered', r);
       KY.typeset(view);
       KY.watchLazy(view);
-      if (opts.anchor && document.getElementById(opts.anchor)) document.getElementById(opts.anchor).scrollIntoView();
+      var anchor = opts.anchor || r.anchor;
+      if (anchor && document.getElementById(anchor)) { window.scrollTo(0, 0); KY.scrollToId(anchor); }
       else if (!opts.keepScroll) window.scrollTo(0, 0);
     };
     if (out && typeof out.then === 'function') {
