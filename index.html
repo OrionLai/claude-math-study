@@ -43,7 +43,10 @@
       <a href="#practice" data-go="practice" data-nav="practice">随机刷题</a>
       <a href="#wrong" data-go="wrong" data-nav="wrong">错题本 <span class="count" id="wrong-count" data-zero>0</span></a>
     </nav>
-    <button type="button" class="theme-btn" id="theme-btn" aria-label="配色：跟随系统（点击切换）" title="配色：跟随系统（点击切换）"></button>
+    <span class="top-tools">
+      <button type="button" class="theme-btn" id="search-btn" aria-label="搜索考点、讲解和真题（Ctrl+K）" title="搜索考点、讲解和真题（Ctrl+K）" aria-haspopup="dialog"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12.6 12.6 17 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <button type="button" class="theme-btn" id="theme-btn" aria-label="配色：跟随系统（点击切换）" title="配色：跟随系统（点击切换）"></button>
+    </span>
   </div>
   <div class="readbar" id="readbar" hidden><i></i></div>
 </header>
@@ -88,6 +91,18 @@
     <nav class="sheet-body" aria-label="本篇小节"></nav>
   </div>
 </dialog>
+<dialog class="sheet search" id="search" aria-label="搜索">
+  <div class="sheet-in">
+    <header class="peek-head search-head">
+      <svg viewBox="0 0 20 20" aria-hidden="true" class="search-ico"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12.6 12.6 17 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <label class="sr" for="search-q">搜索考点、讲解和真题</label>
+      <input type="search" id="search-q" placeholder="搜考点、讲解小节、真题…" autocomplete="off" role="combobox" aria-expanded="true" aria-controls="search-list">
+      <button type="button" class="peek-x" data-search-close aria-label="关闭">×</button>
+    </header>
+    <div class="search-list" id="search-list" role="listbox" aria-label="搜索结果"></div>
+    <p class="search-foot"><kbd>↑</kbd> <kbd>↓</kbd> 选择　<kbd>Enter</kbd> 打开　<kbd>Esc</kbd> 关闭</p>
+  </div>
+</dialog>
 <button type="button" class="fab fab-toc" id="toc-btn" hidden aria-haspopup="dialog">目录</button>
 <div class="tip" id="tip" hidden role="tooltip"></div>
 <div class="toast" id="toast" hidden role="status"></div>
@@ -98,6 +113,7 @@
 <script src="js/views-learn.js"></script>
 <script src="js/views-bank.js"></script>
 <script src="js/views-stats.js"></script>
+<script src="js/search.js"></script>
 <script src="js/ai.js"></script>
 <script src="js/main.js"></script>
 </body>

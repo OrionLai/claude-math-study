@@ -418,6 +418,45 @@ async function run() {
     await page.context().close();
   });
 
+  await test('全站搜索：Ctrl+K、分组结果、键盘选择、打开题目浮层', async () => {
+    const page = await newPage(DESKTOP);
+    await open(page, 'home');
+    await page.keyboard.press('Control+k');
+    assert(await page.evaluate(() => document.getElementById('search').open && document.activeElement.id === 'search-q'), 'Ctrl+K 没有打开搜索框');
+    await page.keyboard.type('泰勒');
+    await page.waitForTimeout(300);
+    const groups = await page.evaluate(() => Array.from(document.querySelectorAll('#search-list .search-g')).map((g) => g.textContent));
+    assert(groups.includes('考点') && groups.includes('真题'), '搜「泰勒」应有考点和真题两组结果，实际：' + groups.join('、'));
+    // 回车打开第一条（考点 → 讲解）
+    await page.keyboard.press('Enter');
+    await settle(page);
+    assert(await page.evaluate(() => !document.getElementById('search').open && /^#(l|kp)-/.test(location.hash)), '回车没有打开第一条结果');
+    // 讲解小节结果带定位
+    await page.click('#search-btn');
+    await page.fill('#search-q', '近十年真题精讲');
+    await page.waitForTimeout(300);
+    const sec = await page.$('#search-list .search-it');
+    assert(sec, '搜「近十年真题精讲」没有结果');
+    // 题目结果 → 浮层
+    await page.fill('#search-q', '2021 拉格朗日');
+    await page.waitForTimeout(300);
+    const n = await page.evaluate(() => Array.from(document.querySelectorAll('#search-list .search-it')).findIndex((b) => /2021 年/.test(b.textContent)));
+    assert(n >= 0, '搜「2021 拉格朗日」没有找到 2021 年的题');
+    for (let i = 0; i < n; i++) await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    await settle(page);
+    assert(await page.evaluate(() => document.getElementById('peek').open && /2021/.test(document.querySelector('#peek .peek-title').textContent)), '选中题目后没有在浮层里打开');
+    await page.keyboard.press('Escape');
+    // 没有结果时的提示
+    await page.keyboard.press('Control+k');
+    await page.fill('#search-q', 'zzzz没有这个词');
+    await page.waitForTimeout(300);
+    assert(await page.evaluate(() => /没有找到/.test(document.getElementById('search-list').textContent)), '没有结果时应给出提示');
+    await page.keyboard.press('Escape');
+    await page.context().close();
+    return '搜「泰勒」结果分组：' + groups.join('、');
+  });
+
   await test('配色切换并记住', async () => {
     const page = await newPage(DESKTOP);
     await open(page, 'home');
