@@ -24,6 +24,9 @@
     "diff.mvt",
     "mint.double",
     "int.defcalc",
-    "lim.func"
+    "lim.func",
+    "diff.mono",
+    "int.def",
+    "lim.seqcalc"
   ]
 }

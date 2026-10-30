@@ -1,0 +1,616 @@
+registerLesson(function (R) {
+  return {
+    id: 'int.def', ch: 'int', title: '定积分的概念与性质',
+    summary: R`定积分是"分割、取点、求和、取极限"四步的产物：把曲边梯形切成许多窄条，用矩形代替每一条，矩形面积之和在"最长的小区间长度趋于零"时的极限就是定积分。本篇讲清楚这个定义的每个字、哪些函数可积、定积分作为"有向面积"的几何意义，以及线性、区间可加、比较、估值、积分中值定理五条性质并给出完整证明。考研直接考它的题不多（近十年以它为主考点的只有 3 道选择题），但它常以工具身份出现在别的题里：黎曼和型极限、比较积分大小、积分中值定理搭配中值定理证明题。`,
+    prereq: ['lim.seqdef', 'lim.rules', 'lim.closed'],
+    sections: [
+      {
+        kind: 'why', title: '为什么需要定积分：从曲边梯形的面积说起',
+        html: R`<p>先看两个表面上毫不相干的问题。</p>
+<p><b>问题一：曲边梯形的面积。</b>矩形、三角形、梯形有面积公式，根本原因是它们的边都是直线段。可是由连续曲线 $y=f(x)$（$f(x)\ge0$）、直线 $x=a$、$x=b$ 和 $x$ 轴围成的图形——<b>曲边梯形</b>——有一条边是弯的，没有现成公式。古人（阿基米德）和我们的想法一样：<b>以直代曲，再无限细分</b>。把 $[a,b]$ 切成许多小段，每一小段上曲线"几乎是平的"，用一个矩形代替这一小片曲边梯形；全部矩形面积加起来，就是面积的近似值；切得越细越准，细到极限就是面积本身。下图画的是分 $6$ 段的情形：</p>
+<svg viewBox="0 0 420 275" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-idef1" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" fill="none" stroke-width="1.2">
+<line x1="20" y1="225" x2="408" y2="225" marker-end="url(#arr-idef1)"/>
+<line x1="40" y1="250" x2="40" y2="18" marker-end="url(#arr-idef1)"/>
+</g>
+<g stroke="currentColor" fill="currentColor" fill-opacity="0.12" stroke-width="0.9">
+<rect x="70" y="109.5" width="48" height="115.5"/>
+<rect x="118" y="87.7" width="40" height="137.3"/>
+<rect x="158" y="75.2" width="46" height="149.8"/>
+<rect x="204" y="73.0" width="52" height="152.0"/>
+<rect x="256" y="77.2" width="56" height="147.8"/>
+<rect x="312" y="100.4" width="58" height="124.6"/>
+</g>
+<g stroke="currentColor" fill="none" stroke-width="2">
+<polyline points="70.0,118.6 73.0,117.0 76.0,115.5 79.0,113.9 82.0,112.4 85.0,110.9 88.0,109.5 91.0,108.0 94.0,106.6 97.0,105.2 100.0,103.8 103.0,102.4 106.0,101.1 109.0,99.7 112.0,98.5 115.0,97.2 118.0,95.9 121.0,94.7 124.0,93.5 127.0,92.4 130.0,91.2 133.0,90.1 136.0,89.1 139.0,88.0 142.0,87.0 145.0,86.0 148.0,85.1 151.0,84.2 154.0,83.3 157.0,82.5 160.0,81.6 163.0,80.9 166.0,80.1 169.0,79.4 172.0,78.7 175.0,78.1 178.0,77.5 181.0,76.9 184.0,76.4 187.0,75.9 190.0,75.5 193.0,75.1 196.0,74.7 199.0,74.3 202.0,74.0 205.0,73.8 208.0,73.5 211.0,73.3 214.0,73.2 217.0,73.0 220.0,73.0 223.0,72.9 226.0,72.9 229.0,72.9 232.0,73.0 235.0,73.1 238.0,73.2 241.0,73.4 244.0,73.6 247.0,73.8 250.0,74.1 253.0,74.4 256.0,74.8 259.0,75.1 262.0,75.6 265.0,76.0 268.0,76.5 271.0,77.0 274.0,77.5 277.0,78.1 280.0,78.7 283.0,79.3 286.0,80.0 289.0,80.7 292.0,81.4 295.0,82.1 298.0,82.9 301.0,83.7 304.0,84.5 307.0,85.3 310.0,86.2 313.0,87.1 316.0,88.0 319.0,88.9 322.0,89.9 325.0,90.9 328.0,91.9 331.0,92.9 334.0,93.9 337.0,94.9 340.0,96.0 343.0,97.1 346.0,98.2 349.0,99.3 352.0,100.4 355.0,101.5 358.0,102.6 361.0,103.8 364.0,104.9 367.0,106.1 370.0,107.2" />
+</g>
+<g stroke="currentColor" fill="none" stroke-width="1" stroke-dasharray="3,3">
+<line x1="232" y1="225" x2="232" y2="73.0"/>
+</g>
+<g fill="currentColor">
+<circle cx="88" cy="109.5" r="2.8"/>
+<circle cx="140" cy="87.7" r="2.8"/>
+<circle cx="192" cy="75.2" r="2.8"/>
+<circle cx="232" cy="73.0" r="2.8"/>
+<circle cx="272" cy="77.2" r="2.8"/>
+<circle cx="352" cy="100.4" r="2.8"/>
+<line x1="70" y1="222" x2="70" y2="228" stroke="currentColor" stroke-width="1.2"/>
+<line x1="118" y1="222" x2="118" y2="228" stroke="currentColor" stroke-width="1.2"/>
+<line x1="158" y1="222" x2="158" y2="228" stroke="currentColor" stroke-width="1.2"/>
+<line x1="204" y1="222" x2="204" y2="228" stroke="currentColor" stroke-width="1.2"/>
+<line x1="256" y1="222" x2="256" y2="228" stroke="currentColor" stroke-width="1.2"/>
+<line x1="312" y1="222" x2="312" y2="228" stroke="currentColor" stroke-width="1.2"/>
+<line x1="370" y1="222" x2="370" y2="228" stroke="currentColor" stroke-width="1.2"/>
+</g>
+<g fill="currentColor" font-family="serif">
+<text x="404" y="246" font-size="13" >x</text><text x="28" y="24" font-size="13" >y</text><text x="56" y="243" font-size="11" >a=x₀</text><text x="112" y="243" font-size="11" >x₁</text><text x="152" y="243" font-size="11" >x₂</text><text x="193" y="243" font-size="11" >xᵢ₋₁</text><text x="251" y="243" font-size="11" >xᵢ</text><text x="306" y="243" font-size="11" >x₅</text><text x="356" y="243" font-size="11" >b=x₆</text><text x="228" y="262" font-size="12" >ξᵢ</text><text x="84" y="262" font-size="12" >ξ₁</text><text x="348" y="262" font-size="12" >ξ₆</text><text x="237" y="64.9887931216262" font-size="12" >f(ξᵢ)</text><text x="300" y="69.41330827316679" font-size="13" >y = f(x)</text><text x="50" y="40" font-size="12" >曲边梯形面积 ≈ Σ f(ξᵢ)Δxᵢ（6 个矩形之和）</text><text x="208" y="217" font-size="11" >Δxᵢ</text></g>
+</svg>
+<p>图中第 $i$ 个小区间 $[x_{i-1},x_i]$ 的长度记为 $\Delta x_i$，在它里面任选一点 $\xi_i$，用高为 $f(\xi_i)$ 的矩形代替这一小片，于是</p>
+$$\text{曲边梯形面积}\approx\sum_{i=1}^{n}f(\xi_i)\Delta x_i .$$
+<p>这一过程分四步：<b>分割</b>（插入分点）、<b>近似</b>（每一小片用矩形代替，也叫"取点"）、<b>求和</b>、<b>取极限</b>。</p>
+<p><b>问题二：变速直线运动的路程。</b>速度恒定时路程 $=$ 速度 $\times$ 时间；速度 $v=v(t)$ 随时间变化时呢？同样的办法：把时间段 $[T_1,T_2]$ 切成小段 $[t_{i-1},t_i]$，每一小段内速度"几乎不变"，用某一时刻 $\tau_i$ 的速度 $v(\tau_i)$ 代替，这一小段路程约为 $v(\tau_i)\Delta t_i$，总路程 $\approx\sum v(\tau_i)\Delta t_i$，分得越细越准。</p>
+<p>两个问题的数学结构<b>一模一样</b>：都是"把区间切碎，每一小段上用一个函数值乘以小段长度，求和，再让分割无限变细"。质量、功、液体压力、引力、平均值……全都是这种"乘积之和的极限"。于是值得把这个极限单独抽出来，给它一个名字和一套性质——这就是<b>定积分</b>。</p>
+<p>在定义之前，有几个细节必须先想清楚，它们正是初学者最容易含糊的地方：</p>
+<ul>
+<li>"切法"可以任意吗？——可以，<b>不要求等分</b>。等分只是最方便的一种。</li>
+<li>每一小段上的点 $\xi_i$ 怎么取？——<b>任意取</b>，左端点、右端点、中点都行。<span class="qref" data-q="2021-4">2021 年第 4 题</span>考的正是这一点。</li>
+<li>"切得无限细"是什么意思？——是<b>最长的小区间长度 $\lambda\to0$</b>，而不只是段数 $n\to\infty$。段数再多，只要有一段始终不变短，它上面的矩形就永远代替不了那一片曲边梯形。</li>
+<li>什么样的函数能这样做？——这就是"可积条件"要回答的问题。</li>
+</ul>
+<p>本篇的任务是：(1) 把上面的极限严格定义为定积分，逐字说明定义里每个条件的作用；(2) 说清哪些函数可积、哪些不可积；(3) 解释定积分的几何意义（有向面积）与物理意义；(4) 证明定积分的运算性质——线性、区间可加、保号与比较、估值；(5) 证明积分中值定理。至于定积分怎么<b>算</b>（牛顿—莱布尼茨公式、换元、分部），放在 int.ftc 与 int.defcalc 两篇里。</p>`
+      },
+      {
+        kind: 'def', title: '定积分的定义（黎曼和）',
+        html: R`<p><b>定义（定积分）</b>　设函数 $f(x)$ 在 $[a,b]$ 上有定义。在 $[a,b]$ 中任意插入分点</p>
+$$a=x_0<x_1<x_2<\cdots<x_{n-1}<x_n=b,$$
+<p>把 $[a,b]$ 分成 $n$ 个小区间 $[x_{i-1},x_i]$（$i=1,2,\cdots,n$），其长度记为 $\Delta x_i=x_i-x_{i-1}$，并记 $\lambda=\max\{\Delta x_1,\Delta x_2,\cdots,\Delta x_n\}$（最长的那个小区间的长度，称为这个分法的<b>细度</b>，它衡量分法"有多细"）。在每个小区间上<b>任取</b>一点 $\xi_i\in[x_{i-1},x_i]$，作和式</p>
+$$S=\sum_{i=1}^{n}f(\xi_i)\Delta x_i ,$$
+<p>称为 $f$ 的<b>积分和</b>（黎曼和）。如果当 $\lambda\to0$ 时积分和 $S$ 的极限 $I$ 存在，并且这个极限<b>与区间的分法无关，也与 $\xi_i$ 的取法无关</b>，就称 $f$ 在 $[a,b]$ 上<b>可积</b>，称 $I$ 为 $f$ 在 $[a,b]$ 上的<b>定积分</b>，记作</p>
+$$\int_a^b f(x)\,\mathrm{d}x=I=\lim_{\lambda\to0}\sum_{i=1}^{n}f(\xi_i)\Delta x_i .$$
+<p>其中 $a$ 叫积分下限，$b$ 叫积分上限，$[a,b]$ 叫积分区间，$f(x)$ 叫被积函数，$f(x)\,\mathrm{d}x$ 叫被积表达式，$x$ 叫积分变量。</p>
+<p>"当 $\lambda\to0$ 时极限为 $I$"的精确含义（$\varepsilon$-$\delta$ 语言）是：对任意 $\varepsilon>0$，存在 $\delta>0$，使得对 $[a,b]$ 的<b>任何</b>分法，只要 $\lambda<\delta$，不论 $\xi_i$ 怎样选取，都有</p>
+$$\Big|\sum_{i=1}^{n}f(\xi_i)\Delta x_i-I\Big|<\varepsilon .$$
+<p><b>逐字拆解：</b></p>
+<ul>
+<li><b>"任意插入分点"</b>——分法任意，<b>不要求等分</b>。等分（$\Delta x_i=\dfrac{b-a}{n}$）只是我们计算时最爱用的一种。用等分来算一个定积分，必须以"已经知道 $f$ 可积"为前提（见下面的正例），因为定义要求的是对一切分法极限都一样。</li>
+<li><b>"任取一点 $\xi_i$"</b>——左端点、右端点、中点、最大值点都行，而且不同的小区间可以用不同的取法。这既是定义的要求，也是解题的自由：<span class="qref" data-q="2021-4">2021 年第 4 题</span>的正确选项取的是每个小区间的中点。反过来，如果换一种取法极限就变了，这个函数就<b>不可积</b>（见下面的反例）。</li>
+<li><b>"$\lambda\to0$"而不是"$n\to\infty$"</b>——$n\to\infty$ 不能保证每个小区间都变短：例如只反复加细左半段 $\left[a,\dfrac{a+b}{2}\right]$，而右半段始终是一整段，分点个数 $n$ 可以趋于无穷，$\lambda$ 却始终是 $\dfrac{b-a}{2}$，右半段上的矩形永远代替不了那片曲边梯形。而 $\lambda\to0$ 必然有 $n\to\infty$（因为 $n\lambda\ge b-a$）。在<b>等分</b>时 $\lambda=\dfrac{b-a}{n}$，"$\lambda\to0$"与"$n\to\infty$"是一回事——这就是为什么黎曼和型极限题总写成 $n\to\infty$。</li>
+<li><b>"极限存在且与分法、取法无关"</b>——这是对<b>一切</b>分法、<b>一切</b>取法的统一要求，是定义里最强的条件。它使"可积"成了对函数的一种严格限制：不是任何函数都可积。</li>
+<li><b>定积分是一个数，与积分变量用什么字母无关</b>：$\displaystyle\int_a^b f(x)\,\mathrm{d}x=\int_a^b f(t)\,\mathrm{d}t=\int_a^b f(u)\,\mathrm{d}u$。定义中只用到 $f$ 的函数值和区间 $[a,b]$，根本没有"$x$"什么事。所以像 $\displaystyle\int_0^1 f(t)\,\mathrm{d}t$ 这样<b>上下限都是常数</b>的定积分是一个常数，对 $x$ 求导等于 $0$（<span class="qref" data-q="1989-1-2">1989 年一(2)</span>正是利用这一点：把 $\displaystyle\int_0^1f(t)\,\mathrm{d}t$ 设成常数 $A$ 再求解）。它与变上限积分 $\displaystyle\int_0^x f(t)\,\mathrm{d}t$（这是 $x$ 的函数，见 int.ftc）是两回事。</li>
+<li><b>记号的由来</b>——$\displaystyle\int$ 是拉长了的字母 S（Sum，求和），$\mathrm{d}x$ 是 $\Delta x$ 的"极限形态"，$f(x)\,\mathrm{d}x$ 可以想成"高 $f(x)$、宽 $\mathrm{d}x$ 的窄条面积"（面积元素）。这不是严格定义，但它是建立直觉和列积分式（定积分的应用 int.app 里的"微元法"）的依据。</li>
+<li><b>两条补充规定</b>——$a=b$ 时规定 $\displaystyle\int_a^a f(x)\,\mathrm{d}x=0$；$a>b$ 时规定 $\displaystyle\int_a^b f(x)\,\mathrm{d}x=-\int_b^a f(x)\,\mathrm{d}x$。第二条的道理：若从 $b$ 向 $a$"倒着"分割，每个 $\Delta x_i=x_i-x_{i-1}$ 都变成负数，积分和整体变号。有了这两条规定，后面的"区间可加性"才能对 $a,b,c$ 的任何位置关系成立，也才有 <span class="qref" data-q="2007-3">2007 年第 3 题</span>里 $F(-2)=\displaystyle\int_0^{-2}f(t)\,\mathrm{d}t=-\int_{-2}^{0}f(t)\,\mathrm{d}t$ 这样的翻转。</li>
+</ul>
+<p><b>正例：用定义计算 $\displaystyle\int_0^1 x^2\,\mathrm{d}x$。</b>$x^2$ 在 $[0,1]$ 上连续，由下文"连续函数必可积"，积分和的极限存在且与分法、取法无关。于是可以挑最方便的：$n$ 等分，$\Delta x_i=\dfrac1n$，$\xi_i$ 取右端点 $\dfrac in$：</p>
+$$S_n=\sum_{i=1}^{n}\left(\frac in\right)^2\cdot\frac1n=\frac{1}{n^3}\sum_{i=1}^{n}i^2=\frac{n(n+1)(2n+1)}{6n^3}=\frac{1}{6}\left(1+\frac1n\right)\left(2+\frac1n\right)\to\frac13\quad(n\to\infty).$$
+<p>所以 $\displaystyle\int_0^1x^2\,\mathrm{d}x=\dfrac13$。一般地，对 $[a,b]$ 上的连续函数 $f$，$n$ 等分并取右端点（分点 $x_k=a+\dfrac{k(b-a)}{n}$，每段长 $\Delta x_k=\dfrac{b-a}{n}$，取 $\xi_k=x_k$，代入积分和即得下式左端），就得到考研里用得最多的公式</p>
+$$\lim_{n\to\infty}\frac{b-a}{n}\sum_{k=1}^{n}f\!\left(a+\frac{k(b-a)}{n}\right)=\int_a^b f(x)\,\mathrm{d}x,\qquad\text{特别地}\quad\lim_{n\to\infty}\frac1n\sum_{k=1}^{n}f\!\left(\frac kn\right)=\int_0^1 f(x)\,\mathrm{d}x .$$
+<p>请注意这里的逻辑顺序：等分、取右端点算出的只是<b>一种特殊</b>积分和的极限；它等于定积分，是因为<b>先知道了 $f$ 可积</b>。若 $f$ 不可积，这个特殊极限即使存在也不叫定积分。解答题里写"因 $f$ 在 $[0,1]$ 上连续，故可积，于是……"就是在交代这一步。</p>
+<p><b>反例一（有界但不可积）：狄利克雷函数</b> $D(x)=\begin{cases}1,&x\text{ 为有理数}\\0,&x\text{ 为无理数}\end{cases}$ 在 $[0,1]$ 上。任何分法下，每个小区间里既有有理数又有无理数（有理数、无理数在数轴上都是稠密的）。若 $\xi_i$ 全取有理数，积分和 $S=\sum1\cdot\Delta x_i=1$；若全取无理数，$S=0$。$\lambda\to0$ 时两种取法的极限分别是 $1$ 和 $0$，不一致，所以 $D$ 在 $[0,1]$ 上<b>不可积</b>。这说明定义中"与取法无关"不是一句空话。</p>
+<p><b>反例二（无界函数不可积）：</b>$f(x)=\begin{cases}\dfrac1x,&0<x\le1\\0,&x=0\end{cases}$ 在 $[0,1]$ 上。不论分法多细，含 $0$ 的第一个小区间 $[0,x_1]$ 上 $f$ 无界，把 $\xi_1$ 取得足够靠近 $0$，$f(\xi_1)\Delta x_1$ 要多大有多大，积分和不可能稳定在任何一个数附近。下一节把这件事写成一般定理。</p>
+<blockquote><p>一句话：定积分是"<b>任意分割、任意取点</b>的乘积和在 $\lambda\to0$ 时的<b>公共极限</b>"。会不会算先放一边，先把"任意"和"$\lambda\to0$"两个词刻在脑子里。</p></blockquote>`
+      },
+      {
+        kind: 'thm', title: '可积的必要条件：可积函数必定有界',
+        statement: R`<p>若 $f$ 在 $[a,b]$ 上可积，则 $f$ 在 $[a,b]$ 上有界。等价地说：<b>无界函数一定不可积</b>。</p>`,
+        intuition: R`<p>只要有一个小区间上函数值可以要多大有多大，在这个小区间上选点就能把积分和推到任意大，和式不可能稳定在某个数附近。证明就是把这个想法写严格：反证法，假定可积，用可积的 $\varepsilon$-$\delta$ 定义给积分和一个"统一的上界"，再用无界性造一个超过这个上界的积分和。</p>`,
+        steps: [
+          { s: R`<p>用反证法。设 $f$ 在 $[a,b]$ 上可积，积分为 $I$，但 $f$ 在 $[a,b]$ 上无界。在可积的定义中取 $\varepsilon=1$：存在 $\delta>0$，使得对任何满足 $\lambda<\delta$ 的分法和任何取法，都有 $|S-I|<1$，从而 $|S|<|I|+1$。</p>`, why: R`<p>把"可积"翻译成 $\varepsilon$-$\delta$ 语言，并固定一个 $\varepsilon$。要点是这个不等式对"所有足够细的分法、所有取法"<b>同时</b>成立，于是所有这些积分和被一个共同的常数 $|I|+1$ 控制住了。接下来只需造出一个违反它的积分和。</p>` },
+          { s: R`<p>任取一个 $\lambda<\delta$ 的分法 $a=x_0<x_1<\cdots<x_n=b$。由于 $f$ 在 $[a,b]$ 上无界而小区间只有<b>有限个</b>，必有某个小区间 $[x_{k-1},x_k]$，$f$ 在它上面无界。</p>`, why: R`<p>若 $f$ 在每个小区间上都有界，设界分别为 $K_1,\cdots,K_n$，则 $\max\{K_1,\cdots,K_n\}$ 就是 $f$ 在整个 $[a,b]$ 上的界，与"无界"矛盾。"有限个"是关键：无限多个有界集合并起来可以无界（例如 $(0,1]$ 上 $\dfrac1x$ 在每个 $\left[\dfrac1{m+1},\dfrac1m\right]$ 上都有界）。</p>` },
+          { s: R`<p>把其余小区间上的点 $\xi_i$（$i\ne k$）任意固定下来，记 $A=\displaystyle\sum_{i\ne k}f(\xi_i)\Delta x_i$，这是一个确定的数。因为 $f$ 在 $[x_{k-1},x_k]$ 上无界，可以选取 $\xi_k\in[x_{k-1},x_k]$ 使得</p>
+$$|f(\xi_k)|>\frac{|A|+|I|+1}{\Delta x_k}.$$`, why: R`<p>"无界"的定义就是：对任何正数 $G$，都存在点使 $|f|$ 超过 $G$。这里的 $G$ 是为了下一步的不等式刚好够用而"量身定做"的——先想好要推出什么矛盾，再倒推需要 $|f(\xi_k)|$ 多大。</p>` },
+          { s: R`<p>于是这组取法下的积分和满足</p>
+$$|S|=|A+f(\xi_k)\Delta x_k|\ \ge\ |f(\xi_k)|\Delta x_k-|A|\ >\ (|A|+|I|+1)-|A|=|I|+1,$$
+<p>与第 1 步的 $|S|<|I|+1$ 矛盾。所以 $f$ 在 $[a,b]$ 上有界。</p>`, why: R`<p>用了三角不等式 $|u+v|\ge|v|-|u|$。这个分法本身满足 $\lambda<\delta$，取法也合法，所以它的积分和必须服从第 1 步的上界，却偏偏超过了——矛盾只能来自"无界"的假设。</p>` }
+        ],
+        remark: R`<ul>
+<li><b>逆命题不成立。</b>狄利克雷函数有界（$0\le D\le1$）却不可积。所以"有界"是可积的<b>必要</b>条件而非充分条件；判断"不可积"最快的办法是看它是否无界。</li>
+<li>无界函数的"积分"要另外定义，这就是<b>反常积分</b>（int.improper）。例如 $\displaystyle\int_0^1\frac{\mathrm{d}x}{\sqrt x}=2$ 是收敛的反常积分，但 $\dfrac{1}{\sqrt x}$ 在 $[0,1]$ 上并不是本篇意义下的可积函数（它无界）。两种"积分"是不同的概念，只是记号相同。</li>
+<li><b>可积与"有原函数"是两码事。</b>符号函数 $\operatorname{sgn}x$ 在 $[-1,1]$ 上可积（有界、只有一个间断点，见下一定理），却没有原函数（导函数不可能有跳跃间断点，见 int.concept）；反过来 $F(x)=x^2\sin\dfrac1{x^2}$（$F(0)=0$）在 $[-1,1]$ 上处处可导，它的导函数 $F'$ 有原函数 $F$，但 $F'$ 在 $0$ 附近无界，由本定理不可积。所以"可积"问的是黎曼和有没有极限，"有原函数"问的是能不能写成某个函数的导数，彼此互不蕴含。</li>
+</ul>`
+      },
+      {
+        kind: 'thm', title: '可积的充分条件：连续、有限个间断点、单调',
+        statement: R`<p>设 $f$ 在 $[a,b]$ 上有定义。下列任一条件成立时 $f$ 在 $[a,b]$ 上可积：</p>
+<ol>
+<li>$f$ 在 $[a,b]$ 上<b>连续</b>；</li>
+<li>$f$ 在 $[a,b]$ 上<b>有界</b>，且只有<b>有限个</b>间断点；</li>
+<li>$f$ 在 $[a,b]$ 上<b>单调</b>。</li>
+</ol>`,
+        intuition: R`<p>三条的证明都基于同一个想法，先把它说清楚。对一个分法 $T$，记 $M_i$、$m_i$ 为 $f$ 在第 $i$ 个小区间上的上确界与下确界（上确界是"最小的上界"，下确界是"最大的下界"。$f$ 不连续时，最大值、最小值可能取不到，所以只能用确界；$f$ 有界时确界一定存在，这是确界原理；$f$ 连续时它们就是小区间上的最大值与最小值），作</p>
+$$\overline{S}(T)=\sum_{i=1}^{n}M_i\Delta x_i\ (\text{上和}),\qquad \underline{S}(T)=\sum_{i=1}^{n}m_i\Delta x_i\ (\text{下和}).$$
+<p>对同一分法，不论 $\xi_i$ 怎么取，积分和都夹在二者之间：$\underline{S}(T)\le S\le\overline{S}(T)$（因为 $m_i\le f(\xi_i)\le M_i$）。可以证明（<b>黎曼可积准则</b>）：对<b>有界</b>函数 $f$，$f$ 可积 $\iff$ 当 $\lambda\to0$ 时 $\overline{S}(T)-\underline{S}(T)=\displaystyle\sum_{i=1}^{n}(M_i-m_i)\Delta x_i\to0$。直观地说，$\overline{S}-\underline{S}$ 是所有矩形"高度不确定的那一截"的总面积（下图深色块）；它趋于零，就意味着不管怎么取点，积分和都被挤到同一个数附近。</p>
+<svg viewBox="0 0 420 255" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-idef3" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" fill="none" stroke-width="1.2">
+<line x1="20" y1="215" x2="305" y2="215" marker-end="url(#arr-idef3)"/>
+<line x1="40" y1="240" x2="40" y2="18" marker-end="url(#arr-idef3)"/>
+</g>
+<g stroke="currentColor" stroke-width="0.8" fill="currentColor">
+<rect x="50" y="175.0" width="35" height="40.0" fill-opacity="0.10"/>
+<rect x="50" y="145.3" width="35" height="29.7" fill-opacity="0.38"/>
+<rect x="85" y="145.3" width="45" height="69.7" fill-opacity="0.10"/>
+<rect x="85" y="113.9" width="45" height="31.4" fill-opacity="0.38"/>
+<rect x="130" y="113.9" width="35" height="101.1" fill-opacity="0.10"/>
+<rect x="130" y="94.8" width="35" height="19.0" fill-opacity="0.38"/>
+<rect x="165" y="94.8" width="50" height="120.2" fill-opacity="0.10"/>
+<rect x="165" y="75.7" width="50" height="19.1" fill-opacity="0.38"/>
+<rect x="215" y="75.7" width="40" height="139.3" fill-opacity="0.10"/>
+<rect x="215" y="67.3" width="40" height="8.4" fill-opacity="0.38"/>
+<rect x="255" y="67.3" width="35" height="147.7" fill-opacity="0.10"/>
+<rect x="255" y="65.0" width="35" height="2.3" fill-opacity="0.38"/>
+</g>
+<g stroke="currentColor" fill="none" stroke-width="2">
+<polyline points="50.0,175.0 53.0,172.3 56.0,169.6 59.0,166.9 62.0,164.3 65.0,161.7 68.0,159.1 71.0,156.6 74.0,154.1 77.0,151.6 80.0,149.2 83.0,146.8 86.0,144.5 89.0,142.2 92.0,139.9 95.0,137.6 98.0,135.4 101.0,133.2 104.0,131.1 107.0,129.0 110.0,126.9 113.0,124.8 116.0,122.8 119.0,120.8 122.0,118.9 125.0,117.0 128.0,115.1 131.0,113.3 134.0,111.5 137.0,109.7 140.0,108.0 143.0,106.3 146.0,104.6 149.0,103.0 152.0,101.4 155.0,99.8 158.0,98.3 161.0,96.8 164.0,95.3 167.0,93.9 170.0,92.5 173.0,91.1 176.0,89.8 179.0,88.5 182.0,87.3 185.0,86.1 188.0,84.9 191.0,83.7 194.0,82.6 197.0,81.5 200.0,80.5 203.0,79.5 206.0,78.5 209.0,77.5 212.0,76.6 215.0,75.7 218.0,74.9 221.0,74.1 224.0,73.3 227.0,72.6 230.0,71.9 233.0,71.2 236.0,70.6 239.0,70.0 242.0,69.4 245.0,68.9 248.0,68.4 251.0,67.9 254.0,67.5 257.0,67.1 260.0,66.7 263.0,66.4 266.0,66.1 269.0,65.8 272.0,65.6 275.0,65.4 278.0,65.3 281.0,65.2 284.0,65.1 287.0,65.0 290.0,65.0" />
+</g>
+<g stroke="currentColor" stroke-width="0.8" fill="currentColor">
+<rect x="330" y="185.3" width="35" height="29.7" fill-opacity="0.38"/>
+<rect x="330" y="153.9" width="45" height="31.4" fill-opacity="0.38"/>
+<rect x="330" y="134.8" width="35" height="19.0" fill-opacity="0.38"/>
+<rect x="330" y="115.7" width="50" height="19.1" fill-opacity="0.38"/>
+<rect x="330" y="107.3" width="40" height="8.4" fill-opacity="0.38"/>
+<rect x="330" y="105.0" width="35" height="2.3" fill-opacity="0.38"/>
+</g>
+<g stroke="currentColor" fill="none" stroke-width="1.2" stroke-dasharray="4,3">
+<rect x="330" y="105.0" width="50" height="110.0"/>
+</g>
+<g stroke="currentColor" fill="none" stroke-width="1">
+<line x1="330" y1="225" x2="380" y2="225" marker-end="url(#arr-idef3)"/>
+<line x1="380" y1="225" x2="330" y2="225" marker-end="url(#arr-idef3)"/>
+</g>
+<g fill="currentColor" font-family="serif">
+<text x="300" y="236" font-size="13" >x</text><text x="28" y="24" font-size="13" >y</text><text x="46" y="232" font-size="12" >a</text><text x="286" y="232" font-size="12" >b</text><text x="341.0" y="239" font-size="12" >宽 λ</text><text x="316" y="97.0" font-size="11" >高 f(b)−f(a)</text><text x="50" y="36" font-size="12" >上和 − 下和 = 深色块面积之和</text><text x="50" y="54" font-size="12" >平移到右边：全装进 λ×[f(b)−f(a)] 的框里</text><text x="293" y="62" font-size="12" >y = f(x)</text></g>
+</svg>
+<p>上图是<b>单调增函数</b>的情形，这时每个小区间上 $M_i=f(x_i)$，$m_i=f(x_{i-1})$，于是</p>
+$$\overline{S}-\underline{S}=\sum_{i=1}^{n}\big[f(x_i)-f(x_{i-1})\big]\Delta x_i\le\lambda\sum_{i=1}^{n}\big[f(x_i)-f(x_{i-1})\big]=\lambda\big[f(b)-f(a)\big]\xrightarrow{\lambda\to0}0 .$$
+<p>图的右半边就是这个不等式：把所有深色块水平平移到一个宽为 $\lambda$ 的框里，它们叠起来的总高恰好是 $f(b)-f(a)$（一个"伸缩求和"），所以总面积不超过 $\lambda[f(b)-f(a)]$。单调减同理。这就是条件 3 的全部要点。</p>
+<p><b>连续函数</b>的要点是<b>一致连续性</b>（康托定理：闭区间上的连续函数一致连续）：对任意 $\varepsilon>0$，存在 $\delta>0$，只要两点距离小于 $\delta$，函数值之差就小于 $\varepsilon$。于是当 $\lambda<\delta$ 时，每个小区间上 $M_i-m_i\le\varepsilon$（$M_i,m_i$ 由最值定理在小区间上取到），$\overline{S}-\underline{S}\le\varepsilon(b-a)$，可以任意小。注意这里要的是"同一个 $\delta$ 对所有小区间都管用"，普通的逐点连续做不到，必须用一致连续。</p>
+<p><b>有限个间断点</b>的要点：把每个间断点用一个很短的小区间罩住，这些小区间上 $M_i-m_i\le2K$（$K$ 是 $f$ 的界），但它们的总长度可以任意小，贡献任意小；其余部分 $f$ 连续，按上一条处理。所以间断点是哪一类并不重要（跳跃、振荡都行），要紧的是<b>有界</b>和<b>有限个</b>。</p>`,
+        noProof: '完整证明需要先建立达布上和、下和的理论（加细分点时上和不增、下和不减，任何下和不超过任何上和，由此推出黎曼可积准则），再结合一致连续性，篇幅较长且超出考研要求；上面已给出全部关键估计，考研只要求会用结论。',
+        remark: R`<ul>
+<li>考研题里的被积函数几乎都是连续或分段连续的，可积性不必单独证明，但解答题里应写一句"因 $f$ 在 $[a,b]$ 上连续，故可积"。</li>
+<li><b>不连续但可积的例子。</b>取整函数 $[x]$ 在 $[0,3]$ 上有界，只有 $x=1,2,3$ 三个跳跃间断点，由条件 2 可积；按几何意义（三个矩形）$\displaystyle\int_0^3[x]\,\mathrm{d}x=0\cdot1+1\cdot1+2\cdot1=3$。又如 $f(x)=\sin\dfrac1x$（$x\ne0$），$f(0)=0$，在 $[0,1]$ 上有界，只有 $x=0$ 一个（第二类、振荡型）间断点，也可积。对照 $\dfrac1x$：只有一个间断点，但无界，不可积。</li>
+<li><b>"有界"不能从条件 2 中去掉</b>（上一条已说明），<b>"有限个"也不能随意去掉</b>：狄利克雷函数处处间断，有界却不可积。（事实上可积的精确刻画是"有界且间断点集合的'长度'为零"，这超出考研范围。）</li>
+<li><b>可积函数的运算。</b>若 $f,g$ 在 $[a,b]$ 上可积，则 $f\pm g$、$fg$、$|f|$ 都可积，$f$ 在任一子区间 $[c,d]\subset[a,b]$ 上也可积（证明都用可积准则，略）。注意反过来 $|f|$ 可积推不出 $f$ 可积：$f$ 在有理点取 $1$、无理点取 $-1$，则 $|f|\equiv1$ 可积，而 $f$ 像狄利克雷函数一样不可积。</li>
+</ul>`
+      },
+      {
+        kind: 'def', title: '定积分的几何意义与物理意义：有向面积',
+        html: R`<p><b>几何意义。</b>由定义的来历，当 $f(x)\ge0$ 时，$\displaystyle\int_a^bf(x)\,\mathrm{d}x$ 就是曲边梯形的面积。当 $f(x)\le0$ 时，积分和的每一项 $f(\xi_i)\Delta x_i\le0$，所以积分等于曲边梯形面积的<b>相反数</b>。一般情形，曲线一部分在 $x$ 轴上方、一部分在下方，定积分等于<b>各块面积的代数和</b>：$x$ 轴上方的取正号，下方的取负号——这叫<b>有向面积</b>（或"面积的代数和"）。</p>
+<svg viewBox="0 0 420 235" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-idef2" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" fill="none" stroke-width="1.2">
+<line x1="20" y1="130" x2="408" y2="130" marker-end="url(#arr-idef2)"/>
+<line x1="40" y1="220" x2="40" y2="18" marker-end="url(#arr-idef2)"/>
+</g>
+<g stroke="none" fill="currentColor">
+<polygon points="60.0,130.0 60.0,130.0 62.7,127.5 65.3,125.0 68.0,122.5 70.7,120.0 73.3,117.5 76.0,115.0 78.7,112.6 81.3,110.2 84.0,108.0 86.7,105.8 89.3,103.7 92.0,101.8 94.7,100.0 97.3,98.4 100.0,97.0 102.7,95.7 105.3,94.6 108.0,93.8 110.7,93.2 113.3,92.7 116.0,92.5 118.7,92.6 121.3,92.9 124.0,93.4 126.7,94.2 129.3,95.2 132.0,96.4 134.7,97.9 137.3,99.6 140.0,101.5 142.7,103.6 145.3,106.0 148.0,108.5 150.7,111.2 153.3,114.0 156.0,117.0 158.7,120.1 161.3,123.3 164.0,126.6 166.7,130.0 166.7,130.0" fill-opacity="0.14"/>
+<polygon points="166.7,130.0 166.7,130.0 169.3,133.4 172.0,136.9 174.7,140.3 177.3,143.8 180.0,147.2 182.7,150.5 185.3,153.8 188.0,156.9 190.7,159.9 193.3,162.8 196.0,165.5 198.7,168.0 201.3,170.3 204.0,172.4 206.7,174.2 209.3,175.8 212.0,177.2 214.7,178.2 217.3,178.9 220.0,179.4 222.7,179.6 225.3,179.4 228.0,178.9 230.7,178.1 233.3,177.0 236.0,175.6 238.7,173.9 241.3,171.9 244.0,169.6 246.7,167.1 249.3,164.2 252.0,161.2 254.7,157.9 257.3,154.4 260.0,150.6 262.7,146.8 265.3,142.7 268.0,138.6 270.7,134.3 273.3,130.0 273.3,130.0" fill-opacity="0.28"/>
+<polygon points="273.3,130.0 273.3,130.0 276.0,125.6 278.7,121.2 281.3,116.8 284.0,112.5 286.7,108.2 289.3,104.0 292.0,99.9 294.7,96.0 297.3,92.2 300.0,88.6 302.7,85.3 305.3,82.2 308.0,79.3 310.7,76.8 313.3,74.6 316.0,72.6 318.7,71.1 321.3,69.8 324.0,69.0 326.7,68.5 329.3,68.4 332.0,68.6 334.7,69.3 337.3,70.3 340.0,71.7 342.7,73.6 345.3,75.7 348.0,78.3 350.7,81.1 353.3,84.3 356.0,87.9 358.7,91.7 361.3,95.8 364.0,100.1 366.7,104.7 369.3,109.5 372.0,114.4 374.7,119.5 377.3,124.7 380.0,130.0 380.0,130.0" fill-opacity="0.14"/>
+</g>
+<g stroke="currentColor" fill="none" stroke-width="2">
+<polyline points="60.0,130.0 62.0,128.1 64.0,126.3 66.0,124.4 68.0,122.5 70.0,120.6 72.0,118.7 74.0,116.9 76.0,115.0 78.0,113.2 80.0,111.4 82.0,109.7 84.0,108.0 86.0,106.3 88.0,104.8 90.0,103.2 92.0,101.8 94.0,100.5 96.0,99.2 98.0,98.0 100.0,97.0 102.0,96.0 104.0,95.2 106.0,94.4 108.0,93.8 110.0,93.3 112.0,92.9 114.0,92.7 116.0,92.5 118.0,92.6 120.0,92.7 122.0,93.0 124.0,93.4 126.0,94.0 128.0,94.6 130.0,95.5 132.0,96.4 134.0,97.5 136.0,98.7 138.0,100.0 140.0,101.5 142.0,103.1 144.0,104.8 146.0,106.6 148.0,108.5 150.0,110.5 152.0,112.6 154.0,114.7 156.0,117.0 158.0,119.3 160.0,121.7 162.0,124.1 164.0,126.6 166.0,129.2 168.0,131.7 170.0,134.3 172.0,136.9 174.0,139.5 176.0,142.1 178.0,144.6 180.0,147.2 182.0,149.7 184.0,152.1 186.0,154.5 188.0,156.9 190.0,159.2 192.0,161.4 194.0,163.5 196.0,165.5 198.0,167.4 200.0,169.2 202.0,170.9 204.0,172.4 206.0,173.8 208.0,175.1 210.0,176.2 212.0,177.2 214.0,178.0 216.0,178.6 218.0,179.1 220.0,179.4 222.0,179.5 224.0,179.5 226.0,179.3 228.0,178.9 230.0,178.4 232.0,177.6 234.0,176.7 236.0,175.6 238.0,174.4 240.0,173.0 242.0,171.4 244.0,169.6 246.0,167.7 248.0,165.7 250.0,163.5 252.0,161.2 254.0,158.7 256.0,156.1 258.0,153.4 260.0,150.6 262.0,147.8 264.0,144.8 266.0,141.7 268.0,138.6 270.0,135.4 272.0,132.2 274.0,128.9 276.0,125.6 278.0,122.3 280.0,119.0 282.0,115.7 284.0,112.5 286.0,109.3 288.0,106.1 290.0,103.0 292.0,99.9 294.0,96.9 296.0,94.1 298.0,91.3 300.0,88.6 302.0,86.1 304.0,83.7 306.0,81.4 308.0,79.3 310.0,77.4 312.0,75.6 314.0,74.0 316.0,72.6 318.0,71.4 320.0,70.4 322.0,69.6 324.0,69.0 326.0,68.6 328.0,68.4 330.0,68.4 332.0,68.6 334.0,69.1 336.0,69.8 338.0,70.6 340.0,71.7 342.0,73.1 344.0,74.6 346.0,76.3 348.0,78.3 350.0,80.4 352.0,82.7 354.0,85.2 356.0,87.9 358.0,90.7 360.0,93.7 362.0,96.9 364.0,100.1 366.0,103.5 368.0,107.1 370.0,110.7 372.0,114.4 374.0,118.2 376.0,122.1 378.0,126.0 380.0,130.0" />
+</g>
+<g stroke="currentColor" stroke-width="1" stroke-dasharray="3,3">
+<line x1="60" y1="130" x2="60" y2="129.1"/>
+<line x1="380" y1="130" x2="380" y2="128.0"/>
+</g>
+<g fill="currentColor" font-family="serif">
+<text x="404" y="150" font-size="13" >x</text><text x="28" y="24" font-size="13" >y</text><text x="56" y="146" font-size="12" >a</text><text x="376" y="146" font-size="12" >b</text><text x="100" y="112" font-size="12" >A₁（正）</text><text x="220" y="156" font-size="12" text-anchor="middle">A₂（负）</text><text x="327" y="112" font-size="12" text-anchor="middle">A₃（正）</text><text x="50" y="32" font-size="13" >∫ₐᵇ f(x)dx = A₁ − A₂ + A₃</text><text x="50" y="50" font-size="12" >面积 = A₁ + A₂ + A₃ = ∫ₐᵇ |f(x)|dx</text><text x="345" y="62" font-size="12" >y = f(x)</text></g>
+</svg>
+<p>上图中 $\displaystyle\int_a^bf(x)\,\mathrm{d}x=A_1-A_2+A_3$，而图形的面积是 $A_1+A_2+A_3=\displaystyle\int_a^b|f(x)|\,\mathrm{d}x$。<b>面积永远非负，积分可正可负</b>，两者只在 $f$ 不变号时才相等（差一个符号）。求"曲线与 $x$ 轴围成的面积"必须对被积函数加绝对值，或按符号分段（int.app）。</p>
+<p><b>直接用几何意义算积分。</b>当被积函数的图形是圆弧、直线段这类规则图形时，不必找原函数：</p>
+<ul>
+<li>$\displaystyle\int_{-r}^{r}\sqrt{r^2-x^2}\,\mathrm{d}x=\dfrac{\pi r^2}{2}$（上半圆的面积）；$\displaystyle\int_0^1\sqrt{2x-x^2}\,\mathrm{d}x=\dfrac{\pi}{4}$，因为 $y=\sqrt{2x-x^2}$ 即 $(x-1)^2+y^2=1$（$y\ge0$）是以 $(1,0)$ 为圆心、半径 $1$ 的上半圆，$[0,1]$ 上那一段是四分之一圆（<span class="qref" data-q="2000-1-1">2000 年一(1)</span>）。</li>
+<li>$\displaystyle\int_{-1}^{1}x\,\mathrm{d}x=0$：两个全等的三角形一正一负相抵。更一般地，奇函数在对称区间上的积分为 $0$、偶函数为 $2\displaystyle\int_0^a$——图形对称就能看出来，严格证明在 int.defcalc。</li>
+<li>$\displaystyle\int_a^b c\,\mathrm{d}x=c(b-a)$：矩形。</li>
+<li><span class="qref" data-q="2007-3">2007 年第 3 题</span>给出的 $f$ 由四段半圆周拼成（$[0,2]$ 上是半径 $1$ 的上半圆，$[2,3]$ 上是半径 $\tfrac12$ 的下半圆，左侧关于原点对称），$F(x)=\displaystyle\int_0^xf(t)\,\mathrm{d}t$，于是 $F(2)=\dfrac{\pi}{2}$，$F(3)=\dfrac{\pi}{2}-\dfrac{\pi}{8}=\dfrac{3\pi}{8}$；算 $F(-3)$ 时积分上限小于下限，先翻转：$F(-3)=-\displaystyle\int_{-3}^{0}f(t)\,\mathrm{d}t=-\left(\dfrac{\pi}{8}-\dfrac{\pi}{2}\right)=\dfrac{3\pi}{8}$，所以 $F(-3)=\dfrac34F(2)$，选 C。这道题把"上正下负"和"上下限对调变号"两件事放在一起考。</li>
+</ul>
+<p><b>物理意义。</b>速度为 $v(t)\ge0$ 的直线运动，在 $[T_1,T_2]$ 内的路程 $s=\displaystyle\int_{T_1}^{T_2}v(t)\,\mathrm{d}t$，即速度曲线下方的面积。若 $v$ 变号（有往返），$\displaystyle\int v\,\mathrm{d}t$ 是<b>位移</b>（有向），$\displaystyle\int|v|\,\mathrm{d}t$ 才是路程。两条速度曲线之间的面积就是两段路程之差：<span class="qref" data-q="2017-4">2017 年第 4 题</span>（甲、乙赛跑）正是把"乙追上甲"翻译成"甲领先的距离 $d(t)=10+\displaystyle\int_0^t[v_1(s)-v_2(s)]\,\mathrm{d}s$ 第一次为零"，再用图中三块阴影面积 $10,20,3$ 依次累加：$d(10)=20$，$d(25)=20-20=0$，所以 $t_0=25$，选 C。类似地，变力做功、液体压力、细棒质量都是"密度 $\times$ 长度"型乘积和的极限（int.app）。</p>
+<p>几何意义不只用来算积分，它还是理解后面各条性质的"图"：比较性质说的是"高的曲线下面积大"，估值定理说的是"曲边梯形夹在两个矩形之间"，积分中值定理说的是"曲边梯形可以削高补低成一个等面积矩形"。</p>`
+      },
+      {
+        kind: 'thm', title: '性质 1：线性性质',
+        statement: R`<p>设 $f,g$ 在 $[a,b]$ 上可积，$\alpha,\beta$ 为常数，则 $\alpha f+\beta g$ 在 $[a,b]$ 上可积，且</p>
+$$\int_a^b\big[\alpha f(x)+\beta g(x)\big]\,\mathrm{d}x=\alpha\int_a^bf(x)\,\mathrm{d}x+\beta\int_a^bg(x)\,\mathrm{d}x .$$
+<p>特别地：$\displaystyle\int_a^b\big[f(x)\pm g(x)\big]\mathrm{d}x=\int_a^bf(x)\,\mathrm{d}x\pm\int_a^bg(x)\,\mathrm{d}x$，$\displaystyle\int_a^bkf(x)\,\mathrm{d}x=k\int_a^bf(x)\,\mathrm{d}x$，$\displaystyle\int_a^bk\,\mathrm{d}x=k(b-a)$。</p>`,
+        intuition: R`<p>把两个曲边梯形的"高"逐点相加，面积也相加；高乘以 $k$，面积乘以 $k$。代数上更直接：积分和本来就是有限和，有限和当然可以拆开、提常数；取极限时这种线性关系保持不变——证明就是"极限的四则运算法则"在积分和上的翻版。</p>`,
+        steps: [
+          { s: R`<p>对 $[a,b]$ 的任一分法和任一取法，$\alpha f+\beta g$ 的积分和是</p>
+$$\sum_{i=1}^{n}\big[\alpha f(\xi_i)+\beta g(\xi_i)\big]\Delta x_i=\alpha\sum_{i=1}^{n}f(\xi_i)\Delta x_i+\beta\sum_{i=1}^{n}g(\xi_i)\Delta x_i=\alpha S_f+\beta S_g ,$$
+<p>其中 $S_f,S_g$ 是 $f,g$ 对<b>同一分法、同一取法</b>的积分和。</p>`, why: R`<p>有限和可以逐项拆开并提出常数因子，这就是"积分和是线性的"。关键是三个积分和用的是同一组 $x_i,\xi_i$，这样才能在下一步同时取极限。</p>` },
+          { s: R`<p>记 $I_f=\displaystyle\int_a^bf\,\mathrm{d}x$，$I_g=\displaystyle\int_a^bg\,\mathrm{d}x$。任给 $\varepsilon>0$，由 $f$ 可积，存在 $\delta_1>0$，当 $\lambda<\delta_1$ 时对一切取法 $|S_f-I_f|<\varepsilon$；由 $g$ 可积，存在 $\delta_2>0$，当 $\lambda<\delta_2$ 时 $|S_g-I_g|<\varepsilon$。取 $\delta=\min\{\delta_1,\delta_2\}$，则 $\lambda<\delta$ 时</p>
+$$\big|(\alpha S_f+\beta S_g)-(\alpha I_f+\beta I_g)\big|\le|\alpha|\,|S_f-I_f|+|\beta|\,|S_g-I_g|<(|\alpha|+|\beta|)\varepsilon .$$`, why: R`<p>用的是可积定义的 $\varepsilon$-$\delta$ 形式和三角不等式。两个 $\delta$ 取最小值，是为了让两个不等式对同一个分法同时成立——这和证明"两个数列极限之和等于和的极限"是同一个套路。</p>` },
+          { s: R`<p>因为 $(|\alpha|+|\beta|)\varepsilon$ 可以任意小，按定义，$\alpha f+\beta g$ 可积且积分为 $\alpha I_f+\beta I_g$。最后，常数函数 $k$ 的任何积分和都等于 $\displaystyle\sum_{i=1}^{n}k\Delta x_i=k(b-a)$，所以 $\displaystyle\int_a^bk\,\mathrm{d}x=k(b-a)$。</p>`, why: R`<p>若嫌 $(|\alpha|+|\beta|)\varepsilon$ 不是"$\varepsilon$"，一开始把 $\varepsilon$ 换成 $\dfrac{\varepsilon}{|\alpha|+|\beta|+1}$ 即可，这是极限证明的常规处理。常数函数的积分和与分法、取法都无关，极限当然就是它自己。</p>` }
+        ],
+        remark: R`<ul>
+<li><b>线性不能推广到乘积。</b>$\displaystyle\int_a^bf(x)g(x)\,\mathrm{d}x\ne\int_a^bf(x)\,\mathrm{d}x\cdot\int_a^bg(x)\,\mathrm{d}x$。例如 $\displaystyle\int_0^1x\cdot x\,\mathrm{d}x=\dfrac13$，而 $\left(\displaystyle\int_0^1x\,\mathrm{d}x\right)^2=\dfrac14$。乘积的积分有自己的工具：推广的积分中值定理（本篇后文）、柯西—施瓦茨不等式（int.proof）。</li>
+<li>线性最常用的方向是"<b>拆</b>"：<span class="qref" data-q="2018-4">2018 年第 4 题</span>把 $\dfrac{(1+x)^2}{1+x^2}$ 拆成 $1+\dfrac{2x}{1+x^2}$，常数部分积出 $\pi$，奇函数部分积出 $0$。</li>
+<li>线性也保证"定积分是常数"这类题的解法成立：$f(x)=x+2\displaystyle\int_0^1f(t)\,\mathrm{d}t$ 两边在 $[0,1]$ 上积分时，右端拆成 $\displaystyle\int_0^1x\,\mathrm{d}x+2A\int_0^1\mathrm{d}x$（<span class="qref" data-q="1989-1-2">1989 年一(2)</span>）。</li>
+</ul>`
+      },
+      {
+        kind: 'thm', title: '性质 2：对积分区间的可加性',
+        statement: R`<p>设 $a,b,c$ 是任意三个实数，$f$ 在以它们中最小者和最大者为端点的闭区间上可积，则</p>
+$$\int_a^bf(x)\,\mathrm{d}x=\int_a^cf(x)\,\mathrm{d}x+\int_c^bf(x)\,\mathrm{d}x .$$
+<p>（可积函数在任一子区间上仍可积，所以右端两个积分都有意义。）</p>`,
+        intuition: R`<p>$a<c<b$ 时，这就是"面积可以切成两块再相加"。$c$ 在 $[a,b]$ 之外时（比如 $a<b<c$），$\displaystyle\int_a^c$ 多算了 $[b,c]$ 上的一块，而 $\displaystyle\int_c^b=-\int_b^c$ 恰好把它减掉——这正是"上下限对调变号"这条规定的用意。</p>`,
+        steps: [
+          { s: R`<p>先设 $a<c<b$。对 $[a,c]$ 任取分法 $T_1$（细度 $\lambda_1$），对 $[c,b]$ 任取分法 $T_2$（细度 $\lambda_2$），二者合在一起是 $[a,b]$ 的一个分法 $T$，它的细度 $\lambda=\max\{\lambda_1,\lambda_2\}$，并且 $c$ 是 $T$ 的一个分点。</p>`, why: R`<p>因为 $f$ 在 $[a,b]$ 上可积，积分和对<b>一切</b>分法的极限都是 $\displaystyle\int_a^bf\,\mathrm{d}x$，自然也包括这种"含 $c$ 为分点"的特殊分法。这正是定义中"与分法无关"的用武之地：我们有挑选分法的自由。</p>` },
+          { s: R`<p>对这样的 $T$ 任意取点，$[a,b]$ 上的积分和可以按分点 $c$ 一分为二：</p>
+$$S=\sum_{T}f(\xi_i)\Delta x_i=\sum_{T_1}f(\xi_i)\Delta x_i+\sum_{T_2}f(\xi_j)\Delta x_j=S_1+S_2 ,$$
+<p>其中 $S_1$、$S_2$ 分别是 $f$ 在 $[a,c]$、$[c,b]$ 上的积分和。</p>`, why: R`<p>$T$ 的每个小区间要么整个在 $[a,c]$ 内、要么整个在 $[c,b]$ 内（因为 $c$ 是分点），所以和式的每一项恰好属于一侧，没有跨越 $c$ 的项。</p>` },
+          { s: R`<p>令 $\lambda\to0$，则 $\lambda_1\to0$、$\lambda_2\to0$，于是 $S\to\displaystyle\int_a^bf\,\mathrm{d}x$，$S_1\to\displaystyle\int_a^cf\,\mathrm{d}x$，$S_2\to\displaystyle\int_c^bf\,\mathrm{d}x$。对等式 $S=S_1+S_2$ 取极限即得结论。</p>`, why: R`<p>三个极限分别由 $f$ 在三个区间上的可积性保证（$f$ 在子区间上可积是前提里交代过的事实）。等式两边各自有极限，极限相等。</p>` },
+          { s: R`<p>再看 $c$ 不在 $(a,b)$ 内的情形。例如 $a<b<c$：由已证的情形（三点顺序为 $a<b<c$，中间点是 $b$），$\displaystyle\int_a^cf\,\mathrm{d}x=\int_a^bf\,\mathrm{d}x+\int_b^cf\,\mathrm{d}x$，移项并用规定 $\displaystyle\int_b^c=-\int_c^b$，得</p>
+$$\int_a^bf\,\mathrm{d}x=\int_a^cf\,\mathrm{d}x-\int_b^cf\,\mathrm{d}x=\int_a^cf\,\mathrm{d}x+\int_c^bf\,\mathrm{d}x .$$
+<p>$c<a<b$ 等其余排列同理；若 $a,b,c$ 中有两个相等，用 $\displaystyle\int_a^a=0$ 和 $\displaystyle\int_a^b=-\int_b^a$ 直接验证。</p>`, why: R`<p>"上下限对调变号"的规定正是为了让可加性对任何位置关系都成立；没有这条规定，公式就只能写给 $a<c<b$ 用。</p>` }
+        ],
+        remark: R`<ul>
+<li><b>用途一：分段函数、绝对值函数的积分</b>——在分界点处切开，各段分别积（int.defcalc）。</li>
+<li><b>用途二：比较同一函数在不同区间上的积分</b>——作差后化成一段新区间上的积分，再看符号。<span class="qref" data-q="2012-4">2012 年第 4 题</span>比较 $I_k=\displaystyle\int_0^{k\pi}\mathrm{e}^{x^2}\sin x\,\mathrm{d}x$，正是用 $I_2-I_1=\displaystyle\int_\pi^{2\pi}\mathrm{e}^{x^2}\sin x\,\mathrm{d}x<0$ 这样的作差（本篇后文精讲）。</li>
+<li><b>用途三：周期函数的平移不变性</b> $\displaystyle\int_a^{a+T}f=\int_0^Tf$ 的证明要先把 $[a,a+T]$ 切成 $[a,T]$ 与 $[T,a+T]$（int.defcalc）。</li>
+<li>定理允许 $c$ 落在 $[a,b]$ 之外，但 $f$ 必须在覆盖 $a,b,c$ 的整个大区间上可积，否则右端的积分可能没有意义。</li>
+</ul>`
+      },
+      {
+        kind: 'thm', title: '性质 3：保号性、比较性质与绝对值不等式',
+        statement: R`<p>设 $a<b$，$f,g$ 在 $[a,b]$ 上可积。</p>
+<ol>
+<li><b>保号性</b>：若在 $[a,b]$ 上 $f(x)\ge0$，则 $\displaystyle\int_a^bf(x)\,\mathrm{d}x\ge0$。</li>
+<li><b>比较性质（保序性）</b>：若在 $[a,b]$ 上 $f(x)\le g(x)$，则 $\displaystyle\int_a^bf(x)\,\mathrm{d}x\le\int_a^bg(x)\,\mathrm{d}x$。</li>
+<li><b>绝对值不等式</b>：$\left|\displaystyle\int_a^bf(x)\,\mathrm{d}x\right|\le\displaystyle\int_a^b|f(x)|\,\mathrm{d}x$（$f$ 可积时 $|f|$ 也可积，见"可积的充分条件"一节的注）。</li>
+<li><b>严格形式</b>：若 $f$ 在 $[a,b]$ 上<b>连续</b>，$f(x)\ge0$ 且 $f$ 不恒为零，则 $\displaystyle\int_a^bf(x)\,\mathrm{d}x>0$。从而 $f,g$ 连续、$f\le g$ 且 $f\not\equiv g$ 时，$\displaystyle\int_a^bf\,\mathrm{d}x<\int_a^bg\,\mathrm{d}x$。</li>
+</ol>`,
+        intuition: R`<p>非负函数的曲边梯形在 $x$ 轴上方，面积当然非负；更高的曲线下面积更大；$|f|$ 把 $x$ 轴下方的块翻上来，只会让总和变大。严格形式的道理是：连续函数在某一点为正，就在那一点附近一小段上都为正，这一小段贡献一块<b>正</b>面积，其余地方又不会出现负面积。</p>`,
+        steps: [
+          { s: R`<p>证 1。任何分法、任何取法下，$S=\displaystyle\sum_{i=1}^{n}f(\xi_i)\Delta x_i\ge0$，因为每项 $f(\xi_i)\ge0$、$\Delta x_i>0$（这里用到 $a<b$）。由极限的保号性，$\displaystyle\int_a^bf\,\mathrm{d}x=\lim_{\lambda\to0}S\ge0$。</p>`, why: R`<p>极限的保号性：若一个变量恒 $\ge0$ 且极限存在，则极限 $\ge0$（若极限 $I<0$，取 $\varepsilon=-\dfrac I2$，充分接近极限时变量就会 $<\dfrac I2<0$，矛盾）。注意它只能给出"$\ge$"：变量恒为正，极限也可能是 $0$（如 $\dfrac1n\to0$）。积分里也一样：$f(x)=0$（$x\ne0$），$f(0)=1$，在 $[0,1]$ 上取法含 $0$ 时 $S=\Delta x_1>0$，但 $\displaystyle\int_0^1f\,\mathrm{d}x=0$（$\xi_1$ 不取 $0$ 时 $S=0$，公共极限只能是 $0$）。要得到严格的"$>$"必须另加条件，这就是下面的第 4 条。</p>` },
+          { s: R`<p>证 2。$g-f\ge0$，且由线性性质可积，由 1 得 $\displaystyle\int_a^b(g-f)\,\mathrm{d}x\ge0$，再由线性性质 $\displaystyle\int_a^bg\,\mathrm{d}x-\int_a^bf\,\mathrm{d}x\ge0$。</p>`, why: R`<p>"比较"就是对差函数用"保号"，这是不等式证明里最基本的转化：$A\le B\iff B-A\ge0$。</p>` },
+          { s: R`<p>证 3。由 $-|f(x)|\le f(x)\le|f(x)|$，用 2 和线性性质得 $-\displaystyle\int_a^b|f|\,\mathrm{d}x\le\int_a^bf\,\mathrm{d}x\le\int_a^b|f|\,\mathrm{d}x$，这就是 $\left|\displaystyle\int_a^bf\,\mathrm{d}x\right|\le\displaystyle\int_a^b|f|\,\mathrm{d}x$。</p>`, why: R`<p>$|u|\le M\iff-M\le u\le M$。这个不等式是"积分的三角不等式"——有限和的 $\left|\sum u_i\right|\le\sum|u_i|$ 取极限后的版本。</p>` },
+          { s: R`<p>证 4。因 $f\not\equiv0$ 且 $f\ge0$，存在 $x_0\in[a,b]$ 使 $f(x_0)>0$。由 $f$ 在 $x_0$ 连续，存在 $\delta>0$，使当 $x\in[a,b]$ 且 $|x-x_0|<\delta$ 时 $f(x)>\dfrac{f(x_0)}{2}$。在 $[a,b]\cap(x_0-\delta,x_0+\delta)$ 中取一个长度为正的闭区间 $[\alpha,\beta]$（若 $x_0$ 是端点就只向区间内侧取），则在 $[\alpha,\beta]$ 上 $f(x)>\dfrac{f(x_0)}{2}$。</p>`, why: R`<p>这是连续性定义取 $\varepsilon=\dfrac{f(x_0)}{2}$："在一点为正"扩展成"在一小段上都大于一个固定的正数"。没有连续性这一步就做不到——上一步 $f(0)=1$ 的反例正是在孤立的一点为正。</p>` },
+          { s: R`<p>由区间可加性和 1，</p>
+$$\int_a^bf\,\mathrm{d}x=\int_a^{\alpha}f\,\mathrm{d}x+\int_{\alpha}^{\beta}f\,\mathrm{d}x+\int_{\beta}^{b}f\,\mathrm{d}x\ \ge\ 0+\int_{\alpha}^{\beta}f\,\mathrm{d}x+0 ,$$
+<p>而由 2 和 $\displaystyle\int_\alpha^\beta k\,\mathrm{d}x=k(\beta-\alpha)$，$\displaystyle\int_{\alpha}^{\beta}f\,\mathrm{d}x\ge\int_{\alpha}^{\beta}\frac{f(x_0)}{2}\,\mathrm{d}x=\frac{f(x_0)}{2}(\beta-\alpha)>0$。所以 $\displaystyle\int_a^bf\,\mathrm{d}x>0$。对 $f\le g$、$f\not\equiv g$ 的情形，把结论用于 $g-f$ 即得 $\displaystyle\int_a^bf<\int_a^bg$。</p>`, why: R`<p>三段中两段非负、中间一段严格为正——这一步把"一点的信息"变成了"一段的面积"。（若 $\alpha=a$ 或 $\beta=b$，对应的那段积分就是 $0$，不影响论证。）</p>` }
+        ],
+        remark: R`<ul>
+<li><b>条件 $a<b$ 不能忘。</b>$a>b$ 时 $\Delta x_i<0$，不等号全部反向：例如 $x\ge0$ 却有 $\displaystyle\int_1^0x\,\mathrm{d}x=-\dfrac12<0$。比较积分大小前先确认上限大于下限。</li>
+<li><b>比较性质只能用于同一个积分区间。</b><span class="qref" data-q="2018-4">2018 年第 4 题</span>、<span class="qref" data-q="2022-4">2022 年第 4 题</span>、<span class="qref" data-q="2011-4">2011 年第 4 题</span>都是同区间比较（2011 年那题的 $\ln\sin x$ 在 $x\to0^+$ 时无界，严格说是反常积分，比较性质对收敛的反常积分取极限后照样成立，见 int.improper）；区间不同时先用区间可加性作差（<span class="qref" data-q="2012-4">2012 年第 4 题</span>）或换元把区间搬到一起。</li>
+<li><b>严格不等号必须有理由。</b>由 $f\le g$ 只能得到 $\le$；要写 $<$，需要"连续且不恒等"。<span class="qref" data-q="2019-18">2019 年第 18 题</span>证 $a_{n+1}<a_n$ 时，就要说明 $x^n(1-x)\sqrt{1-x^2}$ 连续、非负、在 $(0,1)$ 内为正。</li>
+<li>绝对值不等式常用于估计含振荡因子的积分，如 $\left|\displaystyle\int_n^{n+1}\frac{\sin x}{x}\,\mathrm{d}x\right|\le\int_n^{n+1}\frac{\mathrm{d}x}{x}\le\frac1n$（本篇例 5）。</li>
+</ul>`
+      },
+      {
+        kind: 'thm', title: '性质 4：估值定理',
+        statement: R`<p>设 $f$ 在 $[a,b]$（$a<b$）上可积，且 $m\le f(x)\le M$，则</p>
+$$m(b-a)\le\int_a^bf(x)\,\mathrm{d}x\le M(b-a).$$
+<p>若 $f$ 连续且不恒等于 $m$（或 $M$），对应一侧的不等号严格。</p>`,
+        intuition: R`<p>曲边梯形夹在两个矩形之间：高为 $m$ 的矩形装在它里面，高为 $M$ 的矩形把它罩住。</p>`,
+        steps: [
+          { s: R`<p>常数函数 $m$ 与 $M$ 可积，且 $\displaystyle\int_a^bm\,\mathrm{d}x=m(b-a)$，$\displaystyle\int_a^bM\,\mathrm{d}x=M(b-a)$。</p>`, why: R`<p>线性性质里已证：常数函数的每个积分和都等于常数乘区间长度。</p>` },
+          { s: R`<p>由 $m\le f(x)\le M$ 和比较性质（$a<b$），$\displaystyle\int_a^bm\,\mathrm{d}x\le\int_a^bf\,\mathrm{d}x\le\int_a^bM\,\mathrm{d}x$，即 $m(b-a)\le\displaystyle\int_a^bf\,\mathrm{d}x\le M(b-a)$。</p>`, why: R`<p>把 $f$ 与两个常数函数比较，这就是估值定理的全部内容——它只是比较性质的一个特例，但用得极多，所以单独列出。</p>` },
+          { s: R`<p>若 $f$ 连续且不恒等于 $M$，则 $M-f$ 连续、非负、不恒为零，由保号性的严格形式 $\displaystyle\int_a^b(M-f)\,\mathrm{d}x>0$，即 $\displaystyle\int_a^bf\,\mathrm{d}x<M(b-a)$。另一侧同理。</p>`, why: R`<p>严格不等号来自上一节的严格形式，条件同样是"连续 + 不恒等"。</p>` }
+        ],
+        remark: R`<ul>
+<li>用途：估计算不出的积分（例 4）、求含积分的极限（例 5）、证明积分中值定理（下一节）。</li>
+<li>估计太粗时有两招：用区间可加性把区间切开、分段用不同的 $m,M$（例 4）；或者用比 $m,M$ 更贴近 $f$ 的函数去夹（比较性质）。</li>
+<li>$m,M$ 不必是最小值、最大值，任何上下界都行；但取最值时估计最紧。</li>
+</ul>`
+      },
+      {
+        kind: 'thm', title: '积分中值定理',
+        statement: R`<p>设 $f$ 在 $[a,b]$ 上<b>连续</b>，则至少存在一点 $\xi\in[a,b]$，使得</p>
+$$\int_a^bf(x)\,\mathrm{d}x=f(\xi)(b-a).$$
+<p>而且 $\xi$ 可以取在<b>开区间</b> $(a,b)$ 内。</p>
+<p>数 $\dfrac{1}{b-a}\displaystyle\int_a^bf(x)\,\mathrm{d}x$ 称为 $f$ 在 $[a,b]$ 上的<b>平均值</b>；定理说的是：连续函数在区间上一定在某处恰好等于它的平均值。</p>`,
+        intuition: R`<p>把 $[a,b]$ $n$ 等分，$n$ 个函数值的算术平均 $\dfrac1n\displaystyle\sum_{k=1}^{n}f(x_k)=\dfrac{1}{b-a}\sum_{k=1}^{n}f(x_k)\cdot\dfrac{b-a}{n}$ 正是一个积分和除以 $b-a$，取极限就是 $\dfrac{1}{b-a}\displaystyle\int_a^bf\,\mathrm{d}x$——所以它确实是"平均值"的合理推广。几何上，定理说曲边梯形可以"削高补低"成一个<b>等面积的矩形</b>，而矩形的高 $f(\xi)$ 必定是曲线上某一点的高度：</p>
+<svg viewBox="0 0 420 245" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-idef4" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" fill="none" stroke-width="1.2">
+<line x1="20" y1="200" x2="408" y2="200" marker-end="url(#arr-idef4)"/>
+<line x1="40" y1="230" x2="40" y2="18" marker-end="url(#arr-idef4)"/>
+</g>
+<g>
+<polygon points="70.0,112.6 70.9,111.8 71.9,111.0 72.8,110.2 73.7,109.4 74.7,108.6 75.6,107.8 76.5,107.0 77.5,106.2 78.4,105.5 79.3,104.7 80.3,103.9 81.2,103.2 82.1,102.4 83.1,101.7 84.0,101.0 84.9,100.3 85.9,99.6 86.8,98.9 87.7,98.2 88.7,97.5 89.6,96.8 90.5,96.2 91.5,95.5 92.4,94.9 93.3,94.2 94.3,93.6 95.2,93.0 96.1,92.4 97.1,91.8 98.0,91.2 98.9,90.7 99.9,90.1 100.8,89.6 101.7,89.0 102.7,88.5 103.6,88.0 104.5,87.5 105.5,87.0 106.4,86.5 107.3,86.1 108.3,85.6 109.2,85.2 110.1,84.8 111.1,84.4 112.0,84.0 112.9,83.6 113.9,83.3 114.8,82.9 115.7,82.6 116.7,82.2 117.6,81.9 118.5,81.6 119.5,81.4 120.4,81.1 121.3,80.8 122.3,80.6 123.2,80.4 124.1,80.2 125.1,80.0 126.0,79.8 126.9,79.6 127.9,79.5 128.8,79.4 129.7,79.2 130.7,79.1 131.6,79.1 132.5,79.0 133.5,78.9 134.4,78.9 135.3,78.8 136.3,78.8 137.2,78.8 138.1,78.9 139.1,78.9 140.0,78.9 140.9,79.0 141.9,79.1 142.8,79.2 143.7,79.3 144.7,79.4 145.6,79.5 146.5,79.7 147.5,79.8 148.4,80.0 149.3,80.2 150.3,80.4 151.2,80.6 152.1,80.8 153.1,81.1 154.0,81.3 154.9,81.6 155.9,81.9 156.8,82.2 157.7,82.5 158.7,82.8 159.6,83.2 160.5,83.5 161.5,83.9 162.4,84.3 163.3,84.7 164.3,85.1 165.2,85.5 166.1,85.9 167.1,86.4 168.0,86.8 168.9,87.3 169.9,87.7 170.8,88.2 171.7,88.7 172.7,89.2 173.6,89.7 174.5,90.3 175.5,90.8 176.4,91.3 177.3,91.9 178.3,92.5 179.2,93.0 180.1,93.6 181.1,94.2 182.0,94.8 182.9,95.4 183.9,96.0 184.8,96.6 185.7,97.3 186.7,97.9 187.6,98.5 188.5,99.2 189.5,99.9 190.4,100.5 191.3,101.2 192.3,101.9 193.2,102.5 194.1,103.2 195.1,103.9 196.0,104.6 196.9,105.3 197.9,106.0 198.8,106.7 199.7,107.4 200.7,108.1 201.6,108.9 202.5,109.6 203.5,110.3 204.4,111.0 205.3,111.8 206.3,112.5 207.2,113.2 208.1,113.9 209.1,114.7 210.0,115.4 210.0,115.9 209.1,115.9 208.1,115.9 207.2,115.9 206.3,115.9 205.3,115.9 204.4,115.9 203.5,115.9 202.5,115.9 201.6,115.9 200.7,115.9 199.7,115.9 198.8,115.9 197.9,115.9 196.9,115.9 196.0,115.9 195.1,115.9 194.1,115.9 193.2,115.9 192.3,115.9 191.3,115.9 190.4,115.9 189.5,115.9 188.5,115.9 187.6,115.9 186.7,115.9 185.7,115.9 184.8,115.9 183.9,115.9 182.9,115.9 182.0,115.9 181.1,115.9 180.1,115.9 179.2,115.9 178.3,115.9 177.3,115.9 176.4,115.9 175.5,115.9 174.5,115.9 173.6,115.9 172.7,115.9 171.7,115.9 170.8,115.9 169.9,115.9 168.9,115.9 168.0,115.9 167.1,115.9 166.1,115.9 165.2,115.9 164.3,115.9 163.3,115.9 162.4,115.9 161.5,115.9 160.5,115.9 159.6,115.9 158.7,115.9 157.7,115.9 156.8,115.9 155.9,115.9 154.9,115.9 154.0,115.9 153.1,115.9 152.1,115.9 151.2,115.9 150.3,115.9 149.3,115.9 148.4,115.9 147.5,115.9 146.5,115.9 145.6,115.9 144.7,115.9 143.7,115.9 142.8,115.9 141.9,115.9 140.9,115.9 140.0,115.9 139.1,115.9 138.1,115.9 137.2,115.9 136.3,115.9 135.3,115.9 134.4,115.9 133.5,115.9 132.5,115.9 131.6,115.9 130.7,115.9 129.7,115.9 128.8,115.9 127.9,115.9 126.9,115.9 126.0,115.9 125.1,115.9 124.1,115.9 123.2,115.9 122.3,115.9 121.3,115.9 120.4,115.9 119.5,115.9 118.5,115.9 117.6,115.9 116.7,115.9 115.7,115.9 114.8,115.9 113.9,115.9 112.9,115.9 112.0,115.9 111.1,115.9 110.1,115.9 109.2,115.9 108.3,115.9 107.3,115.9 106.4,115.9 105.5,115.9 104.5,115.9 103.6,115.9 102.7,115.9 101.7,115.9 100.8,115.9 99.9,115.9 98.9,115.9 98.0,115.9 97.1,115.9 96.1,115.9 95.2,115.9 94.3,115.9 93.3,115.9 92.4,115.9 91.5,115.9 90.5,115.9 89.6,115.9 88.7,115.9 87.7,115.9 86.8,115.9 85.9,115.9 84.9,115.9 84.0,115.9 83.1,115.9 82.1,115.9 81.2,115.9 80.3,115.9 79.3,115.9 78.4,115.9 77.5,115.9 76.5,115.9 75.6,115.9 74.7,115.9 73.7,115.9 72.8,115.9 71.9,115.9 70.9,115.9 70.0,115.9" fill="currentColor" fill-opacity="0.30" stroke="none"/>
+<polygon points="210.9,116.1 211.9,116.9 212.8,117.6 213.7,118.3 214.7,119.1 215.6,119.8 216.5,120.5 217.5,121.2 218.4,122.0 219.3,122.7 220.3,123.4 221.2,124.1 222.1,124.8 223.1,125.5 224.0,126.2 224.9,126.9 225.9,127.6 226.8,128.3 227.7,129.0 228.7,129.7 229.6,130.4 230.5,131.1 231.5,131.7 232.4,132.4 233.3,133.0 234.3,133.7 235.2,134.3 236.1,135.0 237.1,135.6 238.0,136.2 238.9,136.8 239.9,137.4 240.8,138.0 241.7,138.6 242.7,139.2 243.6,139.7 244.5,140.3 245.5,140.8 246.4,141.4 247.3,141.9 248.3,142.4 249.2,142.9 250.1,143.4 251.1,143.9 252.0,144.4 252.9,144.9 253.9,145.3 254.8,145.8 255.7,146.2 256.7,146.6 257.6,147.0 258.5,147.4 259.5,147.8 260.4,148.2 261.3,148.5 262.3,148.9 263.2,149.2 264.1,149.5 265.1,149.9 266.0,150.1 266.9,150.4 267.9,150.7 268.8,150.9 269.7,151.2 270.7,151.4 271.6,151.6 272.5,151.8 273.5,152.0 274.4,152.2 275.3,152.3 276.3,152.5 277.2,152.6 278.1,152.7 279.1,152.8 280.0,152.9 280.9,153.0 281.9,153.0 282.8,153.0 283.7,153.1 284.7,153.1 285.6,153.1 286.5,153.0 287.5,153.0 288.4,153.0 289.3,152.9 290.3,152.8 291.2,152.7 292.1,152.6 293.1,152.5 294.0,152.3 294.9,152.2 295.9,152.0 296.8,151.8 297.7,151.6 298.7,151.4 299.6,151.2 300.5,150.9 301.5,150.7 302.4,150.4 303.3,150.1 304.3,149.8 305.2,149.5 306.1,149.2 307.1,148.8 308.0,148.5 308.9,148.1 309.9,147.7 310.8,147.3 311.7,146.9 312.7,146.5 313.6,146.0 314.5,145.6 315.5,145.1 316.4,144.7 317.3,144.2 318.3,143.7 319.2,143.2 320.1,142.6 321.1,142.1 322.0,141.5 322.9,141.0 323.9,140.4 324.8,139.8 325.7,139.2 326.7,138.6 327.6,138.0 328.5,137.4 329.5,136.7 330.4,136.1 331.3,135.4 332.3,134.8 333.2,134.1 334.1,133.4 335.1,132.7 336.0,132.0 336.9,131.3 337.9,130.6 338.8,129.8 339.7,129.1 340.7,128.4 341.6,127.6 342.5,126.8 343.5,126.1 344.4,125.3 345.3,124.5 346.3,123.7 347.2,122.9 348.1,122.2 349.1,121.3 350.0,120.5 350.0,115.9 349.1,115.9 348.1,115.9 347.2,115.9 346.3,115.9 345.3,115.9 344.4,115.9 343.5,115.9 342.5,115.9 341.6,115.9 340.7,115.9 339.7,115.9 338.8,115.9 337.9,115.9 336.9,115.9 336.0,115.9 335.1,115.9 334.1,115.9 333.2,115.9 332.3,115.9 331.3,115.9 330.4,115.9 329.5,115.9 328.5,115.9 327.6,115.9 326.7,115.9 325.7,115.9 324.8,115.9 323.9,115.9 322.9,115.9 322.0,115.9 321.1,115.9 320.1,115.9 319.2,115.9 318.3,115.9 317.3,115.9 316.4,115.9 315.5,115.9 314.5,115.9 313.6,115.9 312.7,115.9 311.7,115.9 310.8,115.9 309.9,115.9 308.9,115.9 308.0,115.9 307.1,115.9 306.1,115.9 305.2,115.9 304.3,115.9 303.3,115.9 302.4,115.9 301.5,115.9 300.5,115.9 299.6,115.9 298.7,115.9 297.7,115.9 296.8,115.9 295.9,115.9 294.9,115.9 294.0,115.9 293.1,115.9 292.1,115.9 291.2,115.9 290.3,115.9 289.3,115.9 288.4,115.9 287.5,115.9 286.5,115.9 285.6,115.9 284.7,115.9 283.7,115.9 282.8,115.9 281.9,115.9 280.9,115.9 280.0,115.9 279.1,115.9 278.1,115.9 277.2,115.9 276.3,115.9 275.3,115.9 274.4,115.9 273.5,115.9 272.5,115.9 271.6,115.9 270.7,115.9 269.7,115.9 268.8,115.9 267.9,115.9 266.9,115.9 266.0,115.9 265.1,115.9 264.1,115.9 263.2,115.9 262.3,115.9 261.3,115.9 260.4,115.9 259.5,115.9 258.5,115.9 257.6,115.9 256.7,115.9 255.7,115.9 254.8,115.9 253.9,115.9 252.9,115.9 252.0,115.9 251.1,115.9 250.1,115.9 249.2,115.9 248.3,115.9 247.3,115.9 246.4,115.9 245.5,115.9 244.5,115.9 243.6,115.9 242.7,115.9 241.7,115.9 240.8,115.9 239.9,115.9 238.9,115.9 238.0,115.9 237.1,115.9 236.1,115.9 235.2,115.9 234.3,115.9 233.3,115.9 232.4,115.9 231.5,115.9 230.5,115.9 229.6,115.9 228.7,115.9 227.7,115.9 226.8,115.9 225.9,115.9 224.9,115.9 224.0,115.9 223.1,115.9 222.1,115.9 221.2,115.9 220.3,115.9 219.3,115.9 218.4,115.9 217.5,115.9 216.5,115.9 215.6,115.9 214.7,115.9 213.7,115.9 212.8,115.9 211.9,115.9 210.9,115.9" fill="currentColor" fill-opacity="0.10" stroke="none"/>
+</g>
+<g stroke="currentColor" fill="none" stroke-width="1.2" stroke-dasharray="5,3">
+<rect x="70" y="115.9" width="280" height="84.1"/>
+</g>
+<g stroke="currentColor" fill="none" stroke-width="2">
+<polyline points="70.0,112.6 72.0,110.8 74.0,109.1 76.0,107.4 78.0,105.8 80.0,104.1 82.0,102.6 84.0,101.0 86.0,99.5 88.0,98.0 90.0,96.5 92.0,95.1 94.0,93.8 96.0,92.5 98.0,91.2 100.0,90.0 102.0,88.9 104.0,87.8 106.0,86.7 108.0,85.8 110.0,84.8 112.0,84.0 114.0,83.2 116.0,82.5 118.0,81.8 120.0,81.2 122.0,80.7 124.0,80.2 126.0,79.8 128.0,79.5 130.0,79.2 132.0,79.0 134.0,78.9 136.0,78.8 138.0,78.8 140.0,78.9 142.0,79.1 144.0,79.3 146.0,79.6 148.0,79.9 150.0,80.3 152.0,80.8 154.0,81.3 156.0,82.0 158.0,82.6 160.0,83.3 162.0,84.1 164.0,85.0 166.0,85.9 168.0,86.8 170.0,87.8 172.0,88.9 174.0,90.0 176.0,91.1 178.0,92.3 180.0,93.5 182.0,94.8 184.0,96.1 186.0,97.4 188.0,98.8 190.0,100.2 192.0,101.7 194.0,103.1 196.0,104.6 198.0,106.1 200.0,107.6 202.0,109.2 204.0,110.7 206.0,112.3 208.0,113.8 210.0,115.4 212.0,117.0 214.0,118.5 216.0,120.1 218.0,121.7 220.0,123.2 222.0,124.7 224.0,126.2 226.0,127.7 228.0,129.2 230.0,130.7 232.0,132.1 234.0,133.5 236.0,134.9 238.0,136.2 240.0,137.5 242.0,138.8 244.0,140.0 246.0,141.2 248.0,142.3 250.0,143.4 252.0,144.4 254.0,145.4 256.0,146.3 258.0,147.2 260.0,148.0 262.0,148.8 264.0,149.5 266.0,150.1 268.0,150.7 270.0,151.3 272.0,151.7 274.0,152.1 276.0,152.4 278.0,152.7 280.0,152.9 282.0,153.0 284.0,153.1 286.0,153.1 288.0,153.0 290.0,152.8 292.0,152.6 294.0,152.3 296.0,152.0 298.0,151.6 300.0,151.1 302.0,150.5 304.0,149.9 306.0,149.2 308.0,148.5 310.0,147.7 312.0,146.8 314.0,145.9 316.0,144.9 318.0,143.8 320.0,142.7 322.0,141.5 324.0,140.3 326.0,139.1 328.0,137.7 330.0,136.4 332.0,135.0 334.0,133.5 336.0,132.0 338.0,130.5 340.0,128.9 342.0,127.3 344.0,125.6 346.0,124.0 348.0,122.3 350.0,120.5" />
+</g>
+<g stroke="currentColor" stroke-width="1" stroke-dasharray="2,3">
+<line x1="210.7" y1="200" x2="210.7" y2="115.9"/>
+</g>
+<g fill="currentColor"><circle cx="210.7" cy="115.9" r="3"/></g>
+<g fill="currentColor" font-family="serif">
+<text x="404" y="220" font-size="13" >x</text><text x="28" y="24" font-size="13" >y</text><text x="66" y="217" font-size="12" >a</text><text x="346" y="217" font-size="12" >b</text><text x="206.7" y="217" font-size="12" >ξ</text><text x="356" y="119.9350071433147" font-size="12" >y = f(ξ)</text><text x="50" y="36" font-size="13" >矩形面积 f(ξ)(b−a) = 曲边梯形面积</text><text x="50" y="54" font-size="11" >深色（曲线高出的部分）与浅色（曲线缺少的部分）面积相等</text><text x="90" y="70.53145768161832" font-size="12" >y = f(x)</text></g>
+</svg>
+<p>图中深色部分（曲线高出水平线 $y=f(\xi)$ 的部分）与浅色部分（曲线低于水平线的部分）面积相等，所以曲边梯形面积等于矩形面积 $f(\xi)(b-a)$。证明的思路是：平均值必定介于最小值与最大值之间（估值定理），而连续函数能取到最小值与最大值之间的一切值（介值定理）。</p>`,
+        steps: [
+          { s: R`<p>$f$ 在闭区间 $[a,b]$ 上连续，由最值定理（lim.closed），$f$ 有最小值 $m$ 和最大值 $M$，设 $f(x_1)=m$，$f(x_2)=M$，$x_1,x_2\in[a,b]$。</p>`, why: R`<p>最值定理是闭区间上连续函数的基本性质，它依赖实数的完备性（确界原理），在 lim.closed 里证明；本定理以它和介值定理为出发点。</p>` },
+          { s: R`<p>由估值定理，$m(b-a)\le\displaystyle\int_a^bf\,\mathrm{d}x\le M(b-a)$；除以 $b-a>0$，得</p>
+$$m\le\mu\le M,\qquad \mu=\frac{1}{b-a}\int_a^bf(x)\,\mathrm{d}x .$$`, why: R`<p>这一步只用到 $m\le f\le M$ 和比较性质：平均值不可能比最小值小，也不可能比最大值大。</p>` },
+          { s: R`<p>由介值定理（lim.closed），连续函数 $f$ 在以 $x_1,x_2$ 为端点的闭区间上取遍 $m$ 与 $M$ 之间的一切值。因此存在 $\xi$ 介于 $x_1$ 与 $x_2$ 之间（从而 $\xi\in[a,b]$），使 $f(\xi)=\mu$，即 $\displaystyle\int_a^bf\,\mathrm{d}x=f(\xi)(b-a)$。闭区间形式证毕。</p>`, why: R`<p>介值定理把"$\mu$ 在 $m,M$ 之间"变成"$\mu$ 是某个函数值"。注意它给出的 $\xi$ 在 $x_1$ 与 $x_2$ 之间，这个信息下一步要用。</p>` },
+          { s: R`<p>再证 $\xi$ 可取在 $(a,b)$ 内。若 $m=M$，则 $f$ 是常数，任取 $\xi\in(a,b)$ 都成立。若 $m<M$，则 $f$ 不恒等于 $M$、也不恒等于 $m$，由估值定理的严格形式得 $m<\mu<M$。于是满足 $f(\xi)=\mu$ 的 $\xi$ 既不是最小值点也不是最大值点：$f(\xi)\ne f(x_1)$，$f(\xi)\ne f(x_2)$，所以 $\xi\ne x_1$、$\xi\ne x_2$。第 3 步的 $\xi$ 在 $x_1$ 与 $x_2$ 之间，现在又不等于两端，所以严格介于二者之间，当然属于 $(a,b)$。</p>`, why: R`<p>严格不等式 $m<\mu<M$ 是关键，它排除了 $\xi$ 落到端点（端点恰好是最值点的情形）的可能。另一种常见证法是对 $F(x)=\displaystyle\int_a^xf(t)\,\mathrm{d}t$ 用拉格朗日中值定理（$F'=f$），那要先有微积分基本定理（int.ftc）；这里的证明只用了本篇的性质，逻辑上更"干净"。</p>` }
+        ],
+        remark: R`<ul>
+<li><b>"连续"不能去掉。</b>$f(x)=\begin{cases}0,&0\le x<1\\1,&1\le x\le2\end{cases}$ 在 $[0,2]$ 上可积，$\displaystyle\int_0^2f\,\mathrm{d}x=1$，若有 $f(\xi)\cdot2=1$ 则 $f(\xi)=\dfrac12$，但 $f$ 只取 $0$ 和 $1$，没有这样的 $\xi$。对不连续的可积函数，只能保证第 2 步：存在 $\mu\in[m,M]$ 使积分 $=\mu(b-a)$，$\mu$ 未必是函数值。</li>
+<li><b>$\xi$ 依赖于 $f$ 和区间，不是常数。</b>区间随 $n$ 变时 $\xi=\xi_n$ 也随 $n$ 变（例 5），能用的只是"$\xi_n$ 落在那个区间里"这条信息；在"$\lim\limits_{x\to0}\dfrac1x\displaystyle\int_0^xf(t)\,\mathrm{d}t$"一类问题中，$\xi$ 被夹在 $0$ 与 $x$ 之间，从而 $\xi\to0$。</li>
+<li><b>开区间形式在证明题里有用。</b>要接着用罗尔定理时，需要 $\xi$ 和另一点构成一个非退化区间。例如已知 $f$ 在 $[a,b]$ 上连续、在 $(a,b)$ 内可导，且 $\displaystyle\int_a^bf(x)\,\mathrm{d}x=f(a)(b-a)$，要证存在 $c\in(a,b)$ 使 $f'(c)=0$：闭区间形式只给出 $\xi\in[a,b]$ 使 $f(\xi)=f(a)$，万一 $\xi=a$，区间 $[a,\xi]$ 退化成一点，罗尔定理无从用起；开区间形式保证 $\xi\in(a,b)$，在 $[a,\xi]$ 上用罗尔定理即得。<span class="qref" data-q="1991-6">1991 年第六题</span>是同一个套路：由 $3\displaystyle\int_{2/3}^1f\,\mathrm{d}x=f(0)$ 得 $f(\xi)=f(0)$，$\xi\in\left[\dfrac23,1\right]$，再在 $[0,\xi]$ 上用罗尔定理——那里积分区间本身离 $0$ 有一段距离，闭区间形式就够用（本篇后文精讲）。</li>
+<li><b>推广（加权形式）。</b>设 $f$ 在 $[a,b]$ 上连续，$g$ 在 $[a,b]$ 上可积且<b>不变号</b>，则存在 $\xi\in[a,b]$ 使 $\displaystyle\int_a^bf(x)g(x)\,\mathrm{d}x=f(\xi)\int_a^bg(x)\,\mathrm{d}x$。证明：不妨设 $g\ge0$（$g\le0$ 时换成 $-g$），则 $mg\le fg\le Mg$，积分得 $m\displaystyle\int_a^bg\le\int_a^bfg\le M\int_a^bg$。若 $\displaystyle\int_a^bg=0$，则夹在中间的 $\displaystyle\int_a^bfg=0$，任取 $\xi$ 即可；若 $\displaystyle\int_a^bg>0$，除以它得 $m\le\dfrac{\int_a^bfg}{\int_a^bg}\le M$，由介值定理取到 $\xi$。取 $g\equiv1$ 就回到原定理。它用于求 $\lim\limits_{n\to\infty}\displaystyle\int_0^1x^nf(x)\,\mathrm{d}x$ 之类的极限和 int.proof 的证明题。</li>
+<li><b>与微分中值定理的关系。</b>令 $F(x)=\displaystyle\int_a^xf(t)\,\mathrm{d}t$，由微积分基本定理 $F'(x)=f(x)$（int.ftc），拉格朗日中值定理 $F(b)-F(a)=F'(\xi)(b-a)$ 就是积分中值定理。所以它是拉格朗日中值定理的"积分形式"，这也解释了为什么 $\xi$ 可以取在开区间内。反过来，<span class="qref" data-q="2008-18">2008 年第 18 题</span>要求"利用定义证明 $F'(x)=f(x)$"，证明里正是用积分中值定理把 $\dfrac1{\Delta x}\displaystyle\int_x^{x+\Delta x}f(t)\,\mathrm{d}t$ 写成 $f(\xi)$，再由连续性取极限。</li>
+</ul>`
+      },
+      {
+        kind: 'example', title: '例题：定义与性质的基本用法',
+        html: R`<p><b>例 1（黎曼和型极限化为定积分）</b>　求 (a) $\lim\limits_{n\to\infty}\displaystyle\sum_{k=1}^{n}\frac{1}{n+k}$；(b) $\lim\limits_{n\to\infty}\displaystyle\sum_{k=1}^{n}\frac{n}{n^2+k^2}$。</p>
+<p><i>怎么想：</i>和式有 $n$ 项、项数随 $n$ 增加，不能逐项取极限（每一项都趋于 $0$，但和不趋于 $0$）。黎曼和的"标准形状"是 $\dfrac1n\displaystyle\sum_{k=1}^{n}g\!\left(\dfrac kn\right)$：<b>提出一个 $\dfrac1n$，剩下的部分只通过 $\dfrac kn$ 依赖于 $k$</b>。于是动手的第一步永远是"把 $\dfrac1n$ 拿出来，看剩下的是不是 $\dfrac kn$ 的函数"。</p>
+<p><i>解 (a)：</i>$\dfrac{1}{n+k}=\dfrac1n\cdot\dfrac{1}{1+\frac kn}$，所以</p>
+$$\sum_{k=1}^{n}\frac{1}{n+k}=\frac1n\sum_{k=1}^{n}\frac{1}{1+\frac kn}\ \longrightarrow\ \int_0^1\frac{\mathrm{d}x}{1+x}=\ln2 .$$
+<p>这里 $g(x)=\dfrac{1}{1+x}$ 在 $[0,1]$ 上连续，可积，上式是 $[0,1]$ 的 $n$ 等分、取右端点的积分和。也可以把 $1+\dfrac kn$ 看成区间 $[1,2]$ 的分点，和式是 $\dfrac1x$ 在 $[1,2]$ 上的积分和，极限 $\displaystyle\int_1^2\frac{\mathrm{d}x}{x}=\ln2$，两种认法殊途同归——只要"分点—函数—区间"三者对应一致就行。</p>
+<p><i>解 (b)：</i>$\dfrac{n}{n^2+k^2}=\dfrac1n\cdot\dfrac{1}{1+\left(\frac kn\right)^2}$，所以极限为 $\displaystyle\int_0^1\frac{\mathrm{d}x}{1+x^2}=\arctan1=\frac{\pi}{4}$。</p>
+<p><i>自查：</i>项数 $\times$ 权重 $=n\cdot\dfrac1n=1=$ 区间长度；$k$ 从 $1$ 到 $n$ 时 $\dfrac kn$ 从 $\dfrac1n$ 跑到 $1$，对应区间 $[0,1]$。<span class="qref" data-q="2017-16">2017 年第 16 题</span>就是这一类型的解答题，只是最后要再算一个分部积分。</p>
+
+<p><b>例 2（权重"不整齐"：先夹逼再化积分）</b>　求 $\lim\limits_{n\to\infty}\displaystyle\sum_{k=1}^{n}\frac{k}{n^2+k}$。</p>
+<p><i>怎么想：</i>提出 $\dfrac1n$ 后 $\dfrac{k}{n^2+k}=\dfrac1n\cdot\dfrac{\frac kn}{1+\frac{k}{n^2}}$，分母里的 $\dfrac{k}{n^2}$ 不是 $\dfrac kn$ 的函数，<b>不是标准黎曼和</b>。但 $0<\dfrac{k}{n^2}\le\dfrac1n$ 是一个相对于 $1$ 可以忽略的"小尾巴"，把它放大、缩小成与 $k$ 无关的量，两边就都变成标准黎曼和——这是夹逼准则。</p>
+<p><i>解：</i>由 $1<1+\dfrac{k}{n^2}\le1+\dfrac1n$ 得</p>
+$$\frac{1}{1+\frac1n}\cdot\frac1n\sum_{k=1}^{n}\frac kn\ \le\ \sum_{k=1}^{n}\frac{k}{n^2+k}\ \le\ \frac1n\sum_{k=1}^{n}\frac kn .$$
+<p>右端是 $x$ 在 $[0,1]$ 上的积分和，极限 $\displaystyle\int_0^1x\,\mathrm{d}x=\dfrac12$；左端是它乘以 $\dfrac{1}{1+1/n}\to1$，极限也是 $\dfrac12$。由夹逼准则，原极限 $=\dfrac12$。</p>
+<p><i>反面教材：</i>直接写"$\dfrac{k}{n^2+k}\sim\dfrac{k}{n^2}$，所以原式 $=\lim\dfrac1n\displaystyle\sum\dfrac kn=\dfrac12$"——结论对，推理不严格：等价无穷小替换只对<b>固定项数</b>的和成立，项数随 $n$ 增加时无穷多个小误差可能累积成有限量。例 1(a) 就是现成的反例：对固定的 $k$，$n\to\infty$ 时 $\dfrac{1}{n+k}\sim\dfrac1n$，若逐项替换会得到 $\displaystyle\sum_{k=1}^{n}\dfrac1n=1$，而真正的极限是 $\ln2$。<span class="qref" data-q="1998-7">1998 年第七题</span>（本篇后文精讲）正是用夹逼处理这种"小尾巴"。</p>
+
+<p><b>例 3（同区间比较大小）</b>　比较 $I_1=\displaystyle\int_0^1\mathrm{e}^{x^2}\mathrm{d}x$，$I_2=\displaystyle\int_0^1\mathrm{e}^{x}\mathrm{d}x$，$I_3=\displaystyle\int_0^1\mathrm{e}^{\sqrt x}\mathrm{d}x$ 的大小。</p>
+<p><i>怎么想：</i>$I_1,I_3$ 都算不出初等表达式（$\mathrm{e}^{x^2}$ 没有初等原函数），所以"算出来比"行不通；三个积分区间相同，只需比较被积函数——比较性质。</p>
+<p><i>解：</i>当 $0<x<1$ 时 $x^2<x<\sqrt x$，而 $\mathrm{e}^u$ 严格递增，所以 $\mathrm{e}^{x^2}<\mathrm{e}^x<\mathrm{e}^{\sqrt x}$。三个被积函数在 $[0,1]$ 上连续且互不恒等（在 $(0,1)$ 内严格不等），由比较性质的严格形式，$I_1<I_2<I_3$。</p>
+<p><i>一个警告：</i>若把 $I_3$ 换成 $\displaystyle\int_0^1(1+x)\,\mathrm{d}x=\dfrac32$，就<b>不能</b>这样比：$\mathrm{e}^{x^2}$ 与 $1+x$ 的图形在 $(0,1)$ 内相交（约在 $x\approx0.747$ 处，左边 $1+x$ 大、右边 $\mathrm{e}^{x^2}$ 大），逐点不等式不成立，比较性质用不上。这时要换工具（切开区间分段估计，或另找夹逼函数）；事实上数值上 $I_1\approx1.463<\dfrac32$。<b>比较性质的前提是"逐点"不等式</b>，用之前先确认两条曲线不交叉。</p>
+
+<p><b>例 4（估值）</b>　估计 $I=\displaystyle\int_0^2\mathrm{e}^{x^2-x}\,\mathrm{d}x$ 的范围。</p>
+<p><i>解：</i>$x^2-x=\left(x-\dfrac12\right)^2-\dfrac14$ 在 $[0,2]$ 上的最小值是 $-\dfrac14$（$x=\dfrac12$），最大值是 $2$（$x=2$）。于是 $\mathrm{e}^{-1/4}\le\mathrm{e}^{x^2-x}\le\mathrm{e}^2$，由估值定理</p>
+$$2\mathrm{e}^{-1/4}\le I\le2\mathrm{e}^2 ,$$
+<p>且因被积函数连续、不是常数，两个不等号都严格。</p>
+<p><i>改进：</i>这个估计很粗（$1.56\le I\le14.8$，而真值约 $3.59$）。用区间可加性分段：在 $[0,1]$ 上 $x^2-x\in\left[-\dfrac14,0\right]$，$\displaystyle\int_0^1\in\left[\mathrm{e}^{-1/4},1\right]$；在 $[1,2]$ 上 $x^2-x\in[0,2]$，$\displaystyle\int_1^2\in[1,\mathrm{e}^2]$。相加得 $1.78\le I\le8.39$，紧了不少。<b>估值的精度取决于把区间切多细</b>——这其实又回到了定积分的定义。</p>
+
+<p><b>例 5（含积分的极限：估值、绝对值不等式与中值定理）</b>　求 (a) $\lim\limits_{n\to\infty}\displaystyle\int_n^{n+1}\frac{\sin x}{x}\,\mathrm{d}x$；(b) $\lim\limits_{n\to\infty}\displaystyle\int_0^1\frac{x^n}{1+x}\,\mathrm{d}x$；(c) $\lim\limits_{x\to0^+}\dfrac1x\displaystyle\int_0^x\cos t\,\mathrm{d}t$。</p>
+<p><i>怎么想：</i>积分算不出来（或不必算），而区间长度固定、被积函数在区间上"很小"或"几乎是常数"，就用估值定理或积分中值定理把积分换成一个容易看出极限的量。</p>
+<p><i>解 (a)：</i>法一（绝对值不等式 + 比较）：$\left|\displaystyle\int_n^{n+1}\frac{\sin x}{x}\,\mathrm{d}x\right|\le\int_n^{n+1}\frac{|\sin x|}{x}\,\mathrm{d}x\le\int_n^{n+1}\frac{\mathrm{d}x}{x}\le\frac1n\to0$，所以极限为 $0$。法二（积分中值定理）：$\dfrac{\sin x}{x}$ 在 $[n,n+1]$ 上连续，存在 $\xi_n\in(n,n+1)$ 使积分 $=\dfrac{\sin\xi_n}{\xi_n}\cdot1$，而 $\left|\dfrac{\sin\xi_n}{\xi_n}\right|\le\dfrac1n\to0$。注意 $\xi_n$ 随 $n$ 变化，我们用的只是 $\xi_n>n$ 这条信息。</p>
+<p><i>解 (b)：</i>在 $[0,1]$ 上 $0\le\dfrac{x^n}{1+x}\le x^n$，由比较性质 $0\le\displaystyle\int_0^1\frac{x^n}{1+x}\,\mathrm{d}x\le\int_0^1x^n\,\mathrm{d}x=\frac{1}{n+1}\to0$，极限为 $0$。（也可用推广的积分中值定理：$\displaystyle\int_0^1\frac{1}{1+x}\cdot x^n\,\mathrm{d}x=\frac{1}{1+\xi_n}\int_0^1x^n\,\mathrm{d}x=\frac{1}{(1+\xi_n)(n+1)}\to0$，$g=x^n\ge0$ 不变号。）</p>
+<p><i>解 (c)：</i>由积分中值定理，存在 $\xi$ 介于 $0$ 与 $x$ 之间，使 $\displaystyle\int_0^x\cos t\,\mathrm{d}t=x\cos\xi$，于是 $\dfrac1x\displaystyle\int_0^x\cos t\,\mathrm{d}t=\cos\xi$。$x\to0^+$ 时 $\xi\to0$（被夹在 $0$ 与 $x$ 之间），由 $\cos$ 的连续性，极限为 $\cos0=1$。这个例子是 int.ftc 中"$\dfrac{\mathrm{d}}{\mathrm{d}x}\displaystyle\int_0^xf(t)\,\mathrm{d}t=f(x)$"的雏形：平均值的极限等于该点的函数值。</p>
+
+<p><b>例 6（条件不满足时会怎样）</b>　(a) 讨论 $f(x)=\begin{cases}\sin\dfrac1x,&x\ne0\\0,&x=0\end{cases}$ 与 $g(x)=\begin{cases}\dfrac1x,&x\ne0\\0,&x=0\end{cases}$ 在 $[0,1]$ 上是否可积；(b) 判断：若 $f$ 在 $[a,b]$ 上可积且 $\displaystyle\int_a^bf\,\mathrm{d}x=0$，是否一定存在 $\xi\in[a,b]$ 使 $f(\xi)=0$？</p>
+<p><i>解 (a)：</i>$f$ 有界（$|f|\le1$），在 $[0,1]$ 上只有 $x=0$ 一个间断点（振荡型），由可积的充分条件 2，$f$ 可积。$g$ 在 $0$ 附近无界，由必要条件，$g$ 不可积。可见间断点的"类型"（跳跃、振荡）与可积无关，起决定作用的是有界和间断点的个数。</p>
+<p><i>解 (b)：</i>$f$ 连续时成立：由积分中值定理，$0=f(\xi)(b-a)$，$f(\xi)=0$，而且 $\xi$ 可取在 $(a,b)$ 内。$f$ 不连续时不一定：$f(x)=\begin{cases}-1,&-1\le x<0\\1,&0\le x\le1\end{cases}$ 可积，$\displaystyle\int_{-1}^1f\,\mathrm{d}x=0$，但 $f$ 不取 $0$。所以"积分为零则有零点"的说法必须以连续为前提。</p>`
+      },
+      {
+        kind: 'example', title: '近十年真题精讲',
+        html: R`<p>2016–2025 年以本考点为主考点的真题共 3 道，全是选择题：<span class="qref" data-q="2018-4">2018 年第 4 题</span>、<span class="qref" data-q="2021-4">2021 年第 4 题</span>、<span class="qref" data-q="2022-4">2022 年第 4 题</span>。本节把这 3 道逐题讲透，再补讲把本考点作为次要考点、但其核心正是黎曼和的 <span class="qref" data-q="2017-16">2017 年第 16 题</span>，并说明另两道次考点真题中本考点是怎样出现的。</p>
+
+<p><b>真题 1</b>　<span class="qref" data-q="2021-4">2021 年第 4 题</span>（选择，5 分）</p>
+<blockquote><p>设函数 $f(x)$ 在区间 $[0,1]$ 上连续，则 $\displaystyle\int_0^1f(x)\,\mathrm{d}x=$（ ）．</p>
+<p>(A) $\displaystyle\lim_{n\to\infty}\sum_{k=1}^{n}f\left(\frac{2k-1}{2n}\right)\frac{1}{2n}$　(B) $\displaystyle\lim_{n\to\infty}\sum_{k=1}^{n}f\left(\frac{2k-1}{2n}\right)\frac{1}{n}$</p>
+<p>(C) $\displaystyle\lim_{n\to\infty}\sum_{k=1}^{2n}f\left(\frac{k-1}{2n}\right)\frac{1}{n}$　(D) $\displaystyle\lim_{n\to\infty}\sum_{k=1}^{2n}f\left(\frac{k}{2n}\right)\frac{2}{n}$</p></blockquote>
+<p><b>这题考什么：</b>定积分的定义本身——哪个和式是 $f$ 在 $[0,1]$ 上的积分和。四个选项的区别只在"分几段、每段多长、取哪个点、乘的权重是多少"。</p>
+<p><b>从题面看到什么：</b>"$f$ 连续"⇒ 可积 ⇒ <b>任何分法、任何取法</b>的积分和都趋于积分，所以只需核对三件事：(1) 小区间长度 $\Delta x$ 是多少；(2) 和式里乘的权重是否恰好等于 $\Delta x$；(3) 取的点是否落在对应的小区间里。最快的粗筛是：<b>项数 $\times$ 权重必须等于区间长度 $1$</b>（这相当于拿 $f\equiv1$ 去试：正确选项对一切连续函数成立，当然也得对 $f\equiv1$ 成立）。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>用 $f\equiv1$ 粗筛：$\displaystyle\int_0^11\,\mathrm{d}x=1$，而各选项的和等于"项数 $\times$ 权重"：(A) $n\cdot\dfrac{1}{2n}=\dfrac12$；(B) $n\cdot\dfrac1n=1$；(C) $2n\cdot\dfrac1n=2$；(D) $2n\cdot\dfrac2n=4$。只有 (B) 等于 $1$，其余三项对 $f\equiv1$ 就不成立，一定错。</li>
+<li>证明 (B) 正确：把 $[0,1]$ $n$ 等分，第 $k$ 个小区间是 $\left[\dfrac{k-1}{n},\dfrac kn\right]$，$\Delta x=\dfrac1n$；而 $\dfrac{2k-1}{2n}=\dfrac12\left(\dfrac{k-1}{n}+\dfrac kn\right)$ 正是它的<b>中点</b>，当然落在小区间内。于是 $\displaystyle\sum_{k=1}^{n}f\left(\frac{2k-1}{2n}\right)\frac1n=\sum_{k=1}^{n}f(\xi_k)\Delta x_k$ 是一个合法的积分和；$n\to\infty$ 时 $\lambda=\dfrac1n\to0$，由 $f$ 可积，极限就是 $\displaystyle\int_0^1f(x)\,\mathrm{d}x$。</li>
+<li>看清错误选项各是什么：(A) 权重只有 $\Delta x$ 的一半，极限是 $\dfrac12\displaystyle\int_0^1f$；(C) 是 $[0,1]$ 的 $2n$ 等分取左端点，$\Delta x=\dfrac1{2n}$，而权重 $\dfrac1n=2\Delta x$，极限是 $2\displaystyle\int_0^1f$；(D) 取右端点，权重 $\dfrac2n=4\Delta x$，极限是 $4\displaystyle\int_0^1f$。</li>
+</ol>
+<svg viewBox="0 0 420 232" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-idef5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" fill="none" stroke-width="1.2">
+<line x1="20" y1="170" x2="408" y2="170" marker-end="url(#arr-idef5)"/>
+<line x1="50" y1="195" x2="50" y2="18" marker-end="url(#arr-idef5)"/>
+</g>
+<g stroke="currentColor" stroke-width="0.9" fill="currentColor" fill-opacity="0.12">
+<rect x="50.0" y="120.9" width="80.0" height="49.1"/>
+<rect x="130.0" y="98.4" width="80.0" height="71.6"/>
+<rect x="210.0" y="83.4" width="80.0" height="86.6"/>
+<rect x="290.0" y="75.9" width="80.0" height="94.1"/>
+</g>
+<g stroke="currentColor" fill="none" stroke-width="2">
+<polyline points="50.0,135.0 52.0,134.3 54.0,133.5 56.0,132.8 58.0,132.0 60.0,131.3 62.0,130.6 64.0,129.9 66.0,129.2 68.0,128.4 70.0,127.7 72.0,127.0 74.0,126.3 76.0,125.6 78.0,125.0 80.0,124.3 82.0,123.6 84.0,122.9 86.0,122.3 88.0,121.6 90.0,120.9 92.0,120.3 94.0,119.6 96.0,119.0 98.0,118.3 100.0,117.7 102.0,117.1 104.0,116.5 106.0,115.8 108.0,115.2 110.0,114.6 112.0,114.0 114.0,113.4 116.0,112.8 118.0,112.2 120.0,111.6 122.0,111.0 124.0,110.5 126.0,109.9 128.0,109.3 130.0,108.8 132.0,108.2 134.0,107.6 136.0,107.1 138.0,106.5 140.0,106.0 142.0,105.5 144.0,104.9 146.0,104.4 148.0,103.9 150.0,103.4 152.0,102.8 154.0,102.3 156.0,101.8 158.0,101.3 160.0,100.8 162.0,100.4 164.0,99.9 166.0,99.4 168.0,98.9 170.0,98.4 172.0,98.0 174.0,97.5 176.0,97.1 178.0,96.6 180.0,96.2 182.0,95.7 184.0,95.3 186.0,94.8 188.0,94.4 190.0,94.0 192.0,93.6 194.0,93.2 196.0,92.7 198.0,92.3 200.0,91.9 202.0,91.5 204.0,91.1 206.0,90.8 208.0,90.4 210.0,90.0 212.0,89.6 214.0,89.3 216.0,88.9 218.0,88.5 220.0,88.2 222.0,87.8 224.0,87.5 226.0,87.1 228.0,86.8 230.0,86.5 232.0,86.2 234.0,85.8 236.0,85.5 238.0,85.2 240.0,84.9 242.0,84.6 244.0,84.3 246.0,84.0 248.0,83.7 250.0,83.4 252.0,83.2 254.0,82.9 256.0,82.6 258.0,82.3 260.0,82.1 262.0,81.8 264.0,81.6 266.0,81.3 268.0,81.1 270.0,80.9 272.0,80.6 274.0,80.4 276.0,80.2 278.0,80.0 280.0,79.7 282.0,79.5 284.0,79.3 286.0,79.1 288.0,78.9 290.0,78.8 292.0,78.6 294.0,78.4 296.0,78.2 298.0,78.0 300.0,77.9 302.0,77.7 304.0,77.6 306.0,77.4 308.0,77.3 310.0,77.1 312.0,77.0 314.0,76.8 316.0,76.7 318.0,76.6 320.0,76.5 322.0,76.3 324.0,76.2 326.0,76.1 328.0,76.0 330.0,75.9 332.0,75.8 334.0,75.8 336.0,75.7 338.0,75.6 340.0,75.5 342.0,75.5 344.0,75.4 346.0,75.3 348.0,75.3 350.0,75.2 352.0,75.2 354.0,75.2 356.0,75.1 358.0,75.1 360.0,75.1 362.0,75.0 364.0,75.0 366.0,75.0 368.0,75.0 370.0,75.0" />
+</g>
+<g fill="currentColor" stroke="currentColor">
+<circle cx="90.0" cy="120.9" r="2.8"/>
+<line x1="90.0" y1="120.9" x2="90.0" y2="170" stroke-width="0.8" stroke-dasharray="2,3"/>
+<circle cx="170.0" cy="98.4" r="2.8"/>
+<line x1="170.0" y1="98.4" x2="170.0" y2="170" stroke-width="0.8" stroke-dasharray="2,3"/>
+<circle cx="250.0" cy="83.4" r="2.8"/>
+<line x1="250.0" y1="83.4" x2="250.0" y2="170" stroke-width="0.8" stroke-dasharray="2,3"/>
+<circle cx="330.0" cy="75.9" r="2.8"/>
+<line x1="330.0" y1="75.9" x2="330.0" y2="170" stroke-width="0.8" stroke-dasharray="2,3"/>
+<line x1="50.0" y1="165" x2="50.0" y2="175" stroke-width="1.4"/>
+<line x1="130.0" y1="165" x2="130.0" y2="175" stroke-width="1.4"/>
+<line x1="210.0" y1="165" x2="210.0" y2="175" stroke-width="1.4"/>
+<line x1="290.0" y1="165" x2="290.0" y2="175" stroke-width="1.4"/>
+<line x1="370.0" y1="165" x2="370.0" y2="175" stroke-width="1.4"/>
+<line x1="50.0" y1="170" x2="50.0" y2="173" stroke-width="1"/>
+<line x1="90.0" y1="170" x2="90.0" y2="173" stroke-width="1"/>
+<line x1="130.0" y1="170" x2="130.0" y2="173" stroke-width="1"/>
+<line x1="170.0" y1="170" x2="170.0" y2="173" stroke-width="1"/>
+<line x1="210.0" y1="170" x2="210.0" y2="173" stroke-width="1"/>
+<line x1="250.0" y1="170" x2="250.0" y2="173" stroke-width="1"/>
+<line x1="290.0" y1="170" x2="290.0" y2="173" stroke-width="1"/>
+<line x1="330.0" y1="170" x2="330.0" y2="173" stroke-width="1"/>
+<line x1="370.0" y1="170" x2="370.0" y2="173" stroke-width="1"/>
+</g>
+<g fill="currentColor" font-family="serif">
+<text x="404" y="190" font-size="13" >x</text><text x="38" y="186" font-size="11" >0</text><text x="122.0" y="186" font-size="11" >1/4</text><text x="202.0" y="186" font-size="11" >1/2</text><text x="282.0" y="186" font-size="11" >3/4</text><text x="367.0" y="186" font-size="11" >1</text><text x="82.0" y="204" font-size="11" >1/8</text><text x="162.0" y="204" font-size="11" >3/8</text><text x="242.0" y="204" font-size="11" >5/8</text><text x="322.0" y="204" font-size="11" >7/8</text><text x="144.0" y="222" font-size="11" >取点 (2k−1)/(2n) 是第 k 个小区间的中点</text><text x="60" y="36" font-size="12" >n=4 等分，Δx=1/n，取中点：B 项的和式</text><text x="60" y="54" font-size="12" >C、D 用 2n 等分（短刻度），Δx 应是 1/(2n)</text><text x="366" y="66" font-size="12" >y = f(x)</text></g>
+</svg>
+<p>图中是 $n=4$ 的情形：$[0,1]$ 四等分，每个小矩形的高取在小区间中点 $\dfrac18,\dfrac38,\dfrac58,\dfrac78$ 处，宽是 $\dfrac14=\dfrac1n$，这就是 (B) 的和式。(C)、(D) 用的是 $2n=8$ 等分（图中短刻度），每段只有 $\dfrac18$ 长，却乘了 $\dfrac1n$ 或 $\dfrac2n$，把面积放大了 $2$ 倍、$4$ 倍。</p>
+<p><b>答案：</b>(B)。</p>
+<p><b>这道题告诉我们：</b>定义里的"任取 $\xi_i$"是实打实的考点——中点和端点一样合法；而"权重必须恰好是 $\Delta x$"是容易被忽略的硬条件。做这类题先数"项数 $\times$ 权重"，再核对取点位置。</p>
+
+<p><b>真题 2</b>　<span class="qref" data-q="2018-4">2018 年第 4 题</span>（选择，4 分）</p>
+<blockquote><p>设 $M=\displaystyle\int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}\frac{(1+x)^2}{1+x^2}\,\mathrm{d}x$，$N=\displaystyle\int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}\frac{1+x}{\mathrm{e}^x}\,\mathrm{d}x$，$K=\displaystyle\int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}\left(1+\sqrt{\cos x}\right)\mathrm{d}x$，则（　　）</p>
+<p>(A) $M>N>K$　(B) $M>K>N$　(C) $K>M>N$　(D) $K>N>M$</p></blockquote>
+<p><b>这题考什么：</b>比较三个定积分的大小——线性性质（拆开）、对称区间上奇函数积分为零、比较性质的严格形式。</p>
+<p><b>从题面看到什么：</b>三个积分<b>区间相同</b> ⇒ 可以逐个比较被积函数；$K$ 中的 $\sqrt{\cos x}$ 没有初等原函数，算不出来；$N$ 的被积函数 $(1+x)\mathrm{e}^{-x}$ 虽然能用分部积分积出（$N=\dfrac12\big[(4-\pi)\mathrm{e}^{\pi/2}-(4+\pi)\mathrm{e}^{-\pi/2}\big]\approx1.32$），但算出来也不好直接和 $\pi$ 比。所以不要硬算，要找一把"尺子"。$M$ 的被积函数 $\dfrac{(1+x)^2}{1+x^2}=1+\dfrac{2x}{1+x^2}$，后一项是奇函数，于是 $M=\pi$，恰好等于常数 $1$ 的积分——<b>以 $1$ 为尺子</b>，看另外两个被积函数在 $1$ 的哪一边。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>算出 $M$（线性 + 奇函数）：$\dfrac{(1+x)^2}{1+x^2}=\dfrac{1+x^2+2x}{1+x^2}=1+\dfrac{2x}{1+x^2}$，而 $\dfrac{2x}{1+x^2}$ 是奇函数，在对称区间 $\left[-\dfrac\pi2,\dfrac\pi2\right]$ 上积分为 $0$，所以 $M=\displaystyle\int_{-\pi/2}^{\pi/2}1\,\mathrm{d}x+0=\pi$。</li>
+<li>$N<\pi$（比较性质的严格形式）：令 $\varphi(x)=\mathrm{e}^x-1-x$，$\varphi'(x)=\mathrm{e}^x-1$ 在 $x<0$ 时为负、$x>0$ 时为正，故 $\varphi(x)\ge\varphi(0)=0$，即 $\mathrm{e}^x\ge1+x$，等号仅在 $x=0$ 成立。两边除以 $\mathrm{e}^x>0$ 得 $\dfrac{1+x}{\mathrm{e}^x}\le1$，仅在一点取等。被积函数连续且不恒等于 $1$，所以 $N<\displaystyle\int_{-\pi/2}^{\pi/2}1\,\mathrm{d}x=\pi$。</li>
+<li>$K>\pi$（线性 + 严格保号）：$K=\displaystyle\int_{-\pi/2}^{\pi/2}1\,\mathrm{d}x+\int_{-\pi/2}^{\pi/2}\sqrt{\cos x}\,\mathrm{d}x=\pi+\int_{-\pi/2}^{\pi/2}\sqrt{\cos x}\,\mathrm{d}x$，而 $\sqrt{\cos x}$ 连续、非负、在 $\left(-\dfrac\pi2,\dfrac\pi2\right)$ 内为正，第二个积分 $>0$，故 $K>\pi$。</li>
+<li>结论：$K>\pi=M>N$。</li>
+</ol>
+<p><b>答案：</b>(C)。</p>
+<p><b>这道题告诉我们：</b>比较积分大小的第一反应不是算，而是"同区间 ⇒ 比被积函数"；当被积函数之间不好直接比时，找一个常数或简单函数做"尺子"（这里是 $1$），把三个量都和尺子比。$\mathrm{e}^x\ge1+x$ 是比较题里最常用的不等式，要能随手证明。</p>
+
+<p><b>真题 3</b>　<span class="qref" data-q="2022-4">2022 年第 4 题</span>（选择，5 分）</p>
+<blockquote><p>若 $I_1=\displaystyle\int_0^1\frac{x}{2(1+\cos x)}\,\mathrm{d}x$，$I_2=\displaystyle\int_0^1\frac{\ln(1+x)}{1+\cos x}\,\mathrm{d}x$，$I_3=\displaystyle\int_0^1\frac{2x}{1+\sin x}\,\mathrm{d}x$，则（　）</p>
+<p>(A) $I_1<I_2<I_3$.　(B) $I_2<I_1<I_3$.　(C) $I_1<I_3<I_2$.　(D) $I_3<I_2<I_1$.</p></blockquote>
+<p><b>这题考什么：</b>仍是同区间比较被积函数，但比 2018 年多一层：两对函数的"结构不同"，需要构造函数用单调性证不等式（diff.ineq），并且要找一个<b>中间量</b>做桥梁。</p>
+<p><b>从题面看到什么：</b>三个积分都在 $[0,1]$ 上，$I_2$ 根本积不出来 ⇒ 比较被积函数。$I_1$ 与 $I_2$ 分母相同（$1+\cos x$），只需比分子 $\dfrac x2$ 与 $\ln(1+x)$；$I_2$ 与 $I_3$ 分子分母全不同，直接比困难，而两者的量级都和 $x$ 差不多 ⇒ 试试用 $x$ 当桥：证 $\dfrac{\ln(1+x)}{1+\cos x}<x<\dfrac{2x}{1+\sin x}$。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>$I_1<I_2$：令 $\varphi(x)=\ln(1+x)-\dfrac x2$，$\varphi(0)=0$，$\varphi'(x)=\dfrac1{1+x}-\dfrac12=\dfrac{1-x}{2(1+x)}>0$（$0<x<1$），所以 $\varphi$ 在 $[0,1]$ 上严格递增，$x\in(0,1]$ 时 $\ln(1+x)>\dfrac x2$。分母 $1+\cos x>0$，于是在 $(0,1]$ 上 $\dfrac{x}{2(1+\cos x)}<\dfrac{\ln(1+x)}{1+\cos x}$；两个被积函数连续、不恒等，由比较性质的严格形式 $I_1<I_2$。</li>
+<li>$I_2<\dfrac12$：先证 $\ln(1+x)<x$（$x>0$）——令 $\psi(x)=x-\ln(1+x)$，$\psi(0)=0$，$\psi'(x)=\dfrac{x}{1+x}>0$；又 $0<x\le1<\dfrac\pi2$ 时 $\cos x>0$，$1+\cos x>1$。两者相除得 $\dfrac{\ln(1+x)}{1+\cos x}<\dfrac x1=x$（$0<x\le1$）；两边连续、不恒等，由比较性质的严格形式 $I_2<\displaystyle\int_0^1x\,\mathrm{d}x=\dfrac12$。</li>
+<li>$I_3>\dfrac12$：$0<x\le1$ 时 $0<\sin x<1$，$1<1+\sin x<2$，所以 $\dfrac{2x}{1+\sin x}>\dfrac{2x}{2}=x$，同样由严格形式得 $I_3>\displaystyle\int_0^1x\,\mathrm{d}x=\dfrac12$。</li>
+<li>合起来：$I_1<I_2<\dfrac12<I_3$。</li>
+</ol>
+<p><b>答案：</b>(A)。</p>
+<p><b>这道题告诉我们：</b>(1) 同区间比较时"结构相同的部分不用管，只比不同的部分"（第 1 步只比分子）；(2) 结构差别大时找一个简单的中间函数（$x$、$1$、$x^2$ 之类）做桥梁，让两边分别与桥比；(3) 用到的不等式 $\dfrac x2<\ln(1+x)<x$（$0<x<1$）都靠"作差、求导、看单调性"现场证明，这是 diff.ineq 的基本功。数值上 $I_1\approx0.143$，$I_2\approx0.219$，$I_3\approx0.634$。</p>
+
+<p><b>真题 4</b>　<span class="qref" data-q="2017-16">2017 年第 16 题</span>（解答，10 分；主考点是数列极限的计算，本考点为次考点）</p>
+<blockquote><p>求 $\displaystyle\lim_{n\to\infty}\sum_{k=1}^{n}\frac{k}{n^2}\ln\left(1+\frac{k}{n}\right)$.</p></blockquote>
+<p><b>这题考什么：</b>用定积分定义把 $n$ 项和的极限化为定积分，再算一个分部积分。近十年唯一一道以黎曼和为核心的解答题。</p>
+<p><b>从题面看到什么：</b>和式里 $k$ 与 $n$ 总是以 $\dfrac kn$ 成对出现（$\ln\left(1+\dfrac kn\right)$），多出来的 $\dfrac{k}{n^2}$ 恰好能拆成 $\dfrac1n\cdot\dfrac kn$——"一个 $\dfrac1n$ 乘以只含 $\dfrac kn$ 的函数"，正是黎曼和的标准形状（本篇例 1 的辨认规则）。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>凑成积分和：$\displaystyle\sum_{k=1}^{n}\frac{k}{n^2}\ln\left(1+\frac kn\right)=\frac1n\sum_{k=1}^{n}\frac kn\ln\left(1+\frac kn\right)=\frac1n\sum_{k=1}^{n}g\!\left(\frac kn\right)$，其中 $g(x)=x\ln(1+x)$。</li>
+<li>化为定积分：$g$ 在 $[0,1]$ 上连续，故可积；上式是 $[0,1]$ 的 $n$ 等分、取右端点的积分和，$n\to\infty$ 时 $\lambda=\dfrac1n\to0$，所以原式 $=\displaystyle\int_0^1x\ln(1+x)\,\mathrm{d}x$。</li>
+<li>分部积分（int.defcalc）："幂 $\times$ 对数"让对数当 $u$：
+$$\int_0^1x\ln(1+x)\,\mathrm{d}x=\left[\frac{x^2}{2}\ln(1+x)\right]_0^1-\int_0^1\frac{x^2}{2(1+x)}\,\mathrm{d}x=\frac12\ln2-\frac12\int_0^1\frac{x^2}{1+x}\,\mathrm{d}x .$$</li>
+<li>假分式先除：$\dfrac{x^2}{1+x}=x-1+\dfrac1{1+x}$，$\displaystyle\int_0^1\frac{x^2}{1+x}\,\mathrm{d}x=\left[\frac{x^2}2-x+\ln(1+x)\right]_0^1=\ln2-\frac12$。</li>
+<li>合并：原式 $=\dfrac12\ln2-\dfrac12\left(\ln2-\dfrac12\right)=\dfrac14$。</li>
+</ol>
+<p><b>答案：</b>$\dfrac14$。</p>
+<p><b>这道题告诉我们：</b>黎曼和型极限在解答题里的标准写法是三句话："提出 $\dfrac1n$，剩下的是 $\dfrac kn$ 的函数 $g$"、"$g$ 连续故可积，此和式是 $[0,1]$ 上 $n$ 等分取右端点的积分和"、"极限等于 $\displaystyle\int_0^1g(x)\,\mathrm{d}x$"。区间要认准：$k$ 从 $1$ 到 $n$ 时 $\dfrac kn$ 走遍 $[0,1]$，被积函数的自变量是 $\dfrac kn$，不是 $1+\dfrac kn$（若坚持用 $1+\dfrac kn$ 做分点，区间就是 $[1,2]$，被积函数要相应改成 $(t-1)\ln t$）。</p>
+
+<p><b>本考点作为次考点出现的另两道题。</b><span class="qref" data-q="2017-4">2017 年第 4 题</span>（主考点 int.app）：两条速度曲线之间的阴影面积就是两人路程之差，这是定积分物理意义的直接翻译，本篇"几何意义与物理意义"一节已经说明了列式 $d(t)=10+\displaystyle\int_0^t[v_1(s)-v_2(s)]\,\mathrm{d}s$ 的道理，之后只是按图累加三块面积（答案 $t_0=25$，选 C）。<span class="qref" data-q="2019-18">2019 年第 18 题</span>（主考点 int.defcalc）：证 $a_n=\displaystyle\int_0^1x^n\sqrt{1-x^2}\,\mathrm{d}x$ 单调递减时，由 $a_n-a_{n+1}=\displaystyle\int_0^1x^n(1-x)\sqrt{1-x^2}\,\mathrm{d}x$，被积函数连续、非负、在 $(0,1)$ 内为正、不恒为零，用本篇比较性质的<b>严格形式</b>得 $a_n>a_{n+1}$——只写 $x^{n+1}\le x^n$ 推出 $a_{n+1}\le a_n$ 是不够的；递推式与比值极限部分见 int.defcalc 的精讲。</p>`
+      },
+      {
+        kind: 'example', title: '更早年份的代表性真题',
+        html: R`<p>近十年直接考本考点的题只有三道选择题，而本考点真正"有分量"的考法——几何意义比大小、积分中值定理接罗尔定理、区间可加性作差、夹逼加黎曼和——都在更早的年份出现过。下面选四道逐题讲透，它们代表了四种不同的设问方式。</p>
+
+<p><b>真题 5</b>　<span class="qref" data-q="1997-2-2">1997 年二(2)</span>（选择，3 分）</p>
+<blockquote><p>设在区间 $[a,b]$ 上 $f(x)>0$，$f'(x)<0$，$f''(x)>0$．令 $S_1=\displaystyle\int_a^b f(x)\,\mathrm{d}x$，$S_2=f(b)(b-a)$，$S_3=\dfrac12[f(a)+f(b)](b-a)$，则</p>
+<p>(A) $S_1<S_2<S_3$　(B) $S_2<S_1<S_3$　(C) $S_3<S_1<S_2$　(D) $S_2<S_3<S_1$</p></blockquote>
+<p><b>这题考什么：</b>定积分的几何意义 + 比较性质 + 单调性与凹凸性的图像含义。</p>
+<p><b>从题面看到什么：</b>三个量都是面积：$S_1$ 是曲边梯形，$S_2$ 是以 $f(b)$ 为高的矩形，$S_3$ 是以 $f(a),f(b)$ 为两底、$b-a$ 为高的梯形（它的斜边是连接 $(a,f(a))$ 与 $(b,f(b))$ 的弦）。$f'<0$ 说明曲线下降，$f(b)$ 是最小值，矩形整个在曲线下方；$f''>0$ 说明曲线"向上弯"（凹），曲线在弦的<b>下方</b>，曲边梯形装在梯形里。画一张图答案就出来了，严格论证就是把"下方"写成逐点不等式再用比较性质。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>$S_2<S_1$：$f'(x)<0$ ⇒ $f$ 严格递减 ⇒ $x\in[a,b)$ 时 $f(x)>f(b)$。被积函数连续且不恒等于常数 $f(b)$，由比较性质的严格形式 $S_1=\displaystyle\int_a^bf(x)\,\mathrm{d}x>\int_a^bf(b)\,\mathrm{d}x=f(b)(b-a)=S_2$。</li>
+<li>$S_1<S_3$：弦所在直线 $L(x)=f(a)+\dfrac{f(b)-f(a)}{b-a}(x-a)$。令 $g(x)=L(x)-f(x)$，则 $g(a)=g(b)=0$，$g''=-f''<0$。由罗尔定理存在 $\xi\in(a,b)$ 使 $g'(\xi)=0$；$g'$ 严格递减，故 $(a,\xi)$ 上 $g'>0$、$(\xi,b)$ 上 $g'<0$，于是 $g$ 先增后减而两端为 $0$，在 $(a,b)$ 内 $g>0$，即 $f(x)<L(x)$。积分：$S_1<\displaystyle\int_a^bL(x)\,\mathrm{d}x=\dfrac12[f(a)+f(b)](b-a)=S_3$（直线下的面积就是梯形面积，也可直接积分验证）。</li>
+<li>综合：$S_2<S_1<S_3$。</li>
+</ol>
+<p><b>答案：</b>(B)。</p>
+<p><b>这道题告诉我们：</b>"积分与矩形、梯形面积比大小"，先画图：$f'$ 的符号管矩形（曲线在水平线 $y=f(b)$ 的哪一侧），$f''$ 的符号管梯形（曲线在弦的哪一侧）。选择题还可以拿满足条件的具体函数（如 $\mathrm{e}^{-x}$ 在 $[0,1]$ 上：$S_1\approx0.632$，$S_2\approx0.368$，$S_3\approx0.684$）快速验证。</p>
+
+<p><b>真题 6</b>　<span class="qref" data-q="1991-6">1991 年第六题</span>（解答，7 分）</p>
+<blockquote><p>设函数 $f(x)$ 在 $[0,1]$ 上连续，在 $(0,1)$ 内可导，且 $3\displaystyle\int_{\frac23}^1f(x)\,\mathrm{d}x=f(0)$，证明：在 $(0,1)$ 内存在一点 $c$，使得 $f'(c)=0$.</p></blockquote>
+<p><b>这题考什么：</b>积分中值定理与罗尔定理的联用——用积分中值定理把"积分"变成"某点的函数值"，制造出罗尔定理需要的两个相等的函数值。</p>
+<p><b>从题面看到什么：</b>要证 $f'(c)=0$，首选罗尔定理，需要两个点函数值相等。条件里只有一个函数值 $f(0)$ 和一个积分，于是要把积分也变成函数值。积分区间 $\left[\dfrac23,1\right]$ 长 $\dfrac13$，而系数恰是 $3=\dfrac{1}{1/3}$——<b>系数是区间长度的倒数</b>，这是积分中值定理的"明示"：$3\displaystyle\int_{2/3}^1f\,\mathrm{d}x=\dfrac{1}{1-2/3}\int_{2/3}^1f\,\mathrm{d}x$ 正是 $f$ 在 $\left[\dfrac23,1\right]$ 上的平均值。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>积分中值定理：$f$ 在 $\left[\dfrac23,1\right]$ 上连续，存在 $\xi\in\left[\dfrac23,1\right]$，使 $\displaystyle\int_{2/3}^1f(x)\,\mathrm{d}x=f(\xi)\left(1-\dfrac23\right)=\dfrac13f(\xi)$，即 $3\displaystyle\int_{2/3}^1f(x)\,\mathrm{d}x=f(\xi)$。</li>
+<li>结合条件：$f(\xi)=f(0)$。</li>
+<li>检查罗尔定理的条件：$\xi\ge\dfrac23>0$，$[0,\xi]$ 是长度为正的区间且 $[0,\xi]\subset[0,1]$；$f$ 在 $[0,\xi]$ 上连续，在 $(0,\xi)$ 内可导，$f(0)=f(\xi)$。</li>
+<li>由罗尔定理，存在 $c\in(0,\xi)\subset(0,1)$，使 $f'(c)=0$。证毕。</li>
+</ol>
+<p><b>答案：</b>证明如上（关键是 $f(\xi)=f(0)$，$\xi\in\left[\dfrac23,1\right]$）。</p>
+<p><b>这道题告诉我们：</b>看到"$\dfrac{1}{b-a}\displaystyle\int_a^bf$"或"积分前的系数恰是区间长度的倒数"，就用积分中值定理把它换成 $f(\xi)$；之后往往接罗尔定理（证 $f'(c)=0$）或介值定理。写的时候三件事别漏：$\xi$ 所在的闭区间、罗尔定理的区间非退化（这里 $\xi>0$）、结论落在要求的开区间内。顺便说一句，这题 $\xi=1$ 也无妨——罗尔定理只要求端点连续，不要求端点可导；积分中值定理"$\xi$ 可取在开区间内"的加强形式，要等到 $\xi$ 必须避开积分区间端点时才派上用场（见积分中值定理一节的注）。</p>
+
+<p><b>真题 7</b>　<span class="qref" data-q="2012-4">2012 年第 4 题</span>（选择，4 分）</p>
+<blockquote><p>设 $I_{k}=\displaystyle\int_{0}^{k\pi}\mathrm{e}^{x^{2}}\sin x\,\mathrm{d}x\ (k=1,2,3)$，则有（　　）.</p>
+<p>(A) $I_{1}<I_{2}<I_{3}$　(B) $I_{3}<I_{2}<I_{1}$　(C) $I_{2}<I_{3}<I_{1}$　(D) $I_{2}<I_{1}<I_{3}$</p></blockquote>
+<p><b>这题考什么：</b>区间可加性（作差）+ 保号性 + 换元搬区间。被积函数 $\mathrm{e}^{x^2}\sin x$ 没有初等原函数，三个积分都算不出来，考的是"不算也能比"。</p>
+<p><b>从题面看到什么：</b>三个积分的<b>区间不同</b>（$[0,\pi]$、$[0,2\pi]$、$[0,3\pi]$），不能直接比被积函数；但它们是同一个函数在"套着"的区间上的积分，作差后由区间可加性变成一段新区间上的积分，再看符号。图像：$\sin x$ 正负交替，$\mathrm{e}^{x^2}$ 是越来越大的正因子，所以曲线在 $[0,\pi]$ 上方、$[\pi,2\pi]$ 下方、$[2\pi,3\pi]$ 上方，三块面积一块比一块大。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>$I_2<I_1$：$I_2-I_1=\displaystyle\int_\pi^{2\pi}\mathrm{e}^{x^2}\sin x\,\mathrm{d}x$（区间可加性）。在 $(\pi,2\pi)$ 内 $\sin x<0$、$\mathrm{e}^{x^2}>0$，被积函数连续、非正且不恒为零，由保号性的严格形式，$I_2-I_1<0$。</li>
+<li>$I_3>I_2$：$I_3-I_2=\displaystyle\int_{2\pi}^{3\pi}\mathrm{e}^{x^2}\sin x\,\mathrm{d}x>0$，因为 $(2\pi,3\pi)$ 内 $\sin x>0$。至此排除 (A)、(B)，剩下 (C)、(D) 的差别在 $I_1$ 与 $I_3$ 谁大。</li>
+<li>$I_3>I_1$（关键）：$I_3-I_1=\displaystyle\int_\pi^{2\pi}\mathrm{e}^{x^2}\sin x\,\mathrm{d}x+\int_{2\pi}^{3\pi}\mathrm{e}^{x^2}\sin x\,\mathrm{d}x$，一负一正，必须比较大小。把第二段平移到第一段的区间上：令 $x=t+\pi$，$\sin(t+\pi)=-\sin t$，得 $\displaystyle\int_{2\pi}^{3\pi}\mathrm{e}^{x^2}\sin x\,\mathrm{d}x=-\int_\pi^{2\pi}\mathrm{e}^{(t+\pi)^2}\sin t\,\mathrm{d}t$（积分变量换回 $x$ 不影响值）。定积分的换元法到 int.defcalc 才系统讲，但这里只是把区间整体平移 $\pi$，直接用定义就能看出：把 $[2\pi,3\pi]$ 的每个分点和取点都减去 $\pi$，就得到 $[\pi,2\pi]$ 的一个分法和取法，小区间长度不变，两边的积分和逐项相等，极限自然相等。于是
+$$I_3-I_1=\int_\pi^{2\pi}\Big[\mathrm{e}^{x^2}-\mathrm{e}^{(x+\pi)^2}\Big]\sin x\,\mathrm{d}x .$$
+在 $(\pi,2\pi)$ 内，方括号 $<0$（$x^2<(x+\pi)^2$），$\sin x<0$，乘积 $>0$，被积函数连续、正，所以 $I_3-I_1>0$。</li>
+<li>结论：$I_2<I_1<I_3$。</li>
+</ol>
+<p><b>答案：</b>(D)。</p>
+<p><b>这道题告诉我们：</b>不同区间上的同一函数比积分，作差 ⇒ 区间可加性 ⇒ 看符号；若差中有正有负，就用换元把各块搬到同一区间上<b>逐点</b>比较。"振荡因子 $\times$ 单调放大因子"的积分，先画面积块示意图，正负交替、块越来越大，答案 10 秒内可猜出，再用上面的步骤落实。</p>
+
+<p><b>真题 8</b>　<span class="qref" data-q="1998-7">1998 年第七题</span>（解答，6 分）</p>
+<blockquote><p>求 $\displaystyle\lim_{n\to\infty}\left(\frac{\sin\frac{\pi}{n}}{n+1}+\frac{\sin\frac{2\pi}{n}}{n+\frac12}+\cdots+\frac{\sin\pi}{n+\frac1n}\right)$.</p></blockquote>
+<p><b>这题考什么：</b>夹逼准则 + 定积分定义——本篇例 2 那种"权重不整齐"的黎曼和。</p>
+<p><b>从题面看到什么：</b>第 $i$ 项是 $\dfrac{\sin\frac{i\pi}{n}}{n+\frac1i}$。若分母都是 $n$，和式就是 $\dfrac1n\displaystyle\sum_{i=1}^{n}\sin\frac{i\pi}{n}$，标准黎曼和；分母里的 $\dfrac1i\in(0,1]$ 只是一个在 $n$ 与 $n+1$ 之间晃动的"小尾巴"，用夹逼把它统一掉。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>记括号内的和为 $x_n=\displaystyle\sum_{i=1}^{n}\frac{\sin\frac{i\pi}{n}}{n+\frac1i}$。放缩：$1\le i\le n$ 时 $\sin\dfrac{i\pi}{n}\ge0$（角在 $[0,\pi]$ 内，这保证放缩不改变不等号方向），且 $n<n+\dfrac1i\le n+1$，所以
+$$\frac{1}{n+1}\sum_{i=1}^{n}\sin\frac{i\pi}{n}\ \le\ x_n\ \le\ \frac1n\sum_{i=1}^{n}\sin\frac{i\pi}{n}.$$</li>
+<li>右端是黎曼和：$f(x)=\sin\pi x$ 在 $[0,1]$ 上连续，$\dfrac1n\displaystyle\sum_{i=1}^{n}\sin\left(\pi\cdot\frac in\right)\to\int_0^1\sin\pi x\,\mathrm{d}x=\left[-\frac{\cos\pi x}{\pi}\right]_0^1=\frac2\pi$。</li>
+<li>左端 $=\dfrac{n}{n+1}\cdot\dfrac1n\displaystyle\sum_{i=1}^{n}\sin\frac{i\pi}{n}\to1\cdot\dfrac2\pi=\dfrac2\pi$。</li>
+<li>夹逼准则：$\lim\limits_{n\to\infty}x_n=\dfrac2\pi$。</li>
+</ol>
+<p><b>答案：</b>$\dfrac{2}{\pi}$。</p>
+<p><b>这道题告诉我们：</b>和式不是标准黎曼和时，不要硬套，也不要"逐项等价替换"（不严格，解答题要扣分）；先放缩成两个标准黎曼和再夹逼。另外注意换元的对应：若令分点为 $\dfrac{i\pi}{n}$（区间 $[0,\pi]$），步长是 $\dfrac\pi n$，$\dfrac1n=\dfrac1\pi\cdot\dfrac\pi n$，应得 $\dfrac1\pi\displaystyle\int_0^\pi\sin x\,\mathrm{d}x=\dfrac2\pi$，漏掉 $\dfrac1\pi$ 会算成 $2$。</p>`
+      },
+      {
+        kind: 'pitfall', title: '常见误区',
+        html: R`<ul>
+<li><b>把 "$n\to\infty$" 当成定义里的 "$\lambda\to0$"。</b>定义要求最长小区间的长度趋于零，分点个数趋于无穷保证不了这一点；等分时 $\lambda=\dfrac{b-a}{n}$，两者是一回事。黎曼和型极限题总是等分的，所以写 $n\to\infty$ 没问题，但概念题问"分点个数趋于无穷积分和是否趋于积分"，答案是否。</li>
+<li><b>以为"某一种分法、取法的积分和有极限"就是可积。</b>狄利克雷函数 $n$ 等分、取右端点 $\dfrac kn$（全是有理数）的积分和恒为 $1$，极限存在，但它不可积。可积要求对一切分法、一切取法极限相同；反过来，用等分算积分值必须以"已知可积"为前提，解答题里要写"$g$ 连续故可积"。</li>
+<li><b>认错积分和的三要素。</b>权重不是 $\Delta x$（<span class="qref" data-q="2021-4">2021 年第 4 题</span>的 A、C、D）、区间认错（如做 <span class="qref" data-q="2017-16">2017 年第 16 题</span>时把 $\ln\left(1+\dfrac kn\right)$ 认成 $[1,2]$ 上的 $\ln t$，却忘了把另一个因子 $\dfrac kn$ 相应改写成 $t-1$）、项数与分段数不一致。口诀：<b>项数 $\times$ 权重 $=$ 区间长度；提出 $\dfrac1n$ 后只剩 $\dfrac kn$</b>。</li>
+<li><b>对"项数随 $n$ 增加的和"逐项取极限或逐项等价替换。</b>$\displaystyle\sum_{k=1}^{n}\frac1{n+k}$ 的每一项都趋于 $0$，和却趋于 $\ln2$；逐项把 $\dfrac1{n+k}$ 换成 $\dfrac1n$ 会得到错误的 $1$。处理"小尾巴"要用夹逼（例 2、<span class="qref" data-q="1998-7">1998 年第七题</span>）。</li>
+<li><b>面积与积分混为一谈。</b>积分是有向面积，曲线在 $x$ 轴下方的部分贡献负值；求面积要积 $|f|$ 或分段。此外积分上限小于下限时整体再变一次号（<span class="qref" data-q="2007-3">2007 年第 3 题</span>的 $F(-2)$）。</li>
+<li><b>在不同区间上用比较性质，或忘了 $a<b$ 的前提。</b>比较性质只对同一区间成立；区间不同先作差（区间可加性）或换元搬到同一区间（<span class="qref" data-q="2012-4">2012 年第 4 题</span>）。$a>b$ 时不等号反向。</li>
+<li><b>严格不等号没有理由。</b>由 $f\le g$ 只能得 $\displaystyle\int f\le\int g$；要写 "$<$"，必须说明"连续且不恒等"（<span class="qref" data-q="2018-4">2018 年第 4 题</span>、<span class="qref" data-q="2019-18">2019 年第 18 题</span>都需要这句话）。不连续时严格形式可能失效：在一点为正、其余为零的函数积分为 $0$。</li>
+<li><b>$\displaystyle\int fg=\int f\cdot\int g$、$\left|\displaystyle\int f\right|=\displaystyle\int|f|$。</b>前者根本不成立（$\displaystyle\int_0^1x^2\,\mathrm{d}x=\dfrac13\ne\dfrac14$），后者只有 "$\le$"（$f$ 变号时严格小于）。</li>
+<li><b>对不连续函数用积分中值定理，或把 $\xi$ 当常数。</b>积分中值定理要求连续（反例：取 $0,1$ 两值的阶梯函数）；$\xi$ 依赖于区间，区间变化时 $\xi$ 跟着变，极限题里只能用"$\xi$ 落在哪个区间里"这条信息（例 5）。另外闭区间形式与开区间形式都对，证明题需要 $\xi$ 不在端点时要引用开区间形式。</li>
+<li><b>把上下限都是常数的定积分当成 $x$ 的函数。</b>$\displaystyle\int_0^1f(t)\,\mathrm{d}t$ 是常数，对 $x$ 求导为零；解 $f(x)=x+2\displaystyle\int_0^1f(t)\,\mathrm{d}t$ 这类方程要"设常数为 $A$，两边积分"（<span class="qref" data-q="1989-1-2">1989 年一(2)</span>），而不是求导。含 $x$ 的上限才是变限积分（int.ftc）。</li>
+<li><b>可积与有原函数混淆。</b>$\operatorname{sgn}x$ 可积但无原函数；$\left(x^2\sin\dfrac1{x^2}\right)'$ 有原函数但无界、不可积。两者互不蕴含。</li>
+</ul>`
+      },
+      {
+        kind: 'method', title: '题型识别与解题方法',
+        html: R`<p><b>看到……想到……</b></p>
+<ul>
+<li>看到 $\lim\limits_{n\to\infty}\displaystyle\sum_{k=1}^{n}(\cdots)$，通项里 $k,n$ 以 $\dfrac kn$ 成对出现 → <b>黎曼和</b>：提出 $\dfrac1n$，写成 $\dfrac1n\displaystyle\sum g\!\left(\dfrac kn\right)\to\int_0^1g(x)\,\mathrm{d}x$；一般区间用 $\dfrac{b-a}{n}\displaystyle\sum f\!\left(a+\dfrac{k(b-a)}{n}\right)\to\int_a^bf$。自查：项数 $\times$ 权重 $=$ 区间长度（<span class="qref" data-q="2021-4">2021 年第 4 题</span>、<span class="qref" data-q="2017-16">2017 年第 16 题</span>）。二重和 $\displaystyle\sum_i\sum_j$ 则化为二重积分（<span class="qref" data-q="2010-4">2010 年第 4 题</span>，见 mint.double）。</li>
+<li>看到和式"差一点"是黎曼和（分母 $n+\dfrac1i$、$n^2+k$ 之类的小尾巴）→ <b>夹逼</b>：放缩成两个标准黎曼和（例 2、<span class="qref" data-q="1998-7">1998 年第七题</span>）；若尾巴与主项同阶（如 $n+k$），不能放缩掉，要提出 $n$ 写成 $\dfrac kn$ 的函数。</li>
+<li>看到"比较几个定积分的大小"且积分算不出来 → 同区间：<b>比较被积函数</b>，结构相同只比不同的部分，不好比就找中间量做桥（<span class="qref" data-q="2018-4">2018 年第 4 题</span>、<span class="qref" data-q="2022-4">2022 年第 4 题</span>、<span class="qref" data-q="2011-4">2011 年第 4 题</span>）；不同区间：<b>作差用区间可加性</b>，差中有正有负就换元搬到同一区间（<span class="qref" data-q="2012-4">2012 年第 4 题</span>）；能算的先算（<span class="qref" data-q="1994-2-1">1994 年二(1)</span>用奇偶性）。常用尺子：$1$、$x$、$x^2$；常用不等式：$\mathrm{e}^x\ge1+x$，$\dfrac{x}{1+x}<\ln(1+x)<x$（$x>0$），$\sin x<x<\tan x$（$0<x<\dfrac\pi2$），记不清就"作差、求导、看单调"。</li>
+<li>看到积分与"矩形 $f(\cdot)(b-a)$、梯形 $\dfrac12[f(a)+f(b)](b-a)$"比大小 → <b>画图</b>：$f'$ 的符号定曲线在水平线的哪一侧，$f''$ 的符号定曲线在弦的哪一侧（<span class="qref" data-q="1997-2-2">1997 年二(2)</span>）。</li>
+<li>看到被积函数的图形是圆弧、直线段（$\sqrt{r^2-x^2}$、$\sqrt{2x-x^2}$、半圆拼图）→ <b>几何意义</b>直接算（<span class="qref" data-q="2000-1-1">2000 年一(1)</span>、<span class="qref" data-q="2012-10">2012 年第 10 题</span>、<span class="qref" data-q="2007-3">2007 年第 3 题</span>）；上限小于下限先翻转。</li>
+<li>看到"估计积分的范围"或"证明 $A<\displaystyle\int<B$" → <b>估值定理</b>：求被积函数在区间上的最值；不够紧就切开区间分段估或换更贴近的夹逼函数（例 4）。</li>
+<li>看到 $\lim\displaystyle\int_{a_n}^{b_n}(\cdots)$（区间长度固定或趋于零、被积函数在区间上"很小"或"几乎是常数"）→ <b>估值定理 / 绝对值不等式 / 积分中值定理</b>把积分换成 $f(\xi_n)\cdot$ 长度，再看极限；记得 $\xi_n$ 只能用"它在区间里"（例 5）。</li>
+<li>看到条件里有 $\dfrac{1}{b-a}\displaystyle\int_a^bf$ 或"积分前的系数是区间长度的倒数"、要证 $f'(c)=0$ 或 $f(\xi)=$ 某值 → <b>积分中值定理</b>换出 $f(\xi)$，再接罗尔定理 / 介值定理（<span class="qref" data-q="1991-6">1991 年第六题</span>）。要证 $F'(x)=f(x)$ 型的"用定义证明"题，也是积分中值定理 + 连续性（<span class="qref" data-q="2008-18">2008 年第 18 题</span>）。</li>
+<li>看到 $f(x)$ 的表达式里含 $\displaystyle\int_0^1f(t)\,\mathrm{d}t$ 这种常数积分 → 设为 $A$，两边积分解出 $A$（<span class="qref" data-q="1989-1-2">1989 年一(2)</span>）；看到 $t\displaystyle\int_0^{s/t}f(tx)\,\mathrm{d}x$ 问依赖于谁 → 令 $u=tx$ 换元得 $\displaystyle\int_0^sf(u)\,\mathrm{d}u$：积分变量 $x$ 只是"哑变量"，$t$ 也被约掉，结果只依赖于 $s$（<span class="qref" data-q="1987-5-2">1987 年五(2)</span>）。</li>
+<li>看到概念判断题（可积、有界、连续、有原函数之间的关系）→ 记住蕴含链：<b>连续 ⇒ 可积 ⇒ 有界</b>，每个箭头都不可逆（取整函数、狄利克雷函数）；可积与有原函数互不蕴含（$\operatorname{sgn}x$、$\left(x^2\sin\dfrac1{x^2}\right)'$）。</li>
+</ul>
+<p><b>口诀：</b>"分割取点求和极限，$\lambda$ 趋零任意分；提出 $\frac1n$ 看 $\frac kn$，项数乘权等区间；同区间比被积函数，异区间作差看符号；积分前头系数倒，中值定理换 $f(\xi)$。"</p>`
+      },
+      {
+        kind: 'exam', title: '考研怎么考',
+        html: R`<p>定积分的概念与性质在数学一里是一个<b>"小题直接考、大题处处用"</b>的考点：单独命题几乎只出选择题，但黎曼和、比较性质、积分中值定理作为工具散布在数列极限、定积分计算和证明题里。根据题库中 2016–2025 年的真题，概括如下：</p>
+<ul>
+<li><b>题型与分值。</b>近十年以本考点为主考点的真题共 3 道、14 分，全是选择题：<span class="qref" data-q="2018-4">2018 年第 4 题</span>（4 分，比较三个积分的大小）、<span class="qref" data-q="2021-4">2021 年第 4 题</span>（5 分，辨认积分和）、<span class="qref" data-q="2022-4">2022 年第 4 题</span>（5 分，比较三个积分的大小）。另有 3 道把本考点作为次要考点：<span class="qref" data-q="2017-4">2017 年第 4 题</span>（4 分，定积分的物理意义，主考点 int.app）、<span class="qref" data-q="2017-16">2017 年第 16 题</span>（10 分，黎曼和化定积分，主考点 lim.seqcalc）、<span class="qref" data-q="2019-18">2019 年第 18 题</span>（10 分，比较性质证积分数列单调，主考点 int.defcalc）。这 6 道题都已在上面讲过（其中 <span class="qref" data-q="2017-4">2017 年第 4 题</span>与 <span class="qref" data-q="2019-18">2019 年第 18 题</span>只讲了与本考点有关的部分，完整精讲见各自的主考点篇目）。2016、2020、2023、2024、2025 年没有直接考本考点的题。</li>
+<li><b>设问方式。</b>主要有三种：(1) <b>辨认或构造积分和</b>——给四个和式问哪个等于 $\displaystyle\int_0^1f$（<span class="qref" data-q="2021-4">2021 年第 4 题</span>），或给 $n$ 项和求极限（<span class="qref" data-q="2017-16">2017 年第 16 题</span>；更早的 <span class="qref" data-q="1998-7">1998 年第七题</span>要先夹逼，<span class="qref" data-q="2010-4">2010 年第 4 题</span>是二重和）；(2) <b>不算而比大小</b>——同区间比被积函数（<span class="qref" data-q="2018-4">2018 年第 4 题</span>、<span class="qref" data-q="2022-4">2022 年第 4 题</span>、<span class="qref" data-q="2011-4">2011 年第 4 题</span>），不同区间作差（<span class="qref" data-q="2012-4">2012 年第 4 题</span>），或借助几何意义与凹凸性（<span class="qref" data-q="1997-2-2">1997 年二(2)</span>）；(3) <b>几何、物理意义读图</b>（<span class="qref" data-q="2017-4">2017 年第 4 题</span>、<span class="qref" data-q="2007-3">2007 年第 3 题</span>、<span class="qref" data-q="2009-3">2009 年第 3 题</span>）。</li>
+<li><b>常见综合。</b>与数列极限综合（黎曼和 + 夹逼：<span class="qref" data-q="2017-16">2017 年第 16 题</span>、<span class="qref" data-q="1998-7">1998 年第七题</span>）；与不等式证明综合（比较被积函数前先用单调性证不等式：<span class="qref" data-q="2022-4">2022 年第 4 题</span>）；与定积分计算综合（比较性质证单调、分部积分找递推、再夹逼：<span class="qref" data-q="2019-18">2019 年第 18 题</span>）；与微分中值定理综合（积分中值定理 + 罗尔定理：<span class="qref" data-q="1991-6">1991 年第六题</span>）；与变限积分综合（用积分中值定理证明 $F'=f$：<span class="qref" data-q="2008-18">2008 年第 18 题</span>；"上下限为常数的定积分是常数"：<span class="qref" data-q="1989-1-2">1989 年一(2)</span>；"定积分的值与积分变量无关"：<span class="qref" data-q="1987-5-2">1987 年五(2)</span>）。</li>
+<li><b>近几年的变化。</b>2018 年和 2022 年两道比大小题是同一模板的"升级"：2018 年用 $1$ 做尺子、一个常用不等式就够；2022 年要自己证两个不等式并找中间量，难度明显上升。2021 年则回到定义本身，考"中点取法 + 权重"这种概念细节。可以预期本考点仍以 4–5 分的选择题出现，重点是"比大小"和"辨认积分和"两类；积分中值定理近十年没有单独出题，但它是 int.ftc、int.proof 里证明题的常用工具，不能因为"没直接考"就不会证。</li>
+<li><b>备考建议。</b>(1) 定义要能复述并说出每个条件的作用（任意分法、任意取点、$\lambda\to0$）；(2) 比大小题练三招：找尺子、找桥梁、作差搬区间；(3) 积分中值定理会证、会用开区间形式；(4) 黎曼和型极限会写规范的三句话；(5) 概念辨析记住"连续 ⇒ 可积 ⇒ 有界"及其反例。</li>
+</ul>`
+      },
+      {
+        kind: 'check', title: '自测',
+        items: [
+          { q: R`<p>判断对错并说明理由：设 $f$ 在 $[0,1]$ 上有定义，若把 $[0,1]$ $n$ 等分、取右端点的积分和 $\dfrac1n\displaystyle\sum_{k=1}^{n}f\!\left(\dfrac kn\right)$ 当 $n\to\infty$ 时极限存在，则 $f$ 在 $[0,1]$ 上可积。</p>`, a: R`<p>错。可积要求对<b>一切</b>分法和<b>一切</b>取法积分和的极限都存在且相同。反例：狄利克雷函数 $D(x)$，右端点 $\dfrac kn$ 全是有理数，$\dfrac1n\displaystyle\sum D\!\left(\dfrac kn\right)=1$ 恒成立，极限为 $1$；但取无理点时积分和为 $0$，所以 $D$ 不可积。正确的逻辑是反过来的：先知道可积（例如 $f$ 连续），才能用等分、取右端点的和式去算积分值。</p>` },
+          { q: R`<p>下列说法中正确的是：</p>`, options: [R`<p>$f$ 在 $[a,b]$ 上有界，则 $f$ 在 $[a,b]$ 上可积</p>`, R`<p>$f$ 在 $[a,b]$ 上可积，则 $f$ 在 $[a,b]$ 上有界</p>`, R`<p>$f$ 在 $[a,b]$ 上有一个间断点，则 $f$ 在 $[a,b]$ 上不可积</p>`, R`<p>$f$ 在 $[a,b]$ 上可积，则 $f$ 在 $[a,b]$ 上有原函数</p>`], correct: 1, explain: R`<p>B 正确（可积的必要条件）。A 错：狄利克雷函数有界不可积。C 错：取整函数 $[x]$、符号函数 $\operatorname{sgn}x$ 都有间断点但有界、间断点有限个，可积。D 错：$\operatorname{sgn}x$ 在 $[-1,1]$ 上可积但无原函数（导函数不能有跳跃间断点）。</p>` },
+          { q: R`<p>$\lim\limits_{n\to\infty}\dfrac1n\displaystyle\sum_{k=1}^{n}\ln\left(1+\frac kn\right)=$</p>`, options: [R`<p>$2\ln2-1$</p>`, R`<p>$\ln2$</p>`, R`<p>$1$</p>`, R`<p>$\ln2-\dfrac12$</p>`], correct: 0, explain: R`<p>这是 $g(x)=\ln(1+x)$ 在 $[0,1]$ 上 $n$ 等分、取右端点的积分和，$g$ 连续故可积，极限 $=\displaystyle\int_0^1\ln(1+x)\,\mathrm{d}x=\big[(1+x)\ln(1+x)-x\big]_0^1=2\ln2-1\approx0.386$。选项 B 是把 $\ln(1+x)$ 误当成 $\dfrac1{1+x}$ 的结果。C、D 是计算错误，也能用估值排除：被积函数在 $[0,1]$ 上介于 $0$ 与 $\ln2\approx0.69$ 之间，积分不可能等于 $1$，排除 C；但 D 的值 $\ln2-\dfrac12\approx0.19$ 落在 $(0,\ln2)$ 内，这个粗估排除不了它，要估得再紧一点：$\ln(1+x)$ 的二阶导数 $-\dfrac{1}{(1+x)^2}<0$，图形是凸的，位于连接 $(0,0)$ 与 $(1,\ln2)$ 的弦 $y=x\ln2$ 的上方，所以积分 $>\displaystyle\int_0^1x\ln2\,\mathrm{d}x=\dfrac{\ln2}{2}\approx0.35$，D 太小。</p>` },
+          { q: R`<p>不计算积分，比较 $A=\displaystyle\int_0^1\sin x\,\mathrm{d}x$，$B=\displaystyle\int_0^1x\,\mathrm{d}x$，$C=\displaystyle\int_0^1\tan x\,\mathrm{d}x$ 的大小，并说明每一步的根据。</p>`, a: R`<p>当 $0<x\le1<\dfrac\pi2$ 时 $\sin x<x<\tan x$（$\sin x<x$ 由 $\varphi(x)=x-\sin x$，$\varphi(0)=0$，$\varphi'=1-\cos x>0$；$x<\tan x$ 由 $\psi(x)=\tan x-x$，$\psi(0)=0$，$\psi'=\sec^2x-1>0$）。三个被积函数在 $[0,1]$ 上连续且互不恒等，由比较性质的严格形式 $A<B<C$。（数值：$A=1-\cos1\approx0.460$，$B=0.5$，$C=-\ln\cos1\approx0.616$。）要点：同区间 ⇒ 比被积函数；严格不等号要交代"连续、不恒等"。</p>` },
+          { q: R`<p>证明：$1<\displaystyle\int_0^1\mathrm{e}^{x^2}\,\mathrm{d}x<\mathrm{e}$。</p>`, a: R`<p>在 $[0,1]$ 上 $0\le x^2\le1$，故 $1\le\mathrm{e}^{x^2}\le\mathrm{e}$，由估值定理 $1\cdot(1-0)\le\displaystyle\int_0^1\mathrm{e}^{x^2}\,\mathrm{d}x\le\mathrm{e}\cdot(1-0)$；又 $\mathrm{e}^{x^2}$ 连续且不是常数，两个不等号都严格。（真值约 $1.463$。想更紧可以在 $\left[0,\frac12\right]$、$\left[\frac12,1\right]$ 上分段估计，或用 $\mathrm{e}^{x^2}\le1+(\mathrm{e}-1)x^2$ 这类更贴近的函数去夹——后者来自 $\mathrm{e}^u$ 的凸性。）</p>` },
+          { q: R`<p>设 $f$ 连续，求 $\lim\limits_{x\to0}\dfrac1x\displaystyle\int_0^xf(t)\cos t\,\mathrm{d}t$。</p>`, a: R`<p>$f(t)\cos t$ 连续，由积分中值定理，存在 $\xi$ 介于 $0$ 与 $x$ 之间，使 $\displaystyle\int_0^xf(t)\cos t\,\mathrm{d}t=f(\xi)\cos\xi\cdot x$，于是原式 $=\lim\limits_{x\to0}f(\xi)\cos\xi$。$x\to0$ 时 $\xi$ 被夹在 $0$ 与 $x$ 之间，$\xi\to0$，由连续性极限为 $f(0)\cos0=f(0)$。（也可用推广的积分中值定理：$x$ 接近 $0$ 时 $\cos t>0$ 不变号，$\displaystyle\int_0^xf(t)\cos t\,\mathrm{d}t=f(\xi)\int_0^x\cos t\,\mathrm{d}t=f(\xi)\sin x$，再除以 $x$ 取极限。）注意 $x<0$ 时积分上限小于下限，中值定理照样成立，结果一样。</p>` },
+          { q: R`<p>判断对错并说明理由：(1) 若 $f$ 在 $[a,b]$ 上连续且 $\displaystyle\int_a^bf(x)\,\mathrm{d}x=0$，则 $f$ 在 $(a,b)$ 内至少有一个零点；(2) 把条件"连续"换成"可积"，结论仍成立。</p>`, a: R`<p>(1) 对。由积分中值定理（开区间形式），存在 $\xi\in(a,b)$ 使 $0=f(\xi)(b-a)$，故 $f(\xi)=0$。也可以这样想：若 $f$ 在 $(a,b)$ 内无零点，由连续性 $f$ 在 $(a,b)$ 内恒正或恒负，由保号性的严格形式积分不为零，矛盾。(2) 错。$f(x)=-1$（$-1\le x<0$），$f(x)=1$（$0\le x\le1$）可积，积分为 $0$，但 $f$ 不取 $0$。积分中值定理和严格保号性都需要连续。</p>` },
+          { q: R`<p>$\displaystyle\int_{-1}^{1}\left(x+\sqrt{1-x^2}\right)\mathrm{d}x=$</p>`, options: [R`<p>$\dfrac\pi2$</p>`, R`<p>$\pi$</p>`, R`<p>$0$</p>`, R`<p>$\dfrac\pi2+1$</p>`], correct: 0, explain: R`<p>由线性拆成两项：$\displaystyle\int_{-1}^1x\,\mathrm{d}x=0$（奇函数在对称区间上积分为零，几何上是两个全等三角形一正一负），$\displaystyle\int_{-1}^1\sqrt{1-x^2}\,\mathrm{d}x$ 是单位上半圆的面积 $\dfrac\pi2$。所以答案是 $\dfrac\pi2$。几何意义能直接给出答案的积分，不必找原函数。</p>` },
+          { q: R`<p>设 $f$ 连续且 $f(x)=x^2+2\displaystyle\int_0^1f(t)\,\mathrm{d}t$，求 $f(x)$。</p>`, a: R`<p>$\displaystyle\int_0^1f(t)\,\mathrm{d}t$ 上下限都是常数，是一个数，记为 $A$，则 $f(x)=x^2+2A$。两边在 $[0,1]$ 上积分（线性性质）：$A=\displaystyle\int_0^1x^2\,\mathrm{d}x+2A\int_0^1\mathrm{d}x=\dfrac13+2A$，解得 $A=-\dfrac13$，$f(x)=x^2-\dfrac23$。检验：$\displaystyle\int_0^1\left(t^2-\dfrac23\right)\mathrm{d}t=\dfrac13-\dfrac23=-\dfrac13$，吻合。若对原式两边求导只能得到 $f'(x)=2x$，常数的信息就丢了。</p>` }
+        ]
+      }
+    ]
+  };
+});
