@@ -77,14 +77,16 @@
     var h = '<div class="box box-thm">' + s.statement + '</div>';
     if (s.intuition) h += '<div class="intuition"><span class="lbl lbl-accent">直观理解</span>' + s.intuition + '</div>';
     if (s.steps && s.steps.length) {
+      // 「下一步」放在已展开的步骤下面，跟着证明往下走（放在上面会被新步骤顶出屏幕、躲到顶栏后面）
       h += '<div class="proof" data-next="0">' +
-        '<div class="proof-head"><span class="lbl">证明</span><span class="proof-ctl">' +
-        '<button type="button" class="btn btn-small" data-proof="next">先想一想，再看第 1 步</button>' +
-        '<button type="button" class="btn btn-small btn-quiet" data-proof="all">展开完整证明</button></span></div>' +
+        '<div class="proof-head"><span class="lbl">证明</span></div>' +
         '<ol class="steps">' + s.steps.map(function (st, j) {
           return '<li class="step mj-lazy" hidden><div class="step-s">' + st.s + '</div>' +
             (st.why ? '<button type="button" class="why-btn" data-why aria-expanded="false">为什么可以这样？</button><div class="step-why mj-lazy" hidden>' + st.why + '</div>' : '') + '</li>';
-        }).join('') + '</ol><p class="qed" hidden>证毕 ∎</p></div>';
+        }).join('') + '</ol><div class="proof-ctl">' +
+        '<button type="button" class="btn btn-small" data-proof="next">先想一想，再看第 1 步</button>' +
+        '<button type="button" class="btn btn-small btn-quiet" data-proof="all">展开完整证明</button></div>' +
+        '<p class="qed" hidden>证毕 ∎</p></div>';
     } else if (s.proof) {
       h += '<details class="proof-plain"><summary>证明</summary><div class="mj-lazy">' + s.proof + '</div></details>';
     } else if (s.noProof) {
@@ -152,7 +154,7 @@
       var idx = KY.kpOrder[id];
       var prev = all[idx - 1];
       var next = all[idx + 1];
-      var toc = '<aside class="toc"><div><p class="eyebrow">本篇</p><nav class="in-page" aria-label="本篇目录">' + L.sections.map(function (s, i) {
+      var toc = '<aside class="toc"><div class="toc-page"><p class="eyebrow">本篇</p><nav class="in-page" aria-label="本篇目录">' + L.sections.map(function (s, i) {
         return '<a href="#s-' + i + '" data-scroll="s-' + i + '"><span class="kind-dot kind-' + s.kind + '"></span><span>' + s.title + '</span></a>';
       }).join('') + (KY.problemsOfKp(id).length ? '<a href="#s-rel" data-scroll="s-rel"><span class="kind-dot"></span><span>这个考点的真题</span></a>' : '') + '</nav></div>' +
         '<div><p class="eyebrow">' + c.title + '</p><nav class="chs" aria-label="同章考点">' + all.filter(function (x) { return x.ch === k.ch; }).map(function (x) {
@@ -181,9 +183,21 @@
   };
 
   /* ── 交互：分步证明、自测、问 AI ── */
+  // 返回排版完成的 Promise（需要等公式排好再量位置时用）
   function revealEl(el) {
     el.hidden = false;
-    if (el.classList.contains('mj-lazy')) { el.classList.remove('mj-lazy'); KY.typeset(el); }
+    if (el.classList.contains('mj-lazy')) { el.classList.remove('mj-lazy'); return KY.typeset(el); }
+    return Promise.resolve();
+  }
+  // 把一步证明连同下面的按钮滚进顶栏下方的可见区域；一屏放不下时先保证这一步的开头看得见。
+  // （scrollIntoView 的 nearest 不管粘性顶栏：步骤被顶栏挡住时它认为已经可见）
+  function showStep(step, ctl) {
+    var head = document.querySelector('.top').getBoundingClientRect().bottom + 8;
+    var top = step.getBoundingClientRect().top;
+    var bottom = (ctl && !ctl.hidden ? ctl : step).getBoundingClientRect().bottom + 80; // 留出底部「目录」「问 AI」浮动按钮的位置
+    var dy = Math.max(0, bottom - window.innerHeight);
+    if (top - dy < head) dy = top - head;
+    if (Math.abs(dy) > 1) window.scrollBy({ top: dy, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }
   document.addEventListener('click', function (e) {
     var t = e.target;
@@ -194,13 +208,20 @@
       var n = +proof.dataset.next;
       if (pb.dataset.proof === 'all') n = steps.length;
       else n = Math.min(steps.length, n + 1);
-      for (var i = 0; i < n; i++) revealEl(steps[i]);
+      var typeset = Promise.resolve();
+      for (var i = 0; i < n; i++) typeset = revealEl(steps[i]);
       proof.dataset.next = n;
       var nextBtn = proof.querySelector('[data-proof="next"]');
       if (n >= steps.length) {
         proof.querySelector('.qed').hidden = false;
         proof.querySelector('.proof-ctl').hidden = true;
       } else nextBtn.textContent = '下一步（第 ' + (n + 1) + ' / ' + steps.length + ' 步）';
+      // 一步一步看时，等公式排好，把新出现的这一步（连同下面的按钮）滚到眼前
+      if (pb.dataset.proof === 'next') {
+        var step = steps[n - 1];
+        var ctl = proof.querySelector('.proof-ctl');
+        typeset.then(function () { showStep(step, ctl); });
+      }
       return;
     }
     var wb = t.closest('[data-why]');

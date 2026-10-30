@@ -48,12 +48,13 @@
   <div class="top-in">
     <a class="brand" href="#home" data-go="home">数一 · 高数<small>真题研习</small></a>
     <nav class="nav" aria-label="主导航">
+      <!-- 手机上隐藏 .nav-x，标签缩成两个字，6 个入口一屏放得下 -->
       <a href="#home" data-go="home" data-nav="home">总览</a>
-      <a href="#learn" data-go="learn" data-nav="learn">基础讲解</a>
-      <a href="#bank" data-go="bank" data-nav="bank">真题库</a>
-      <a href="#stats" data-go="stats" data-nav="stats">考点分析</a>
-      <a href="#practice" data-go="practice" data-nav="practice">随机刷题</a>
-      <a href="#wrong" data-go="wrong" data-nav="wrong">错题本 <span class="count" id="wrong-count" data-zero>0</span></a>
+      <a href="#learn" data-go="learn" data-nav="learn"><span><span class="nav-x">基础</span>讲解</span></a>
+      <a href="#bank" data-go="bank" data-nav="bank"><span>真题<span class="nav-x">库</span></span></a>
+      <a href="#stats" data-go="stats" data-nav="stats"><span>考点<span class="nav-x">分析</span></span></a>
+      <a href="#practice" data-go="practice" data-nav="practice"><span><span class="nav-x">随机</span>刷题</span></a>
+      <a href="#wrong" data-go="wrong" data-nav="wrong"><span>错题<span class="nav-x">本</span></span> <span class="count" id="wrong-count" data-zero>0</span></a>
     </nav>
     <span class="top-tools">
       <button type="button" class="theme-btn" id="search-btn" aria-label="搜索考点、讲解和真题（Ctrl+K）" title="搜索考点、讲解和真题（Ctrl+K）" aria-haspopup="dialog"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12.6 12.6 17 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>

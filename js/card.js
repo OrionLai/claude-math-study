@@ -22,7 +22,8 @@
   KY.card = function (p, o) {
     o = o || {};
     var st = KY.status(p.id);
-    var h = '<article class="q" id="q-' + p.id + '" data-id="' + p.id + '" data-st="' + st + '">';
+    // 不给卡片设 id="q-…"：它和单题页的地址 #q-… 同名，直接打开单题页时浏览器会跳到卡片、把标题滚出屏幕
+    var h = '<article class="q" data-id="' + p.id + '" data-st="' + st + '">';
     h += '<header class="q-meta">' +
       KY.link('y' + p.year, p.year, 'yr', ' title="查看 ' + p.year + ' 年全部高数题"') +
       '<span class="tp">' + KY.esc(p.no) + ' · ' + p.type + '题' + (p.score ? ' · ' + p.score + ' 分' : '') + '</span>' +

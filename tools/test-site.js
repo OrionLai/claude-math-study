@@ -317,6 +317,62 @@ async function run() {
     await page.context().close();
   });
 
+  await test('手机：导航入口都看得见、宽公式滑动提示、证明「下一步」跟着走、直接打开单题页', async () => {
+    for (const w of [390, 320]) {
+      const p = await newPage({ width: w, height: 760 });
+      await open(p, 'home');
+      await p.evaluate(() => { KY.setStatus('2019-9', 'bad'); });
+      const nav = await p.evaluate(() => {
+        const n = document.querySelector('.nav');
+        const out = Array.from(n.querySelectorAll('a')).filter((a) => { const r = a.getBoundingClientRect(); return r.left < 0 || r.right > innerWidth; });
+        return { over: n.scrollWidth - n.clientWidth, out: out.map((a) => a.textContent.replace(/\s+/g, '')) };
+      });
+      assert(nav.over <= 0 && !nav.out.length, `${w}px 宽时导航放不下：溢出 ${nav.over}px，看不全的入口：${nav.out.join('、')}`);
+      await p.context().close();
+    }
+    const page = await newPage(PHONE);
+    await page.emulateMedia({ reducedMotion: 'reduce' }); // 不用等平滑滚动
+    // 直接打开单题页：不会被锚点滚走
+    await open(page, 'q-2018-17');
+    assert(await page.evaluate(() => window.scrollY === 0), '直接打开单题页时被锚点滚走，标题不在屏幕上');
+    // 放不下的公式：右缘渐隐 + 「左右滑动」小字，滚到最右端去掉渐隐
+    const wide = await page.evaluate(() => {
+      const m = document.querySelector('#view .q-stem mjx-container.mjx-scroll');
+      if (!m) return null;
+      const cs = getComputedStyle(m);
+      return { hint: !!(m.nextElementSibling && m.nextElementSibling.matches('.mjx-swipe')), mask: cs.maskImage || cs.webkitMaskImage };
+    });
+    assert(wide && wide.hint && /gradient/.test(wide.mask), '手机上放不下的公式没有滑动提示：' + JSON.stringify(wide));
+    await page.evaluate(() => { const m = document.querySelector('#view .q-stem mjx-container.mjx-scroll'); m.scrollLeft = m.scrollWidth; });
+    await page.waitForFunction(() => document.querySelector('#view .q-stem mjx-container.mjx-scroll').classList.contains('mjx-end'), null, { timeout: 2000 });
+    // 讲解页：顶部没有孤立的「本篇」；证明一步一步展开时，新的一步不被顶栏挡住，「下一步」也在屏幕上
+    const id = meta.lessons.includes('diff.taylor') ? 'diff.taylor' : meta.lessons[0];
+    await open(page, 'l-' + id);
+    assert(await page.evaluate(() => !Array.from(document.querySelectorAll('#view .toc .eyebrow')).some((e) => e.offsetParent && e.textContent.trim() === '本篇')), '手机讲解页顶部还有孤立的「本篇」标签');
+    await flush(page);
+    const n = await page.evaluate(() => {
+      const p = Array.from(document.querySelectorAll('#view .proof')).sort((a, b) => b.querySelectorAll('.step').length - a.querySelectorAll('.step').length)[0];
+      if (!p) return 0;
+      p.id = 'proof-under-test';
+      p.scrollIntoView();
+      return p.querySelectorAll('.step').length;
+    });
+    for (let k = 1; k < Math.min(n, 5); k++) {
+      await page.click('#proof-under-test [data-proof="next"]');
+      await settle(page);
+      const pos = await page.evaluate((k) => {
+        const p = document.getElementById('proof-under-test');
+        const s = p.querySelectorAll('.step')[k - 1].getBoundingClientRect();
+        return { head: document.querySelector('.top').getBoundingClientRect().bottom, top: s.top, h: s.height, btn: p.querySelector('[data-proof="next"]').getBoundingClientRect().bottom, vh: innerHeight };
+      }, k);
+      assert(pos.top >= pos.head - 1, `展开第 ${k} 步后，这一步的开头被顶栏挡住（${Math.round(pos.top)}px，顶栏底边 ${Math.round(pos.head)}px）`);
+      if (pos.h + 120 < pos.vh - pos.head) assert(pos.btn <= pos.vh, `展开第 ${k} 步后「下一步」按钮在屏幕外（${Math.round(pos.btn)}px）`);
+    }
+    await audit(page, '手机讲解分步证明');
+    await page.context().close();
+    return n ? `${id} 的证明逐步展开 ${Math.min(n, 5) - 1} 步` : '没有分步证明可测';
+  });
+
   await test('每一年整卷：题面公式与布局', async () => {
     const page = await newPage(PHONE);
     let sols = 0;
@@ -348,6 +404,7 @@ async function run() {
     const page = await newPage(DESKTOP);
     await open(page, 'q-2019-9');
     assert(await page.evaluate(() => /2019/.test(document.querySelector('#view h1').textContent)), '单题页标题不对');
+    assert(await page.evaluate(() => window.scrollY === 0), '直接打开单题页时被锚点滚走，标题不在屏幕上');
     await page.keyboard.press('h');
     await settle(page);
     assert(await page.evaluate(() => !document.querySelector('.q-hint').hidden), '按 H 没有显示思路');

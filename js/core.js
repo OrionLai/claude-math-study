@@ -149,7 +149,9 @@
 
   /* ── MathJax 排版 ── */
   var pending = [];
+  var SWIPE = '<span class="mjx-swipe" aria-hidden="true">左右滑动查看完整公式</span>';
   function fitMath(root) {
+    if (root.closest && root.closest('[data-nofit]')) return; // 单行摘要（如搜索结果）里的公式保持行内、超出就截掉
     // 带编号（\tag）的独立公式，MathJax 会给容器设 min-width，手机上会把整页撑宽：
     // 把 min-width 挪到里面的 svg 上，容器本身保持不超过版心、横向滚动
     Array.prototype.forEach.call(root.querySelectorAll('mjx-container[width="full"]'), function (el) {
@@ -163,7 +165,20 @@
       var box = el.parentElement;
       if (box && box.clientWidth && el.getBoundingClientRect().width > box.clientWidth + 1) el.classList.add('mjx-wide');
     });
+    // 放不下、要横向滚动才能看全的公式：右缘渐隐，下面加一行「左右滑动」小字（公式本身不动）。
+    // 只差几像素的不提示（渐隐反而会遮住更多）
+    Array.prototype.forEach.call(root.querySelectorAll('.mjx-swipe'), function (el) { el.remove(); });
+    Array.prototype.forEach.call(root.querySelectorAll('mjx-container[display="true"], mjx-container.mjx-wide'), function (el) {
+      var scroll = el.scrollWidth > el.clientWidth + 8;
+      el.classList.toggle('mjx-scroll', scroll);
+      if (scroll) { markScrollEnd(el); el.insertAdjacentHTML('afterend', SWIPE); }
+    });
   }
+  // 滚到最右端时去掉渐隐
+  function markScrollEnd(el) { el.classList.toggle('mjx-end', el.scrollLeft + el.clientWidth >= el.scrollWidth - 1); }
+  document.addEventListener('scroll', function (e) {
+    if (e.target.classList && e.target.classList.contains('mjx-scroll')) markScrollEnd(e.target);
+  }, true);
   KY.busyTypeset = 0; // 正在排版的块数（测试用来等排版结束）
   var mjQueue = Promise.resolve();
   KY.typeset = function (el) {

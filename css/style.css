@@ -92,8 +92,12 @@ ul, ol { padding-left: 1.4rem; }
 .nav a[aria-current="page"] { color: var(--ink); background: var(--accent-soft); font-weight: 500; }
 @media (max-width: 40rem) {
   :root { --top-h: 6rem; } /* 手机上导航换到第二行，顶栏约 95px；页内跳转的落点要躲开它 */
-  .nav { margin-left: 0; width: 100%; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 0.15rem; }
+  /* 标签缩短（隐藏 .nav-x）后 6 个入口一行放得下；更窄的屏幕再收紧间距，实在放不下才横向滚动 */
+  .nav { margin-left: 0; width: 100%; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 0.15rem; justify-content: space-between; }
+  .nav a { padding-inline: 0.5rem; }
+  .nav-x { display: none; }
 }
+@media (max-width: 22rem) { .nav a { padding-inline: 0.35rem; } }
 .count { font-family: var(--f-mono); font-size: 0.72rem; font-variant-numeric: tabular-nums; min-width: 1.4em; padding: 0 0.35em; border-radius: 999px; text-align: center; background: var(--pen); color: var(--sheet); line-height: 1.5; }
 .count[data-zero] { background: var(--rule); color: var(--ink-2); }
 
@@ -211,7 +215,7 @@ a.kp-item:hover { border-color: var(--accent); }
 .kind-dot.kind-pitfall { background: var(--pen); }
 .kind-dot.kind-check, .kind-dot.kind-example { background: var(--ok); }
 @media (max-width: 63.99rem) {
-  .toc .in-page { display: none; }
+  .toc .toc-page { display: none; } /* 本篇目录改由左下角「目录」按钮打开 */
   .toc nav.chs { display: flex; overflow-x: auto; gap: 0.3rem; padding-bottom: 0.25rem; }
   .toc nav.chs a, .toc nav.chs .toc-pending { white-space: nowrap; border: 1px solid var(--rule); background: var(--sheet); }
 }
@@ -246,6 +250,7 @@ a.kp-item:hover { border-color: var(--accent); }
 .proof { border-top: 1px dashed var(--rule); padding-top: 0.75rem; display: grid; gap: 0.6rem; }
 .proof-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; }
 .proof-ctl { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.proof[data-next="0"] .steps { display: none; }
 .steps { margin: 0; padding-left: 1.6rem; display: grid; gap: 0.75rem; counter-reset: none; }
 .steps li::marker { font-family: var(--f-mono); color: var(--accent); font-weight: 500; }
 .step { min-width: 0; }
@@ -352,6 +357,12 @@ a.yr:hover { background: var(--pen-soft); }
 mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-block: 0.15rem; }
 mjx-container { font-size: 105% !important; }
 mjx-container.mjx-wide { display: block; overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-block: 0.2rem; }
+/* 要横向滚动才能看全的公式（core.js 的 fitMath 标记）：右缘渐隐提示后面还有，下面一行小字；滚到最右端去掉渐隐 */
+mjx-container.mjx-scroll:not(.mjx-end) { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 3rem), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 3rem), transparent); }
+.mjx-swipe { display: block; text-align: right; font-size: 0.72rem; line-height: 1.4; color: var(--ink-2); }
+.mjx-swipe::before { content: "← "; }
+.mjx-swipe::after { content: " →"; }
+mjx-container[display="true"] + .mjx-swipe { margin-top: -0.7rem; margin-bottom: 0.5rem; }
 /* 还没排版的块里是 TeX 源码，长串不换行会把手机页面撑宽 */
 .mj-lazy { overflow-wrap: anywhere; }
 
