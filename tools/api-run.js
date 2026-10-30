@@ -18,6 +18,7 @@
 //   --effort high        思考深度（low/medium/high/xhigh/max），默认不传
 //   --task-budget 8      单项任务的美元上限，防止失控（默认 8，用更贵的模型时自动放大）
 //   --stop-after 70      跑了这么多分钟后不再开始新任务（正在跑的做完），适合在有时长限制的环境里分批跑
+//   --extra 文件         把文件里的额外要求追加到每个任务的提示词末尾（{{id}}、{{year}} 会替换成本项的考点 / 年份）
 // 环境变量（与选项等价）：KY_MODEL KY_WORKERS KY_BUDGET KY_TASK_BUDGET KY_EFFORT KY_PYTHON KY_PAPERS KY_STOP_AFTER
 //   KY_PAPERS：真题源仓库 TsekaLuk/Kaoyan-Math1-Papers 的本地路径。只有真题任务需要，没设就跳过真题任务。
 // 产物：data/src/ 下的新内容；tools/.api-run/ 下的台账（runs.jsonl）和每项任务的完整输出（已 gitignore）。
@@ -54,6 +55,8 @@ const IDS = (opt('ids', null, '') || '').split(',').map((s) => s.trim()).filter(
 const PAPERS = opt('papers', 'KY_PAPERS', '');
 const PYTHON_OPT = opt('python', 'KY_PYTHON', '');
 const STOP_AFTER = Number(opt('stop-after', 'KY_STOP_AFTER', 0)) || 0; // 分钟：超过就不再开始新任务（正在跑的照常做完）
+const EXTRA_FILE = opt('extra', 'KY_EXTRA', ''); // 追加到每个任务提示词末尾的额外要求（文本文件）
+const EXTRA = EXTRA_FILE ? fs.readFileSync(EXTRA_FILE, 'utf8').trim() : '';
 
 // 子进程的环境：去掉从外层 Claude Code 会话继承来的变量（CLAUDECODE、CLAUDE_CODE_ENTRYPOINT 等）和登录令牌。
 // 不去掉的话，在 Claude Code / 桌面 App 的终端里运行时，这些调用会被识别成那个会话的 Claude Code 用量，
@@ -69,7 +72,7 @@ function childEnv() {
 const factor = /haiku/.test(MODEL) ? 0.1 : /sonnet/.test(MODEL) ? 0.5 : /fable|mythos/.test(MODEL) ? 2.5 : 1;
 const TASK_BUDGET = Number(opt('task-budget', 'KY_TASK_BUDGET', Math.round(8 * Math.max(1, factor))));
 // 每类任务的大致花费（美元，Opus 档；是经验估计，跑过几项后改用实际平均值）
-const BASE_EST = { lessonWrite: 3.5, lessonReview: 2, yearWrite: 4, yearReview: 2, analysisWrite: 3, analysisReview: 2 };
+const BASE_EST = { lessonWrite: 1.5, lessonReview: 1, yearWrite: 2, yearReview: 1, analysisWrite: 1.5, analysisReview: 1 }; // 2026-10 实测：Opus 写一篇讲解约 1 美元
 const KIND_NAME = { lessonWrite: '讲解撰写', lessonReview: '讲解审校', yearWrite: '真题整理', yearReview: '真题审校', analysisWrite: '考点分析撰写', analysisReview: '考点分析审校' };
 
 const ts = () => new Date().toTimeString().slice(0, 8);
@@ -252,9 +255,10 @@ async function agent(prompt, opts = {}) {
   log(`开始 ${task.key}（${KIND_NAME[task.kind] || task.kind}，预计约 ${money(est)}；已花 ${money(spent)}）`);
   const dir = path.join(RUNDIR, runStamp);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, task.key.replace(/[:/\\]/g, '_') + '.prompt.txt'), prompt + RETURN_FORMAT);
+  const full = prompt + (EXTRA ? '\n' + EXTRA.replace(/\{\{id\}\}/g, task.id || '').replace(/\{\{year\}\}/g, task.y || '') + '\n' : '') + RETURN_FORMAT;
+  fs.writeFileSync(path.join(dir, task.key.replace(/[:/\\]/g, '_') + '.prompt.txt'), full);
   let res;
-  try { res = MOCK ? await mockRun(task) : await runClaude(prompt + RETURN_FORMAT, task); } finally { inflight.delete(task.key); }
+  try { res = MOCK ? await mockRun(task) : await runClaude(full, task); } finally { inflight.delete(task.key); }
   spent += res.cost || 0;
   const chk = verify(task);
   const agentOk = !!(res.parsed && res.parsed.ok);

@@ -218,7 +218,24 @@ function checkLesson(id) {
     }
   });
   if (!check) errs.push(`${L} 至少要有一个 check（自测）小节`);
-  return { errs, chars, thm, def, sections: got.sections.length };
+  // 真题引用 <span class="qref" data-q="2019-17">…</span>：id 必须在题库里
+  const refs = [...JSON.stringify(got).matchAll(/data-q=\\?"([^"\\]+)\\?"/g)].map((m) => m[1]);
+  if (refs.length) {
+    const ids = allProblemIds();
+    [...new Set(refs)].forEach((q) => { if (!ids.has(q)) errs.push(`${L} 真题引用 data-q="${q}" 在题库里不存在（id 写法如 2019-17、1998-3-2）`); });
+  }
+  return { errs, chars, thm, def, sections: got.sections.length, refs: new Set(refs).size };
+}
+let PIDS = null;
+function allProblemIds() {
+  if (PIDS) return PIDS;
+  PIDS = new Set();
+  for (const f of fs.readdirSync(path.join(SRC, 'years')).filter((x) => /^\d{4}\.js$/.test(x))) {
+    try {
+      vm.runInNewContext(fs.readFileSync(path.join(SRC, 'years', f), 'utf8'), { registerYear: (y, fn) => { fn(String.raw).forEach((p) => PIDS.add(p.id)); } });
+    } catch (e) { /* 这一年的文件有错时由 year 校验报告 */ }
+  }
+  return PIDS;
 }
 
 /* ── 考点分析与预测 ── */
@@ -249,7 +266,7 @@ function report(name, r) {
     if (r.errs.length > 80) console.log(`  …还有 ${r.errs.length - 80} 个`);
     return false;
   }
-  console.log(`✓ ${name}` + (r.n != null ? `：${r.n} 题` : '') + (r.chars != null ? `：${r.sections} 节，定义 ${r.def}，定理 ${r.thm}，约 ${r.chars} 字` : ''));
+  console.log(`✓ ${name}` + (r.n != null ? `：${r.n} 题` : '') + (r.chars != null ? `：${r.sections} 节，定义 ${r.def}，定理 ${r.thm}，约 ${r.chars} 字` + (r.refs ? `，引用真题 ${r.refs} 道` : '') : ''));
   return true;
 }
 const [what, arg] = process.argv.slice(2);
