@@ -164,13 +164,20 @@
     });
   }
   KY.busyTypeset = 0; // 正在排版的块数（测试用来等排版结束）
+  var mjQueue = Promise.resolve();
   KY.typeset = function (el) {
     var MJ = window.MathJax;
     if (!el) return Promise.resolve();
     if (window.__mjReady && MJ && MJ.typesetPromise) {
       KY.busyTypeset++;
-      return MJ.typesetPromise([el]).then(function () { fitMath(el); }).catch(function (e) { console.warn(e); })
+      // 排队依次排版；轮到时元素已经不在页面上（期间换了页）就跳过：
+      // 对脱离文档的节点排版，MathJax 量不出字号，会生成宽高为 NaN 的 SVG 并在控制台报错
+      mjQueue = mjQueue.then(function () {
+        if (!el.isConnected) return;
+        return MJ.typesetPromise([el]).then(function () { fitMath(el); });
+      }).catch(function (e) { console.warn(e); })
         .then(function () { KY.busyTypeset--; });
+      return mjQueue;
     }
     pending.push(el);
     return Promise.resolve();
