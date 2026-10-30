@@ -455,7 +455,7 @@ $$y'=\frac{1-x^2}{1+y^2}.$$</p>
       },
       {
         kind: 'exam', title: '考研怎么考',
-        html: R`<p>近十年（2016–2025）数学一直接标为本考点的真题共 6 道，考法集中、规律清楚：</p>
+        html: R`<p>近十年（2016–2025）数学一以本考点为<b>主考点</b>的真题共 4 道：<span class="qref" data-q="2017-9">2017 年第 9 题</span>、<span class="qref" data-q="2020-10">2020 年第 10 题</span>、<span class="qref" data-q="2021-12">2021 年第 12 题</span>、<span class="qref" data-q="2023-3">2023 年第 3 题</span>；另有 2 道以它为次考点（<span class="qref" data-q="2016-12">2016 年第 12 题</span>、<span class="qref" data-q="2017-17">2017 年第 17 题</span>）。这 6 道题在上面两节"近十年真题精讲"里已全部讲完。2018、2019、2022、2024、2025 五年没有直接以本考点命题的题目——但这不等于不考：这些年份的中值定理、极值、微分方程大题处处要用到本篇的法则。考法集中、规律清楚：</p>
 <ul>
 <li><b>参数方程二阶导数是最稳定的填空题（4–5 分）。</b>题面给 $x=\varphi(t),y=\psi(t)$，求 $\left.\dfrac{\mathrm{d}^2y}{\mathrm{d}x^2}\right|_{t=t_0}$，一阶导数往往可约分，二阶时考"对 $t$ 求导再除以 $\varphi'(t)$"是否掌握。见 <span class="qref" data-q="2020-10">2020 年第 10 题</span>、<span class="qref" data-q="2021-12">2021 年第 12 题</span>；更早的 <span class="qref" data-q="2013-11">2013 年第 11 题</span>、<span class="qref" data-q="2010-9">2010 年第 9 题</span>（$y$ 是变上限积分，需配合微积分基本定理）同类型。</li>
 <li><b>一点处的高阶导数 / 由高阶导数反求参数（填空 4 分）。</b>命题意图是考"不要硬算"：奇偶性、泰勒展开比较系数、莱布尼茨公式只取不含 $x$ 的项。见 <span class="qref" data-q="2017-9">2017 年第 9 题</span>、<span class="qref" data-q="2016-12">2016 年第 12 题</span>。这类题常同时标 diff.taylor，复习时两篇要连起来看。</li>

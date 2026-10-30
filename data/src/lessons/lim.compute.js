@@ -195,7 +195,8 @@ $$\left|\frac{f(x)}{g(x)}-A\right|\le\varepsilon(1+\varepsilon)+|A|\varepsilon+\
 <p>右端可以任意小，故 $\lim_{x\to a^+}\dfrac{f(x)}{g(x)}=A$。</p>`, why: R`<p>先用三角不等式把误差拆成三块：第一块由柯西中值定理控制，后两块由"常数除以无穷大趋于 $0$"控制。$\varepsilon$ 前面的系数是常数，不影响"任意小"。</p>` },
           { s: R`<p><b>第五步：$A=\infty$ 的情形。</b> 此时 $\dfrac{g'}{f'}\to0$，且由 $\dfrac{f'}{g'}\to\infty$ 知在 $a$ 的某右邻域内 $f'\ne0$。要证 $\dfrac fg\to\infty$，先证 $f\to\infty$：由 $\dfrac{f'}{g'}\to\infty$，存在 $\delta_1\in(0,\delta_0)$ 使在 $(a,a+\delta_1)$ 内 $\left|\dfrac{f'}{g'}\right|>1$；固定 $c=a+\delta_1/2$，用柯西中值定理，对 $x\in(a,c)$ 有 $\left|\dfrac{f(x)-f(c)}{g(x)-g(c)}\right|>1$，即 $|f(x)-f(c)|>|g(x)-g(c)|\to\infty$，故 $f(x)\to\infty$。于是 $\dfrac gf$ 是 $\dfrac\infty\infty$ 型且 $\dfrac{g'}{f'}\to0$，由已证的有限情形 $\dfrac gf\to0$，即 $\dfrac fg\to\infty$。</p>`, why: R`<p>把 $\infty$ 的情形翻转成 $0$ 的情形，需要先确认翻转后的分母 $f$ 也趋于无穷，否则不满足已证定理的条件 1。</p>` }
         ],
-        remark: R`<p><b>条件 1 只要求分母趋于无穷</b>，分子 $f$ 可以是任何东西（证明中根本没用到 $f\to\infty$）。这一点在 $\dfrac{\text{有界}}{\infty}$ 的情形不必用洛必达——直接为 $0$；但它说明定理的适用范围比"$\dfrac\infty\infty$"字面上更宽。</p>
+        remark: R`<p><b>其他极限过程.</b> $x\to a^-$ 的情形把 $x$ 换成 $-x$（即对 $f(-x)$、$g(-x)$ 在 $-a$ 的右侧用已证结论）；$x\to+\infty$ 的情形与 $\dfrac00$ 型证明第四步一样令 $x=\dfrac1t$，链式法则多出的因子 $-\dfrac1{t^2}$ 上下抵消，化为 $t\to0^+$；双侧极限由左右极限合并。</p>
+<p><b>条件 1 只要求分母趋于无穷</b>，分子 $f$ 可以是任何东西（证明中根本没用到 $f\to\infty$）。这一点在 $\dfrac{\text{有界}}{\infty}$ 的情形不必用洛必达——直接为 $0$；但它说明定理的适用范围比"$\dfrac\infty\infty$"字面上更宽。</p>
 <p><b>典型应用：无穷大的"速度排序"。</b> $x\to+\infty$ 时，$\ln x\ll x^a\ (a>0)\ll b^x\ (b>1)\ll x^x$。例如 $\lim_{x\to+\infty}\dfrac{x^n}{\mathrm e^x}$ 连用 $n$ 次洛必达得 $\lim\dfrac{n!}{\mathrm e^x}=0$；$\lim_{x\to+\infty}\dfrac{\ln x}{x^a}=\lim\dfrac{1/x}{ax^{a-1}}=\lim\dfrac{1}{ax^a}=0$。这个排序在判断 $\dfrac\infty\infty$ 型时经常直接用。</p>
 <svg viewBox="0 0 420 260" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
   <line x1="40" y1="230" x2="400" y2="230" stroke="currentColor" stroke-width="1"/>
@@ -328,7 +329,7 @@ $$(1+x)^{1/x}-\mathrm e=\mathrm e\left(\mathrm e^{-\frac x2+o(x)}-1\right)\sim\m
         html: R`<p>"已知极限反求参数"是本考点最常见的填空题形式。它的原理只有一条：<b>极限存在且等于给定值，等价于分子、分母的阶数与首项系数满足特定关系</b>。具体地：</p>
 <ul>
 <li>若 $\dfrac{f(x)}{g(x)}\to A\ne0$，则 $f$ 与 $g$ 同阶，且 $f$ 的首项系数是 $g$ 的 $A$ 倍；</li>
-<li>若分母 $g\to0$ 而极限存在（有限），则分子必须 $f\to0$——这叫"<b>分母为零推分子为零</b>"，常用来定出第一个参数；</li>
+<li>若分母 $g\to0$ 而极限 $\lim\dfrac fg=A$ 存在（有限），则分子必须 $f\to0$——因为 $f=\dfrac fg\cdot g\to A\cdot0=0$（乘法法则）。这叫"<b>分母为零推分子为零</b>"，常用来定出第一个参数；</li>
 <li>若 $x\to\infty$ 时 $f(x)-(ax+b)\to0$，则 $a=\lim\dfrac{f(x)}{x}$，$b=\lim\,[f(x)-ax]$（这正是斜渐近线的求法，见 diff.asym）。</li>
 </ul>
 <p><b>例 17.</b> 已知 $\lim_{x\to0}\dfrac{\ln(1+x)-(ax+bx^2)}{x^2}=2$，求 $a,b$。</p>
@@ -466,7 +467,7 @@ $$\lim_{x\to0}\frac{2\int_0^xt\ln(1+t\sin t)\,\mathrm dt}{x^4}=\lim_{x\to0}\frac
       },
       {
         kind: 'exam', title: '考研怎么考',
-        html: R`<p>近十年（2016–2025）数学一中，以本考点为主考点或重要考点的题共 8 道，题型与分值分布如下。</p>
+        html: R`<p>近十年（2016–2025）数学一中，以本考点为主考点的题共 6 道（<span class="qref" data-q="2016-9">2016 年第 9 题</span>、<span class="qref" data-q="2018-9">2018 年第 9 题</span>、<span class="qref" data-q="2020-9">2020 年第 9 题</span>、<span class="qref" data-q="2021-17">2021 年第 17 题</span>、<span class="qref" data-q="2024-11">2024 年第 11 题</span>、<span class="qref" data-q="2025-11">2025 年第 11 题</span>），已在上面两节"真题精讲"中逐题讲完；另有 2 道以本考点为重要次考点（<span class="qref" data-q="2023-11">2023 年第 11 题</span> 见例 20，<span class="qref" data-q="2023-1">2023 年第 1 题</span> 以斜渐近线为主）。这 8 道题的题型与分值分布如下。</p>
 <ul>
 <li><b>题型与分值：以填空题为主（4–5 分），偶有解答题（10 分）和选择题。</b> 填空题：<span class="qref" data-q="2016-9">2016 年第 9 题</span>、<span class="qref" data-q="2018-9">2018 年第 9 题</span>、<span class="qref" data-q="2020-9">2020 年第 9 题</span>、<span class="qref" data-q="2023-11">2023 年第 11 题</span>、<span class="qref" data-q="2024-11">2024 年第 11 题</span>、<span class="qref" data-q="2025-11">2025 年第 11 题</span>；解答题：<span class="qref" data-q="2021-17">2021 年第 17 题</span>；选择题（以斜渐近线为主考点、极限计算为工具）：<span class="qref" data-q="2023-1">2023 年第 1 题</span>。十年中有 7 年出现（2017、2019、2022 三年没有直接考，但这三年的间断点、无穷小比较等题仍以极限计算为基本功），是数学一"必拿分"的基础题。</li>
 <li><b>设问方式一：直接求极限值。</b> 命题人偏爱 $\infty-\infty$ 型（<span class="qref" data-q="2020-9">2020 年第 9 题</span>、<span class="qref" data-q="2021-17">2021 年第 17 题</span>）和含幂指函数的 $\dfrac00$ 型（<span class="qref" data-q="2025-11">2025 年第 11 题</span>），都要求"通分或取指数 → 分母乘积等价 → 分子泰勒配平"的完整流程；分子为变限积分的 $\dfrac00$ 型（<span class="qref" data-q="2016-9">2016 年第 9 题</span>）则是"洛必达消积分号 → 等价代换收尾"。</li>
