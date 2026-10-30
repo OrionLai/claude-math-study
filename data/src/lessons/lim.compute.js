@@ -60,7 +60,7 @@ $$\lim_{x\to0}\frac{x}{x}=1,\qquad \lim_{x\to0}\frac{x^2}{x}=0,\qquad \lim_{x\to
 <tr><td>$0^0$</td><td>$\lim_{x\to0^+}x^x=1$</td><td>$\lim_{x\to0^+}\left(\mathrm e^{-1/x}\right)^{x}=\mathrm e^{-1}$</td></tr>
 <tr><td>$\infty^0$</td><td>$\lim_{x\to+\infty}x^{1/x}=1$</td><td>$\lim_{x\to+\infty}\left(\mathrm e^{x}\right)^{2/x}=\mathrm e^2$</td></tr>
 </tbody></table>
-<p><b>反例（看上去像未定式、其实不是）.</b> $\lim_{x\to0^+}x^{1/x}$：底数 $\to0$、指数 $\to+\infty$，是 $0^{+\infty}$ 型，这是定式，$x^{1/x}=\mathrm e^{\frac{\ln x}{x}}$，指数 $\to-\infty$，极限为 $0$。又如 $\lim_{x\to+\infty}\dfrac{\sin x}{x}$：分子有界但不趋于 $\infty$，这不是 $\dfrac\infty\infty$ 型，应当用"有界乘无穷小"直接得 $0$，而不能用洛必达（见后面的反例）。</p>`
+<p><b>反例（看上去像未定式、其实不是）.</b> $\lim_{x\to0^+}x^{1/x}$：底数 $\to0$、指数 $\to+\infty$，是 $0^{+\infty}$ 型，这是定式，$x^{1/x}=\mathrm e^{\frac{\ln x}{x}}$，指数 $\to-\infty$，极限为 $0$。又如 $\lim_{x\to+\infty}\dfrac{\sin x}{x}$：分子有界但不趋于 $\infty$，这不是 $\dfrac\infty\infty$ 型，应当用"有界乘无穷小"直接得 $0$；若硬去求导，得到 $\dfrac{\cos x}{1}$ 没有极限，洛必达不起作用（见后面的反例）。</p>`
       },
       {
         kind: 'def', title: '幂指函数与三种幂型未定式的归结',
@@ -88,7 +88,7 @@ $$\lim\frac{\alpha}{\beta}=\lim\frac{\alpha'}{\beta'}.$$
 <p>更一般地，若 $\lim\dfrac{\alpha' h}{\beta'}$ 存在，则 $\lim\dfrac{\alpha h}{\beta}=\lim\dfrac{\alpha' h}{\beta'}$，即<b>作为整体的乘除因子</b>的无穷小可以换成它的等价无穷小。</p>`,
         intuition: R`<p>$\alpha\sim\alpha'$ 的意思是"两者的比值趋于 $1$"，也就是在这个极限过程中它们"快慢完全一样"。既然求极限只关心快慢之比，把一个乘积因子换成快慢相同的另一个因子，比值当然不变。但"快慢一样"不等于"相等"：$\alpha-\alpha'$ 虽然是比 $\alpha$ 更高阶的无穷小，却不是零，当它与同阶的东西相减时，这个差就可能冒出来成为主角。这就是加减项不能随便换的根源。</p>`,
         steps: [
-          { s: R`<p>写 $\dfrac{\alpha h}{\beta}=\dfrac{\alpha}{\alpha'}\cdot\dfrac{\beta'}{\beta}\cdot\dfrac{\alpha' h}{\beta'}$。</p>`, why: R`<p>这是恒等变形：把想换的因子"乘回去再除掉"。等价的定义只给了比值信息，所以要把比值 $\dfrac\alpha{\alpha'}$、$\dfrac{\beta'}{\beta}$ 人为地制造出来。</p>` },
+          { s: R`<p>写 $\dfrac{\alpha h}{\beta}=\dfrac{\alpha}{\alpha'}\cdot\dfrac{\beta'}{\beta}\cdot\dfrac{\alpha' h}{\beta'}$。</p>`, why: R`<p>这是恒等变形：把想换的因子"乘回去再除掉"。等价的定义只给了比值信息，所以要把比值 $\dfrac\alpha{\alpha'}$、$\dfrac{\beta'}{\beta}$ 人为地制造出来。能作这些除法，是因为"$\alpha\sim\alpha'$"的定义本身已隐含 $\alpha'$ 在去心邻域内非零（否则比值无意义），同理 $\beta$、$\beta'$ 非零。</p>` },
           { s: R`<p>三个因子的极限分别为 $1$、$1$、$\lim\dfrac{\alpha' h}{\beta'}$。若最后一个极限为有限数 $A$，由极限的乘法法则，$\lim\dfrac{\alpha h}{\beta}=1\cdot1\cdot A=A$。</p>`, why: R`<p>乘法法则要求每个因子极限都存在，这里恰好满足——这也解释了为什么定理要假设"换完之后的极限存在"。</p>` },
           { s: R`<p>若 $\lim\dfrac{\alpha' h}{\beta'}=\infty$，则 $\dfrac{\beta'}{\alpha' h}\to0$，对倒数用上一步得 $\dfrac{\beta}{\alpha h}\to0$，故 $\dfrac{\alpha h}{\beta}\to\infty$。</p>`, why: R`<p>无穷大与无穷小互为倒数（见 lim.inf），把 $\infty$ 的情形转化为有限情形处理。</p>` }
         ],
@@ -142,6 +142,7 @@ $$\frac{f(x)-f(a)}{g(x)-g(a)}=\frac{f'(\xi)}{g'(\xi)},\quad\text{即}\quad\frac{
         ],
         remark: R`<p><b>关于条件 3 的两点说明。</b> （i）它是"<b>若导数之比的极限存在，则函数之比的极限存在且相等</b>"，<b>逆命题不成立</b>：$\lim\dfrac{f'}{g'}$ 不存在（且不为 $\infty$）时，$\lim\dfrac fg$ 仍可能存在，此时洛必达"失效"而不是"原极限不存在"。例如 $\lim_{x\to0}\dfrac{x^2\sin(1/x)}{\sin x}=0$（有界乘无穷小），但求导后 $\dfrac{2x\sin(1/x)-\cos(1/x)}{\cos x}$ 极限不存在。（ii）洛必达可以<b>连续使用</b>：若 $\dfrac{f'}{g'}$ 仍是 $\dfrac00$ 型且满足条件，再用一次。每次使用前都要重新判型——对非未定式用洛必达是常见的严重错误。</p>
 <p><b>关于条件 2.</b> 只要求在<b>去心</b>邻域内可导，$a$ 点本身可以不可导甚至无定义。$g'\ne0$ 不能去掉，否则导数之比在很多点无意义。</p>
+<p><b>数列极限不能直接"对 $n$ 求导"。</b> 数列 $a_n$ 不是可导函数，洛必达法则对 $\lim_{n\to\infty}\dfrac{a_n}{b_n}$ 没有定义。正确做法是把 $n$ 换成连续变量 $x$，先求 $\lim_{x\to+\infty}\dfrac{f(x)}{g(x)}$（其中 $f(n)=a_n$、$g(n)=b_n$），再由海涅定理（函数极限存在 ⇒ 沿任何趋于 $+\infty$ 的数列的极限都相同）得到数列极限。例如 $\lim_{n\to\infty}\dfrac{\ln n}{n}$ 要写成 $\lim_{x\to+\infty}\dfrac{\ln x}{x}=\lim\dfrac{1/x}{1}=0$。</p>
 <p><b>洛必达与等价代换的关系.</b> 等价代换表里的每一条都可以用洛必达证明（如 $\lim\dfrac{\ln(1+x)}{x}=\lim\dfrac{1/(1+x)}{1}=1$），但洛必达的求导往往越算越繁，所以实战口诀是"<b>先化简、再洛必达；能等价、不洛必达</b>"。</p>`
       },
       {
@@ -166,7 +167,7 @@ $$\left|\frac{f(x)}{g(x)}-A\right|\le|h(x)-A|\cdot\left|1-\frac{g(c)}{g(x)}\righ
 <p>因为 $g(x)\to\infty$（$x\to a^+$），存在 $\delta'\in(0,\delta/2)$，使 $a\lt x\lt a+\delta'$ 时 $\left|\dfrac{g(c)}{g(x)}\right|\lt\varepsilon$、$\left|\dfrac{f(c)}{g(x)}\right|\lt\varepsilon$。于是此时</p>
 $$\left|\frac{f(x)}{g(x)}-A\right|\le\varepsilon(1+\varepsilon)+|A|\varepsilon+\varepsilon=(2+|A|+\varepsilon)\varepsilon .$$
 <p>右端可以任意小，故 $\lim_{x\to a^+}\dfrac{f(x)}{g(x)}=A$。</p>`, why: R`<p>先用三角不等式把误差拆成三块：第一块由柯西中值定理控制，后两块由"常数除以无穷大趋于 $0$"控制。$\varepsilon$ 前面的系数是常数，不影响"任意小"。</p>` },
-          { s: R`<p><b>第五步：$A=\infty$ 的情形。</b> 此时 $\dfrac{g'}{f'}\to0$，且由 $\dfrac{f'}{g'}\to\infty$ 知在 $a$ 的某右邻域内 $f'\ne0$。要证 $\dfrac fg\to\infty$，先证 $f\to\infty$：由 $\dfrac{f'}{g'}\to\infty$，在 $(a,a+\delta_1)$ 内 $\left|\dfrac{f'}{g'}\right|>1$，用柯西中值定理，对 $x\in(a,c)$ 有 $\left|\dfrac{f(x)-f(c)}{g(x)-g(c)}\right|>1$，即 $|f(x)-f(c)|>|g(x)-g(c)|\to\infty$，故 $f(x)\to\infty$。于是 $\dfrac gf$ 是 $\dfrac\infty\infty$ 型且 $\dfrac{g'}{f'}\to0$，由已证的有限情形 $\dfrac gf\to0$，即 $\dfrac fg\to\infty$。</p>`, why: R`<p>把 $\infty$ 的情形翻转成 $0$ 的情形，需要先确认翻转后的分母 $f$ 也趋于无穷，否则不满足已证定理的条件 1。</p>` }
+          { s: R`<p><b>第五步：$A=\infty$ 的情形。</b> 此时 $\dfrac{g'}{f'}\to0$，且由 $\dfrac{f'}{g'}\to\infty$ 知在 $a$ 的某右邻域内 $f'\ne0$。要证 $\dfrac fg\to\infty$，先证 $f\to\infty$：由 $\dfrac{f'}{g'}\to\infty$，存在 $\delta_1\in(0,\delta_0)$ 使在 $(a,a+\delta_1)$ 内 $\left|\dfrac{f'}{g'}\right|>1$；固定 $c=a+\delta_1/2$，用柯西中值定理，对 $x\in(a,c)$ 有 $\left|\dfrac{f(x)-f(c)}{g(x)-g(c)}\right|>1$，即 $|f(x)-f(c)|>|g(x)-g(c)|\to\infty$，故 $f(x)\to\infty$。于是 $\dfrac gf$ 是 $\dfrac\infty\infty$ 型且 $\dfrac{g'}{f'}\to0$，由已证的有限情形 $\dfrac gf\to0$，即 $\dfrac fg\to\infty$。</p>`, why: R`<p>把 $\infty$ 的情形翻转成 $0$ 的情形，需要先确认翻转后的分母 $f$ 也趋于无穷，否则不满足已证定理的条件 1。</p>` }
         ],
         remark: R`<p><b>条件 1 只要求分母趋于无穷</b>，分子 $f$ 可以是任何东西（证明中根本没用到 $f\to\infty$）。这一点在 $\dfrac{\text{有界}}{\infty}$ 的情形不必用洛必达——直接为 $0$；但它说明定理的适用范围比"$\dfrac\infty\infty$"字面上更宽。</p>
 <p><b>典型应用：无穷大的"速度排序"。</b> $x\to+\infty$ 时，$\ln x\ll x^a\ (a>0)\ll b^x\ (b>1)\ll x^x$。例如 $\lim_{x\to+\infty}\dfrac{x^n}{\mathrm e^x}$ 连用 $n$ 次洛必达得 $\lim\dfrac{n!}{\mathrm e^x}=0$；$\lim_{x\to+\infty}\dfrac{\ln x}{x^a}=\lim\dfrac{1/x}{ax^{a-1}}=\lim\dfrac{1}{ax^a}=0$。这个排序在判断 $\dfrac\infty\infty$ 型时经常直接用。</p>
@@ -193,6 +194,7 @@ $$\lim_{x\to x_0}\frac{R_n^{(n-1)}(x)}{n!\,(x-x_0)}=\frac{1}{n!}\left[\lim_{x\to
 <li><b>分式型</b>：分母是 $x^k$（或等价于 $cx^k$），分子就展开到 $x^k$ 项为止（余项 $o(x^k)$），多了没用，少了算不出。</li>
 <li><b>加减抵消型</b>：分子是若干项相减时，一直展开到<b>首次出现不抵消的非零项</b>为止；例如 $\cos x-\mathrm e^{-x^2/2}$ 的 $1$ 和 $x^2$ 项都抵消，必须展到 $x^4$。</li>
 <li><b>乘积型</b>：$o(x^m)\cdot x^k=o(x^{m+k})$，所以乘积中各因子展开的阶数之和要达到目标阶。</li>
+<li><b>复合型（代入法）</b>：$\varphi(x)\to0$ 时，把标准展开中的 $x$ 整体换成 $\varphi(x)$ 即可，余项 $o(\varphi^n)$ 再按 $\varphi$ 的阶换算成 $o(x^k)$。例如 $\ln(1+t\sin t)=t\sin t+o(t\sin t)=t^2+o(t^2)$（$t\sin t\sim t^2$），$\mathrm e^{t^2}=1+t^2+o(t^2)$。这是处理 2016、2021 两年变限积分真题的被积函数时的关键一步。</li>
 </ul>
 <p><b>$o$ 的运算规则</b>（$x\to0$）：$o(x^m)\pm o(x^n)=o(x^{\min(m,n)})$；$x^k\cdot o(x^m)=o(x^{k+m})$；$c\cdot o(x^m)=o(x^m)$；$o(x^m)$ 可以写成 $o(x^k)$（$k\le m$）但不能反过来。</p>
 <p><b>与等价代换的关系.</b> 等价代换就是"只取泰勒展开的首项"，所以凡是等价代换能做的，泰勒都能做；泰勒是最保险、最通用的工具，代价是展开要算。<b>三件套的选择策略</b>：乘除因子用等价代换；分子加减或含变限积分、分段复杂结构用泰勒；形式简单、导数好求、$\dfrac\infty\infty$ 型用洛必达。</p>`
@@ -208,7 +210,7 @@ $$\lim u(x)^{v(x)}=\mathrm e^{A}=\mathrm e^{\lim v(x)[u(x)-1]}.$$`,
 $$v\ln u=v(u-1)\cdot\frac{\ln(1+(u-1))}{u-1}\to A\cdot1=A .$$`, why: R`<p>这正是乘积因子的等价代换：$\ln u\sim u-1$。$\ln(1+t)\sim t$ 的证明：$\lim_{t\to0}\dfrac{\ln(1+t)}{t}=\lim\ln(1+t)^{1/t}=\ln\mathrm e=1$，用的是第二个重要极限与 $\ln$ 的连续性（见 lim.rules）。</p>` },
           { s: R`<p>$\mathrm e^t$ 在 $(-\infty,+\infty)$ 上连续，且 $t\to+\infty$ 时 $\mathrm e^t\to+\infty$、$t\to-\infty$ 时 $\mathrm e^t\to0$，由复合函数极限法则 $\lim u^v=\mathrm e^{A}$。</p>`, why: R`<p>"极限号穿过连续函数"是复合函数极限法则，这里外层函数是 $\mathrm e^t$。</p>` }
         ],
-        remark: R`<p><b>使用步骤</b>：① 确认是 $1^\infty$ 型（底数 $\to1$、指数 $\to\infty$）；② 算 $\lim v(u-1)$，这通常是一个 $0\cdot\infty$ 型，倒下去用等价代换或洛必达；③ 答案是 $\mathrm e^{\text{该极限}}$。<b>不要</b>对不是 $1^\infty$ 型的极限用此公式，例如 $\lim_{x\to\infty}\left(1+\dfrac1x\right)^{\sqrt x}$ 底数 $\to1$、指数 $\to\infty$，可用；但 $\lim_{x\to0}(1+x)^{1/x^2}$ 中 $v(u-1)=\dfrac1x\to\infty$，极限是 $+\infty$（$x\to0^+$）或 $0$（$x\to0^-$），双侧极限不存在，这也是公式允许的 $A=\pm\infty$ 情形。</p>
+        remark: R`<p><b>使用步骤</b>：① 确认是 $1^\infty$ 型（底数 $\to1$、指数 $\to\infty$）；② 算 $\lim v(u-1)$，这通常是一个 $0\cdot\infty$ 型，倒下去用等价代换或洛必达；③ 答案是 $\mathrm e^{\text{该极限}}$。<b>不要</b>对不是 $1^\infty$ 型的极限用此公式，例如 $\lim_{x\to+\infty}\left(1+\dfrac1x\right)^{\sqrt x}$ 底数 $\to1$、指数 $\to+\infty$，可用，$v(u-1)=\dfrac{1}{\sqrt x}\to0$，极限为 $\mathrm e^0=1$；而 $\lim_{x\to0}(1+x)^{1/x^2}$ 中 $v(u-1)=\dfrac1x$，右极限 $A=+\infty$、左极限 $A=-\infty$，分别对两个单侧极限用公式得 $+\infty$ 与 $0$，故双侧极限不存在——公式允许 $A=\pm\infty$，但必须是带符号的无穷，不带符号的 $\infty$ 要拆成单侧处理。</p>
 <p>$0^0$ 与 $\infty^0$ 型<b>没有</b>类似的简便公式，必须老老实实写 $\mathrm e^{v\ln u}$ 然后算 $\lim v\ln u$。</p>`
       },
       {
@@ -250,7 +252,7 @@ $$\frac{x^2-\sin^2x}{x^2\sin^2x}=\frac{(x-\sin x)(x+\sin x)}{x^2\sin^2x}.$$
         html: R`<p><b>例 11（$1^\infty$ 用标准公式）.</b> 求 $\lim_{x\to0}(\cos x)^{1/x^2}$。</p>
 <p>底数 $\to1$，指数 $\to\infty$，是 $1^\infty$ 型。$\lim v(u-1)=\lim_{x\to0}\dfrac{\cos x-1}{x^2}=-\dfrac12$，故原式 $=\mathrm e^{-1/2}$。</p>
 <p><b>例 12（$1^\infty$，底数是平均值）.</b> 求 $\lim_{x\to0}\left(\dfrac{a^x+b^x}{2}\right)^{1/x}$（$a,b>0$）。</p>
-<p>$u-1=\dfrac{(a^x-1)+(b^x-1)}{2}$，$v(u-1)=\dfrac{(a^x-1)+(b^x-1)}{2x}\to\dfrac{\ln a+\ln b}{2}$（分子两项相加，各自 $\sim x\ln a$、$x\ln b$，和的比值 $\to\dfrac{\ln a}{\ln b}\ne-1$ 时可换；若 $\ln a=-\ln b$ 则直接用泰勒也得同样结果）。所以原式 $=\mathrm e^{\frac{\ln a+\ln b}2}=\sqrt{ab}$——两个数的"指数平均"的极限是几何平均。</p>
+<p>$u-1=\dfrac{(a^x-1)+(b^x-1)}{2}$，$v(u-1)=\dfrac{(a^x-1)+(b^x-1)}{2x}=\dfrac12\left(\dfrac{a^x-1}{x}+\dfrac{b^x-1}{x}\right)\to\dfrac{\ln a+\ln b}{2}$（把和拆成两个分式，每个分式单独用 $a^x-1\sim x\ln a$，这样就绕开了"加减项能否代换"的问题；这是处理"分子是和、分母是单项"的通用小技巧）。所以原式 $=\mathrm e^{\frac{\ln a+\ln b}2}=\sqrt{ab}$——两个数的"指数平均"的极限是几何平均。</p>
 <p><b>例 13（$1^\infty$，需要泰勒到三阶）.</b> 求 $\lim_{x\to0}\left(\dfrac{\sin x}{x}\right)^{1/x^2}$。</p>
 <p>$v(u-1)=\dfrac{\sin x-x}{x^3}=-\dfrac16$（等价表），原式 $=\mathrm e^{-1/6}$。注意这里 $u-1=\dfrac{\sin x-x}{x}$ 本身就是加减结构，要靠 $x-\sin x\sim\dfrac{x^3}{6}$ 这条"二级等价"，不能写成 $\dfrac{x-x}{x}$。</p>
 <p><b>例 14（$0^0$ 型）.</b> 求 $\lim_{x\to0^+}x^{\sin x}$。</p>
@@ -274,8 +276,14 @@ $$(1+x)^{1/x}-\mathrm e=\mathrm e\left(\mathrm e^{-\frac x2+o(x)}-1\right)\sim\m
 <p><b>怎么想：</b>分母 $x^2$ 是 2 阶，把分子用泰勒展到 $x^2$：$\ln(1+x)-ax-bx^2=(1-a)x+\left(-\dfrac12-b\right)x^2+o(x^2)$。极限存在要求 $x$ 项系数 $1-a=0$（否则分子是 1 阶，比分母低阶，极限为 $\infty$）；极限值为 $2$ 要求 $-\dfrac12-b=2$。得 $a=1$，$b=-\dfrac52$。</p>
 <p><b>例 18.</b> 已知 $\lim_{x\to\infty}\left(\dfrac{x^2}{x+1}-ax-b\right)=0$，求 $a,b$。</p>
 <p>通分：$\dfrac{x^2-(ax+b)(x+1)}{x+1}=\dfrac{(1-a)x^2-(a+b)x-b}{x+1}$。分母 1 阶，要极限为 $0$，分子的阶必须低于 1，即 $x^2$、$x$ 项系数全为 $0$：$a=1$，$b=-1$。验算：$\dfrac{x^2}{x+1}-x+1=\dfrac{1}{x+1}\to0$。</p>
-<p><b>例 19（参数在指数位置）.</b> 已知 $\lim_{x\to0}\dfrac{x-\sin x}{ax^3}=\dfrac13$，求 $a$。</p>
+<p><b>例 19（参数是分母系数）.</b> 已知 $\lim_{x\to0}\dfrac{x-\sin x}{ax^3}=\dfrac13$，求 $a$。</p>
 <p>由 $x-\sin x\sim\dfrac{x^3}{6}$，极限 $=\dfrac{1}{6a}=\dfrac13$，$a=\dfrac12$。</p>
+<p><b>例 20（用"等价无穷小"包装的反求参数）.</b> <span class="qref" data-q="2023-11">2023 年第 11 题</span>（填空，5 分）　当 $x\to0$ 时，函数 $f(x)=ax+bx^2+\ln(1+x)$ 与 $g(x)=\mathrm{e}^{x^2}-\cos x$ 是等价无穷小，则 $ab=$ ______.</p>
+<p><b>怎么想：</b>"$f\sim g$"就是 $\lim\dfrac fg=1$，所以这仍是"已知极限值反求参数"。$g$ 没有参数，先把它的阶和首项系数算出来，再让 $f$ 的展开与之配平。</p>
+<p><b>第一步：展开 $g$。</b> $\mathrm e^{x^2}=1+x^2+o(x^2)$（代入法，$u=x^2$），$\cos x=1-\dfrac{x^2}{2}+o(x^2)$，相减 $g(x)=\dfrac32x^2+o(x^2)$，即 $g$ 是 2 阶、首项系数 $\dfrac32$。</p>
+<p><b>第二步：展开 $f$ 到 2 阶。</b> $\ln(1+x)=x-\dfrac{x^2}{2}+o(x^2)$，所以 $f(x)=(a+1)x+\left(b-\dfrac12\right)x^2+o(x^2)$。</p>
+<p><b>第三步：配平。</b> 要 $\dfrac fg\to1$，$f$ 必须也是 2 阶（$x$ 项系数为 $0$）且首项系数等于 $\dfrac32$：$a+1=0$，$b-\dfrac12=\dfrac32$，得 $a=-1$，$b=2$，$ab=-2$。</p>
+<p><b>这道题告诉我们：</b>"等价无穷小""同阶无穷小""$k$ 阶无穷小"都是极限语言的改写（$\lim\dfrac fg=1$、$\ne0$ 的有限数、$\lim\dfrac{f}{x^k}\ne0$），一旦翻译成极限，就回到了"泰勒展开、比较系数"这一条路。</p>
 <p><b>反求参数的常见陷阱.</b> 不能假定"只要极限存在就能用洛必达"去反推：洛必达的逻辑方向是"导数之比极限存在 ⇒ 原极限存在"，反过来不成立。因此反求参数时，最稳妥的工具是<b>泰勒展开比较系数</b>，所有信息（阶数、系数）一目了然。</p>`
       },
       {
@@ -385,14 +393,24 @@ $$\text{分子}=x+x^2-x-\frac{x^2}{2}+o(x^2)=\frac{x^2}{2}+o(x^2).$$
 <p>注意 $\sin x=x-\dfrac{x^3}{6}+o(x^3)=x+o(x^2)$，三阶项对本题无用，不必写。</p>
 <p><b>第四步：相除。</b> 原式 $=\lim_{x\to0}\dfrac{\frac{x^2}{2}+o(x^2)}{x^2}=\dfrac12$。</p>
 <p><b>另一条路（洛必达）：</b>对第一步得到的 $\dfrac00$ 型分式求导，分子导数为 $\mathrm e^{x^2}\sin x+\left(1+\int_0^x\mathrm e^{t^2}\mathrm dt\right)\cos x-\mathrm e^x$（变限积分求导公式，见 int.ftc），分母导数 $2x$。这仍是 $\dfrac00$ 型，再求一次导会出现 $2x\mathrm e^{x^2}\sin x+2\mathrm e^{x^2}\cos x-\left(1+\int_0^x\mathrm e^{t^2}\mathrm dt\right)\sin x-\mathrm e^x$，代入 $x=0$ 得 $0+2-0-1=1$，除以 $2$ 得 $\dfrac12$。可行，但比泰勒繁琐且容易算错，这正是"加减结构优先泰勒"的理由。</p>
-<p><b>这道题告诉我们：</b>解答题的得分点在于"每一步合法"：通分后的分母等价代换要说明是乘积因子；变限积分要么展开、要么求导；分子展开的阶数要和分母匹配。写清楚 $o(x^2)$ 的运算，比最后那个 $\dfrac12$ 更重要。</p>`
+<p><b>这道题告诉我们：</b>解答题的得分点在于"每一步合法"：通分后的分母等价代换要说明是乘积因子；变限积分要么展开、要么求导；分子展开的阶数要和分母匹配。写清楚 $o(x^2)$ 的运算，比最后那个 $\dfrac12$ 更重要。</p>
+<br/>
+<p><b>真题 6.</b> <span class="qref" data-q="2016-9">2016 年第 9 题</span>（填空，4 分）　$\displaystyle\lim_{x\to0}\frac{\int_{0}^{x}t\ln(1+t\sin t)\,\mathrm{d}t}{1-\cos x^{2}}=$______.</p>
+<p><b>这题考什么：</b>分子是变限积分的 $\dfrac00$ 型，是"洛必达 + 等价代换"配合的标准题，也是近十年本考点中最适合用洛必达的一道。</p>
+<p><b>从题面看到什么：</b>① 分子是 $\int_0^x(\cdots)\mathrm dt$，积分上限趋于 $0$，分子 $\to0$；洛必达求一次导就能把积分号消掉（变限积分求导公式，见 int.ftc）。② 分母 $1-\cos x^2$ 是"$1-\cos$"结构，内层 $x^2\to0$，等价于 $\dfrac{(x^2)^2}{2}=\dfrac{x^4}{2}$，所以分子应是 4 阶无穷小。</p>
+<p><b>第一步：判型并估阶。</b> 分母 $1-\cos x^2\sim\dfrac{x^4}{2}$（$1-\cos u\sim\dfrac{u^2}{2}$，$u=x^2$）。分母是单独一个无穷小，可以直接代换：原式 $=\lim_{x\to0}\dfrac{2\int_0^xt\ln(1+t\sin t)\,\mathrm dt}{x^4}$。</p>
+<p><b>第二步：洛必达消掉积分号。</b> 分子分母都可导、分母导数 $4x^3\ne0$（$x\ne0$），是 $\dfrac00$ 型：</p>
+$$\lim_{x\to0}\frac{2\int_0^xt\ln(1+t\sin t)\,\mathrm dt}{x^4}=\lim_{x\to0}\frac{2x\ln(1+x\sin x)}{4x^3}=\lim_{x\to0}\frac{\ln(1+x\sin x)}{2x^2}.$$
+<p><b>第三步：等价代换收尾。</b> $x\sin x\to0$，故 $\ln(1+x\sin x)\sim x\sin x\sim x^2$（两次代换都是乘积因子）：极限 $=\dfrac{x^2}{2x^2}=\dfrac12$。</p>
+<p><b>另一条路（先展开被积函数再积分）：</b>$t\ln(1+t\sin t)=t\cdot(t^2+o(t^2))=t^3+o(t^3)$，积分得 $\int_0^x=\dfrac{x^4}{4}+o(x^4)$，除以 $\dfrac{x^4}{2}$ 得 $\dfrac12$。两条路都只有三行，但洛必达这条路不需要讨论"$o$ 能不能积分"，更省事。</p>
+<p><b>这道题告诉我们：</b>看到变限积分做分子，第一反应是"求导消积分号"；求导之后立刻用等价代换，不要再洛必达第二次（第二次求导会出现 $\ln(1+x\sin x)$ 的导数，很乱）。"洛必达降一阶、等价代换收尾"是最省力的组合。</p>`
       },
       {
         kind: 'exam', title: '考研怎么考',
         html: R`<p>近十年（2016–2025）数学一中，以本考点为主考点或重要考点的题共 8 道，题型与分值分布如下。</p>
 <ul>
-<li><b>题型与分值：以填空题为主（4–5 分），偶有解答题（10 分）和选择题。</b> 填空题：<span class="qref" data-q="2016-9">2016 年第 9 题</span>、<span class="qref" data-q="2018-9">2018 年第 9 题</span>、<span class="qref" data-q="2020-9">2020 年第 9 题</span>、<span class="qref" data-q="2023-11">2023 年第 11 题</span>、<span class="qref" data-q="2024-11">2024 年第 11 题</span>、<span class="qref" data-q="2025-11">2025 年第 11 题</span>；解答题：<span class="qref" data-q="2021-17">2021 年第 17 题</span>；选择题（以斜渐近线为主考点、极限计算为工具）：<span class="qref" data-q="2023-1">2023 年第 1 题</span>。几乎每年都有一道，是数学一"必拿分"的基础题。</li>
-<li><b>设问方式一：直接求极限值。</b> 命题人偏爱 $\infty-\infty$ 型（<span class="qref" data-q="2020-9">2020 年第 9 题</span>、<span class="qref" data-q="2021-17">2021 年第 17 题</span>）和含幂指函数的 $\dfrac00$ 型（<span class="qref" data-q="2025-11">2025 年第 11 题</span>），都要求"通分或取指数 → 分母乘积等价 → 分子泰勒配平"的完整流程。</li>
+<li><b>题型与分值：以填空题为主（4–5 分），偶有解答题（10 分）和选择题。</b> 填空题：<span class="qref" data-q="2016-9">2016 年第 9 题</span>、<span class="qref" data-q="2018-9">2018 年第 9 题</span>、<span class="qref" data-q="2020-9">2020 年第 9 题</span>、<span class="qref" data-q="2023-11">2023 年第 11 题</span>、<span class="qref" data-q="2024-11">2024 年第 11 题</span>、<span class="qref" data-q="2025-11">2025 年第 11 题</span>；解答题：<span class="qref" data-q="2021-17">2021 年第 17 题</span>；选择题（以斜渐近线为主考点、极限计算为工具）：<span class="qref" data-q="2023-1">2023 年第 1 题</span>。十年中有 7 年出现（2017、2019、2022 三年没有直接考，但这三年的间断点、无穷小比较等题仍以极限计算为基本功），是数学一"必拿分"的基础题。</li>
+<li><b>设问方式一：直接求极限值。</b> 命题人偏爱 $\infty-\infty$ 型（<span class="qref" data-q="2020-9">2020 年第 9 题</span>、<span class="qref" data-q="2021-17">2021 年第 17 题</span>）和含幂指函数的 $\dfrac00$ 型（<span class="qref" data-q="2025-11">2025 年第 11 题</span>），都要求"通分或取指数 → 分母乘积等价 → 分子泰勒配平"的完整流程；分子为变限积分的 $\dfrac00$ 型（<span class="qref" data-q="2016-9">2016 年第 9 题</span>）则是"洛必达消积分号 → 等价代换收尾"。</li>
 <li><b>设问方式二：已知极限反求参数。</b> 给出极限值求 $a$ 或 $k$：<span class="qref" data-q="2018-9">2018 年第 9 题</span>（$1^\infty$ 型求 $k$）、<span class="qref" data-q="2024-11">2024 年第 11 题</span>（幂指函数 $u^v-1$ 求 $a$）；以及"等价无穷小"语言包装的反求参数：<span class="qref" data-q="2023-11">2023 年第 11 题</span>（给出 $f\sim g$，用泰勒比较系数求 $ab$）。这一类的本质都是"配平阶数与首项系数"。</li>
 <li><b>常见综合点：</b>与<b>变限积分</b>综合（<span class="qref" data-q="2016-9">2016 年第 9 题</span>：分子是变限积分，洛必达求导消去积分号；<span class="qref" data-q="2021-17">2021 年第 17 题</span>：变限积分的泰勒展开）；与<b>泰勒公式</b>综合（<span class="qref" data-q="2020-9">2020 年第 9 题</span>、<span class="qref" data-q="2023-11">2023 年第 11 题</span>）；与<b>斜渐近线</b>综合（<span class="qref" data-q="2023-1">2023 年第 1 题</span>：求 $\lim\dfrac yx$ 与 $\lim(y-kx)$，后者是 $\infty\cdot0$ 型，用 $\ln(1+u)\sim u$）。此外，极限计算还是间断点分类、无穷小阶数比较、导数定义等题目的"基本功"，虽不单独计分，但处处用到。</li>
 <li><b>近几年的变化：</b>2024、2025 两年连续考查<b>幂指函数</b>（$(1+ax^2)^{\sin x}$、$x^x$），强调 $u^v=\mathrm e^{v\ln u}$ 与 $\mathrm e^t-1\sim t$ 的配合；题目的计算量不大，但每一步都在考"等价代换是否合法"。早些年（2016、2018）更偏向洛必达与 $1^\infty$ 公式的直接使用。整体趋势是：<b>工具不新，但更看重对"何时能换、换到几阶"的理解</b>。</li>

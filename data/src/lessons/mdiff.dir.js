@@ -51,6 +51,7 @@ $$\left.\frac{\partial f}{\partial \mathbf{l}}\right|_{P_0}=\lim_{t\to0^+}\frac{
 <li><b>"某邻域内有定义"</b>：要让点 $P_0$ 沿任何方向走一小段都不出定义域，否则极限中的函数值无从谈起。</li>
 <li><b>"单位向量 $\mathbf{e}_l$"</b>：方向导数只与<b>方向</b>有关，与 $\mathbf{l}$ 的长度无关。题目给的往往是非单位向量（如 $\mathbf{n}=(1,2,2)$），<b>必须先除以模长</b>，否则求出的是"沿 $\mathbf{l}$ 走参数 $t$ 的变化率"而非"沿单位距离的变化率"，数值会差 $|\mathbf{l}|$ 倍。这是本考点失分第一大原因。</li>
 <li><b>"$t\to0^+$"</b>：单侧极限。当 $t>0$ 时点 $(x_0+t\cos\alpha,y_0+t\cos\beta)$ 确实在从 $P_0$ 出发沿 $\mathbf{l}$ 的<b>射线</b>上；若允许 $t<0$，点就跑到相反方向去了。所以沿 $\mathbf{l}$ 与沿 $-\mathbf{l}$ 的方向导数是<b>两个不同的极限</b>，一般没有必然关系（可微时才有 $\partial f/\partial(-\mathbf{l})=-\partial f/\partial\mathbf{l}$，见下一节定理）。</li>
+<li><b>平面上用一个角就够了</b>：若 $\mathbf{l}$ 从 $x$ 轴正向<b>逆时针</b>转过角 $\varphi$（$0\le\varphi&lt;2\pi$），则 $\mathbf{e}_l=(\cos\varphi,\sin\varphi)$。这与方向角写法一致：$\cos\alpha=\cos\varphi$，而 $\cos\beta=\pm\sin\varphi$，正负号由 $\mathbf{l}$ 在 $x$ 轴上方还是下方决定——所以题目说"与 $x$ 轴夹角为 $\alpha$"时，还要看清方向指向哪一侧。</li>
 <li><b>分母是 $t$ 而不是 $t\cos\alpha$</b>：$t$ 正是点 $P$ 到 $P_0$ 的距离 $|P_0P|=\sqrt{(t\cos\alpha)^2+(t\cos\beta)^2}=t$（这正是要求单位向量的原因），所以方向导数的含义是"每走单位距离函数变化多少"。</li>
 </ul>
 <p><b>方向导数与偏导数的关系。</b>取 $\mathbf{l}=\mathbf{i}=(1,0)$，则 $\dfrac{\partial f}{\partial \mathbf{i}}=\lim\limits_{t\to0^+}\dfrac{f(x_0+t,y_0)-f(x_0,y_0)}{t}$，这是关于 $x$ 的<b>右</b>导数；取 $\mathbf{l}=-\mathbf{i}$ 得 $\lim\limits_{t\to0^+}\dfrac{f(x_0-t,y_0)-f(x_0,y_0)}{t}$，它等于关于 $x$ 的左导数的<b>相反数</b>。因此：</p>
@@ -80,7 +81,7 @@ $$\frac{f(x_0+t\cos\alpha,\ y_0+t\cos\beta)-f(x_0,y_0)}{t}=f_x(x_0,y_0)\cos\alph
         ],
         remark: R`<ul>
 <li><b>可微是充分条件，不是必要条件，也不能换成"偏导数存在"。</b>反例：$f(x,y)=\begin{cases}\dfrac{x^2y}{x^2+y^2},&(x,y)\ne(0,0)\\0,&(x,y)=(0,0)\end{cases}$。在原点 $f_x(0,0)=f_y(0,0)=0$，沿 $\mathbf{e}_l=(\cos\theta,\sin\theta)$ 有 $f(t\cos\theta,t\sin\theta)=t\cos^2\theta\sin\theta$，故 $\dfrac{\partial f}{\partial\mathbf{l}}=\cos^2\theta\sin\theta$，沿每个方向的方向导数都存在；但若套公式得 $0\cdot\cos\theta+0\cdot\sin\theta=0$，与真实值 $\cos^2\theta\sin\theta$ 不符（如 $\theta=\pi/4$ 时真实值 $\tfrac{\sqrt2}{4}$）。原因是 $f$ 在原点不可微（$\dfrac{\Delta f-0}{\rho}=\cos^2\theta\sin\theta$ 不趋于 $0$）。所以<b>没有可微性，公式可能给出错误答案</b>。</li>
-<li>反过来，上一节的 $\sqrt{x^2+y^2}$ 说明方向导数全存在也推不出可微；甚至"沿各方向方向导数都存在且满足线性关系 $\partial f/\partial\mathbf{l}=a\cos\alpha+b\cos\beta$"也推不出可微（需要 $o(\rho)$ 对所有趋近方式一致，而不是逐方向成立）。</li>
+<li>反过来，上一节的 $\sqrt{x^2+y^2}$ 说明方向导数全存在也推不出可微；甚至"沿各方向方向导数都存在且满足线性关系 $\partial f/\partial\mathbf{l}=a\cos\alpha+b\cos\beta$"也推不出可微。例：$f=\dfrac{x^3y}{x^6+y^2}$（原点补 $0$），沿 $(\cos\theta,\sin\theta)$ 有 $\dfrac{f(t\cos\theta,t\sin\theta)}{t}=\dfrac{t\cos^3\theta\sin\theta}{t^4\cos^6\theta+\sin^2\theta}\to0$（$\sin\theta\ne0$ 时分母趋于 $\sin^2\theta>0$；$\sin\theta=0$ 时 $f\equiv0$），所以沿每个方向的方向导数都是 $0=0\cdot\cos\theta+0\cdot\sin\theta$，完全"线性"；但沿曲线 $y=x^3$ 有 $f=\dfrac12$，$f$ 在原点连续都谈不上，更不可微。原因是可微要求 $o(\rho)$ 对所有趋近方式<b>一致</b>成立，而方向导数只检查了直线方式。</li>
 <li>公式表明可微时 $\dfrac{\partial f}{\partial(-\mathbf{l})}=-\dfrac{\partial f}{\partial\mathbf{l}}$：把 $(\cos\alpha,\cos\beta)$ 换成 $(-\cos\alpha,-\cos\beta)$ 即可。所以可微函数的方向导数"正反方向相反"，这时按 $t\to0^+$ 还是 $t\to0$ 定义都无所谓。</li>
 <li>考研题目中给的函数几乎都是初等函数，在所给点偏导数连续，从而可微（可微的充分条件，见 mdiff.diffable），可以放心用公式；但<b>求解题中应说明一句"$f$ 的偏导数连续，故可微"</b>。</li>
 </ul>`
@@ -98,7 +99,7 @@ $$\mathbf{grad}\,f=\nabla f=f_x\,\mathbf{i}+f_y\,\mathbf{j}+f_z\,\mathbf{k}=(f_x
 <li><b>梯度是向量，不是数。</b>填空题问"梯度等于"，答案必须是向量 $(a,b,c)$ 或 $a\mathbf{i}+b\mathbf{j}+c\mathbf{k}$；问"梯度的模"或"最大方向导数"，答案才是数 $\sqrt{a^2+b^2+c^2}$。</li>
 <li><b>梯度依赖于点。</b>$\nabla f$ 在每个点是一个向量，整体上是一个<b>向量场</b>（场论里 $\nabla f$ 称为数量场 $f$ 产生的梯度场，见 mint.field）。</li>
 <li><b>定义只要求偏导数存在。</b>梯度本身只是把偏导数排成向量，所以只要偏导存在就能写出来。但梯度的<b>几何意义</b>（下一节："沿梯度方向导数最大"）要求 $f$ 可微——这一点和上一定理的条件是一致的。</li>
-<li>梯度与坐标系有关的写法，但其几何含义（方向、模长）在旋转坐标系下不变，这是因为它本质上是"线性主部 $\mathrm{d}f$ 所对应的向量"。</li>
+<li><b>梯度的分量依赖于坐标系，但它作为向量的方向和模长不依赖。</b>换一组直角坐标（如把坐标轴旋转），分量 $f_x,f_y$ 会变，但算出来的向量是同一个——因为（可微时）它由"方向导数 $=\nabla f\cdot\mathbf{e}_l$ 对一切方向成立"唯一确定，而方向导数的定义根本不涉及坐标系。这也是下一节能把梯度解释成"增长最快方向"的根据。</li>
 </ul>
 <p><b>梯度的运算法则</b>（设 $u,v$ 可微，$c$ 为常数，$\varphi$ 可导）：</p>
 $$\nabla(cu)=c\nabla u,\quad\nabla(u\pm v)=\nabla u\pm\nabla v,\quad\nabla(uv)=v\nabla u+u\nabla v,\quad\nabla\varphi(u)=\varphi'(u)\nabla u.$$
@@ -155,8 +156,8 @@ $$\frac{\partial f}{\partial\mathbf{l}}\bigg|_{P_0}=\nabla f(P_0)\cdot\mathbf{e}
       },
       {
         kind: 'thm', title: '梯度与等值线、等值面垂直',
-        statement: R`<p>（1）设 $f(x,y)$ 在点 $P_0(x_0,y_0)$ 有连续偏导数且 $\nabla f(P_0)\ne\mathbf{0}$，则等值线 $L:\ f(x,y)=c$（$c=f(P_0)$）在 $P_0$ 处有切线，$\nabla f(P_0)$ 是 $L$ 在 $P_0$ 处的<b>法向量</b>，且指向 $f$ 值增大的一侧。</p>
-<p>（2）设 $u=f(x,y,z)$ 在 $P_0$ 有连续偏导数且 $\nabla f(P_0)\ne\mathbf{0}$，则 $\nabla f(P_0)$ 是等值面 $\Sigma:\ f(x,y,z)=c$（$c=f(P_0)$）在 $P_0$ 处的<b>法向量</b>，指向 $f$ 增大的一侧。</p>`,
+        statement: R`<p>（1）设 $f(x,y)$ 在点 $P_0(x_0,y_0)$ 的某邻域内有连续偏导数且 $\nabla f(P_0)\ne\mathbf{0}$，则等值线 $L:\ f(x,y)=c$（$c=f(P_0)$）在 $P_0$ 附近是一条光滑曲线，在 $P_0$ 处有切线，$\nabla f(P_0)$ 是 $L$ 在 $P_0$ 处的<b>法向量</b>，且指向 $f$ 值增大的一侧。</p>
+<p>（2）设 $u=f(x,y,z)$ 在 $P_0$ 的某邻域内有连续偏导数且 $\nabla f(P_0)\ne\mathbf{0}$，则 $\nabla f(P_0)$ 是等值面 $\Sigma:\ f(x,y,z)=c$（$c=f(P_0)$）在 $P_0$ 处的<b>法向量</b>，指向 $f$ 增大的一侧。</p>`,
         intuition: R`<p>沿等值线走，$f$ 不变，所以沿等值线切向的方向导数是 $0$；而方向导数 $=|\nabla f|\cos\theta$，为零只能是 $\theta=\pi/2$，即梯度垂直于切向。再结合上一定理，梯度指向上升最快的方向，而等值线一侧高一侧低，所以它指向高的一侧。地图上的等高线越密，坡越陡，梯度模越大——这和"$|\nabla f|$ 是最大坡度"是一致的。</p>`,
         steps: [
           { s: R`<p>先证（1）。由 $\nabla f(P_0)\ne\mathbf{0}$，不妨设 $f_y(x_0,y_0)\ne0$。由隐函数存在定理（mdiff.implicit），方程 $f(x,y)=c$ 在 $P_0$ 附近确定了一个连续可导的函数 $y=y(x)$，$y(x_0)=y_0$，且 $y'(x_0)=-\dfrac{f_x(x_0,y_0)}{f_y(x_0,y_0)}$。</p>`, why: R`<p>要谈"等值线的切线"，首先要知道等值线在 $P_0$ 附近确实是一条光滑曲线——这正是隐函数定理提供的。若 $f_y=0$ 而 $f_x\ne0$，则把 $x,y$ 的角色互换，解出 $x=x(y)$，证明相同。</p>` },
@@ -164,8 +165,8 @@ $$\frac{\partial f}{\partial\mathbf{l}}\bigg|_{P_0}=\nabla f(P_0)\cdot\mathbf{e}
 $$\nabla f(P_0)\cdot\mathbf{T}=f_x\cdot1+f_y\cdot\left(-\frac{f_x}{f_y}\right)=0.$$
 所以 $\nabla f(P_0)\perp\mathbf{T}$，即 $\nabla f(P_0)$ 是等值线的法向量。</p>`, why: R`<p>曲线 $y=y(x)$ 的切向量是 $(1,y')$。另一种看法：沿曲线 $f(x,y(x))\equiv c$，两边对 $x$ 求导（链式法则）得 $f_x+f_yy'=0$，这就是内积为零——"沿等值线 $f$ 不变 ⇒ 沿切向方向导数为零 ⇒ 梯度与切向垂直"。</p>` },
           { s: R`<p>指向性：取 $\mathbf{e}=\dfrac{\nabla f(P_0)}{|\nabla f(P_0)|}$，由偏导连续知 $f$ 在 $P_0$ 可微，由最大方向导数定理 $\dfrac{\partial f}{\partial\mathbf{e}}=|\nabla f(P_0)|>0$。按定义，当 $t>0$ 充分小时 $\dfrac{f(P_0+t\mathbf{e})-f(P_0)}{t}>0$，即 $f(P_0+t\mathbf{e})>c$。所以从 $P_0$ 沿梯度方向走一小步，函数值大于 $c$：梯度指向 $f$ 增大的一侧。</p>`, why: R`<p>极限为正数 ⇒ 在充分小的 $t>0$ 上差商为正（极限的保号性）。这一步把"指向增大一侧"这句直观话变成了严格陈述。</p>` },
-          { s: R`<p>再证（2）。设 $\Gamma:\ x=x(t),y=y(t),z=z(t)$ 是曲面 $\Sigma$ 上过 $P_0$（对应 $t=t_0$）的任意一条光滑曲线。因为它在曲面上，$f(x(t),y(t),z(t))\equiv c$。两边对 $t$ 求导，由链式法则：
-$$f_x\,x'(t_0)+f_y\,y'(t_0)+f_z\,z'(t_0)=0,\quad\text{即}\quad\nabla f(P_0)\cdot\big(x'(t_0),y'(t_0),z'(t_0)\big)=0.$$</p>`, why: R`<p>曲面上过 $P_0$ 的所有曲线的切向量都与同一个向量 $\nabla f(P_0)$ 垂直，因此它们共面——这个平面就是切平面，$\nabla f(P_0)$ 就是法向量。这正是 mdiff.geo 中"曲面 $F(x,y,z)=0$ 的法向量为 $(F_x,F_y,F_z)$"的来源。指向性的证明与（1）第 3 步完全相同。</p>` }
+          { s: R`<p>再证（2）。与（1）同理，由 $\nabla f(P_0)\ne\mathbf{0}$ 不妨设 $f_z(P_0)\ne0$，隐函数定理保证 $f(x,y,z)=c$ 在 $P_0$ 附近确定了连续可微的 $z=z(x,y)$，即 $\Sigma$ 在 $P_0$ 附近是一张光滑曲面，在 $P_0$ 处有切平面。设 $\Gamma:\ x=x(t),y=y(t),z=z(t)$ 是 $\Sigma$ 上过 $P_0$（对应 $t=t_0$）的任意一条光滑曲线。因为它在曲面上，$f(x(t),y(t),z(t))\equiv c$。两边对 $t$ 求导，由链式法则：
+$$f_x\,x'(t_0)+f_y\,y'(t_0)+f_z\,z'(t_0)=0,\quad\text{即}\quad\nabla f(P_0)\cdot\big(x'(t_0),y'(t_0),z'(t_0)\big)=0.$$</p>`, why: R`<p>曲面上过 $P_0$ 的所有曲线的切向量都与同一个非零向量 $\nabla f(P_0)$ 垂直，因此它们都落在过 $P_0$ 且以 $\nabla f(P_0)$ 为法向量的那张平面上——这正是切平面，$\nabla f(P_0)$ 就是法向量。这正是 mdiff.geo 中"曲面 $F(x,y,z)=0$ 的法向量为 $(F_x,F_y,F_z)$"的来源。指向性的证明与（1）第 3 步完全相同。</p>` }
         ],
         remark: R`<ul>
 <li>定理把 mdiff.geo 中的"隐式曲面法向量 $(F_x,F_y,F_z)$"与本篇的梯度统一起来：<b>隐式曲面的法向量就是左端函数的梯度</b>。显式曲面 $z=f(x,y)$ 可以写成 $F=f(x,y)-z=0$，法向量 $(f_x,f_y,-1)$ 也是 $\nabla F$。</li>
@@ -268,7 +269,7 @@ $$S=\iint_D\sqrt{1+z_x^2+z_y^2}\,\mathrm{d}\sigma=\iint_D\sqrt{1+4x^2+4y^2}\,\ma
 <li><b>把方向导数写成 $\dfrac{\partial f}{\partial\mathbf{l}}=\sqrt{f_x^2+f_y^2}$。</b>这只在 $\mathbf{l}$ 恰是梯度方向时才对；一般方向要乘 $\cos\theta$。</li>
 <li><b>混淆"二元函数梯度"与"曲面法向量"。</b>$z=f(x,y)$ 的梯度 $(f_x,f_y)$ 是 $xOy$ 平面内的向量，垂直于等值线 $f(x,y)=c$；曲面 $z=f(x,y)$ 的法向量是三维向量 $(f_x,f_y,-1)$，两者维数都不同。</li>
 <li><b>梯度为零时谈"梯度方向"。</b>$\nabla f(P_0)=\mathbf{0}$ 时沿任何方向的方向导数都为零，没有"增长最快的方向"可言，此时也不能说梯度垂直于等值线（等值线可能不光滑）。</li>
-<li><b>方向角与方向余弦。</b>给方向角 $\alpha,\beta,\gamma$ 时，$\mathbf{e}_l=(\cos\alpha,\cos\beta,\cos\gamma)$ 本身已是单位向量；给"与 $x$ 轴夹角为 $\alpha$"的平面方向时，$\mathbf{e}_l=(\cos\alpha,\sin\alpha)$，注意第二个分量是 $\sin\alpha$（因为 $\cos\beta=\sin\alpha$）。</li>
+<li><b>方向角与方向余弦。</b>给方向角 $\alpha,\beta,\gamma$ 时，$\mathbf{e}_l=(\cos\alpha,\cos\beta,\cos\gamma)$ 本身已是单位向量；给"从 $x$ 轴正向逆时针转角 $\varphi$"的平面方向时，$\mathbf{e}_l=(\cos\varphi,\sin\varphi)$，注意第二个分量是 $\sin\varphi$ 而不是 $\cos\varphi$；若只说"与 $x$ 轴夹角为 $\alpha$"而方向指向 $x$ 轴下方，则第二个分量是 $-\sin\alpha$（因为此时 $\beta=\dfrac{\pi}{2}+\alpha$，$\cos\beta=-\sin\alpha$）。</li>
 </ul>`
       },
       {
@@ -296,7 +297,7 @@ $$S=\iint_D\sqrt{1+z_x^2+z_y^2}\,\mathrm{d}\sigma=\iint_D\sqrt{1+4x^2+4y^2}\,\ma
 <li><b>题型与分值。</b>近十年共出现 4 次：3 道小题（选择 4 分或填空 5 分）、1 道解答题的第一问。选择题 <span class="qref" data-q="2017-3">2017 年第 3 题</span>（三元函数沿非单位向量的方向导数）；填空题 <span class="qref" data-q="2022-11">2022 年第 11 题</span>（二元函数最大方向导数）、<span class="qref" data-q="2025-13">2025 年第 13 题</span>（三元函数沿非单位向量的方向导数）；解答题 <span class="qref" data-q="2019-16">2019 年第 16 题</span>（由最大方向导数的方向与值反求参数，再接曲面面积）。</li>
 <li><b>设问方式。</b>主要有三种：(1) 直接给点与方向向量求方向导数，方向向量故意不取单位向量（<span class="qref" data-q="2017-3">2017 年第 3 题</span>、<span class="qref" data-q="2025-13">2025 年第 13 题</span>）；(2) 问"最大方向导数"，考 $|\nabla f|$（<span class="qref" data-q="2022-11">2022 年第 11 题</span>）；(3) 把"沿 $\mathbf{l}$ 方向导数最大、最大值为 $M$"作为条件，反推梯度从而确定参数（<span class="qref" data-q="2019-16">2019 年第 16 题</span>）。更早年份还直接问过梯度向量本身（<span class="qref" data-q="2008-2">2008 年第 2 题</span>、<span class="qref" data-q="2012-11">2012 年第 11 题</span>）以及给单位向量求方向导数（<span class="qref" data-q="2005-3">2005 年第 3 题</span>）。</li>
 <li><b>常见综合。</b>与曲面面积、二重积分综合（<span class="qref" data-q="2019-16">2019 年第 16 题</span>）；与条件极值综合——在曲线上求最大方向导数的最大值（<span class="qref" data-q="2015-17">2015 年第 17 题</span>）；与可微性概念辨析综合（<span class="qref" data-q="2008-2">2008 年第 2 题</span>标注了 mdiff.diffable）。此外在多元积分的场论部分，梯度作为 $\nabla$ 算子的基础还会以"梯度、散度、旋度"的形式出现（<span class="qref" data-q="2001-1-2">2001 年一(2)</span>）。</li>
-<li><b>近几年的变化。</b>2017、2022、2025 三题几乎是同一模板的重复，说明命题组把它当作"保底送分题"，但每次都在方向向量的模长上设陷阱（$|\mathbf{n}|=3$）。三元函数出现得比二元更多。解答题中它只作为一问出现，不会单独出 10 分的方向导数证明题。</li>
+<li><b>近几年的变化。</b>2017、2022、2025 三题几乎是同一模板的重复，说明命题组把它当作"保底送分题"，但给方向向量的两题都在模长上设陷阱（<span class="qref" data-q="2017-3">2017 年第 3 题</span>与<span class="qref" data-q="2025-13">2025 年第 13 题</span>的 $|\mathbf{n}|$ 都恰为 $3$）。二元与三元各占一半（<span class="qref" data-q="2019-16">2019 年第 16 题</span>、<span class="qref" data-q="2022-11">2022 年第 11 题</span>为二元，<span class="qref" data-q="2017-3">2017 年第 3 题</span>、<span class="qref" data-q="2025-13">2025 年第 13 题</span>为三元），两种都要熟。近十年唯一的解答题 <span class="qref" data-q="2019-16">2019 年第 16 题</span>中，方向导数只作为第一问的条件出现，没有考过方向导数或梯度的证明题；概念辨析（方向导数、偏导、可微的关系）近十年也没有直接考过，但它是 mdiff.diffable 选择题的常见选项素材，三个标准反例仍要会。</li>
 <li><b>备考建议。</b>熟练三步法和三个概念辨析反例即可；重点练习"反推参数"型（<span class="qref" data-q="2019-16">2019 年第 16 题</span>）和"约束下的最大方向导数"型（<span class="qref" data-q="2015-17">2015 年第 17 题</span>），这两类是综合题里方向导数的常见面目。</li>
 </ul>`
       },

@@ -53,6 +53,7 @@ tools/artifact.js       生成 Claude artifact 版页面
 tools/api-run.js        用 API 额度在本机跑内容工作流（见下）
 tools/prompts/          给 api-run.js 追加的额外要求（如「结合近十年真题」）
 tools/test-site.js      端到端测试：无头浏览器把各页面和交互走一遍（见下）
+tools/svg-png.js        把讲解里的 SVG 示意图渲染成 PNG，检查画得对不对
 ```
 
 ## 测试

@@ -7,5 +7,15 @@
     2024,
     2025
   ],
-  "reviewedLessons": []
+  "reviewedLessons": [
+    "mdiff.chain",
+    "diff.taylor",
+    "lim.compute",
+    "lim.inf",
+    "mdiff.extreme",
+    "ode.first",
+    "series.sum",
+    "diff.calc",
+    "mdiff.dir"
+  ]
 }

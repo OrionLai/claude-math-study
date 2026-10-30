@@ -70,7 +70,7 @@ $$\text{导数级数}\ \sum_{n=1}^\infty na_nx^{n-1}\qquad\text{与}\qquad\text{
 <p>的收敛半径也都是 $R$。（收敛<b>域</b>可能不同：端点的敛散性可能改变。）</p>`,
         intuition: R`<p>系数乘一个 $n$ 或除一个 $n$，只是"多项式量级"的改变，而幂级数的收敛由"指数量级" $|x/R|^n$ 决定，指数压得住多项式，所以半径不变。但在端点处 $|x/R|^n=1$，指数不再起作用，$n$ 的因子就能左右敛散性。</p>`,
         steps: [
-          { s: R`<p>记导数级数的收敛半径为 $R'$。<b>先证 $R'\ge R$</b>：任取 $|x|\lt R$，选 $r$ 使 $|x|\lt r\lt R$。因为 $r$ 在收敛区间内，$\sum a_nr^n$ 收敛，于是通项有界：存在 $M$ 使 $|a_n|r^n\le M$ 对一切 $n$ 成立。</p>`, why: R`<p>想法：要证 $\sum na_nx^{n-1}$ 收敛，就要找一个比它大的收敛级数。几何级数是我们唯一真正会的，所以要把 $|x|$ 和一个比它大的 $r$ 比较，造出公比 $q=|x|/r\lt1$。"收敛则通项趋于 $0$，从而有界"是 series.concept 的必要条件。</p>` },
+          { s: R`<p>记导数级数的收敛半径为 $R'$。<b>先证 $R'\ge R$</b>：任取 $|x|\lt R$，选 $r$ 使 $|x|\lt r\lt R$（$R=+\infty$ 时任取 $r>|x|$ 即可）。因为 $r$ 在收敛区间内，$\sum a_nr^n$ 收敛，于是通项有界：存在 $M$ 使 $|a_n|r^n\le M$ 对一切 $n$ 成立。</p>`, why: R`<p>想法：要证 $\sum na_nx^{n-1}$ 收敛，就要找一个比它大的收敛级数。几何级数是我们唯一真正会的，所以要把 $|x|$ 和一个比它大的 $r$ 比较，造出公比 $q=|x|/r\lt1$。"收敛则通项趋于 $0$，从而有界"是 series.concept 的必要条件。</p>` },
           { s: R`<p>令 $q=\dfrac{|x|}{r}\in[0,1)$，则 $|na_nx^{n-1}|=\dfrac{n}{r}\cdot|a_n|r^n\cdot q^{n-1}\le\dfrac{M}{r}\,nq^{n-1}$。而 $\sum nq^{n-1}$ 收敛（比值法：$\dfrac{(n+1)q^n}{nq^{n-1}}\to q\lt1$）。由比较判别法，$\sum na_nx^{n-1}$ 绝对收敛。于是 $(-R,R)$ 内每点都是导数级数的收敛点，$R'\ge R$。</p>`, why: R`<p>拆项 $|x|^{n-1}=r^{n-1}q^{n-1}$ 是全部技巧：$|a_n|r^n$ 有界，$q^{n-1}$ 以指数速度衰减，中间的 $n$ 被 $q^{n-1}$ 吃掉。</p>` },
           { s: R`<p><b>再证 $R'\le R$</b>：任取 $|x|\lt R'$ 且 $x\ne0$，则 $\sum na_nx^{n-1}$ 绝对收敛。对 $n\ge1$，$|a_nx^n|=\dfrac{|x|}{n}|na_nx^{n-1}|\le|x|\cdot|na_nx^{n-1}|$，由比较判别法 $\sum a_nx^n$ 绝对收敛。所以 $(-R',R')$ 内的点都是原级数的收敛点，$R\ge R'$。两边合起来 $R'=R$。</p>`, why: R`<p>反方向更容易：原级数的通项比导数级数的通项"少乘了一个 $n$"，当然更小。</p>` },
           { s: R`<p><b>积分级数</b>：$\sum\dfrac{a_n}{n+1}x^{n+1}$ 的导数级数恰好是 $\sum a_nx^n$。对积分级数应用已证结论，知它与自己的导数级数（即原级数）半径相同，为 $R$。</p>`, why: R`<p>"积分级数的导数级数就是原级数"——这一句话把两个结论合二为一。</p>` }
@@ -91,7 +91,7 @@ $$\Big|\frac{x^n-x_0^n}{x-x_0}-nx_0^{n-1}\Big|\le\sum_{k=0}^{n-1}r^{n-1-k}\cdot 
           { s: R`<p><b>求和。</b>于是 $\Big|\dfrac{S(x)-S(x_0)}{x-x_0}-T(x_0)\Big|\le|x-x_0|\sum\limits_{n=2}^\infty\dfrac{n(n-1)}{2}|a_n|r^{n-2}$。右端的级数是原级数的二阶导数级数在 $x=r$ 处取绝对值，由上一定理（用两次）它的收敛半径仍是 $R>r$，故收敛，记其和为 $C$。</p>`, why: R`<p>这里是"半径不变"定理的真正用处：它保证了常数 $C$ 是有限的，而且 $C$ 与 $x$ 无关。</p>` },
           { s: R`<p>令 $x\to x_0$，$|x-x_0|\cdot C\to0$，所以差商极限存在且等于 $T(x_0)$，即 $S'(x_0)=\sum na_nx_0^{n-1}$。$x_0$ 任意，结论在 $(-R,R)$ 内处处成立。由于 $S'$ 又是一个半径为 $R$ 的幂级数的和函数，可以反复用此定理，得到任意阶导数；可导必连续。</p>`, why: R`<p>整个证明只用了两件事：几何级数的收敛与比较判别法。没有用到一致收敛的语言，但本质上就是在 $[-r,r]$ 上的一致控制。</p>` }
         ],
-        remark: R`<p><b>推论（系数唯一性）。</b>令 $x=0$ 代入 $S^{(k)}(x)$ 的级数，只剩 $n=k$ 一项：$S^{(k)}(0)=k!\,a_k$，即 $a_k=\dfrac{S^{(k)}(0)}{k!}$。所以<b>同一个函数在同一点只有一个幂级数展开</b>——这就是"已知和函数反求系数"类题目（如 2024 年第 3 题）的理论依据，也是 series.expand 里"展开式唯一"的来源。</p>
+        remark: R`<p><b>推论（系数唯一性）。</b>令 $x=0$ 代入 $S^{(k)}(x)$ 的级数，只剩 $n=k$ 一项：$S^{(k)}(0)=k!\,a_k$，即 $a_k=\dfrac{S^{(k)}(0)}{k!}$。所以<b>同一个函数在同一点只有一个幂级数展开</b>——这就是"已知和函数反求系数"类题目（如 <span class="qref" data-q="2024-3">2024 年第 3 题</span>）的理论依据，也是 series.expand 里"展开式唯一"的来源。</p>
 <p><b>条件不能放到端点。</b>定理只保证开区间 $(-R,R)$ 内可导。$\sum\limits_{n=1}^\infty\dfrac{x^n}{n^2}$ 在 $x=1$ 收敛，但逐项求导得 $\sum\dfrac{x^{n-1}}{n}$ 在 $x=1$ 发散，和函数 $S(x)$ 在 $x=1$ 的左导数为 $+\infty$。</p>
 <p><b>一般函数项级数没有这个性质。</b>$\sum\limits_{n=1}^\infty\dfrac{\sin(n^2x)}{n^2}$ 处处收敛，但逐项求导得 $\sum\cos(n^2x)$ 处处发散，和函数的可导性无法由逐项求导得到。幂级数的"整齐"是特殊的。</p>`
       },
@@ -104,7 +104,8 @@ $$\int_0^xS(t)\,\mathrm dt=\sum_{n=0}^\infty\int_0^xa_nt^n\,\mathrm dt=\sum_{n=0
           { s: R`<p>令 $F(x)=\sum\limits_{n=0}^\infty\dfrac{a_n}{n+1}x^{n+1}$。由"半径不变"定理，$F$ 的收敛半径为 $R$；由逐项求导定理，$F$ 在 $(-R,R)$ 内可导，且 $F'(x)=\sum\limits_{n=0}^\infty a_nx^n=S(x)$。</p>`, why: R`<p>把要证的等式右边取名为 $F$，然后发现 $F$ 的逐项导数恰好是 $S$——这就把积分问题变成了已经解决的求导问题。</p>` },
           { s: R`<p>$S$ 在 $(-R,R)$ 内连续（求导定理推论），所以 $\int_0^xS(t)\,\mathrm dt$ 有意义；$F$ 是 $S$ 在 $(-R,R)$ 上的一个原函数，由牛顿—莱布尼茨公式，$\int_0^xS(t)\,\mathrm dt=F(x)-F(0)=F(x)$，因为 $F(0)=0$。</p>`, why: R`<p>牛顿—莱布尼茨公式要求被积函数连续、$F$ 是原函数，两条都已具备。$F(0)=0$ 是因为级数每一项都含 $x^{n+1}$。</p>` }
         ],
-        remark: R`<p><b>积分下限必须是 $0$（或者说：必须让每一项的常数项消失）。</b>写 $\int_a^x$ 得到的是 $F(x)-F(a)$，若 $a\ne0$，$F(a)$ 是一个未知常数，还得单独求，容易出错。所以口诀是"<b>先求导后积分，下限取 0</b>"。</p>
+        remark: R`<p><b>推广到收敛端点。</b>教材把本定理叙述为"和函数在<b>收敛域</b> $D$ 上可积，且对一切 $x\in D$ 逐项积分公式成立"，也就是说若原级数在端点 $x=R$ 收敛，则 $\int_0^RS(t)\,\mathrm dt=\sum\limits_{n=0}^\infty\dfrac{a_n}{n+1}R^{n+1}$ 也成立。理由要借用下一节的阿贝尔第二定理：（i）$\sum a_nR^n$ 收敛，而 $\dfrac{R}{n+1}$ 单调有界，由阿贝尔判别法 $\sum\dfrac{a_n}{n+1}R^{n+1}=\sum a_nR^n\cdot\dfrac{R}{n+1}$ 收敛，所以积分级数 $F$ 在 $x=R$ 也收敛（阿贝尔判别法不在大纲内，考试中遇到端点只需用下一节定理取极限，这里只为说明教材叙述的来源）；（ii）由阿贝尔第二定理，$S$ 在 $[0,R]$ 上连续（从而可积），且 $F(R)=\lim\limits_{x\to R^-}F(x)=\lim\limits_{x\to R^-}\int_0^xS(t)\,\mathrm dt=\int_0^RS(t)\,\mathrm dt$。注意反过来<b>不行</b>：积分级数在端点收敛不能保证原级数在端点收敛（$\sum x^n$ 与 $\sum\dfrac{x^{n+1}}{n+1}$ 在 $x=-1$）。</p>
+<p><b>积分下限必须是 $0$（或者说：必须让每一项的常数项消失）。</b>写 $\int_a^x$ 得到的是 $F(x)-F(a)$，若 $a\ne0$，$F(a)$ 是一个未知常数，还得单独求，容易出错。所以口诀是"<b>先求导后积分，下限取 0</b>"。</p>
 <p><b>和求导定理的分工。</b>系数里"多了一个 $n$"（如 $\sum nx^n$）——先把它写成某个级数的导数；系数里"分母多了一个 $n$"（如 $\sum\dfrac{x^n}{n}$）——先对它求导消掉分母，再积分回来。</p>`
       },
       {
@@ -112,7 +113,7 @@ $$\int_0^xS(t)\,\mathrm dt=\sum_{n=0}^\infty\int_0^xa_nt^n\,\mathrm dt=\sum_{n=0
         statement: R`<p>设 $\sum\limits_{n=0}^\infty a_nx^n$ 的收敛半径为 $R$（$0\lt R\lt+\infty$），和函数为 $S(x)$。若级数在端点 $x=R$ 收敛，则</p>
 $$\lim_{x\to R^-}S(x)=S(R)=\sum_{n=0}^\infty a_nR^n,$$
 <p>即 $S$ 在 $(-R,R]$ 上连续。对左端点 $x=-R$ 结论相同。</p>`,
-        intuition: R`<p>逐项求导、积分只能在开区间里进行，求出来的闭式表达式在端点处未必"自动"有效。这个定理说：只要端点处级数本身收敛，和函数在端点的值就等于闭式表达式的左极限（通常就是把端点直接代入闭式）。这正是 $\sum\dfrac{(-1)^{n-1}}{n}=\ln2$ 成立的理由：$-\ln(1-x)$ 在 $x=-1$ 处的值等于 $\sum\dfrac{(-1)^n}{n}\cdot(-1)$……即 $\ln2$。</p>`,
+        intuition: R`<p>逐项求导、积分只能在开区间里进行，求出来的闭式表达式在端点处未必"自动"有效。这个定理说：只要端点处级数本身收敛，和函数在端点的值就等于闭式表达式的左极限（通常就是把端点直接代入闭式）。这正是 $\sum\dfrac{(-1)^{n-1}}{n}=\ln2$ 成立的理由：在开区间内只知道 $\sum\dfrac{x^n}{n}=-\ln(1-x)$（$|x|\lt1$），而 $x=-1$ 是端点；级数在 $x=-1$ 收敛（莱布尼茨），于是由本定理 $\sum\dfrac{(-1)^n}{n}=\lim\limits_{x\to-1^+}\big[-\ln(1-x)\big]=-\ln2$，两边乘 $-1$ 即得 $\sum\dfrac{(-1)^{n-1}}{n}=\ln2$。</p>`,
         steps: [
           { s: R`<p>不妨设 $R=1$（否则令 $x=Rt$，考虑 $\sum a_nR^nt^n$）。记 $B=\sum\limits_{n=0}^\infty a_n$（已知收敛），$B_n=\sum\limits_{k=0}^na_k$，余项 $r_n=B-B_n\to0$，并约定 $r_{-1}=B$。则 $a_n=B_n-B_{n-1}=r_{n-1}-r_n$。</p>`, why: R`<p>端点收敛给的信息只有"$r_n\to0$"，所以要想办法让 $r_n$ 出现在 $S(x)$ 的表达式里。用余项的差来表示 $a_n$ 就是为此。</p>` },
           { s: R`<p><b>阿贝尔变换。</b>对 $|x|\lt1$：</p>
@@ -207,7 +208,9 @@ $$\sum_{n=0}^\infty(-1)^n\frac{2n+3}{(2n+1)!}=\sum_{n=0}^\infty\frac{(-1)^n}{(2n
         html: R`<p><b>题 5.</b><span class="qref" data-q="2020-17">2020 年第 17 题</span>：设数列 $\{a_n\}$ 满足：$a_1=1$，$(n+1)a_{n+1}=\left(n+\dfrac12\right)a_n$，证明：当 $|x|<1$ 时，幂级数 $\sum\limits_{n=1}^{\infty}a_nx^n$ 收敛，并求其和函数.</p>
 <p><b>考什么：</b>系数由递推式给出的幂级数——收敛性用比值法，和函数用"递推式 ⇔ 微分方程"。</p>
 <p><b>从题面哪个特征想到方法：</b>递推式里出现 $(n+1)a_{n+1}$ 和 $na_n$，这两个量恰好是和函数求导后的系数：$S'(x)=\sum na_nx^{n-1}=\sum(n+1)a_{n+1}x^n$，$xS'(x)=\sum na_nx^n$。所以把递推式两边乘 $x^n$ 求和，就会得到一个关于 $S$ 的一阶微分方程。</p>
-<p><b>第一步：收敛性。</b>由递推式 $a_n>0$，且 $\dfrac{a_{n+1}}{a_n}=\dfrac{n+\frac12}{n+1}\to1$，所以收敛半径 $R=1$，$|x|\lt1$ 时幂级数（绝对）收敛。证毕。</p>
+<p><b>第一步：收敛性。</b>先说明 $a_n>0$：$a_1=1>0$，若 $a_n>0$ 则 $a_{n+1}=\dfrac{n+\frac12}{n+1}a_n>0$，归纳得一切 $a_n>0$（这样下面才能作商）。对固定的 $x\ne0$，考察正项级数 $\sum|a_nx^n|$：</p>
+$$\lim_{n\to\infty}\frac{|a_{n+1}x^{n+1}|}{|a_nx^n|}=|x|\lim_{n\to\infty}\frac{n+\frac12}{n+1}=|x|\lt1,$$
+<p>由比值审敛法 $\sum|a_nx^n|$ 收敛，故 $\sum a_nx^n$ 绝对收敛；$x=0$ 时显然收敛。证毕。（同理 $|x|>1$ 时发散，所以收敛半径恰为 $1$；阅卷时只写"$R=1$"而不说比值法与 $a_n\ne0$，会被视为论证不完整。）</p>
 <p><b>第二步：建立微分方程。</b>设 $S(x)=\sum\limits_{n=1}^\infty a_nx^n$，$|x|\lt1$。由逐项求导定理，$S'(x)=\sum\limits_{n=1}^\infty na_nx^{n-1}$。递推式两边乘 $x^n$ 并对 $n\ge1$ 求和：</p>
 $$\sum_{n=1}^\infty(n+1)a_{n+1}x^n=\sum_{n=1}^\infty na_nx^n+\frac12\sum_{n=1}^\infty a_nx^n.$$
 <p>左边 $=\sum\limits_{m=2}^\infty ma_mx^{m-1}=S'(x)-a_1=S'(x)-1$；右边 $=xS'(x)+\dfrac12S(x)$。得到</p>
@@ -228,7 +231,13 @@ $$\sum_{n=1}^\infty\frac{x^{n+1}}{n(n+1)}=x\sum_{n=1}^\infty\frac{x^n}{n}-\sum_{
 <ul>
 <li>$0\lt x\le1$：两部分都收敛，总和收敛（加减定理）。</li>
 <li>$x>1$：几何部分收敛、幂级数部分发散，总和必发散——否则"发散的那部分 = 总和 − 收敛的那部分"就收敛了，矛盾（series.concept 的性质："收敛 + 发散 = 发散"）。</li>
-<li>$x\le0$：两部分可能同时发散（$x\lt-1$ 时），"发散 + 发散"结论不定，必须单独论证。最省事的办法是看通项：$x\le0$ 时 $\mathrm e^{-nx}\ge1$，而 $-1\le x\le0$ 时第二项 $\to0$，$x\lt-1$ 时 $\mathrm e^{n|x|}$ 比 $\dfrac{|x|^{n+1}}{n(n+1)}$ 增长得快得多，两种情形 $u_n(x)$ 都不趋于 $0$，由收敛的必要条件知发散。</li>
+<li>$-1\le x\le0$：几何部分发散（公比 $\mathrm e^{-x}\ge1$）、幂级数部分收敛，"收敛 + 发散 = 发散"，总和发散。</li>
+<li>$x\lt-1$：两部分<b>都</b>发散，"发散 + 发散"结论不定（反例：$\sum1$ 与 $\sum(-1)$），必须单独论证。看通项：记 $a=|x|>1$，则</li>
+</ul>
+$$u_n(x)\ge\mathrm e^{na}-\frac{a^{n+1}}{n(n+1)}\ge\mathrm e^{na}-a^{n+1}=\mathrm e^{na}\Big[1-a\Big(\frac{a}{\mathrm e^{a}}\Big)^n\Big].$$
+<p>由 $\mathrm e^a>1+a>a$ 知 $0\lt\dfrac{a}{\mathrm e^a}\lt1$，方括号 $\to1$，而 $\mathrm e^{na}\to+\infty$，故 $u_n(x)\to+\infty$，不趋于 $0$，由收敛的必要条件知发散。</p>
+<ul>
+<li>（顺便，$-1\le x\le0$ 的情形也可以直接看通项：$\mathrm e^{-nx}\ge1$ 而第二项 $\to0$，所以 $u_n(x)\not\to0$。）</li>
 </ul>
 <p><b>答案：</b>收敛域为 $(0,1]$；和函数 $S(x)=\begin{cases}\dfrac{1}{\mathrm{e}^x-1}+(1-x)\ln(1-x)+x,&0\lt x\lt1,\\[2mm]\dfrac{\mathrm e}{\mathrm e-1},&x=1.\end{cases}$（$x=1$ 时 $\dfrac1{\mathrm e-1}+1=\dfrac{\mathrm e}{\mathrm e-1}$。）</p>
 <p><b>启示：</b>（1）"收敛 + 发散 = 发散"是 series.concept 的性质，被反复用来合并收敛域；（2）端点处的和函数要写成分段，端点值要么用阿贝尔第二定理取极限，要么直接算数项级数（本题 $x=1$ 时 $\sum\dfrac1{n(n+1)}=1$ 裂项可直接得到）。</p>`
@@ -270,7 +279,22 @@ $$\sum_{n=1}^\infty\frac{x^{n+1}}{n(n+1)}=x\sum_{n=1}^\infty\frac{x^n}{n}-\sum_{
 <tr><td>已知和函数求 $a_n$</td><td>展开和函数，$a_n=\dfrac{S^{(n)}(0)}{n!}$</td><td>系数唯一性</td></tr>
 </tbody>
 </table>
-<p><b>三、"字典"：级数运算 ⇔ 和函数运算</b></p>
+<p><b>三、必背和函数速查表</b>（右栏是<b>等式成立的全部范围</b>，端点处的等号都由阿贝尔第二定理保证）</p>
+<table>
+<thead><tr><th>级数</th><th>和函数</th><th>成立范围</th></tr></thead>
+<tbody>
+<tr><td>$\sum\limits_{n=0}^\infty x^n$</td><td>$\dfrac1{1-x}$</td><td>$(-1,1)$</td></tr>
+<tr><td>$\sum\limits_{n=1}^\infty nx^{n-1}$，$\ \sum\limits_{n=1}^\infty nx^n$</td><td>$\dfrac1{(1-x)^2}$，$\ \dfrac{x}{(1-x)^2}$</td><td>$(-1,1)$</td></tr>
+<tr><td>$\sum\limits_{n=1}^\infty\dfrac{x^n}{n}$</td><td>$-\ln(1-x)$</td><td>$[-1,1)$</td></tr>
+<tr><td>$\sum\limits_{n=1}^\infty\dfrac{(-1)^{n-1}x^n}{n}$</td><td>$\ln(1+x)$</td><td>$(-1,1]$</td></tr>
+<tr><td>$\sum\limits_{n=0}^\infty\dfrac{(-1)^nx^{2n+1}}{2n+1}$</td><td>$\arctan x$</td><td>$[-1,1]$</td></tr>
+<tr><td>$\sum\limits_{n=0}^\infty\dfrac{x^{2n+1}}{2n+1}$</td><td>$\dfrac12\ln\dfrac{1+x}{1-x}$</td><td>$(-1,1)$</td></tr>
+<tr><td>$\sum\limits_{n=0}^\infty\dfrac{x^n}{n!}$，$\ \sum\limits_{n=0}^\infty\dfrac{(-1)^nx^{2n+1}}{(2n+1)!}$，$\ \sum\limits_{n=0}^\infty\dfrac{(-1)^nx^{2n}}{(2n)!}$</td><td>$\mathrm e^x$，$\ \sin x$，$\ \cos x$</td><td>$(-\infty,+\infty)$</td></tr>
+<tr><td>$\sum\limits_{n=0}^\infty\dfrac{x^{2n+1}}{(2n+1)!}$，$\ \sum\limits_{n=0}^\infty\dfrac{x^{2n}}{(2n)!}$</td><td>$\sinh x=\dfrac{\mathrm e^x-\mathrm e^{-x}}2$，$\ \cosh x=\dfrac{\mathrm e^x+\mathrm e^{-x}}2$</td><td>$(-\infty,+\infty)$</td></tr>
+</tbody>
+</table>
+<p>常用数值：$x=\dfrac12$ 代入第 3 行得 $\sum\dfrac1{n2^n}=\ln2$；$x=-1$ 代入第 3 行、$x=1$ 代入第 4 行都得 $\sum\dfrac{(-1)^{n-1}}{n}=\ln2$；$x=1$ 代入第 5 行得 $\sum\dfrac{(-1)^n}{2n+1}=\dfrac\pi4$；$x=1$ 代入第 7 行得 $\sum\dfrac1{n!}=\mathrm e$。</p>
+<p><b>四、"字典"：级数运算 ⇔ 和函数运算</b></p>
 $$\sum na_nx^{n-1}=S'(x),\quad\sum na_nx^n=xS'(x),\quad\sum\frac{a_n}{n+1}x^{n+1}=\int_0^xS,\quad\sum a_nx^{n+k}=x^kS(x),\quad\sum a_nx^{2n}=S(x^2).$$
 <p>所有求和问题都是在这张字典里"翻译"：把未知级数翻译成已知和函数的导数、积分、乘幂或复合。</p>`
       },
@@ -288,7 +312,7 @@ $$\sum na_nx^{n-1}=S'(x),\quad\sum na_nx^n=xS'(x),\quad\sum\frac{a_n}{n+1}x^{n+1
   </ul>
 </li>
 <li><b>近几年的变化：</b>2016、2022、2023、2025 年没有以本考点为主的题，级数部分的分值流向了敛散性判断与展开；但 2024 年又以选择题形式回归，并且把"展开"和"求和"捆在一起考。所以备考上不能押"一定考大题"，而要把求导链、积分链、阶乘型三套基本功练到小题秒杀，同时保留"递推 → 微分方程"和"分段写和函数"的大题能力。</li>
-<li><b>失分点统计（阅卷角度）：</b>不写收敛域或端点漏判；$x=0$ 处不单独讨论；积分漏 $S(0)$；下标平移丢项；端点代值不说明依据。这些在解答题里每处扣 1–2 分。</li>
+<li><b>解答题的常见失分点：</b>不写收敛域或端点漏判（<span class="qref" data-q="2021-18">2021 年第 18 题</span>的 $x\le0$ 部分）；$x=0$ 处不单独讨论（<span class="qref" data-q="2012-17">2012 年第 17 题</span>的 $S(0)=3$）；证收敛时只写"$R=1$"不给理由、积分漏 $S(0)$、下标平移丢首项（<span class="qref" data-q="2020-17">2020 年第 17 题</span>的三处陷阱）；端点代值不说明依据。这些都是参考答案中单独给分的步骤。</li>
 </ul>`
       },
       {

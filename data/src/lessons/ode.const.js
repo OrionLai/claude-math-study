@@ -70,7 +70,7 @@ $$y=C_1\mathrm{e}^{\lambda_1x}+C_2\mathrm{e}^{\lambda_2x}\qquad(C_1,C_2\ \text{�
           { s: R`<p>因 $\lambda_1\ne\lambda_2$，积分得 $y\mathrm{e}^{-\lambda_2x}=\dfrac{A}{\lambda_1-\lambda_2}\mathrm{e}^{(\lambda_1-\lambda_2)x}+C_2$，即 $y=C_1\mathrm{e}^{\lambda_1x}+C_2\mathrm{e}^{\lambda_2x}$，其中 $C_1=\dfrac{A}{\lambda_1-\lambda_2}$ 仍是任意常数。</p>`, why: R`<p>这一步除以了 $\lambda_1-\lambda_2$，所以"不相等"的条件在这里起作用；重根时这个积分的结果完全不同，这就是定理 2。</p>` },
           { s: R`<p>反过来，任取常数 $C_1,C_2$，直接代入可验证 $C_1\mathrm{e}^{\lambda_1x}+C_2\mathrm{e}^{\lambda_2x}$ 满足方程。所以上式给出了全部解，即通解。</p>`, why: R`<p>推导过程的每一步都是等价变形，但为了保险起见再验证一次"充分性"，这是写通解时的标准严谨性要求。</p>` }
         ],
-        remark: R`<p>两根可能一正一负、同正、同负或者有一个为零，解的图像完全不同：$\lambda\lt0$ 的项衰减，$\lambda\gt0$ 的项爆炸，$\lambda=0$ 的项是常数。考题（如 2016 年第 16 题、2020 年第 11 题）常常不要求解出具体的根，而是用韦达定理判断根的符号：$\lambda_1\lambda_2=q\gt0$ 且 $\lambda_1+\lambda_2=-p\lt0$ 则两根都为负。</p>`
+        remark: R`<p>两根可能一正一负、同正、同负或者有一个为零，解的图像完全不同：$\lambda\lt0$ 的项衰减，$\lambda\gt0$ 的项爆炸，$\lambda=0$ 的项是常数。考题（如 <span class="qref" data-q="2016-16">2016 年第 16 题</span>、<span class="qref" data-q="2020-11">2020 年第 11 题</span>）常常不要求解出具体的根，而是用韦达定理判断根的符号：$\lambda_1\lambda_2=q\gt0$ 且 $\lambda_1+\lambda_2=-p\lt0$ 则两根都为负。</p>`
       },
       {
         kind: 'thm', title: '定理 2：二重实根',
@@ -95,7 +95,7 @@ $$y=\mathrm{e}^{\alpha x}\left(C_1\cos\beta x+C_2\sin\beta x\right)\qquad(C_1,C_
           { s: R`<p><b>实部、虚部分别是解。</b>设 $u=\mathrm{e}^{\alpha x}\cos\beta x$，$v=\mathrm{e}^{\alpha x}\sin\beta x$，则 $\mathrm{e}^{\lambda x}=u+\mathrm{i}v$。由于求导和乘实常数都是对实部、虚部分别进行的，$L[u+\mathrm{i}v]=L[u]+\mathrm{i}L[v]$，而 $L[u],L[v]$ 都是实值函数。复数 $L[u]+\mathrm{i}L[v]=0$ 当且仅当实部虚部都为零，所以 $L[u]=0$，$L[v]=0$。</p>`, why: R`<p>关键在于 $p,q$ 是实数：若系数是复数，$L[u]$ 本身就可能是复值，"实部虚部分别为零"的论证就失效了。</p>` },
           { s: R`<p><b>线性无关。</b>$\dfrac vu=\tan\beta x$ 不是常数（$\beta\ne0$），故 $u,v$ 线性无关。由线性齐次方程解的结构定理（ode.linear），通解为 $C_1u+C_2v=\mathrm{e}^{\alpha x}(C_1\cos\beta x+C_2\sin\beta x)$。</p>`, why: R`<p>二阶线性齐次方程的解空间是二维的，两个线性无关的解就是一组基——这是结构定理的内容，这里直接引用。</p>` }
         ],
-        remark: R`<p>① 公式里 $\beta$ 取正值还是负值不影响结果（$\cos$ 偶、$\sin$ 奇，只是 $C_2$ 变号）。② $\alpha=0$（即 $p=0$，$q\gt0$）时解是纯粹的 $C_1\cos\sqrt q\,x+C_2\sin\sqrt q\,x$，在整个实轴上有界——这正是 2023 年第 2 题的考点。③ 常犯错误是漏掉因子 $\mathrm{e}^{\alpha x}$，或者把 $\beta$ 写成 $\sqrt{p^2-4q}$（忘了除以 $2$、忘了取绝对值）。</p>`
+        remark: R`<p>① 公式里 $\beta$ 取正值还是负值不影响结果（$\cos$ 偶、$\sin$ 奇，只是 $C_2$ 变号）。② $\alpha=0$（即 $p=0$，$q\gt0$）时解是纯粹的 $C_1\cos\sqrt q\,x+C_2\sin\sqrt q\,x$，在整个实轴上有界——这正是 <span class="qref" data-q="2023-2">2023 年第 2 题</span>的考点。③ 常犯错误是漏掉因子 $\mathrm{e}^{\alpha x}$，或者把 $\beta$ 写成 $\sqrt{p^2-4q}$（忘了除以 $2$、忘了取绝对值）。</p>`
       },
       {
         kind: 'text', title: '三种情形的总表、口诀与图像',
@@ -140,8 +140,8 @@ $$y=\mathrm{e}^{\alpha x}\left(C_1\cos\beta x+C_2\sin\beta x\right)\qquad(C_1,C_
         intuition: R`<p>特征多项式分解成 $(\lambda-\lambda_1)^{k_1}\cdots(\lambda-\lambda_s)^{k_s}$，算子也相应分解成 $(D-\lambda_1)^{k_1}\cdots(D-\lambda_s)^{k_s}$，各因子次序可以随意交换。于是只要证明 $(D-\lambda)^k$ 能"杀死" $x^j\mathrm{e}^{\lambda x}$（$j\lt k$），把这个因子挪到最后面作用，就知道这些函数都是解。每求导一次（减去 $\lambda$ 倍）多项式降一次，$k$ 次之后次数 $\lt k$ 的多项式就被消没了。</p>`,
         steps: [
           { s: R`<p><b>引理：$(D-\lambda)\big[x^j\mathrm{e}^{\lambda x}\big]=jx^{j-1}\mathrm{e}^{\lambda x}$。</b>计算：$(x^j\mathrm{e}^{\lambda x})'-\lambda x^j\mathrm{e}^{\lambda x}=jx^{j-1}\mathrm{e}^{\lambda x}+\lambda x^j\mathrm{e}^{\lambda x}-\lambda x^j\mathrm{e}^{\lambda x}=jx^{j-1}\mathrm{e}^{\lambda x}$。</p>`, why: R`<p>$D-\lambda$ 作用于 $Q(x)\mathrm{e}^{\lambda x}$ 的效果就是把 $Q$ 求一次导、指数因子不动。这是整个定理的计算核心。</p>` },
-          { s: R`<p>反复用引理 $k$ 次：$(D-\lambda)^k[x^j\mathrm{e}^{\lambda x}]=j(j-1)\cdots(j-k+1)x^{j-k}\mathrm{e}^{\lambda x}$；当 $0\le j\le k-1$ 时这个系数中含有因子 $(j-j)=0$，故结果为 $0$。</p>`, why: R`<p>$j$ 次多项式求 $k\gt j$ 次导数当然是零；这里只是用算子语言精确地写出来。</p>` },
-          { s: R`<p>设 $\lambda$ 是 $k$ 重根，则特征多项式 $P(\lambda)=(\lambda-\lambda)^kR(\lambda)$，相应 $L=R(D)(D-\lambda)^k$（常系数算子的多项式可以像普通多项式一样分解并交换次序，理由与二阶引理相同：$D$ 与常数可交换）。于是 $L[x^j\mathrm{e}^{\lambda x}]=R(D)\big[(D-\lambda)^k x^j\mathrm{e}^{\lambda x}\big]=R(D)[0]=0$，$j=0,\dots,k-1$。</p>`, why: R`<p>把含 $\lambda$ 的因子放在最里面先作用。这一步说明了"重数 $k$ 给出 $k$ 个解"。</p>` },
+          { s: R`<p>反复用引理：$(D-\lambda)^j[x^j\mathrm{e}^{\lambda x}]=j!\,\mathrm{e}^{\lambda x}$，再作用一次 $(D-\lambda)$ 得 $j!\,(\mathrm{e}^{\lambda x})'-\lambda j!\,\mathrm{e}^{\lambda x}=0$。所以当 $0\le j\le k-1$ 时 $(D-\lambda)^k[x^j\mathrm{e}^{\lambda x}]=0$（作用 $j+1$ 次已经为零，之后恒为零）。</p>`, why: R`<p>$j$ 次多项式求 $k\gt j$ 次导数当然是零；这里只是用算子语言精确地写出来：每作用一次 $D-\lambda$，多项式因子降一次，指数因子不变。</p>` },
+          { s: R`<p>设 $\lambda$ 是 $k$ 重根，则特征多项式可写成 $P(\mu)=(\mu-\lambda)^kR(\mu)$（$R$ 是 $n-k$ 次多项式，$R(\lambda)\ne0$），相应地 $L=P(D)=R(D)(D-\lambda)^k$（常系数算子的多项式可以像普通多项式一样分解并交换次序，理由与二阶引理相同：$D$ 与常数可交换，所以 $D$ 的多项式之间的乘法满足交换律）。于是 $L[x^j\mathrm{e}^{\lambda x}]=R(D)\big[(D-\lambda)^k x^j\mathrm{e}^{\lambda x}\big]=R(D)[0]=0$，$j=0,\dots,k-1$。</p>`, why: R`<p>把含 $\lambda$ 的因子放在最里面先作用。这一步说明了"重数 $k$ 给出 $k$ 个解"。注意这里用 $\mu$ 表示特征多项式的自变量，以免和具体的根 $\lambda$ 混淆。</p>` },
           { s: R`<p>若 $\lambda=\alpha+\beta\mathrm{i}$ 是 $k$ 重复根，则 $x^j\mathrm{e}^{\lambda x}$ 是复值解；与定理 3 第 3 步同理（系数为实数），它的实部 $x^j\mathrm{e}^{\alpha x}\cos\beta x$ 和虚部 $x^j\mathrm{e}^{\alpha x}\sin\beta x$ 都是实值解。共轭根 $\alpha-\beta\mathrm{i}$ 给出的实部虚部与之相同（只差符号），不产生新的解，所以一对 $k$ 重复根共给出 $2k$ 个实解，与它们占据的 $2k$ 个重数恰好匹配。</p>`, why: R`<p>复根的处理方法与二阶情形一字不差，这正是"证明一次、处处可用"的好处。</p>` },
           { s: R`<p>按重数相加，总共得到 $n$ 个解。它们线性无关（证明见下方说明），由 $n$ 阶线性齐次方程解的结构定理（解空间 $n$ 维），通解为这 $n$ 个解的线性组合。</p>`, why: R`<p>结构定理保证"$n$ 个线性无关解的组合就是全部解"，是 ode.linear 的内容。</p>` }
         ],
@@ -164,7 +164,8 @@ $$y=\mathrm{e}^{\alpha x}\left(C_1\cos\beta x+C_2\sin\beta x\right)\qquad(C_1,C_
 <p>它包含的特例：$\lambda=0$ 时就是多项式 $P_m(x)$；$m=0$ 时就是 $a\mathrm{e}^{\lambda x}$；两者都退化时是常数。</p>
 <p><b>定义 5（第二类自由项）</b>　$f(x)=\mathrm{e}^{\alpha x}\big[P_l(x)\cos\beta x+P_n(x)\sin\beta x\big]$，其中 $\alpha,\beta$ 为实常数，$\beta\ne0$，$P_l,P_n$ 分别为 $l$ 次、$n$ 次多项式（允许其中一个恒为零）。</p>
 <p>特例：$\sin\beta x$、$x\cos\beta x$、$\mathrm{e}^{-x}\sin2x$ 都属于这一类。</p>
-<p><b>定义 6（自由项的"特征值"与重数 $k$）</b>　对第一类自由项，把 $\lambda$ 称为自由项的特征值；对第二类，把 $\alpha+\beta\mathrm{i}$ 称为自由项的特征值。记 $k$ 为该特征值作为特征方程根的重数：不是根则 $k=0$，单根 $k=1$，二重根 $k=2$（第二类中 $k$ 只能是 $0$ 或 $1$，因为实系数二次方程的复根不可能是重根）。</p>
+<p><b>定义 6（自由项的"特征值"与重数 $k$）</b>　对第一类自由项，把 $\lambda$ 称为自由项的特征值；对第二类，把 $\alpha+\beta\mathrm{i}$ 称为自由项的特征值。记 $k$ 为该特征值作为特征方程根的重数：不是根则 $k=0$，单根 $k=1$，二重根 $k=2$（对二阶方程，第二类中 $k$ 只能是 $0$ 或 $1$，因为实系数二次方程的复根不可能是重根；对 $n$ 阶方程，$k$ 就是相应特征根的重数，可以更大，例如 $y^{(4)}+2y''+y=\cos x$ 中 $\mathrm{i}$ 是二重根，$k=2$）。</p>
+<p><b>怎么判断 $k$：</b>先解特征方程，再把自由项的特征值拿去对照。$y''-3y'+2y=x\mathrm{e}^{x}$：特征根 $1,2$，自由项特征值 $1$，是单根，$k=1$；$y''-3y'+2y=x\mathrm{e}^{3x}$：特征值 $3$ 不是根，$k=0$；$y''+4y=\sin2x$：特征根 $\pm2\mathrm{i}$，自由项特征值 $0+2\mathrm{i}$，是单根，$k=1$；$y''+4y=\mathrm{e}^{x}\sin2x$：特征值 $1+2\mathrm{i}$，不是根，$k=0$。</p>
 <p><b>为什么要定义 $k$：</b>自由项的"样子"若恰好是齐次方程的解，照样子设的函数代进去左边会得到零，根本凑不出右边——这就是共振。补救办法与重根时完全一样：乘 $x^k$。下面两个定理把这个想法变成严格的公式。</p>
 <p><b>反例（不属于标准类型）：</b>$f(x)=\tan x$、$f(x)=\dfrac1x$、$f(x)=\mathrm{e}^{x^2}$、$f(x)=\ln x$ 都不属于这两类，待定系数法不适用，考研也不会这样出题（除非能通过换元化归）。</p>`
       },
@@ -191,7 +192,7 @@ $$F(\lambda)b_j+(j+1)F'(\lambda)b_{j+1}+(j+2)(j+1)b_{j+2}=a_j,\quad j=m,m-1,\dot
         kind: 'thm', title: '定理 6：自由项为 e^{αx}[P_l cos βx + P_n sin βx] 的特解',
         statement: R`<p>方程 $y''+py'+qy=\mathrm{e}^{\alpha x}\big[P_l(x)\cos\beta x+P_n(x)\sin\beta x\big]$（$\beta\ne0$）有形如</p>
 $$y^*=x^k\mathrm{e}^{\alpha x}\big[R_m(x)\cos\beta x+S_m(x)\sin\beta x\big]$$
-<p>的特解，其中 $m=\max\{l,n\}$，$R_m,S_m$ 是两个待定的 $m$ 次多项式，$k$ 是 $\alpha+\beta\mathrm{i}$ 作为特征根的重数（$k=0$ 或 $1$）。</p>`,
+<p>的特解，其中 $m=\max\{l,n\}$，$R_m,S_m$ 是两个待定的次数不超过 $m$ 的多项式（设的时候要把 $m$ 次以下所有项都写上，算出来某些系数可能为零），$k$ 是 $\alpha+\beta\mathrm{i}$ 作为特征根的重数（二阶方程中 $k=0$ 或 $1$）。</p>`,
         intuition: R`<p>$\cos\beta x$ 和 $\sin\beta x$ 求导会互相变换，所以特解里两者必须同时出现——哪怕自由项只有 $\cos$。而 $\mathrm{e}^{\alpha x}\cos\beta x$ 其实是 $\mathrm{e}^{(\alpha+\beta\mathrm{i})x}$ 的实部，把它看成"复指数自由项"，定理 5 就直接适用，共振条件自然变成"$\alpha+\beta\mathrm{i}$ 是特征根"。</p>`,
         steps: [
           { s: R`<p><b>把自由项改写成复指数。</b>由欧拉公式 $\cos\beta x=\dfrac{\mathrm{e}^{\mathrm{i}\beta x}+\mathrm{e}^{-\mathrm{i}\beta x}}2$，$\sin\beta x=\dfrac{\mathrm{e}^{\mathrm{i}\beta x}-\mathrm{e}^{-\mathrm{i}\beta x}}{2\mathrm{i}}$，得</p>
@@ -238,14 +239,14 @@ $$f(x)=\mathrm{e}^{(\alpha+\beta\mathrm{i})x}P(x)+\mathrm{e}^{(\alpha-\beta\math
 <p>(2) 方程的所有解在 $(-\infty,+\infty)$ 上有界，当且仅当特征根是一对纯虚数 $\pm\beta\mathrm{i}$（$\beta\ne0$），即 $p=0$，$q\gt0$。</p>`,
         intuition: R`<p>每个解都是 $\mathrm{e}^{\lambda x}$、$x\mathrm{e}^{\lambda x}$、$\mathrm{e}^{\alpha x}\cos\beta x$ 这几种"积木"的组合，积木的增长快慢全看指数的实部：实部负则衰减，正则爆炸，零则不增不减（但若是重根会带一个 $x$，仍无界）。"在整个实轴上有界"比"在 $[0,+\infty)$ 上有界"苛刻得多：$\mathrm{e}^{-x}$ 右边乖乖衰减，左边却爆炸。</p>`,
         steps: [
-          { s: R`<p><b>(1) 先证等价条件。</b>设根为 $\lambda_1,\lambda_2$。若为实根，由韦达定理，两根都为负 $\Leftrightarrow$ $\lambda_1+\lambda_2=-p\lt0$ 且 $\lambda_1\lambda_2=q\gt0$。若为复根 $\alpha\pm\beta\mathrm{i}$，实部 $\alpha=-\dfrac p2\lt0\Leftrightarrow p\gt0$，而此时 $q\gt\dfrac{p^2}4\ge0$ 自动成立。两种情形合起来：实部全负 $\Leftrightarrow p\gt0,q\gt0$。</p>`, why: R`<p>不解方程、只用韦达定理判断根的符号，这是考题的常用手法（2016 年第 16 题、2020 年第 11 题）。</p>` },
+          { s: R`<p><b>(1) 先证等价条件。</b>设根为 $\lambda_1,\lambda_2$。若为实根，由韦达定理，两根都为负 $\Leftrightarrow$ $\lambda_1+\lambda_2=-p\lt0$ 且 $\lambda_1\lambda_2=q\gt0$。若为复根 $\alpha\pm\beta\mathrm{i}$，实部 $\alpha=-\dfrac p2\lt0\Leftrightarrow p\gt0$，而此时 $q\gt\dfrac{p^2}4\ge0$ 自动成立。两种情形合起来：实部全负 $\Leftrightarrow p\gt0,q\gt0$。</p>`, why: R`<p>不解方程、只用韦达定理判断根的符号，这是考题的常用手法（<span class="qref" data-q="2016-16">2016 年第 16 题</span>、<span class="qref" data-q="2020-11">2020 年第 11 题</span>）。</p>` },
           { s: R`<p><b>(1) 再证趋于零。</b>分三种情形。不等实根 $\lambda_1,\lambda_2\lt0$：$y=C_1\mathrm{e}^{\lambda_1x}+C_2\mathrm{e}^{\lambda_2x}\to0$，$y'=C_1\lambda_1\mathrm{e}^{\lambda_1x}+C_2\lambda_2\mathrm{e}^{\lambda_2x}\to0$。重根 $\lambda\lt0$：$y=(C_1+C_2x)\mathrm{e}^{\lambda x}$，由 $\lim\limits_{x\to+\infty}x\mathrm{e}^{\lambda x}=0$（洛必达或指数增长快于幂）知 $y\to0$；$y'=(C_2+\lambda C_1+\lambda C_2x)\mathrm{e}^{\lambda x}\to0$ 同理。复根 $\alpha\lt0$：$|y|\le(|C_1|+|C_2|)\mathrm{e}^{\alpha x}\to0$，$y'$ 是 $\mathrm{e}^{\alpha x}$ 乘以有界的三角函数组合，也趋于 $0$。</p>`, why: R`<p>三种情形都归结为"负指数压倒多项式和有界函数"，这是极限中的基本事实。</p>` },
           { s: R`<p><b>(2) 必要性。</b>若有实根 $\lambda\ne0$，则 $\mathrm{e}^{\lambda x}$ 是解，在 $+\infty$ 或 $-\infty$ 一端无界。若 $0$ 是二重根（$p=q=0$），$y=x$ 是解，无界。若有复根 $\alpha\pm\beta\mathrm{i}$ 且 $\alpha\ne0$，取解 $y=\mathrm{e}^{\alpha x}\cos\beta x$，在 $x_k=\dfrac{2k\pi}\beta$ 处 $y(x_k)=\mathrm{e}^{2k\pi\alpha/\beta}$，令 $k\to+\infty$（$\alpha\gt0$）或 $k\to-\infty$（$\alpha\lt0$）趋于 $+\infty$，无界。排除以上情形，只剩纯虚根 $\pm\beta\mathrm{i}$，即 $p=0$，$q=\beta^2\gt0$。</p>`, why: R`<p>"所有解有界"的否定是"存在一个无界解"，所以只需在每种坏情形里找出一个具体的无界解；对振荡解，取振幅最大的点列是标准技巧。</p>` },
           { s: R`<p><b>(2) 充分性。</b>$p=0,q\gt0$ 时通解 $y=C_1\cos\sqrt q\,x+C_2\sin\sqrt q\,x$，$|y|\le|C_1|+|C_2|$，在整个实轴上有界。</p>`, why: R`<p>三角函数有界，且没有指数或多项式因子。</p>` }
         ],
         remark: R`<p>(1) 的推论特别有用：对方程两边从 $0$ 到 $+\infty$ 积分，$\displaystyle\int_0^{+\infty}y''\mathrm{d}x=-y'(0)$，$\displaystyle\int_0^{+\infty}y'\mathrm{d}x=-y(0)$，于是</p>
 $$\int_0^{+\infty}y(x)\,\mathrm{d}x=\frac{y'(0)+p\,y(0)}{q}\qquad(p\gt0,\ q\gt0),$$
-<p>不必求出 $y$。这正是 2016 年第 16 题与 2020 年第 11 题的解法。$n$ 阶方程也有同样结论：所有特征根实部为负 $\Leftrightarrow$ 所有解趋于零。</p>`
+<p>不必求出 $y$。这正是 <span class="qref" data-q="2016-16">2016 年第 16 题</span>与 <span class="qref" data-q="2020-11">2020 年第 11 题</span>的解法。$n$ 阶方程也有同样结论：所有特征根实部为负 $\Leftrightarrow$ 所有解趋于零。</p>`
       },
       {
         kind: 'example', title: '近十年真题精讲',
@@ -285,8 +286,8 @@ $$\int_0^{+\infty}f(x)\,\mathrm{d}x=am+n .$$
 <li><b>多项式缺项。</b>自由项 $x^2\mathrm{e}^x$ 对应的 $Q$ 必须设成 $ax^2+bx+c$；自由项 $\cos x$ 对应的特解必须同时含 $\cos x$ 和 $\sin x$。定理 5、6 只保证"存在这种形式的特解"，缺项的形式可能根本不是解。</li>
 <li><b>第二类自由项用 $\alpha$ 判断共振。</b>要看的是 $\alpha+\beta\mathrm{i}$ 是否为特征根。$y''+y=\mathrm{e}^x\cos x$ 中 $1+\mathrm{i}\ne\pm\mathrm{i}$，$k=0$。</li>
 <li><b>通解漏加齐次部分。</b>非齐次方程的通解 $=Y+y^*$，只写 $y^*$ 或只写 $Y$ 都不对；常数个数必须等于阶数。</li>
-<li><b>把"$x\to+\infty$ 衰减"当成"有界"。</b>$a\gt0,b\gt0$ 的方程解在 $[0,+\infty)$ 衰减，但在 $(-\infty,0]$ 上爆炸；2023 年第 2 题正是在这一点上设陷阱。</li>
-<li><b>变系数方程套特征方程。</b>$y''+xy'+y=0$、$x^2y''+xy'-4y=0$ 都不能直接写特征方程；后者是欧拉方程，要先令 $x=\mathrm{e}^t$（见 ode.euler 与 2021 年第 13 题）。</li>
+<li><b>把"$x\to+\infty$ 衰减"当成"有界"。</b>$a\gt0,b\gt0$ 的方程解在 $[0,+\infty)$ 衰减，但在 $(-\infty,0]$ 上爆炸；<span class="qref" data-q="2023-2">2023 年第 2 题</span>正是在这一点上设陷阱。</li>
+<li><b>变系数方程套特征方程。</b>$y''+xy'+y=0$、$x^2y''+xy'-4y=0$ 都不能直接写特征方程；后者是欧拉方程，要先令 $x=\mathrm{e}^t$（见 ode.euler 与 <span class="qref" data-q="2021-13">2021 年第 13 题</span>）。</li>
 </ul>`
       },
       {
@@ -302,11 +303,11 @@ $$\int_0^{+\infty}f(x)\,\mathrm{d}x=am+n .$$
 <p><b>看到……想到……：</b></p>
 <ul>
 <li>看到 $y''+py'+qy=0$ 求通解 → 特征方程、三种情形口诀。</li>
-<li>看到"已知 $y_1,y_2,y_3$ 是某非齐次方程的解" → 作差得齐次解 → 读出特征根 → 写通解（2013 年第 10 题）。</li>
-<li>看到"已知特解求 $a,b,c$" → 从解的形式读特征根（$x\mathrm{e}^{x}$ 说明 $1$ 是特征根）→ 韦达定理定 $a,b$ → 代入定 $c$（2015 年第 2 题）。</li>
+<li>看到"已知 $y_1,y_2,y_3$ 是某非齐次方程的解" → 作差得齐次解 → 读出特征根 → 写通解（<span class="qref" data-q="2013-10">2013 年第 10 题</span>）。</li>
+<li>看到"已知特解求 $a,b,c$" → 从解的形式读特征根（$x\mathrm{e}^{x}$ 说明 $1$ 是特征根）→ 韦达定理定 $a,b$ → 代入定 $c$（<span class="qref" data-q="2015-2">2015 年第 2 题</span>）。</li>
 <li>看到"解有界 / 趋于零 / 振荡" → 定理 7，看特征根的实部与重数。</li>
-<li>看到"$f$ 满足常系数方程，求 $\int_0^{+\infty}f$" → 韦达定理判实部为负 → 对方程两边积分 → 端点值（2016 年第 16 题、2020 年第 11 题）。</li>
-<li>看到 $x^ky^{(k)}$ 形式的系数 → 欧拉方程，令 $x=\mathrm{e}^t$ 化为常系数（2021 年第 13 题）。</li>
+<li>看到"$f$ 满足常系数方程，求 $\int_0^{+\infty}f$" → 韦达定理判实部为负 → 对方程两边积分 → 端点值（<span class="qref" data-q="2016-16">2016 年第 16 题</span>、<span class="qref" data-q="2020-11">2020 年第 11 题</span>）。</li>
+<li>看到 $x^ky^{(k)}$ 形式的系数 → 欧拉方程，令 $x=\mathrm{e}^t$ 化为常系数（<span class="qref" data-q="2021-13">2021 年第 13 题</span>）。</li>
 <li>看到级数求和题中 $S''$ 与 $S$ 满足线性关系（如 $S''-S=0$、$S''+S=x$）→ 幂级数和函数满足常系数方程，用本篇方法解出 $S$（ode 与 series.sum 的综合）。</li>
 <li>看到 $f(x)$ 既满足一个齐次方程又满足一个非齐次方程 → 由前者写通解、代入后者定常数。</li>
 </ul>`
@@ -315,7 +316,7 @@ $$\int_0^{+\infty}f(x)\,\mathrm{d}x=am+n .$$
         kind: 'exam', title: '考研怎么考',
         html: R`<p><b>题型与分值。</b>近十年数学一直接以本考点为主考点的题有 4 道：填空 2 道、选择 1 道、解答 1 道，另有 1 道欧拉方程题把常系数方程作为中间步骤。填空题 4–5 分，考得最直接：直接求通解（<span class="qref" data-q="2017-10">2017 年第 10 题</span>），或在方程基础上求一个反常积分（<span class="qref" data-q="2020-11">2020 年第 11 题</span>）。选择题 5 分，考对通解结构的定性理解（<span class="qref" data-q="2023-2">2023 年第 2 题</span>）。解答题 10 分，把常系数方程与反常积分收敛性的证明结合（<span class="qref" data-q="2016-16">2016 年第 16 题</span>）。</p>
 <p><b>设问方式。</b>① 直接求通解：复根情形出现频率最高（<span class="qref" data-q="2017-10">2017 年第 10 题</span>）。② 不解方程、只用特征根的性质：判断解是否趋于零或有界（<span class="qref" data-q="2023-2">2023 年第 2 题</span>）、对方程整体积分求 $\int_0^{+\infty}y\,\mathrm{d}x$（<span class="qref" data-q="2020-11">2020 年第 11 题</span>、<span class="qref" data-q="2016-16">2016 年第 16 题</span>）。这类题的关键是定理 7 和韦达定理，而不是机械解题。③ 参数不定、需要分类：$a\gt0$ 或 $0\lt k\lt1$ 这样的条件要求考生意识到判别式符号可能变化（<span class="qref" data-q="2020-11">2020 年第 11 题</span>）。</p>
-<p><b>综合的考点。</b>与反常积分（int.improper）的综合是近十年最鲜明的特点，两次出现（<span class="qref" data-q="2016-16">2016 年第 16 题</span>、<span class="qref" data-q="2020-11">2020 年第 11 题</span>）；与解的结构定理（ode.linear）的综合体现在"由解反推方程"（<span class="qref" data-q="2023-2">2023 年第 2 题</span>）；与欧拉方程的综合（<span class="qref" data-q="2021-13">2021 年第 13 题</span>）要求换元后熟练写出常系数方程的通解并定初值。更早的年份里还有与幂级数求和的综合、由多个特解反推通解（<span class="qref" data-q="2013-10">2013 年第 10 题</span>）、由特解反推系数（<span class="qref" data-q="2015-2">2015 年第 2 题</span>）、直接求非齐次方程通解（<span class="qref" data-q="2010-15">2010 年第 15 题</span>）等题型，它们都是本篇定理 5、6 及逆向思维的直接应用，仍然值得练习。</p>
+<p><b>综合的考点。</b>与反常积分（int.improper）的综合是近十年最鲜明的特点，两次出现（<span class="qref" data-q="2016-16">2016 年第 16 题</span>、<span class="qref" data-q="2020-11">2020 年第 11 题</span>）；与解的结构定理（ode.linear）的综合体现在"由解的性质反推系数"：<span class="qref" data-q="2023-2">2023 年第 2 题</span>要从"所有解有界"倒推出特征根只能是纯虚数，用到的正是"通解由三类基本解线性组合而成"这一结构；与欧拉方程的综合（<span class="qref" data-q="2021-13">2021 年第 13 题</span>）要求换元后熟练写出常系数方程的通解并定初值。更早的年份里还有与幂级数求和的综合、由多个特解反推通解（<span class="qref" data-q="2013-10">2013 年第 10 题</span>）、由特解反推系数（<span class="qref" data-q="2015-2">2015 年第 2 题</span>）、直接求非齐次方程通解（<span class="qref" data-q="2010-15">2010 年第 15 题</span>）等题型，它们都是本篇定理 5、6 及逆向思维的直接应用，仍然值得练习。</p>
 <p><b>近几年的变化。</b>单纯"求通解"的题在变少，取而代之的是对解的定性性质（有界、衰减）的考查以及和积分的结合，要求考生理解"特征根实部决定解的增长"这一本质，而不只是背公式。非齐次方程的待定系数法近十年没有以主考点单独出题，但它是解答题中常见的中间步骤（例如应用题建模后得到 $y''+py'+qy=f(x)$），不能放松。</p>`
       },
       {
@@ -327,7 +328,7 @@ $$\int_0^{+\infty}f(x)\,\mathrm{d}x=am+n .$$
           { q: R`<p>对 $y''-y'=x^2$，特解应设成什么形式？求出特解。</p>`, a: R`<p>特征根 $0,1$；自由项 $x^2=\mathrm{e}^{0x}x^2$，$\lambda=0$ 是单根，$k=1$，$m=2$，设 $y^*=x(ax^2+bx+c)$。用 $(\ast)$：$F(0)=0$，$F'(0)=-1$，$Q''-Q'=x^2$，$Q=ax^3+bx^2+cx$：$6ax+2b-(3ax^2+2bx+c)=x^2$，得 $a=-\dfrac13$，$b=-1$，$c=-2$，$y^*=-\dfrac{x^3}3-x^2-2x$。若忘了 $k=1$ 设 $ax^2+bx+c$，代入后 $x^2$ 项系数为 $0$，无解。</p>` },
           { q: R`<p>判断对错：$y''+y=\sin x$ 的特解可设为 $y^*=x\,b\sin x$（因为自由项只有 $\sin$）。</p>`, a: R`<p>错。$\pm\mathrm{i}$ 是特征根，$k=1$ 对，但必须同时设 $\cos$ 和 $\sin$：$y^*=x(a\cos x+b\sin x)$。代入得 $-2a\sin x+2b\cos x=\sin x$，$a=-\dfrac12$，$b=0$——特解恰好是 $-\dfrac x2\cos x$，只含 $\cos$！这说明只设 $\sin$ 项根本解不出来。</p>` },
           { q: R`<p>设 $p,q$ 为常数，$y''+py'+qy=0$ 的所有解在 $x\to+\infty$ 时都趋于 $0$ 的充要条件是：</p>`, options: [R`<p>$p\gt0$</p>`, R`<p>$q\gt0$</p>`, R`<p>$p\gt0$ 且 $q\gt0$</p>`, R`<p>$p^2\lt4q$</p>`], correct: 2, explain: R`<p>定理 7 (1)：所有特征根实部为负 $\Leftrightarrow p\gt0,q\gt0$。只有 $p\gt0$ 时可能有正根（如 $\lambda^2+\lambda-2=0$ 有根 $1$）；只有 $q\gt0$ 时根可能实部为正（$p\lt0$）；D 只保证是复根，不管实部符号。</p>` },
-          { q: R`<p>已知 $y_1=\mathrm{e}^{2x}+x$，$y_2=\mathrm{e}^{-x}+x$ 是某二阶常系数非齐次线性方程的两个解，求该方程及其通解。</p>`, a: R`<p>$y_1-y_2=\mathrm{e}^{2x}-\mathrm{e}^{-x}$ 是齐次解，由于 $\mathrm{e}^{2x}$ 与 $\mathrm{e}^{-x}$ 的形式只能来自特征根 $2,-1$（$x$ 不是齐次解，因为若 $0$ 是特征根就有三个根，与二阶矛盾），特征方程 $(\lambda-2)(\lambda+1)=\lambda^2-\lambda-2$，方程为 $y''-y'-2y=f(x)$。把 $y^*=x$ 代入左边得 $f(x)=0-1-2x=-1-2x$。通解 $y=C_1\mathrm{e}^{2x}+C_2\mathrm{e}^{-x}+x$。</p>` },
+          { q: R`<p>已知 $y_1=\mathrm{e}^{2x}+x$，$y_2=\mathrm{e}^{-x}+x$ 是某二阶常系数非齐次线性方程的两个解，求该方程及其通解。</p>`, a: R`<p>$y_1-y_2=\mathrm{e}^{2x}-\mathrm{e}^{-x}$ 是齐次方程 $y''+py'+qy=0$ 的解。<b>为什么由此能断定 $2,-1$ 都是特征根：</b>记 $F(\lambda)=\lambda^2+p\lambda+q$，则 $L[\mathrm{e}^{2x}-\mathrm{e}^{-x}]=F(2)\mathrm{e}^{2x}-F(-1)\mathrm{e}^{-x}\equiv0$；而 $\mathrm{e}^{2x},\mathrm{e}^{-x}$ 线性无关，所以 $F(2)=F(-1)=0$。于是特征方程为 $(\lambda-2)(\lambda+1)=\lambda^2-\lambda-2=0$，方程为 $y''-y'-2y=f(x)$。再求 $f$：$y_1=\mathrm{e}^{2x}+x$ 是解而 $\mathrm{e}^{2x}$ 是齐次解，故 $y^*=x$ 是一个特解，代入左边得 $f(x)=0-1-2x=-1-2x$。通解 $y=C_1\mathrm{e}^{2x}+C_2\mathrm{e}^{-x}+x$。（这里不能说"$x$ 也是齐次解"：二阶方程只有两个特征根，已被 $2,-1$ 占满，$0$ 不是特征根。）</p>` },
           { q: R`<p>设 $f$ 满足 $f''+3f'+2f=0$，$f(0)=0$，$f'(0)=4$，不解方程求 $\displaystyle\int_0^{+\infty}f(x)\,\mathrm{d}x$。再解出 $f$ 验证。</p>`, a: R`<p>$p=3\gt0$，$q=2\gt0$，由定理 7，$f,f'\to0$。积分方程：$-f'(0)-3f(0)+2\displaystyle\int_0^{+\infty}f=0$，得 $\displaystyle\int_0^{+\infty}f=\dfrac{4+0}2=2$。验证：特征根 $-1,-2$，$f=C_1\mathrm{e}^{-x}+C_2\mathrm{e}^{-2x}$，$C_1+C_2=0$，$-C_1-2C_2=4$，得 $C_1=4$，$C_2=-4$，$\displaystyle\int_0^{+\infty}(4\mathrm{e}^{-x}-4\mathrm{e}^{-2x})\mathrm{d}x=4-2=2$。一致。</p>` }
         ]
       }

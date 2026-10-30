@@ -18,7 +18,7 @@
 //   --effort high        思考深度（low/medium/high/xhigh/max），默认不传
 //   --task-budget 8      单项任务的美元上限，防止失控（默认 8，用更贵的模型时自动放大）
 //   --stop-after 70      跑了这么多分钟后不再开始新任务（正在跑的做完），适合在有时长限制的环境里分批跑
-//   --extra 文件         把文件里的额外要求追加到每个任务的提示词末尾（{{id}}、{{year}} 会替换成本项的考点 / 年份）
+//   --extra 文件         把文件里的额外要求追加到每个任务的提示词末尾（{{id}}、{{year}}、{{tmp}} 会替换成本项的考点、年份、临时目录）
 // 环境变量（与选项等价）：KY_MODEL KY_WORKERS KY_BUDGET KY_TASK_BUDGET KY_EFFORT KY_PYTHON KY_PAPERS KY_STOP_AFTER
 //   KY_PAPERS：真题源仓库 TsekaLuk/Kaoyan-Math1-Papers 的本地路径。只有真题任务需要，没设就跳过真题任务。
 // 产物：data/src/ 下的新内容；tools/.api-run/ 下的台账（runs.jsonl）和每项任务的完整输出（已 gitignore）。
@@ -255,7 +255,8 @@ async function agent(prompt, opts = {}) {
   log(`开始 ${task.key}（${KIND_NAME[task.kind] || task.kind}，预计约 ${money(est)}；已花 ${money(spent)}）`);
   const dir = path.join(RUNDIR, runStamp);
   fs.mkdirSync(dir, { recursive: true });
-  const full = prompt + (EXTRA ? '\n' + EXTRA.replace(/\{\{id\}\}/g, task.id || '').replace(/\{\{year\}\}/g, task.y || '') + '\n' : '') + RETURN_FORMAT;
+  const extra = EXTRA.replace(/\{\{id\}\}/g, task.id || '').replace(/\{\{year\}\}/g, task.y || '').replace(/\{\{tmp\}\}/g, fwd(path.join(os.tmpdir(), 'kywork')));
+  const full = prompt + (EXTRA ? '\n' + extra + '\n' : '') + RETURN_FORMAT;
   fs.writeFileSync(path.join(dir, task.key.replace(/[:/\\]/g, '_') + '.prompt.txt'), full);
   let res;
   try { res = MOCK ? await mockRun(task) : await runClaude(full, task); } finally { inflight.delete(task.key); }

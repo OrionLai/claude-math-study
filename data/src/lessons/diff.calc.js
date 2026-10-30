@@ -16,7 +16,7 @@ registerLesson(function (R) {
 <li><b>对数求导法</b>：对付连乘连除、幂指函数 $u(x)^{v(x)}$ 的技巧，本质仍是链式法则。</li>
 </ul>
 <p>后半部分讨论<b>高阶导数</b>：导数本身是函数，还可以继续求导。物理上位置的导数是速度、速度的导数是加速度；几何上二阶导数决定曲线的弯曲方向（见 <b>diff.convex</b>）；泰勒公式（<b>diff.taylor</b>）则需要任意阶导数。求 $n$ 阶导数不能一次次硬算，需要"找规律 + 归纳"和<b>莱布尼茨公式</b>（乘积的 $n$ 阶导数，形式上和二项式定理一模一样）。</p>
-<p>最后是<b>分段函数求导</b>：法则只能用在"每一段内部"，在<b>分段点</b>上必须回到定义（或用导数极限定理）。考研最喜欢在这里设陷阱——2023 年第 3 题就是典型。</p>
+<p>最后是<b>分段函数求导</b>：法则只能用在"每一段内部"，在<b>分段点</b>上必须回到定义（或用导数极限定理）。考研最喜欢在这里设陷阱——<span class="qref" data-q="2023-3">2023 年第 3 题</span>就是典型。</p>
 <p>一句话概括本篇：<b>法则负责"段内"，定义负责"点上"；一阶靠法则，高阶靠规律。</b></p>`
       },
       {
@@ -28,8 +28,8 @@ $$f''(x_0)=\lim_{x\to x_0}\frac{f'(x)-f'(x_0)}{x-x_0}$$
 <p><b>逐字拆解这个定义，有三件事必须想清楚：</b></p>
 <ul>
 <li><b>"$f'$ 在 $x_0$ 处可导"隐含了"$f'$ 在 $x_0$ 的某个邻域内存在"。</b>因为定义中的差商 $\dfrac{f'(x)-f'(x_0)}{x-x_0}$ 要对 $x_0$ 附近所有 $x$ 有意义。所以"$f''(x_0)$ 存在"是一个比"$f'(x_0)$ 存在"强得多的条件：它要求 $f$ 在 $x_0$ <b>附近处处可导</b>，并且导函数 $f'$ 在 $x_0$ 处又可导（从而 $f'$ 在 $x_0$ 处连续）。</li>
-<li><b>"$n$ 阶可导"是一层一层往上爬的阶梯：</b>连续 $\Leftarrow$ 可导 $\Leftarrow$ 导函数连续 $\Leftarrow$ 二阶可导 $\Leftarrow$ 二阶导函数连续 $\Leftarrow\cdots$ 每一级都真的比前一级强（反例见后文 $x|x|$、$x^2\sin\frac1x$）。2023 年第 3 题的四个选项恰好就是这个阶梯的四级。</li>
-<li><b>在一点处的 $n$ 阶导数与 $n$ 阶导函数不同。</b>$f^{(n)}(x_0)$ 是一个数；$f^{(n)}(x)$ 是函数。求 $f^{(n)}(x_0)$ 未必要先求 $f^{(n)}(x)$——泰勒展开、奇偶性等方法可以绕过去（2017 年第 9 题、2016 年第 12 题）。</li>
+<li><b>"$n$ 阶可导"是一层一层往上爬的阶梯：</b>连续 $\Leftarrow$ 可导 $\Leftarrow$ 导函数连续 $\Leftarrow$ 二阶可导 $\Leftarrow$ 二阶导函数连续 $\Leftarrow\cdots$ 每一级都真的比前一级强（反例见后文 $x|x|$、$x^2\sin\frac1x$）。<span class="qref" data-q="2023-3">2023 年第 3 题</span>的四个选项恰好就是这个阶梯的四级。</li>
+<li><b>在一点处的 $n$ 阶导数与 $n$ 阶导函数不同。</b>$f^{(n)}(x_0)$ 是一个数；$f^{(n)}(x)$ 是函数。求 $f^{(n)}(x_0)$ 未必要先求 $f^{(n)}(x)$——泰勒展开、奇偶性等方法可以绕过去（<span class="qref" data-q="2017-9">2017 年第 9 题</span>、<span class="qref" data-q="2016-12">2016 年第 12 题</span>）。</li>
 </ul>
 <p><b>正例：</b>$f(x)=x^3$，$f'=3x^2$，$f''=6x$，$f'''=6$，$f^{(4)}=0$，以后恒为 $0$，处处任意阶可导。<b>反例：</b>$f(x)=x|x|$，在 $x\ne0$ 处 $f'(x)=2|x|$，在 $0$ 处用定义 $f'(0)=\lim\limits_{x\to0}\dfrac{x|x|}{x}=0$，所以 $f'(x)=2|x|$ 处处存在且连续；但 $f'$ 在 $0$ 处有尖角，$f''(0)$ 不存在。</p>
 <p><b>定义 3（隐函数）.</b> 设方程 $F(x,y)=0$。若存在区间 $I$ 和定义在 $I$ 上的函数 $y=y(x)$，使得对一切 $x\in I$ 都有 $F(x,y(x))=0$，则称 $y(x)$ 是由方程 $F(x,y)=0$ 在 $I$ 上<b>确定的隐函数</b>。</p>
@@ -54,7 +54,7 @@ $$\frac{\frac1{v(x+h)}-\frac1{v(x)}}{h}=-\frac{v(x+h)-v(x)}{h}\cdot\frac{1}{v(x+
           { s: R`<p><b>商.</b> $\dfrac uv=u\cdot\dfrac1v$，由乘积法则与倒数法则：
 $$\Big(\frac uv\Big)'=u'\cdot\frac1v+u\cdot\Big(-\frac{v'}{v^2}\Big)=\frac{u'v-uv'}{v^2}.$$</p>`, why: R`<p>把商归结为乘积，这是"已有结论复用"的典型做法，也说明商法则并非独立的新公理。</p>` }
         ],
-        remark: R`<p>（1）乘积法则推广到多个因子：$(u_1u_2\cdots u_n)'=\sum\limits_{k=1}^n u_1\cdots u_k'\cdots u_n$（对 $n$ 归纳即可）。2015 年第 18 题就直接考过"用定义证明乘积法则并写出 $n$ 个因子的公式"，所以<b>这个证明本身是考点</b>，必须会写。（2）一个高频应用：求 $f'(x_0)$ 时如果 $f$ 是多个因子之积且其中某个因子在 $x_0$ 处为 $0$，那么 $f'(x_0)$ 只剩"对这个因子求导、其余代值"一项（2012 年第 2 题）。（3）条件"$u,v$ 可导"不能减弱为"$uv$ 可导"反推：$u=|x|,\ v=|x|$ 都在 $0$ 处不可导，但 $uv=x^2$ 可导。法则是"充分"方向的。</p>`
+        remark: R`<p>（1）乘积法则推广到多个因子：$(u_1u_2\cdots u_n)'=\sum\limits_{k=1}^n u_1\cdots u_k'\cdots u_n$（对 $n$ 归纳即可）。<span class="qref" data-q="2015-18">2015 年第 18 题</span>就直接考过"用定义证明乘积法则并写出 $n$ 个因子的公式"，所以<b>这个证明本身是考点</b>，必须会写。（2）一个高频应用：求 $f'(x_0)$ 时如果 $f$ 是多个因子之积且其中某个因子在 $x_0$ 处为 $0$，那么 $f'(x_0)$ 只剩"对这个因子求导、其余代值"一项（<span class="qref" data-q="2012-2">2012 年第 2 题</span>）。（3）条件"$u,v$ 可导"不能减弱为"$uv$ 可导"反推：$u=|x|,\ v=|x|$ 都在 $0$ 处不可导，但 $uv=x^2$ 可导。法则是"充分"方向的。</p>`
       },
       {
         kind: 'thm', title: '定理 2：复合函数求导法则（链式法则）',
@@ -86,6 +86,39 @@ $$\frac{\Delta x}{\Delta y}=\frac{1}{\dfrac{f(x_0+\Delta x)-f(x_0)}{\Delta x}}.$
         remark: R`<p>（1）用它可推所有反三角函数与对数的导数：$y=\arcsin x$ 是 $x=\sin y\ (|y|\lt\frac\pi2)$ 的反函数，$\dfrac{\mathrm{d}y}{\mathrm{d}x}=\dfrac{1}{\cos y}=\dfrac{1}{\sqrt{1-x^2}}$（取正号是因为 $\cos y>0$）。（2）<b>二阶导数不能简单取倒数</b>：$\dfrac{\mathrm{d}^2x}{\mathrm{d}y^2}=\dfrac{\mathrm{d}}{\mathrm{d}y}\Big(\dfrac{1}{y'}\Big)=\dfrac{\mathrm{d}}{\mathrm{d}x}\Big(\dfrac1{y'}\Big)\cdot\dfrac{\mathrm{d}x}{\mathrm{d}y}=-\dfrac{y''}{(y')^2}\cdot\dfrac1{y'}=-\dfrac{y''}{(y')^3}$。记住推导过程比记公式可靠。（3）这一定理和链式法则合起来，就是参数方程求导公式的全部来源。</p>`
       },
       {
+        kind: 'thm', title: '定理 3′：基本初等函数导数公式表（完整版）及其推导',
+        statement: R`<p>以下 16 个公式是一切求导的"原材料"，必须一个不漏地记牢（$C$ 为常数，$a>0,\ a\neq1$）：</p>
+<table>
+<thead><tr><th>函数</th><th>导数</th><th>函数</th><th>导数</th></tr></thead>
+<tbody>
+<tr><td>$C$</td><td>$0$</td><td>$x^\mu$（$x>0$；$\mu$ 为正整数时 $x\in\mathbb R$）</td><td>$\mu x^{\mu-1}$</td></tr>
+<tr><td>$\sin x$</td><td>$\cos x$</td><td>$\cos x$</td><td>$-\sin x$</td></tr>
+<tr><td>$\tan x$</td><td>$\sec^2x$</td><td>$\cot x$</td><td>$-\csc^2x$</td></tr>
+<tr><td>$\sec x$</td><td>$\sec x\tan x$</td><td>$\csc x$</td><td>$-\csc x\cot x$</td></tr>
+<tr><td>$a^x$</td><td>$a^x\ln a$</td><td>$\mathrm{e}^x$</td><td>$\mathrm{e}^x$</td></tr>
+<tr><td>$\log_a x$</td><td>$\dfrac{1}{x\ln a}$</td><td>$\ln|x|$（$x\neq0$）</td><td>$\dfrac1x$</td></tr>
+<tr><td>$\arcsin x$（$|x|\lt1$）</td><td>$\dfrac{1}{\sqrt{1-x^2}}$</td><td>$\arccos x$（$|x|\lt1$）</td><td>$-\dfrac{1}{\sqrt{1-x^2}}$</td></tr>
+<tr><td>$\arctan x$</td><td>$\dfrac{1}{1+x^2}$</td><td>$\operatorname{arccot}x$</td><td>$-\dfrac{1}{1+x^2}$</td></tr>
+</tbody>
+</table>
+<p>常用补充（都是上表与链式法则的直接推论）：$\big(\ln(x+\sqrt{x^2+a^2})\big)'=\dfrac{1}{\sqrt{x^2+a^2}}$，$\big(\sqrt{x}\big)'=\dfrac{1}{2\sqrt x}$，$\Big(\dfrac1x\Big)'=-\dfrac1{x^2}$。</p>`,
+        intuition: R`<p>这张表不是 16 条独立公理。<b>diff.def</b> 定理 3 已经由定义推出了常数、幂（正整数次）、$\sin,\cos$、$a^x$、$\log_ax$ 五类；剩下的全部由定理 1（商法则）、定理 2（链式法则）、定理 3（反函数法则）推出。所以记忆的重点是<b>"哪一条来自哪条法则"</b>——忘了就能现场重推，这比死记更可靠。表中成对的公式（$\sin/\cos$、$\tan/\cot$、$\sec/\csc$、$\arcsin/\arccos$、$\arctan/\operatorname{arccot}$）右边一列恰好多一个负号，这是因为 $\cos x=\sin(\frac\pi2-x)$ 等"余"函数都是把自变量换成 $\frac\pi2-x$，链式法则带出一个 $-1$。</p>`,
+        steps: [
+          { s: R`<p><b>$\tan x,\ \cot x$（商法则）.</b>
+$$(\tan x)'=\Big(\frac{\sin x}{\cos x}\Big)'=\frac{\cos x\cos x-\sin x(-\sin x)}{\cos^2x}=\frac{1}{\cos^2x}=\sec^2x,\qquad (\cot x)'=\Big(\frac{\cos x}{\sin x}\Big)'=\frac{-\sin^2x-\cos^2x}{\sin^2x}=-\csc^2x.$$</p>`, why: R`<p>分子用 $\sin^2x+\cos^2x=1$ 合并。$\tan x$ 的定义域内 $\cos x\neq0$，商法则条件满足。</p>` },
+          { s: R`<p><b>$\sec x,\ \csc x$（倒数法则）.</b>
+$$(\sec x)'=\Big(\frac1{\cos x}\Big)'=-\frac{-\sin x}{\cos^2x}=\frac{\sin x}{\cos x}\cdot\frac1{\cos x}=\sec x\tan x,\qquad(\csc x)'=-\frac{\cos x}{\sin^2x}=-\csc x\cot x.$$</p>`, why: R`<p>用定理 1 中的 $\big(\frac1v\big)'=-\frac{v'}{v^2}$，再把结果拆成两个基本函数之积便于记忆。</p>` },
+          { s: R`<p><b>$\arcsin x,\ \arccos x$（反函数法则）.</b> $y=\arcsin x$ 是 $x=\sin y,\ y\in\big[-\frac\pi2,\frac\pi2\big]$ 的反函数，$\sin y$ 在这个区间上连续、严格递增，在 $|y|\lt\frac\pi2$ 时 $(\sin y)'=\cos y>0$。由定理 3，
+$$(\arcsin x)'=\frac{1}{\cos y}=\frac{1}{\sqrt{1-\sin^2y}}=\frac{1}{\sqrt{1-x^2}}\qquad(|x|\lt1).$$
+同理 $y=\arccos x$ 是 $x=\cos y,\ y\in[0,\pi]$ 的反函数，$0\lt y\lt\pi$ 时 $(\cos y)'=-\sin y\lt0$，故 $(\arccos x)'=\dfrac1{-\sin y}=-\dfrac{1}{\sqrt{1-x^2}}$。</p>`, why: R`<p>关键在开方取号：$\cos y=\pm\sqrt{1-\sin^2y}$，取正号是因为 $y\in(-\frac\pi2,\frac\pi2)$ 上 $\cos y>0$；$\arccos$ 中 $\sin y>0$ 同理。端点 $x=\pm1$ 对应 $\cos y=0$，定理 3 的条件 $f'\neq0$ 不满足，那里 $\arcsin x$ 确实不可导（切线竖直）。</p>` },
+          { s: R`<p><b>$\arctan x,\ \operatorname{arccot}x$（反函数法则）.</b> $y=\arctan x$ 是 $x=\tan y,\ y\in\big(-\frac\pi2,\frac\pi2\big)$ 的反函数，$(\tan y)'=\sec^2y=1+\tan^2y=1+x^2>0$，故
+$$(\arctan x)'=\frac{1}{1+x^2}.$$
+$y=\operatorname{arccot}x$ 是 $x=\cot y,\ y\in(0,\pi)$ 的反函数，$(\cot y)'=-\csc^2y=-(1+\cot^2y)=-(1+x^2)$，故 $(\operatorname{arccot}x)'=-\dfrac{1}{1+x^2}$。</p>`, why: R`<p>这里不需要开方，所以没有取号问题；把 $\sec^2y$ 写成 $1+\tan^2y$ 是为了用 $x$ 表示结果。</p>` },
+          { s: R`<p><b>$x^\mu$（$\mu$ 任意实数，$x>0$）与 $\ln|x|$（链式法则）.</b> $x^\mu=\mathrm{e}^{\mu\ln x}$，故 $(x^\mu)'=\mathrm{e}^{\mu\ln x}\cdot\dfrac{\mu}{x}=\mu x^{\mu-1}$。$x\lt0$ 时 $\ln|x|=\ln(-x)$，$(\ln(-x))'=\dfrac{1}{-x}\cdot(-1)=\dfrac1x$，与 $x>0$ 时相同。$\log_ax=\dfrac{\ln x}{\ln a}$，故 $(\log_ax)'=\dfrac{1}{x\ln a}$。</p>`, why: R`<p>幂函数用"指数化 + 链式法则"一步到位，比 diff.def 中用 $(1+u)^\mu-1\sim\mu u$ 更一般；$\ln|x|$ 的结论在积分（$\int\frac{\mathrm{d}x}{x}=\ln|x|+C$）里天天用，绝对值不能丢。</p>` }
+        ],
+        remark: R`<p>（1）记忆检查法：把表里每一条都问一句"它从哪来"——商法则、倒数法则、反函数法则、链式法则，能答上来才算真记住。（2）考研中反三角函数的导数出错率最高，尤其是 $\arccos$、$\operatorname{arccot}$ 的负号和 $\arcsin$ 的开方；带着推导记（"$\cos y>0$ 所以取正根"）不会错。（3）$\ln\big(x+\sqrt{x^2+1}\big)$ 的导数 $\dfrac{1}{\sqrt{x^2+1}}$ 在 <span class="qref" data-q="2020-10">2020 年第 10 题</span> 中直接用到（推导见例 A1）。</p>`
+      },
+      {
         kind: 'thm', title: '定理 4：隐函数求导法',
         statement: R`<p>设方程 $F(x,y)=0$ 在区间 $I$ 上确定了可导的隐函数 $y=y(x)$，且 $F$ 由可导函数经四则与复合构成。则把 $y$ 看成 $x$ 的函数、<b>对恒等式 $F(x,y(x))\equiv0$ 两边关于 $x$ 求导</b>（凡遇到 $y$ 的函数，按链式法则乘上 $y'$），得到一个关于 $y'$ 的一次方程，解出
 $$y'=y'(x,y).$$
@@ -96,7 +129,7 @@ $$y'=y'(x,y).$$
           { s: R`<p>$G(x)$ 是由 $x$ 和 $y(x)$ 经四则、复合得到的一元函数，用定理 1、2 逐项求导：凡是 $y$ 的项，如 $y^3$，求导得 $3y^2\cdot y'$；如 $\sin(xy)$，求导得 $\cos(xy)\cdot(y+xy')$。</p>`, why: R`<p>这里"$y$ 是 $x$ 的函数"这一视角是初学者最容易丢的：$(y^3)'$ 不是 $3y^2$，而是 $3y^2y'$——因为 $y^3=(y(x))^3$ 是复合函数。</p>` },
           { s: R`<p>$G'(x)=0$ 是关于 $y'$ 的<b>一次</b>方程（因为每一项至多含一个因子 $y'$），其系数恰为 $F_y(x,y)$。当该系数非零时唯一解出 $y'$。</p>`, why: R`<p>"一次"是由链式法则结构保证的：每次求导只产生一个 $y'$ 因子。系数非零正是隐函数存在定理的条件 $F_y\neq0$，两边互相印证。</p>` }
         ],
-        remark: R`<p>（1）解出的 $y'$ 一般同时含 $x$ 和 $y$，求某点的 $y'$ 必须把该点的 $x$、$y$ <b>都</b>代入，而 $y$ 的值要从原方程解出（2017 年第 17 题：$x=1$ 时从 $y^3+3y-4=0$ 解出 $y=1$）。（2）求二阶导：对 $y'=\dfrac{1-x^2}{1+y^2}$ 这样的式子再求导时，右边的 $y$ 仍要乘 $y'$；在驻点处 $y'=0$，含 $y'$ 的项全部消失，计算量骤减——这是隐函数求极值时用二阶导判别的常用技巧。（3）求曲线上某点切线（如 2008 年第 10 题）：隐函数求导后代入点坐标得斜率即可，不必解出 $y'$ 的一般表达式。</p>`
+        remark: R`<p>（1）解出的 $y'$ 一般同时含 $x$ 和 $y$，求某点的 $y'$ 必须把该点的 $x$、$y$ <b>都</b>代入，而 $y$ 的值要从原方程解出（<span class="qref" data-q="2017-17">2017 年第 17 题</span>：$x=1$ 时从 $y^3+3y-4=0$ 解出 $y=1$）。（2）求二阶导：对 $y'=\dfrac{1-x^2}{1+y^2}$ 这样的式子再求导时，右边的 $y$ 仍要乘 $y'$；在驻点处 $y'=0$，含 $y'$ 的项全部消失，计算量骤减——这是隐函数求极值时用二阶导判别的常用技巧。（3）求曲线上某点切线（如 <span class="qref" data-q="2008-10">2008 年第 10 题</span>）：隐函数求导后代入点坐标得斜率即可，不必解出 $y'$ 的一般表达式。</p>`
       },
       {
         kind: 'thm', title: '定理 5：参数方程确定的函数的求导公式',
@@ -110,9 +143,9 @@ $$\frac{\mathrm{d}^2y}{\mathrm{d}x^2}=\frac{\mathrm{d}}{\mathrm{d}t}\Big(\frac{\
           { s: R`<p>由链式法则（定理 2），$\dfrac{\mathrm{d}y}{\mathrm{d}x}=\dfrac{\mathrm{d}y}{\mathrm{d}t}\cdot\dfrac{\mathrm{d}t}{\mathrm{d}x}=\psi'(t)\cdot\dfrac1{\varphi'(t)}$。</p>`, why: R`<p>$y$ 通过 $t$ 依赖于 $x$，是两层复合。</p>` },
           { s: R`<p>令 $u(t)=\dfrac{\psi'(t)}{\varphi'(t)}$，它是 $\dfrac{\mathrm{d}y}{\mathrm{d}x}$ 关于 $t$ 的表达式。对 $x$ 再求导，和第 2 步完全一样：
 $$\frac{\mathrm{d}^2y}{\mathrm{d}x^2}=\frac{\mathrm{d}u}{\mathrm{d}x}=\frac{\mathrm{d}u}{\mathrm{d}t}\cdot\frac{\mathrm{d}t}{\mathrm{d}x}=\frac{u'(t)}{\varphi'(t)}.$$
-用商法则展开 $u'(t)=\dfrac{\psi''\varphi'-\psi'\varphi''}{(\varphi')^2}$，再除以 $\varphi'$ 即得分母为 $(\varphi')^3$ 的公式。</p>`, why: R`<p>最常见的错误是把二阶导数写成 $\dfrac{\psi''(t)}{\varphi''(t)}$ 或 $\dfrac{u'(t)}{1}$。正确做法是把"对 $x$ 求导"始终翻译为"对 $t$ 求导后除以 $\varphi'(t)$"。做题时一般<b>不背</b>分母 $(\varphi')^3$ 的公式，而是先算出并化简 $u(t)$，再按 $\dfrac{u'(t)}{\varphi'(t)}$ 算（2021 年第 12 题中 $u(t)=2t$，化简后二阶导数一步到位）。</p>` }
+用商法则展开 $u'(t)=\dfrac{\psi''\varphi'-\psi'\varphi''}{(\varphi')^2}$，再除以 $\varphi'$ 即得分母为 $(\varphi')^3$ 的公式。</p>`, why: R`<p>最常见的错误是把二阶导数写成 $\dfrac{\psi''(t)}{\varphi''(t)}$ 或 $\dfrac{u'(t)}{1}$。正确做法是把"对 $x$ 求导"始终翻译为"对 $t$ 求导后除以 $\varphi'(t)$"。做题时一般<b>不背</b>分母 $(\varphi')^3$ 的公式，而是先算出并化简 $u(t)$，再按 $\dfrac{u'(t)}{\varphi'(t)}$ 算（<span class="qref" data-q="2021-12">2021 年第 12 题</span>中 $u(t)=2t$，化简后二阶导数一步到位）。</p>` }
         ],
-        remark: R`<p>（1）若 $\varphi'(t_0)=0$ 而 $\psi'(t_0)\neq0$，曲线在该点有竖直切线，$\dfrac{\mathrm{d}y}{\mathrm{d}x}$ 不存在但 $\dfrac{\mathrm{d}x}{\mathrm{d}y}=0$；若 $\varphi'(t_0)=\psi'(t_0)=0$（奇点），公式失效，需用其它方法（如消参、用定义）。（2）若 $\varphi$ 或 $\psi$ 本身在某 $t_0$ 处不可导（如含 $|t|$），<b>公式在该点不能用</b>，应消去参数化为分段函数，再在分段点用定义——这是 2023 年第 3 题的核心。（3）公式中的 $t$ 不能换成 $x$：求 $\left.\dfrac{\mathrm{d}^2y}{\mathrm{d}x^2}\right|_{t=1}$ 是代 $t=1$，不是代 $x=1$。</p>`
+        remark: R`<p>（1）若 $\varphi'(t_0)=0$ 而 $\psi'(t_0)\neq0$，曲线在该点有竖直切线，$\dfrac{\mathrm{d}y}{\mathrm{d}x}$ 不存在但 $\dfrac{\mathrm{d}x}{\mathrm{d}y}=0$；若 $\varphi'(t_0)=\psi'(t_0)=0$（奇点），公式失效，需用其它方法（如消参、用定义）。（2）若 $\varphi$ 或 $\psi$ 本身在某 $t_0$ 处不可导（如含 $|t|$），<b>公式在该点不能用</b>，应消去参数化为分段函数，再在分段点用定义——这是 <span class="qref" data-q="2023-3">2023 年第 3 题</span>的核心。（3）公式中的 $t$ 不能换成 $x$：求 $\left.\dfrac{\mathrm{d}^2y}{\mathrm{d}x^2}\right|_{t=1}$ 是代 $t=1$，不是代 $x=1$。</p>`
       },
       {
         kind: 'thm', title: '定理 6：对数求导法与幂指函数的导数',
@@ -132,7 +165,7 @@ $$\big(\mathrm{e}^{v\ln u}\big)'=\mathrm{e}^{v\ln u}\cdot(v\ln u)'=u^v\Big(v'\ln
         kind: 'thm', title: '定理 7：常用函数的 n 阶导数公式',
         statement: R`<p>对一切正整数 $n$：
 $$\begin{aligned}
-&(x^\mu)^{(n)}=\mu(\mu-1)\cdots(\mu-n+1)\,x^{\mu-n};\qquad (x^m)^{(n)}=0\ (m\in\mathbb N,\ n>m);\\
+&(x^\mu)^{(n)}=\mu(\mu-1)\cdots(\mu-n+1)\,x^{\mu-n}\ (x>0);\qquad (x^m)^{(n)}=0\ (m\in\mathbb N,\ n>m);\\
 &(a^x)^{(n)}=a^x(\ln a)^n,\qquad (\mathrm{e}^{ax+b})^{(n)}=a^n\mathrm{e}^{ax+b};\\
 &(\sin x)^{(n)}=\sin\Big(x+\frac{n\pi}2\Big),\qquad (\cos x)^{(n)}=\cos\Big(x+\frac{n\pi}2\Big);\\
 &[\sin(ax+b)]^{(n)}=a^n\sin\Big(ax+b+\frac{n\pi}2\Big);\\
@@ -180,7 +213,7 @@ $$\frac{f(x)-f(x_0)}{x-x_0}=f'(\xi_x).$$</p>`, why: R`<p>差商被"替换"为某
         kind: 'text', title: '补充：奇偶函数与周期函数的导数',
         html: R`<p><b>命题.</b> 可导的偶函数的导函数是奇函数；可导的奇函数的导函数是偶函数；可导的周期函数的导函数是同周期的周期函数。</p>
 <p><b>证明.</b> 设 $f$ 偶，$f(-x)=f(x)$ 对一切 $x$ 成立，是恒等式，两边对 $x$ 求导（左边用链式法则）：$-f'(-x)=f'(x)$，即 $f'(-x)=-f'(x)$，$f'$ 为奇函数。奇函数、周期函数同理（$f(x+T)=f(x)$ 求导得 $f'(x+T)=f'(x)$）。$\square$</p>
-<p><b>推论.</b> 若 $f$ 是偶函数且 $n$ 为奇数，$f^{(n)}$ 是奇函数，于是 $f^{(n)}(0)=0$（奇函数在 $0$ 有定义则必为 $0$：$g(0)=-g(0)$）。2017 年第 9 题 $f(x)=\dfrac1{1+x^2}$ 求 $f'''(0)$，一眼看出答案是 $0$，根本不必计算。</p>
+<p><b>推论.</b> 若 $f$ 是偶函数且 $n$ 为奇数，$f^{(n)}$ 是奇函数，于是 $f^{(n)}(0)=0$（奇函数在 $0$ 有定义则必为 $0$：$g(0)=-g(0)$）。<span class="qref" data-q="2017-9">2017 年第 9 题</span> $f(x)=\dfrac1{1+x^2}$ 求 $f'''(0)$，一眼看出答案是 $0$，根本不必计算。</p>
 <p>这类"恒等式两边求导"的思想和隐函数求导是一回事，考研常用它处理抽象函数：由 $f(x+y)=f(x)f(y)$ 或 $f(2x)=2f(x)$ 之类的函数方程推出导数满足的关系。</p>`
       },
       {
@@ -330,7 +363,7 @@ $$f(x)=\begin{cases}\dfrac x3\sin\dfrac x3,&x\ge0,\\[4pt]-x\sin x,&x\lt0.\end{ca
 <p><b>这题考什么：</b>已知一点处的三阶导数值反求参数，主考点是泰勒展开比较系数，但它本质上是"高阶导数怎么求"的问题，和上一题是同一思路的升级版。</p>
 <p><b>解答：</b>$\arctan x=x-\dfrac{x^3}3+o(x^3)$；$\dfrac{x}{1+ax^2}=x\big(1-ax^2+o(x^2)\big)=x-ax^3+o(x^3)$。相减得 $f(x)=\Big(a-\dfrac13\Big)x^3+o(x^3)$。由展开唯一性 $\dfrac{f'''(0)}{3!}=a-\dfrac13$，即 $6a-2=1$，$a=\dfrac12$。</p>
 <p><b>答案：$\dfrac12$。</b></p>
-<p><b>告诉我们什么：</b>$f^{(n)}(0)=n!\times(x^n\text{ 的系数})$——系数要乘 $n!$，这是最常见的失分点。若用本篇方法硬算，$\dfrac{x}{1+ax^2}$ 的三阶导需用商法则三次，可行但不推荐；本题也可用奇偶性简化：$f$ 是奇函数，$f'''$ 也是奇函数的二阶导……不如展开直接。</p>
+<p><b>告诉我们什么：</b>$f^{(n)}(0)=n!\times(x^n\text{ 的系数})$——系数要乘 $n!$，这是最常见的失分点。若用本篇方法硬算，$\dfrac{x}{1+ax^2}$ 的三阶导需用商法则三次，可行但不推荐。另外要注意<b>奇偶性在这里帮不上忙</b>：$f$ 是奇函数，由补充命题 $f'$ 偶、$f''$ 奇、$f'''$ 偶，而偶函数在 $0$ 处的值没有任何限制，所以不能像上一题那样"一眼看出"，必须真的算出 $x^3$ 的系数。奇偶性唯一的用处是：奇函数的展开式只含奇次项，$x^2$ 项不必去算。</p>
 <hr/>
 <p><span class="qref" data-q="2017-17">2017 年第 17 题</span>　已知函数 $y(x)$ 由方程 $x^3+y^3-3x+3y-2=0$ 确定，求 $y(x)$ 的极值.</p>
 <p><b>这题考什么：</b>隐函数求导（定理 4）与极值判别（diff.mono）的综合，解答题 10 分。隐函数求导是整个解答的"发动机"。</p>
@@ -353,21 +386,21 @@ $$y'=\frac{1-x^2}{1+y^2}.$$</p>
 <li><b>隐函数求导作为解答题的"工具"出现（10 分）。</b>隐函数本身很少单独出题，而是嵌在求极值、求切线、求极限中：<span class="qref" data-q="2017-17">2017 年第 17 题</span>（隐函数求极值）；更早的 <span class="qref" data-q="2013-9">2013 年第 9 题</span>（隐函数在一点的导数转化为极限）、<span class="qref" data-q="2008-10">2008 年第 10 题</span>（隐函数曲线的切线）。</li>
 <li><b>求导法则本身的证明也考过。</b><span class="qref" data-q="2015-18">2015 年第 18 题</span> 要求用定义证明乘积法则并写出 $n$ 个因子的公式——定理 1 的证明必须会写。<span class="qref" data-q="2012-2">2012 年第 2 题</span> 则考多因子乘积在一点的导数（某因子为零时只剩一项）。</li>
 </ul>
-<p><b>综合与变化：</b>本考点很少单独出大题，但它是整章的"计算底座"：中值定理、泰勒公式、极值、凹凸性、曲率、微分方程通通要先会求导。近几年的趋势是把求导法则和<b>概念辨析</b>绑在一起（2023 年第 3 题），考公式的适用条件而不只是公式本身；填空题的参数方程题则维持每两三年一次的频率。复习建议：（1）参数方程二阶导、隐函数二阶导的流程练到不假思索；（2）$n$ 阶导数的三种套路（分解、莱布尼茨、展开比较系数）各做几题；（3）分段点处"段内用法则、点上用定义"反复体会，并掌握定理 9 及其反例。</p>`
+<p><b>综合与变化：</b>本考点很少单独出大题，但它是整章的"计算底座"：中值定理、泰勒公式、极值、凹凸性、曲率、微分方程通通要先会求导。近几年的趋势是把求导法则和<b>概念辨析</b>绑在一起（2023 年第 3 题），考公式的适用条件而不只是公式本身；填空题的参数方程二阶导数题则是反复出现的保留题型（2010、2013、2020、2021 四次，2023 年又以变式出现）。复习建议：（1）参数方程二阶导、隐函数二阶导的流程练到不假思索；（2）$n$ 阶导数的三种套路（分解、莱布尼茨、展开比较系数）各做几题；（3）分段点处"段内用法则、点上用定义"反复体会，并掌握定理 9 及其反例。</p>`
       },
       {
         kind: 'check', title: '自测',
         items: [
           { q: R`<p>判断对错并说明理由：若 $f'(x_0)$ 存在，则 $\lim\limits_{x\to x_0}f'(x)=f'(x_0)$。</p>`, a: R`<p><b>错。</b>$f'(x_0)$ 存在只要求差商有极限，不要求导函数在 $x_0$ 处连续。反例 $f(x)=x^2\sin\frac1x\ (x\neq0),\ f(0)=0$：$f'(0)=0$，但 $f'(x)=2x\sin\frac1x-\cos\frac1x$ 在 $0$ 处无极限。定理 9 的方向是"导函数极限存在 $\Rightarrow$ 导数等于它"，反过来不成立。不过导函数的间断点只能是第二类的。</p>` },
           { q: R`<p>设 $f$ 可导，$y=f(\sin^2x)$，则 $y'=$（　　）</p>`, options: [R`<p>$f'(\sin^2x)$</p>`, R`<p>$2\sin x\,f'(\sin^2x)$</p>`, R`<p>$\sin2x\,f'(\sin^2x)$</p>`, R`<p>$\sin2x\,f'(x)$</p>`], correct: 2, explain: R`<p>三层复合：$y=f(u),\ u=v^2,\ v=\sin x$。$y'=f'(u)\cdot2v\cdot\cos x=f'(\sin^2x)\cdot2\sin x\cos x=\sin2x\,f'(\sin^2x)$。选 (A) 是漏掉内层导数，(D) 混淆了 $f'(\sin^2x)$ 与 $f'(x)$。</p>` },
-          { q: R`<p>设 $y=y(x)$ 由 $x=\sin t,\ y=t\sin t+\cos t$ 确定，求 $\dfrac{\mathrm{d}^2y}{\mathrm{d}x^2}$ 在 $t=\dfrac\pi4$ 处的值。</p>`, a: R`<p>$x'(t)=\cos t$，$y'(t)=\sin t+t\cos t-\sin t=t\cos t$，故 $\dfrac{\mathrm{d}y}{\mathrm{d}x}=t$。再对 $x$ 求导：$\dfrac{\mathrm{d}^2y}{\mathrm{d}x^2}=\dfrac{(t)'_t}{\cos t}=\dfrac1{\cos t}$，$t=\frac\pi4$ 时为 $\sqrt2$。（这是 2013 年第 11 题。）要点：一阶导数化简为 $t$ 后，二阶导数不是 $1$，还要除以 $x'(t)$。</p>` },
+          { q: R`<p>设 $y=y(x)$ 由 $x=\sin t,\ y=t\sin t+\cos t$ 确定，求 $\dfrac{\mathrm{d}^2y}{\mathrm{d}x^2}$ 在 $t=\dfrac\pi4$ 处的值。</p>`, a: R`<p>$x'(t)=\cos t$，$y'(t)=\sin t+t\cos t-\sin t=t\cos t$，故 $\dfrac{\mathrm{d}y}{\mathrm{d}x}=t$。再对 $x$ 求导：$\dfrac{\mathrm{d}^2y}{\mathrm{d}x^2}=\dfrac{(t)'_t}{\cos t}=\dfrac1{\cos t}$，$t=\frac\pi4$ 时为 $\sqrt2$。（这是 <span class="qref" data-q="2013-11">2013 年第 11 题</span>。）要点：一阶导数化简为 $t$ 后，二阶导数不是 $1$，还要除以 $x'(t)$。</p>` },
           { q: R`<p>设 $y=x^2\ln x$，求 $y^{(n)}\ (n\ge3)$。</p>`, a: R`<p>用莱布尼茨公式，令 $u=\ln x,\ v=x^2$：$y^{(n)}=\mathrm C_n^0(\ln x)^{(n)}x^2+\mathrm C_n^1(\ln x)^{(n-1)}\cdot2x+\mathrm C_n^2(\ln x)^{(n-2)}\cdot2$。代入 $(\ln x)^{(k)}=\dfrac{(-1)^{k-1}(k-1)!}{x^k}$：
 $$y^{(n)}=\frac{(-1)^{n-1}(n-1)!}{x^{n-2}}+\frac{2n(-1)^{n-2}(n-2)!}{x^{n-2}}+\frac{n(n-1)(-1)^{n-3}(n-3)!}{x^{n-2}}.$$
 提出 $\dfrac{(-1)^{n-3}(n-3)!}{x^{n-2}}$：括号内为 $(n-1)(n-2)-2n(n-2)+n(n-1)=n^2-3n+2-2n^2+4n+n^2-n=2$。故 $y^{(n)}=\dfrac{2(-1)^{n-3}(n-3)!}{x^{n-2}}$。另一种更快的思路：$y'''=\dfrac2x$（算三次导），再套 $\big(\frac1x\big)^{(n-3)}$ 公式，结果相同。</p>` },
           { q: R`<p>设 $y=y(x)$ 由 $y-x\mathrm{e}^y=1$ 确定，求 $y'(0)$ 与 $y''(0)$。</p>`, a: R`<p>$x=0$ 时 $y=1$。求导：$y'-\mathrm{e}^y-x\mathrm{e}^yy'=0$，代 $(0,1)$：$y'(0)=\mathrm{e}$。再求导：$y''-\mathrm{e}^yy'-\mathrm{e}^yy'-x(\mathrm{e}^yy'\cdot y'+\mathrm{e}^yy'')=0$，代 $x=0,y=1,y'=\mathrm{e}$：$y''(0)=2\mathrm{e}^2$。要点：先解出该点的 $y$；$x\mathrm{e}^y$ 是乘积且 $\mathrm{e}^y$ 是复合；先求导后代值。</p>` },
           { q: R`<p>设 $f(x)=\begin{cases}\dfrac{1-\cos x}{x},&x\neq0,\\ 0,&x=0,\end{cases}$ 则 $f'(0)=$（　　）</p>`, options: [R`<p>不存在</p>`, R`<p>$0$</p>`, R`<p>$\dfrac12$</p>`, R`<p>$1$</p>`], correct: 2, explain: R`<p>分段点用定义：$f'(0)=\lim\limits_{x\to0}\dfrac{f(x)-f(0)}{x}=\lim\limits_{x\to0}\dfrac{1-\cos x}{x^2}=\dfrac12$（等价无穷小 $1-\cos x\sim\frac{x^2}2$）。不能把 $x\neq0$ 的公式求导再"代 $0$"——那样会遇到 $\frac00$；也不能因为"分段"就说不存在。</p>` },
           { q: R`<p>判断对错并说明理由：设 $y=f(x)$ 可导且 $f'(x)\neq0$，其反函数为 $x=g(y)$，则 $g''(y)=\dfrac{1}{f''(x)}$。</p>`, a: R`<p><b>错。</b>只有一阶导数互为倒数：$g'(y)=\dfrac1{f'(x)}$。二阶导数要对 $y$ 再求导，$\dfrac1{f'(x)}$ 是 $x$ 的函数，须乘 $\dfrac{\mathrm{d}x}{\mathrm{d}y}$：$g''(y)=-\dfrac{f''(x)}{[f'(x)]^2}\cdot\dfrac1{f'(x)}=-\dfrac{f''(x)}{[f'(x)]^3}$。例如 $f(x)=x+\mathrm{e}^x$ 在 $x=0$ 处，$g''=-\frac18$，而 $\frac1{f''(0)}=1$。</p>` },
-          { q: R`<p>设 $f(x)=(\mathrm{e}^x-1)(\mathrm{e}^{2x}-2)(\mathrm{e}^{3x}-3)$，求 $f'(0)$。</p>`, a: R`<p>由乘积法则 $f'=u'vw+uv'w+uvw'$，在 $x=0$ 处 $u(0)=\mathrm{e}^0-1=0$，含 $u(0)$ 的两项为零，只剩 $u'(0)v(0)w(0)=1\cdot(1-2)(1-3)=2$。这是 2012 年第 2 题（$n$ 个因子版本）的思路：某因子在该点为零时，只需对它求导、其余代值。</p>` },
+          { q: R`<p>设 $f(x)=(\mathrm{e}^x-1)(\mathrm{e}^{2x}-2)(\mathrm{e}^{3x}-3)$，求 $f'(0)$。</p>`, a: R`<p>由乘积法则 $f'=u'vw+uv'w+uvw'$，在 $x=0$ 处 $u(0)=\mathrm{e}^0-1=0$，含 $u(0)$ 的两项为零，只剩 $u'(0)v(0)w(0)=1\cdot(1-2)(1-3)=2$。这是 <span class="qref" data-q="2012-2">2012 年第 2 题</span>（$n$ 个因子版本）的思路：某因子在该点为零时，只需对它求导、其余代值。</p>` },
           { q: R`<p>设 $f$ 在 $(-\infty,+\infty)$ 上可导且为偶函数，$f'(1)=3$，则 $f'(-1)=$（　　）</p>`, options: [R`<p>$3$</p>`, R`<p>$-3$</p>`, R`<p>$0$</p>`, R`<p>无法确定</p>`], correct: 1, explain: R`<p>对恒等式 $f(-x)=f(x)$ 两边求导：$-f'(-x)=f'(x)$，令 $x=1$ 得 $f'(-1)=-f'(1)=-3$。偶函数的导函数是奇函数。</p>` }
         ]
       }

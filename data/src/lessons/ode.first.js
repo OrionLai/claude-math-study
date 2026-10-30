@@ -17,7 +17,7 @@ registerLesson(function (R) {
 <li>直接找一个二元函数 $u(x,y)$，使方程就是 $\mathrm{d}u=0$——<b>全微分方程</b>；</li>
 <li>看到特殊组合 $ax+by+c$、$y^2$、$xy$ 等，整体换元——<b>简单变量代换</b>。</li>
 </ul>
-<p>所以学这一篇，不是背五个公式，而是掌握"识别类型 → 做对应的变形 → 两边积分 → 回代、定常数、检查丢解"这一条主线。考研里一阶方程几乎年年出现，既有直接求解的填空题，也常作为解答题的第一步，为后面的极值、拐点、渐近线、级数求和服务。</p>`
+<p>所以学这一篇，不是背五个公式，而是掌握"识别类型 → 做对应的变形 → 两边积分 → 回代、定常数、检查丢解"这一条主线。考研里一阶方程出现频率很高（近十年数学一有 7 年考到），既有直接求解的填空题，也常作为解答题的第一步，为后面的极值、拐点、渐近线、级数求和服务。</p>`
       },
       {
         kind: 'def', title: '一阶方程的两种写法与"解"的含义',
@@ -26,7 +26,7 @@ registerLesson(function (R) {
 <p><b>逐字拆解：</b></p>
 <ul>
 <li>标准形式默认 $y$ 是 $x$ 的函数；对称形式中 $x,y$ 地位平等——既可以把 $y$ 看作 $x$ 的函数（此时 $y'=-P/Q$，需 $Q\ne0$），也可以把 $x$ 看作 $y$ 的函数（$\dfrac{\mathrm{d}x}{\mathrm{d}y}=-Q/P$）。<b>这一点非常有用</b>：有的方程对 $y$ 不是线性的，对 $x$ 却是线性的（见后面例题）。</li>
-<li>解可以是显式的 $y=\varphi(x)$，也可以是隐式的 $\Phi(x,y)=0$：若由它确定的隐函数满足方程，就叫<b>隐式解</b>；含一个任意常数的隐式解 $\Phi(x,y,C)=0$ 叫<b>隐式通解</b>（也叫通积分）。考研答案里，隐式通解是被接受的，例如 2024 年第 14 题的答案本身就是隐式的。</li>
+<li>解可以是显式的 $y=\varphi(x)$，也可以是隐式的 $\Phi(x,y)=0$：若由它确定的隐函数满足方程，就叫<b>隐式解</b>；含一个任意常数的隐式解 $\Phi(x,y,C)=0$ 叫<b>隐式通解</b>（也叫通积分）。考研答案里，隐式解是被接受的，例如 <span class="qref" data-q="2024-14">2024 年第 14 题</span>的答案 $\arctan(x+y)=y+\dfrac\pi4$ 就无法解出 $y=y(x)$ 的显式表达式。</li>
 </ul>
 <p><b>正例：</b>$x^2+y^2=C$ 是 $x\,\mathrm{d}x+y\,\mathrm{d}y=0$ 的隐式通解：对它两边微分恰好得到方程。<b>反例：</b>$x^2+y^2=-1$ 不确定任何实函数，不是解。</p>`
       },
@@ -102,6 +102,7 @@ $$x\frac{\mathrm{d}u}{\mathrm{d}x}=\varphi(u)-u,\qquad\text{即}\qquad \frac{\ma
         ],
         remark: R`<p><b>(1)</b> 若 $x$ 在分母出现，解要分 $x\gt0$ 与 $x\lt0$ 讨论，通常写 $\ln|x|$ 统一处理。</p>
 <p><b>(2) 可化为齐次的方程</b>　$y'=f\!\left(\dfrac{a_1x+b_1y+c_1}{a_2x+b_2y+c_2}\right)$：当 $a_1b_2-a_2b_1\ne0$ 时，解线性方程组 $a_1h+b_1k+c_1=0,\ a_2h+b_2k+c_2=0$ 得交点 $(h,k)$，令 $x=X+h,\ y=Y+k$（平移坐标系使两直线过新原点）即化为齐次；当 $a_1b_2-a_2b_1=0$ 时两直线平行，$a_2x+b_2y=\lambda(a_1x+b_1y)$，令 $u=a_1x+b_1y$ 化为可分离方程。考研偶尔考后一种，本质是下面"简单变量代换"中的 $u=ax+by+c$。</p>
+<p><i>平移的小例子：</i>$y'=\dfrac{x+y+1}{x-y}$。解 $h+k+1=0,\ h-k=0$ 得 $h=k=-\dfrac12$，令 $x=X-\dfrac12,\ y=Y-\dfrac12$（于是 $\mathrm{d}y/\mathrm{d}x=\mathrm{d}Y/\mathrm{d}X$），方程变成 $\dfrac{\mathrm{d}Y}{\mathrm{d}X}=\dfrac{X+Y}{X-Y}=\dfrac{1+Y/X}{1-Y/X}$，齐次。为什么平移能消掉常数项：常数项 $c_1,c_2$ 的作用是让两条直线 $a_ix+b_iy+c_i=0$ 不过原点，把原点搬到它们的交点上，常数项自然为零。</p>
 <p><b>(3)</b> 也可以令 $v=x/y$，把 $x$ 看作 $y$ 的函数，当 $\varphi$ 的形式对 $x/y$ 更友好时这样更省事。</p>`
       },
       {
@@ -111,7 +112,7 @@ $$x\frac{\mathrm{d}u}{\mathrm{d}x}=\varphi(u)-u,\qquad\text{即}\qquad \frac{\ma
 <p><b>代换：</b>令 $y=ux$，$y'=u'x+u$，代入：$u'x+u=\dfrac1u+u$，于是 $x\,u'=\dfrac1u$。这里 $\varphi(u)-u=\dfrac1u$ 永不为零，没有要补的直线解。</p>
 <p><b>分离积分：</b>$u\,\mathrm{d}u=\dfrac{\mathrm{d}x}{x}$，$\dfrac{u^2}{2}=\ln|x|+C_1$。</p>
 <p><b>回代：</b>$u=y/x$，得 $\dfrac{y^2}{2x^2}=\ln|x|+C_1$，即通解 $y^2=2x^2\ln|x|+Cx^2$。</p>
-<p><b>这道题告诉我们什么：</b>齐次方程做完后答案往往是隐式的，不必强行解出 $y$。另外要养成验算习惯：对 $y^2=2x^2\ln|x|+Cx^2$ 两边求导得 $2yy'=4x\ln|x|+2x+2Cx$，用 $Cx^2=y^2-2x^2\ln|x|$ 消去 $C$ 后恰得 $2yy'=2x+\dfrac{2y^2}{x}$，即 $y'=\dfrac xy+\dfrac yx$。</p>`
+<p><b>这道题告诉我们什么：</b>齐次方程做完后答案往往是隐式的，不必强行解出 $y$。考研里齐次方程的近例是 <span class="qref" data-q="2014-11">2014 年第 11 题</span> $xy'+y(\ln x-\ln y)=0$，即 $y'=\dfrac yx\ln\dfrac yx$，同样令 $y=ux$ 即可。另外要养成验算习惯：对 $y^2=2x^2\ln|x|+Cx^2$ 两边求导得 $2yy'=4x\ln|x|+2x+2Cx$，用 $Cx^2=y^2-2x^2\ln|x|$ 消去 $C$ 后恰得 $2yy'=2x+\dfrac{2y^2}{x}$，即 $y'=\dfrac xy+\dfrac yx$。</p>`
       },
       {
         kind: 'def', title: '一阶线性方程',
@@ -122,9 +123,9 @@ $$\frac{\mathrm{d}y}{\mathrm{d}x}+P(x)\,y=Q(x)$$
 <ul>
 <li>"线性"指方程关于<b>未知函数 $y$ 及其导数 $y'$</b> 是一次的：不出现 $y^2$、$yy'$、$\sin y$、$\mathrm{e}^y$ 等。对 $x$ 没有任何要求，$P,Q$ 可以是任意复杂的 $x$ 的函数。</li>
 <li>$y'$ 的系数必须是 $1$（或者能化为 $1$）：$xy'+y=\sin x$ 两边除以 $x$ 后才是标准形式，$P(x)=1/x$，$Q(x)=\dfrac{\sin x}{x}$，这时解的讨论要在 $x\ne0$ 的区间上进行。</li>
-<li>"线性"的本质是算子 $L[y]=y'+P(x)y$ 满足 $L[\alpha y_1+\beta y_2]=\alpha L[y_1]+\beta L[y_2]$。由此立刻得到：两个非齐次解之差是齐次解；齐次解乘常数仍是齐次解；非齐次解加齐次解仍是非齐次解。这些性质在 ode.linear 中系统讨论，2016 年第 3 题就是直接考它。</li>
+<li>"线性"的本质是算子 $L[y]=y'+P(x)y$ 满足 $L[\alpha y_1+\beta y_2]=\alpha L[y_1]+\beta L[y_2]$。由此立刻得到：两个非齐次解之差是齐次解；齐次解乘常数仍是齐次解；非齐次解加齐次解仍是非齐次解。这些性质在 ode.linear 中系统讨论，<span class="qref" data-q="2016-3">2016 年第 3 题</span>就是直接考它。</li>
 </ul>
-<p><b>正例：</b>$y'+xy=\mathrm{e}^{-x^2/2}$（2019 年第 15 题）；$y'+\dfrac1{2\sqrt x}y=2+\sqrt x$（2022 年第 17 题）；$y'=y+x$。<b>反例：</b>$y'=y^2+x$（含 $y^2$）；$yy'=x$（含 $yy'$，但它可分离）；$y'=\dfrac{y}{x+y^3}$（对 $y$ 非线性，但把 $x$ 看作 $y$ 的函数：$\dfrac{\mathrm{d}x}{\mathrm{d}y}-\dfrac1y x=y^2$，对 $x$ 是线性的！）。</p>`
+<p><b>正例：</b>$y'+xy=\mathrm{e}^{-x^2/2}$（<span class="qref" data-q="2019-15">2019 年第 15 题</span>）；$y'+\dfrac1{2\sqrt x}y=2+\sqrt x$（<span class="qref" data-q="2022-17">2022 年第 17 题</span>）；$y'=y+x$。<b>反例：</b>$y'=y^2+x$（含 $y^2$）；$yy'=x$（含 $yy'$，但它可分离）；$y'=\dfrac{y}{x+y^3}$（对 $y$ 非线性，但把 $x$ 看作 $y$ 的函数：$\dfrac{\mathrm{d}x}{\mathrm{d}y}-\dfrac1y x=y^2$，对 $x$ 是线性的！）。</p>`
       },
       {
         kind: 'thm', title: '一阶线性方程的通解公式',
@@ -144,9 +145,9 @@ $$y=\mathrm{e}^{-\int P(x)\mathrm{d}x}\left[\int Q(x)\,\mathrm{e}^{\int P(x)\mat
           { s: R`<p><b>第 4 步（结构）</b>　把公式展开：$y=C\mathrm{e}^{-\int P\mathrm{d}x}+\mathrm{e}^{-\int P\mathrm{d}x}\displaystyle\int Q\mathrm{e}^{\int P\mathrm{d}x}\mathrm{d}x$。第一项是齐次方程的通解（令 $Q=0$ 即得），第二项是非齐次方程的一个特解（取 $C=0$）。</p>`, why: R`<p>这就是"非齐次通解 $=$ 齐次通解 $+$ 非齐次特解"。它也可以从线性性直接证明：任两个非齐次解之差满足齐次方程，而齐次方程的解已被 $C\mathrm{e}^{-\int P}$ 穷尽。</p>` },
           { s: R`<p><b>第 5 步（初值问题）</b>　把原函数取定为 $\displaystyle\int_{x_0}^x$，公式写成 $y=\mathrm{e}^{-\int_{x_0}^xP(t)\mathrm{d}t}\left[\displaystyle\int_{x_0}^xQ(t)\mathrm{e}^{\int_{x_0}^tP(s)\mathrm{d}s}\mathrm{d}t+C\right]$，令 $x=x_0$ 得 $C=y_0$，常数唯一确定，且表达式对一切 $x\in I$ 有意义。</p>`, why: R`<p>存在性：这个表达式就是解。唯一性：由第 3 步，所有解都形如此式，而 $C$ 被 $y(x_0)=y_0$ 唯一确定。"在整个 $I$ 上存在"与可分离方程例 2 中 $y=1/(1-x)$ 的爆破形成对比。</p>` }
         ],
-        remark: R`<p><b>(1) 常数变易法</b>是另一种推导：先解齐次得 $y=C\mathrm{e}^{-\int P}$，再把 $C$ 换成待定函数 $C(x)$ 代入非齐次方程，得 $C'(x)\mathrm{e}^{-\int P}=Q$，积分即得同一个公式。两种推导得到的结果相同，"变易常数"的想法在 ode.linear、ode.const 中还会用到。</p>
+        remark: R`<p><b>(1) 常数变易法</b>是另一种推导：先解齐次得 $y=C\mathrm{e}^{-\int P}$，再把 $C$ 换成待定函数 $C(x)$：设 $y=C(x)\mathrm{e}^{-\int P}$，求导 $y'=C'(x)\mathrm{e}^{-\int P}-C(x)P\mathrm{e}^{-\int P}$，代入 $y'+Py=Q$ 时含 $C(x)$ 的两项恰好抵消（因为 $\mathrm{e}^{-\int P}$ 是齐次解），只剩 $C'(x)\mathrm{e}^{-\int P}=Q$，于是 $C(x)=\int Q\mathrm{e}^{\int P}\mathrm{d}x+C$，积分即得同一个公式。为什么这样设有道理：非齐次方程的解与齐次解"形状相近"，差别只在系数不再是常数。"变易常数"的想法在 ode.linear、ode.const 中还会用到。</p>
 <p><b>(2) 公式中的 $\int P\mathrm{d}x$ 不要再加常数</b>，加了也只是把 $C$ 换了个倍数；但在 $\mathrm{e}^{\int P}$ 里若 $\int\frac{\mathrm{d}x}{x}=\ln|x|$，可以直接取 $\mu=x$（去掉绝对值），因为 $\mu=-x$ 同样是积分因子。</p>
-<p><b>(3) 周期解。</b>若 $P\equiv p$ 为常数、$Q$ 以 $T$ 为周期，方程 $y'+py=Q(x)$ 有唯一的周期解——这是 2018 年第 18 题的内容，见真题精讲。</p>`
+<p><b>(3) 周期解。</b>若 $P\equiv p$ 为<b>非零</b>常数、$Q$ 连续且以 $T$ 为周期，则方程 $y'+py=Q(x)$ 有唯一的以 $T$ 为周期的解——这是 <span class="qref" data-q="2018-18">2018 年第 18 题</span>（$p=1$）的内容，见真题精讲。$p\ne0$ 不能去掉：$p=0$ 时方程是 $y'=Q(x)$，仅当 $\int_0^TQ=0$ 时才有周期解，而且一有就有无穷多个（相差常数）。</p>`
       },
       {
         kind: 'example', title: '例：一阶线性方程——标准做法与"换个自变量"',
@@ -170,7 +171,7 @@ $$\frac{\mathrm{d}y}{\mathrm{d}x}+P(x)\,y=Q(x)\,y^{n}\qquad(n\ne0,1)$$
 <li>$n$ 可以是任意实数，包括负数和分数，例如 $y'+\dfrac yx=y^{-2}$、$y'-y=\sqrt y$。</li>
 <li>$n\gt0$ 时 $y\equiv0$ 总是一个解，变形时会被除掉，要注意补上。</li>
 </ul>
-<p><b>正例：</b>$y'+\dfrac1xy=xy^2$；$2yy'-y^2=2$（整理为 $y'-\dfrac12y=y^{-1}$，$n=-1$，这是 2019 年第 10 题）。<b>反例：</b>$y'+y=\mathrm{e}^y$（指数里有 $y$，不是幂）；$y'+y=x^2$（$n=0$，就是线性方程）。</p>`
+<p><b>正例：</b>$y'+\dfrac1xy=xy^2$；$2yy'-y^2=2$（两边除以 $2y$ 整理为 $y'-\dfrac12y=y^{-1}$，$n=-1$，这是 <span class="qref" data-q="2019-10">2019 年第 10 题</span>）；$x^2y'+xy=y^2$（<span class="qref" data-q="1993-3-3">1993 年第三题(3)</span>，$n=2$）。<b>反例：</b>$y'+y=\mathrm{e}^y$（指数里有 $y$，不是幂）；$y'+y=x^2$（$n=0$，就是线性方程）。</p>`
       },
       {
         kind: 'thm', title: '伯努利方程化为线性方程',
@@ -182,7 +183,7 @@ $$\frac{\mathrm{d}z}{\mathrm{d}x}+(1-n)P(x)\,z=(1-n)Q(x).$$`,
           { s: R`<p><b>第 2 步</b>　令 $z=y^{1-n}$，由链式法则 $z'=(1-n)y^{-n}y'$，故 $y^{-n}y'=\dfrac{z'}{1-n}$。</p>`, why: R`<p>$n\ne1$ 保证可以除以 $1-n$。</p>` },
           { s: R`<p><b>第 3 步</b>　代入得 $\dfrac{z'}{1-n}+P z=Q$，乘以 $1-n$ 即为所求线性方程。按线性方程通解公式求出 $z$，再由 $y=z^{1/(1-n)}$ 回代。</p>`, why: R`<p>线性方程的通解公式保证能求出 $z$ 的全部解；回代时要注意 $z^{1/(1-n)}$ 的定义范围（如 $n=2$ 时 $y=1/z$，$n=1/2$ 时 $y=z^2$ 要求 $z\ge0$）。</p>` }
         ],
-        remark: R`<p>(1) 除以 $y^n$ 时在 $n\gt0$ 的情形丢掉了 $y\equiv0$，答案中要补上。(2) 如果题目给了形如 $2yy'$、$3y^2y'$ 的组合，不必记公式，直接令 $u=y^2$ 或 $u=y^3$，这与 $z=y^{1-n}$ 是一回事（2019 年第 10 题）。</p>`
+        remark: R`<p>(1) 除以 $y^n$ 时在 $n\gt0$ 的情形丢掉了 $y\equiv0$，答案中要补上。(2) 如果题目给了形如 $2yy'$、$3y^2y'$ 的组合，不必记公式，直接令 $u=y^2$ 或 $u=y^3$，这与 $z=y^{1-n}$ 是一回事（<span class="qref" data-q="2019-10">2019 年第 10 题</span>）。(3) $n\lt0$ 时 $y\equiv0$ 不是解（$y^n$ 无意义），不必补。</p>`
       },
       {
         kind: 'example', title: '例：伯努利方程',
@@ -237,7 +238,7 @@ $$u(x,y)=\int_{x_0}^xP(t,y_0)\,\mathrm{d}t+\int_{y_0}^yQ(x,s)\,\mathrm{d}s.$$`,
           { s: R`<p><b>第 1 步</b>　设 $\mu=\mu(x)$。恰当条件 $(\mu P)_y=(\mu Q)_x$ 展开为 $\mu P_y=\mu' Q+\mu Q_x$，即 $\mu'Q=\mu(P_y-Q_x)$，$\dfrac{\mu'}{\mu}=\dfrac{P_y-Q_x}{Q}$。</p>`, why: R`<p>$\mu$ 不含 $y$ 所以 $(\mu P)_y=\mu P_y$；$(\mu Q)_x$ 用乘积法则。</p>` },
           { s: R`<p><b>第 2 步</b>　若右端 $=\psi(x)$ 只含 $x$，则 $\mu'=\psi(x)\mu$ 是可分离方程，解得 $\mu=\mathrm{e}^{\int\psi\mathrm{d}x}$。把它代回第 1 步，等式成立，故 $\mu P\,\mathrm{d}x+\mu Q\,\mathrm{d}y=0$ 满足判定定理的条件，是全微分方程。</p>`, why: R`<p>第 1 步的推导每一步都可逆，所以找到的 $\mu$ 确实使恰当条件成立。第 2 条的证明把 $x,y$ 的角色对调即可。</p>` }
         ],
-        remark: R`<p>这个定理是"线性方程积分因子"的推广：线性方程写成 $(Py-Q)\mathrm{d}x+\mathrm{d}y=0$，此时 $\dfrac{P_y-Q_x}{Q}=P(x)$，于是 $\mu=\mathrm{e}^{\int P\mathrm{d}x}$，与前面一致。考研对积分因子的要求不高，会"看出来"$\mu=\dfrac1{x^2}$、$\dfrac1{y^2}$、$\dfrac1{xy}$ 一类即可。</p>`
+        remark: R`<p>这个定理是"线性方程积分因子"的推广：线性方程 $y'+p(x)y=q(x)$ 写成对称形式 $\big(p(x)y-q(x)\big)\mathrm{d}x+\mathrm{d}y=0$（为避免与本定理中的 $P,Q$ 混淆，这里把系数改记为小写），即 $P=p(x)y-q(x)$，$Q=1$，于是 $\dfrac{P_y-Q_x}{Q}=\dfrac{p(x)-0}{1}=p(x)$ 只含 $x$，$\mu=\mathrm{e}^{\int p\mathrm{d}x}$，与前面一致。考研对积分因子的要求不高，会"看出来"$\mu=\dfrac1{x^2}$、$\dfrac1{y^2}$、$\dfrac1{xy}$ 一类即可。</p>`
       },
       {
         kind: 'example', title: '例：全微分方程与积分因子',
@@ -249,7 +250,7 @@ $$u(x,y)=\int_{x_0}^xP(t,y_0)\,\mathrm{d}t+\int_{y_0}^yQ(x,s)\,\mathrm{d}s.$$`,
 <p><b>判定：</b>$P_y=1$，$Q_x=2xy-1$，不相等。试 $\dfrac{P_y-Q_x}{Q}=\dfrac{2-2xy}{x^2y-x}=\dfrac{-2(xy-1)}{x(xy-1)}=-\dfrac2x$，只含 $x$！于是 $\mu=\mathrm{e}^{\int(-2/x)\mathrm{d}x}=\dfrac1{x^2}$。</p>
 <p><b>乘积分因子：</b>$\dfrac{y}{x^2}\mathrm{d}x+\left(y-\dfrac1x\right)\mathrm{d}y=0$。验证 $\left(\dfrac y{x^2}\right)_y=\dfrac1{x^2}=\left(y-\dfrac1x\right)_x$。</p>
 <p><b>求 $u$：</b>也可以凑微分：$\dfrac{y\,\mathrm{d}x-x\,\mathrm{d}y}{x^2}=-\mathrm{d}\!\left(\dfrac yx\right)$，剩下 $y\,\mathrm{d}y=\mathrm{d}\!\left(\dfrac{y^2}2\right)$。故通解 $\dfrac{y^2}2-\dfrac yx=C$。另外乘 $\dfrac1{x^2}$ 时默认 $x\ne0$；$y\equiv0$ 也是原方程的解（对应 $C=0$）。</p>
-<p><b>这两题告诉我们什么：</b>看到对称形式的方程，先算 $P_y$ 与 $Q_x$，相等就偏积分；不相等就试 $\dfrac{P_y-Q_x}{Q}$ 或 $\dfrac{Q_x-P_y}{P}$ 是否只含一个变量，或者直接按分组凑微分。</p>`
+<p><b>这两题告诉我们什么：</b>看到对称形式的方程，先算 $P_y$ 与 $Q_x$，相等就偏积分；不相等就试 $\dfrac{P_y-Q_x}{Q}$ 或 $\dfrac{Q_x-P_y}{P}$ 是否只含一个变量，或者直接按分组凑微分。考研里全微分方程常反过来考：<span class="qref" data-q="1994-5">1994 年第五题</span>告诉你 $[xy(x+y)-f(x)y]\,\mathrm{d}x+[f'(x)+x^2y]\,\mathrm{d}y=0$ 是全微分方程，让你由 $P_y=Q_x$ 列出关于 $f$ 的方程（$P_y=x^2+2xy-f(x)$，$Q_x=f''(x)+2xy$，故 $f''(x)+f(x)=x^2$）先求 $f$，再按本节方法求通解——判定条件 $P_y=Q_x$ 本身就是考点。</p>`
       },
       {
         kind: 'thm', title: '简单变量代换：右端只含 ax+by+c 的方程',
@@ -263,12 +264,12 @@ $$\frac{\mathrm{d}u}{\mathrm{d}x}=a+b\,f(u),\qquad\text{即}\qquad\frac{\mathrm{
         ],
         remark: R`<p><b>考研常见的其他代换</b>（都遵循"看到什么组合设什么"）：</p>
 <ul>
-<li>出现 $2yy'$ 或 $y^2$ 与 $yy'$ 同时出现：令 $u=y^2$（2019 年第 10 题）；一般地 $g'(y)y'$ 与 $g(y)$ 同时出现：令 $u=g(y)$。</li>
+<li>出现 $2yy'$ 或 $y^2$ 与 $yy'$ 同时出现：令 $u=y^2$（<span class="qref" data-q="2019-10">2019 年第 10 题</span>）；一般地 $g'(y)y'$ 与 $g(y)$ 同时出现：令 $u=g(y)$。</li>
 <li>出现 $xy'+y$ 与 $xy$：令 $u=xy$；出现 $\dfrac{xy'-y}{x^2}$ 与 $\dfrac yx$：令 $u=\dfrac yx$。</li>
 <li>方程对 $y$ 不是标准类型，但对 $x$ 是线性的：把 $x$ 看作 $y$ 的函数，$\dfrac{\mathrm{d}x}{\mathrm{d}y}=\dfrac1{y'}$。</li>
 <li>$y'=f\!\left(\dfrac{a_1x+b_1y+c_1}{a_2x+b_2y+c_2}\right)$：平移 $x=X+h,\ y=Y+k$ 化齐次。</li>
 </ul>
-<p>2024 年第 14 题 $y'=\dfrac1{(x+y)^2}$ 就是本定理 $a=b=1,\ c=0$ 的直接应用。</p>`
+<p><span class="qref" data-q="2024-14">2024 年第 14 题</span> $y'=\dfrac1{(x+y)^2}$ 就是本定理 $a=b=1,\ c=0$ 的直接应用。</p>`
       },
       {
         kind: 'example', title: '近十年真题精讲（一）：变量代换型填空题',
@@ -293,7 +294,7 @@ $$\frac{\mathrm{d}u}{\mathrm{d}x}=a+b\,f(u),\qquad\text{即}\qquad\frac{\mathrm{
 <li>令 $u=y^2$，$u'=2yy'$，方程变为 $u'-u=2$，一阶线性，$P=-1,\ Q=2$。</li>
 <li>积分因子 $\mu=\mathrm{e}^{-x}$：$(\mathrm{e}^{-x}u)'=2\mathrm{e}^{-x}$，积分 $\mathrm{e}^{-x}u=-2\mathrm{e}^{-x}+C$，故 $u=C\mathrm{e}^x-2$。（理由：线性方程通解公式；也可直接看出特解 $u=-2$ 加齐次通解 $C\mathrm{e}^x$。）</li>
 <li>回代：$y^2=C\mathrm{e}^x-2$。代入 $y(0)=1$：$1=C-2$，$C=3$，$y^2=3\mathrm{e}^x-2$。</li>
-<li><b>定号：</b>$y(0)=1\gt0$，解在 $x=0$ 附近连续，故取正根 $y=\sqrt{3\mathrm{e}^x-2}$。（理由：$y$ 连续且 $y^2\gt0$ 的区间上 $y$ 不变号；若写成 $y=\pm\sqrt{\cdots}$ 或漏掉符号判断就会失分。）</li>
+<li><b>定号：</b>$y(0)=1\gt0$，解在 $x=0$ 附近连续，故取正根 $y=\sqrt{3\mathrm{e}^x-2}$。（理由：$y$ 连续且 $y^2\gt0$ 的区间上 $y$ 不变号；若写成 $y=\pm\sqrt{\cdots}$ 或漏掉符号判断就会失分。）解的定义区间由 $3\mathrm{e}^x-2\gt0$ 决定，即 $x\gt\ln\dfrac23$，它包含初值点 $x=0$。</li>
 </ol>
 <p><b>答案：</b>$y=\sqrt{3\mathrm{e}^x-2}$。</p>
 <p><b>这道题告诉我们什么：</b>一道题可以同时属于"可分离""伯努利""代换"三类，<b>选最省事的那条路</b>；带初值的题最后一步一定要用初值确定根号前的符号。</p>`
@@ -335,7 +336,7 @@ $$\frac{\mathrm{d}u}{\mathrm{d}x}=a+b\,f(u),\qquad\text{即}\qquad\frac{\mathrm{
 <li><b>全微分方程只检查 $P_y=Q_x$ 不管区域。</b>在有洞的区域上条件只是必要的（$\dfrac{-y\,\mathrm{d}x+x\,\mathrm{d}y}{x^2+y^2}$ 的例子）。考研题几乎总在矩形或全平面上，但要知道这一点。</li>
 <li><b>初值问题最后不定符号。</b>解出 $y^2=3\mathrm{e}^x-2$ 就停笔，或写 $y=\pm\sqrt{\cdots}$，都不对；$y(0)=1\gt0$ 决定取正号。</li>
 <li><b>以为所有解都在整个数轴上有定义。</b>非线性方程的解可以在有限点处爆破（$y'=y^2$），解答时应注明定义区间；线性方程（系数连续）才有"整体存在"的保证。</li>
-<li><b>隐式解非要显化。</b>齐次方程、代换型方程的答案常是隐式的（2024 年第 14 题），强行显化既做不到又浪费时间。</li>
+<li><b>隐式解非要显化。</b>齐次方程、代换型方程的答案常是隐式的（<span class="qref" data-q="2024-14">2024 年第 14 题</span>），强行显化既做不到又浪费时间。</li>
 </ul>`
       },
       {
@@ -352,7 +353,7 @@ $$\frac{\mathrm{d}u}{\mathrm{d}x}=a+b\,f(u),\qquad\text{即}\qquad\frac{\mathrm{
 <tr><td>$P_y\ne Q_x$，但 $\dfrac{P_y-Q_x}{Q}$ 只含 $x$</td><td>积分因子 $\mu(x)$</td><td>$\mu=\mathrm{e}^{\int\frac{P_y-Q_x}{Q}\mathrm{d}x}$</td><td>或观察凑微分</td></tr>
 <tr><td>只以 $ax+by+c$ 出现</td><td>代换</td><td>$u=ax+by+c$</td><td>化为可分离</td></tr>
 <tr><td>$2yy'$、$3y^2y'$、$xy'+y$</td><td>代换</td><td>$u=y^2$、$y^3$、$xy$</td><td>"出现什么组合设什么"</td></tr>
-<tr><td>对 $y$ 都不是，但 $x$ 只以一次出现</td><td>$x$ 是 $y$ 的函数</td><td>$\dfrac{\mathrm{d}x}{\mathrm{d}y}=\dfrac1{y'}$ 后按线性解</td><td>补 $y'$ 分母为零的解</td></tr>
+<tr><td>对 $y$ 都不是，但 $x$ 只以一次出现</td><td>$x$ 是 $y$ 的函数</td><td>$\dfrac{\mathrm{d}x}{\mathrm{d}y}=\dfrac1{y'}$ 后按线性解</td><td>取倒数时除掉的常数解（如 $y\equiv0$）要补回</td></tr>
 </tbody>
 </table>
 <p><b>第二步：求解的固定流程。</b>变形 → 积分 → 回代 → 用初值定 $C$（和符号）→ 补丢掉的解 → 注明定义区间 → 回代验算（填空题尤其值得花 30 秒）。</p>
@@ -367,7 +368,7 @@ $$\frac{\mathrm{d}u}{\mathrm{d}x}=a+b\,f(u),\qquad\text{即}\qquad\frac{\mathrm{
 <li><b>解答题第一问求线性方程特解，第二问转向其他考点（10 分）：</b>这是最常见的综合方式。<span class="qref" data-q="2019-15">2019 年第 15 题</span>解 $y'+xy=\mathrm{e}^{-x^2/2}$ 后求凹凸区间与拐点；<span class="qref" data-q="2022-17">2022 年第 17 题</span>解线性方程后求渐近线；<span class="qref" data-q="2023-17">2023 年第 17 题</span>由几何条件（切线截距）列出线性方程 $y-xy'=x$，解出后再求变限积分的最大值。三题的微分方程部分都是积分因子法，难点转移到积分计算和后续分析。</li>
 <li><b>线性方程解的结构：</b><span class="qref" data-q="2016-3">2016 年第 3 题</span>给出两个解反求 $q(x)$，用"两解之差是齐次解、两解平均是非齐次解"秒杀；<span class="qref" data-q="2018-18">2018 年第 18 题</span>要求证明周期解的存在唯一性，本质是"通解含全部解 + 常数唯一确定"。这类题考的是对通解公式<b>结构</b>的理解，而不是计算。</li>
 <li><b>与级数综合：</b><span class="qref" data-q="2020-17">2020 年第 17 题</span>由系数递推式导出和函数满足的一阶线性方程 $(1-x)S'=\dfrac12S+1$，解出 $S(x)$。幂级数求和函数题中"逐项求导后建立微分方程"是固定套路，一阶线性方程是其落脚点。</li>
-<li><b>近几年的变化：</b>2016–2019 以线性方程为主；2022 后更强调"先判断不是标准型再代换"（2024 年第 14 题）和"方程来自几何条件"（2023 年第 17 题）。齐次方程、全微分方程近十年没有单独命题，但作为基本类型仍需掌握，早年（2000 年代）曾考过。</li>
+<li><b>近几年的变化：</b>2016–2019 以线性方程为主；2022 后更强调"先判断不是标准型再代换"（2024 年第 14 题）和"方程来自几何条件"（2023 年第 17 题）。齐次方程、全微分方程、伯努利方程近十年没有单独命题，但作为基本类型仍需掌握，往年考过：齐次方程见 <span class="qref" data-q="2014-11">2014 年第 11 题</span>，全微分方程见 <span class="qref" data-q="1994-5">1994 年第五题</span>，伯努利方程见 <span class="qref" data-q="1993-3-3">1993 年第三题(3)</span>。</li>
 </ul>
 <p><b>备考建议：</b>线性方程的积分因子法必须做到零失误；代换型方程每种至少练一道；做完一定验算；解答题注意定义区间与隐式答案的写法。</p>`
       },
