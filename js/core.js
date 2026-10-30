@@ -86,6 +86,26 @@
     KY.saveProg();
   };
   KY.resetProgress = function () { KY.prog = { p: {}, pt: {}, l: {}, quiz: {} }; KY.saveProg(); };
+  // 导出 / 导入记录（换手机、清缓存前备份成 JSON 文件）
+  KY.exportData = function () { return { app: 'ky2', version: 1, exported: new Date().toISOString(), progress: KY.prog }; };
+  // 检查并整理导入的数据：只留认得的字段；不是本站导出的记录返回 null
+  KY.parseImport = function (data) {
+    var src = data && typeof data === 'object' ? data.progress || data : null;
+    if (!src || !src.p || typeof src.p !== 'object') return null;
+    var prog = { p: {}, pt: {}, l: {}, quiz: {} };
+    Object.keys(src.p).forEach(function (id) {
+      if (src.p[id] !== 'ok' && src.p[id] !== 'bad') return;
+      prog.p[id] = src.p[id];
+      if (src.pt && typeof src.pt[id] === 'number') prog.pt[id] = src.pt[id];
+    });
+    ['l', 'quiz'].forEach(function (k) {
+      Object.keys(src[k] && typeof src[k] === 'object' ? src[k] : {}).forEach(function (id) {
+        if (src[k][id] && typeof src[k][id] === 'object') prog[k][id] = src[k][id];
+      });
+    });
+    return prog;
+  };
+  KY.importProgress = function (prog) { KY.prog = prog; KY.saveProg(); };
 
   /* ── 事件 ── */
   function emit(name, data) { (KY.on[name] || []).forEach(function (fn) { try { fn(data); } catch (e) { console.error(e); } }); }

@@ -65,8 +65,12 @@
 </header>
 <main id="view" tabindex="-1"></main>
 <footer class="foot">
-  <span>做题和学习记录只保存在当前浏览器。<span id="built"></span></span>
-  <span id="reset-slot"><button type="button" id="reset">清空做题与学习记录</button></span>
+  <span>做题和学习记录只保存在当前浏览器，换手机或清缓存前请先导出。<span id="built"></span></span>
+  <span class="foot-act">
+    <span id="data-slot"><button type="button" id="export">导出记录</button><button type="button" id="import">导入记录</button></span>
+    <span id="reset-slot"><button type="button" id="reset">清空做题与学习记录</button></span>
+  </span>
+  <input type="file" id="import-file" accept=".json,application/json" hidden>
 </footer>
 
 <button type="button" class="fab" data-ai-open aria-label="打开 AI 辅导">问 AI</button>

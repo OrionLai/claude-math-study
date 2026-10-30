@@ -452,6 +452,38 @@ async function run() {
     await page.context().close();
   });
 
+  await test('导出 / 导入学习记录：导出 JSON、导入前确认、导入后刷新计数', async () => {
+    const page = await newPage(PHONE);
+    await open(page, 'wrong');
+    await page.evaluate(() => { KY.setStatus('2019-9', 'bad'); KY.setStatus('2020-2', 'ok'); KY.setLessonDone('diff.mvt', true); });
+    const [dl] = await Promise.all([page.waitForEvent('download'), page.click('#export')]);
+    const text = fs.readFileSync(await dl.path(), 'utf8');
+    const data = JSON.parse(text);
+    assert(data.progress && data.progress.p['2019-9'] === 'bad' && data.progress.p['2020-2'] === 'ok' && data.progress.l['diff.mvt'].done, '导出的记录不对：' + text.slice(0, 200));
+    // 清空后导入：先确认，确认后记录和错题数都回来
+    await page.click('#reset');
+    await page.click('#reset-yes');
+    assert(await page.evaluate(() => !KY.status('2019-9') && document.getElementById('wrong-count').hasAttribute('data-zero')), '清空记录没有生效');
+    const file = { name: 'progress.json', mimeType: 'application/json', buffer: Buffer.from(text) };
+    await page.setInputFiles('#import-file', file);
+    await page.waitForSelector('#import-yes');
+    assert(await page.evaluate(() => /错题 1 道/.test(document.getElementById('data-slot').textContent) && !KY.status('2019-9')), '导入前应先确认并说明文件里的记录，确认前不改动');
+    await page.click('#import-no');
+    assert(await page.evaluate(() => !KY.status('2019-9') && !!document.getElementById('import')), '取消导入后不应改动记录');
+    await page.setInputFiles('#import-file', file);
+    await page.click('#import-yes');
+    await settle(page);
+    const r = await page.evaluate(() => ({ s1: KY.status('2019-9'), s2: KY.status('2020-2'), done: KY.lessonDone('diff.mvt'), count: document.getElementById('wrong-count').textContent, card: !!document.querySelector('#view .q[data-id="2019-9"]') }));
+    assert(r.s1 === 'bad' && r.s2 === 'ok' && r.done && r.count === '1' && r.card, '导入后记录、错题数或错题本页面没有刷新：' + JSON.stringify(r));
+    assert(await page.evaluate(() => JSON.parse(localStorage.getItem('ky2-progress')).p['2019-9'] === 'bad'), '导入的记录没有保存');
+    // 不是本站导出的文件：提示，不改动
+    await page.setInputFiles('#import-file', { name: 'x.json', mimeType: 'application/json', buffer: Buffer.from('{"hello":1}') });
+    await page.waitForFunction(() => /不是本站导出的学习记录/.test(document.getElementById('toast').textContent), null, { timeout: 3000 });
+    assert(await page.evaluate(() => KY.status('2019-9') === 'bad'), '导入无效文件后记录被改动了');
+    await audit(page, '导入记录后');
+    await page.context().close();
+  });
+
   await test('真题库：搜索、筛选、翻页、「/」快捷键', async () => {
     const page = await newPage(DESKTOP);
     await open(page, 'bank');
