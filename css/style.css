@@ -311,6 +311,10 @@ a.yr:hover { background: var(--pen-soft); }
 .opts li { display: flex; gap: 0.4rem; min-width: 0; }
 .opt-l { font-family: var(--f-mono); color: var(--ink-2); flex: none; }
 .opt-t { min-width: 0; overflow-wrap: anywhere; }
+/* 可点选的选项（按钮样式沿用讲解自测的 .qz-opt） */
+.opts.pick { gap: 0.4rem 0.6rem; }
+.opts .qz-opt { flex: 1 1 auto; gap: 0.4rem; }
+.pick-fb { font-size: 0.9375rem; }
 .q-act { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; }
 .q-act .grow { flex: 1 1 0; }
 .q-act .btn { font-size: 0.85rem; padding: 0.2rem 0.7rem; }
@@ -336,6 +340,13 @@ a.yr:hover { background: var(--pen-soft); }
 .sol-part th, .sol-part td, .q-stem th, .q-stem td { border-bottom: 1px solid var(--rule); padding: 0.3rem 0.9rem 0.3rem 0; text-align: left; vertical-align: top; }
 .sol-foot { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
 .verify { font-size: 0.75rem; color: var(--ink-2); }
+.sol-end { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; margin-top: 0.4rem; padding-top: 0.75rem; border-top: 1px dashed var(--rule); }
+.sol-end > span { font-size: 0.875rem; color: var(--ink-2); }
+.sol-end .btn { font-size: 0.85rem; padding: 0.2rem 0.7rem; }
+/* 触屏上题目卡、解析末尾、刷题的按钮至少 40px 高 */
+@media (pointer: coarse), (max-width: 40rem) {
+  .q-act .btn, .sol-end .btn, .pr-nav .btn { min-height: 2.5rem; }
+}
 
 /* 公式 */
 mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-block: 0.15rem; }
@@ -548,6 +559,7 @@ body.ai-open .fab-toc { display: none; }
 /* ── 单题页标题、刷题、快捷键提示 ── */
 .q-h1 { font-size: var(--step-2); }
 .pr-nav { justify-content: space-between; }
+#pr-slot { scroll-margin-top: calc(var(--top-h) + 0.5rem); }
 .pr-session { margin-left: 0.75rem; padding-left: 0.75rem; border-left: 1px solid var(--rule); }
 .kbd-hint { font-size: 0.75rem; color: var(--ink-2); margin-top: 0.25rem; }
 .peek-body .kbd-hint { margin-top: 0; }

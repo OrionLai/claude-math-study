@@ -357,8 +357,10 @@ async function run() {
     await settle(page);
     assert(await page.evaluate(() => !document.querySelector('.q-sol').hidden), '按 S 没有显示解析');
     await audit(page, '单题页解析');
+    assert(await page.evaluate(() => { const r = document.querySelector('#view .q-sol .sol-end'); return !!(r && r.querySelector('[data-act="ok"]') && r.querySelector('[data-act="bad"]') && !r.querySelector('[data-act="next"]')); }), '单题页解析末尾应有「会了 / 不会」（没有「下一道」）');
     await page.keyboard.press('n');
     assert(await page.evaluate(() => KY.status('2019-9') === 'bad' && document.getElementById('wrong-count').textContent === '1'), '按 N 没有加入错题本，或导航上的错题数没更新');
+    assert(await page.evaluate(() => document.querySelectorAll('#view .q [data-act="bad"][aria-pressed="true"]').length === 2), '题目下方和解析末尾的「不会」按钮状态没有同步');
     await page.keyboard.press('ArrowRight');
     await settle(page);
     assert(await page.evaluate(() => location.hash !== '#q-2019-9'), '按 → 没有跳到下一题');
@@ -378,9 +380,14 @@ async function run() {
     await audit(page, '错题本');
     await page.click('[data-wr-sort="chapter"]');
     await settle(page);
-    await page.evaluate(() => KY.setStatus('2009-17', 'bad')); // 再点一次「不会」= 取消标记
+    // 错题再点「不会」：仍留在错题本里，只把标记时间刷新成今天（以前会被悄悄移出）
+    await page.click('#view .q[data-id="2009-17"] [data-act="bad"]');
+    assert(await page.evaluate(() => KY.status('2009-17') === 'bad' && KY.markedDays('2009-17') === 0 && document.getElementById('wrong-count').textContent === '2'), '错题再点「不会」不应移出错题本，而应刷新标记时间');
+    assert(await page.evaluate(() => /已在错题本里/.test(document.getElementById('toast').textContent) && document.querySelector('#view .q[data-id="2009-17"] [data-act="bad"]').getAttribute('aria-pressed') === 'true'), '错题再点「不会」应提示「已在错题本里」并保持按下状态');
+    // 移出错题本靠「会了」
+    await page.click('#view .q[data-id="2009-17"] [data-act="ok"]');
     await page.click('#view .q[data-id="2019-9"] [data-act="ok"]');
-    assert(await page.evaluate(() => KY.status('2019-9') === 'ok' && document.getElementById('wrong-count').hasAttribute('data-zero')), '点「会了」后状态或错题数不对');
+    assert(await page.evaluate(() => KY.status('2019-9') === 'ok' && KY.status('2009-17') === 'ok' && document.getElementById('wrong-count').hasAttribute('data-zero')), '点「会了」后状态或错题数不对');
     // 清空记录（页面内二次确认）
     await page.click('#reset');
     await page.click('#reset-yes');
@@ -436,8 +443,67 @@ async function run() {
     await page.selectOption('#pr-mode', 'wrong');
     await settle(page);
     assert(await page.evaluate(() => !!document.querySelector('#pr-slot .empty')), '没有错题时「只抽错题」应显示空状态');
+    // 只抽错题时点「不会」：题目仍留在错题本和题池里（以前会被悄悄移出）
+    await page.evaluate(() => KY.setStatus('2019-9', 'bad'));
+    await page.selectOption('#pr-mode', 'freq');
+    await page.selectOption('#pr-mode', 'wrong');
+    await settle(page);
+    assert(await page.evaluate(() => document.querySelector('#pr-slot .q').dataset.id === '2019-9'), '「只抽错题」没有抽到错题');
+    await page.click('#pr-slot .q [data-act="bad"]');
+    await page.click('#pr-next');
+    await settle(page);
+    assert(await page.evaluate(() => KY.status('2019-9') === 'bad' && !!document.querySelector('#pr-slot .q[data-id="2019-9"]')), '「只抽错题」时点「不会」把题移出了错题本');
     await audit(page, '刷题');
     await page.context().close();
+  });
+
+  await test('解析末尾的操作行：会了 / 不会 / 下一道，手机上按钮至少 40px 高', async () => {
+    const page = await newPage(PHONE);
+    await open(page, 'practice');
+    const a = await page.evaluate(() => document.querySelector('#pr-slot .q').dataset.id);
+    await page.click('#pr-slot .q [data-act="sol"]');
+    await settle(page);
+    assert(await page.evaluate(() => { const r = document.querySelector('#pr-slot .q-sol .sol-end'); return !!(r && r.querySelector('[data-act="ok"]') && r.querySelector('[data-act="bad"]') && r.querySelector('[data-act="next"]')); }), '刷题页解析末尾应有「会了 / 不会 / 下一道」');
+    const hs = await page.evaluate(() => Array.from(document.querySelectorAll('#pr-slot .q-act .btn, #pr-slot .sol-end .btn, .pr-nav .btn')).map((b) => b.textContent.trim() + ' ' + Math.round(b.getBoundingClientRect().height)));
+    assert(hs.every((s) => +s.split(' ').pop() >= 40), '手机上按钮高度不足 40px：' + hs.join('、'));
+    await page.click('#pr-slot .sol-end [data-act="bad"]');
+    assert(await page.evaluate((x) => KY.status(x) === 'bad' && document.querySelectorAll('#pr-slot .q [data-act="bad"][aria-pressed="true"]').length === 2, a), '在解析末尾点「不会」没有生效，或上下两组按钮状态不同步');
+    await page.click('#pr-slot .sol-end [data-act="next"]');
+    await settle(page);
+    const r = await page.evaluate(() => ({ id: document.querySelector('#pr-slot .q').dataset.id, top: document.getElementById('pr-slot').getBoundingClientRect().top, head: document.querySelector('.top').getBoundingClientRect().bottom }));
+    assert(r.id !== a, '解析末尾的「下一道」没有换题');
+    assert(r.top >= r.head - 2 && r.top < PHONE.height / 2, `换题后新题不在屏幕上方的可见处（题目区顶部在 ${Math.round(r.top)}px，顶栏底边 ${Math.round(r.head)}px）`);
+    assert(await page.evaluate(() => /本轮标记了 1 道/.test(document.querySelector('#pr-slot .result-count').textContent)), '本轮统计没有算上解析末尾的标记');
+    await audit(page, '解析末尾换题后');
+    await page.context().close();
+  });
+
+  await test('选择题点选：立即判对错，选错进错题本，选对不自动标「会了」', async () => {
+    const page = await newPage(PHONE);
+    await open(page, 'q-2023-3');
+    const ans = await page.evaluate(() => KY.pById['2023-3'].answer);
+    const miss = ['A', 'B', 'C', 'D'].find((l) => l !== ans);
+    await page.click(`#view .q [data-pick="${miss}"]`);
+    const r = await page.evaluate((x) => ({
+      wrong: document.querySelector(`#view [data-pick="${x.miss}"]`).classList.contains('wrong'),
+      right: document.querySelector(`#view [data-pick="${x.ans}"]`).classList.contains('right'),
+      locked: Array.from(document.querySelectorAll('#view [data-pick]')).every((b) => b.disabled),
+      fb: document.querySelector('#view .pick-fb').textContent,
+      st: KY.status('2023-3'),
+      count: document.getElementById('wrong-count').textContent,
+    }), { miss, ans });
+    assert(r.wrong && r.right && r.locked, '选错后应标出选错的和正确的选项并锁定：' + JSON.stringify(r));
+    assert(r.st === 'bad' && r.count === '1' && r.fb.includes('(' + ans + ')'), '选错后应加入错题本并给出正确答案：' + JSON.stringify(r));
+    // 选对：显示答对，但不替读者标「会了」
+    const other = await page.evaluate(() => KY.meta.problems.find((p) => p.options && p.year === 2022).id);
+    await open(page, 'q-' + other);
+    const a2 = await page.evaluate((id) => KY.pById[id].answer, other);
+    await page.click(`#view .q [data-pick="${a2}"]`);
+    const r2 = await page.evaluate((x) => ({ right: document.querySelector(`#view [data-pick="${x.a2}"]`).classList.contains('right'), wrong: !!document.querySelector('#view .qz-opt.wrong'), st: KY.status(x.other), fb: document.querySelector('#view .pick-fb').textContent }), { a2, other });
+    assert(r2.right && !r2.wrong && r2.st === '' && /答对了/.test(r2.fb), '选对后应显示答对，且不自动标「会了」：' + JSON.stringify(r2));
+    await audit(page, '选择题点选后');
+    await page.context().close();
+    return `2023-3 选 ${miss}（错）、${other} 选 ${a2}（对）`;
   });
 
   await test('全站搜索：Ctrl+K、分组结果、键盘选择、打开题目浮层', async () => {

@@ -36,9 +36,13 @@
     }
     if (p.options) {
       var long = p.options.some(function (t) { return KY.plain(t).length > 28; });
-      h += '<ol class="opts' + (long ? ' long' : '') + '">' + p.options.map(function (t, i) {
-        return '<li><span class="opt-l">(' + LET[i] + ')</span><span class="opt-t">' + t + '</span></li>';
+      // 有标准答案的选择题可以直接点选作答（样式沿用讲解自测的 .qz-opt）
+      var pickable = /^[A-D]$/.test(p.answer);
+      h += '<ol class="opts' + (long ? ' long' : '') + (pickable ? ' pick' : '') + '">' + p.options.map(function (t, i) {
+        var inner = '<span class="opt-l">(' + LET[i] + ')</span><span class="opt-t">' + t + '</span>';
+        return '<li>' + (pickable ? '<button type="button" class="qz-opt" data-pick="' + LET[i] + '">' + inner + '</button>' : inner) + '</li>';
       }).join('') + '</ol>';
+      if (pickable) h += '<p class="pick-fb" hidden></p>';
     }
     h += '<div class="q-act">' +
       '<button type="button" class="btn" data-act="hint" aria-expanded="false">思路提示</button>' +
@@ -56,7 +60,7 @@
     return h;
   };
 
-  function solHtml(p, s) {
+  function solHtml(p, s, inPractice) {
     var h = '<section class="sol-part"><span class="lbl lbl-accent">详细解答</span>' + s.solution + '</section>';
     if (s.alt) h += '<section class="sol-part"><span class="lbl lbl-accent">另解</span>' + s.alt + '</section>';
     h += '<section class="sol-part pit"><span class="lbl">易错点</span>' + s.pitfalls + '</section>';
@@ -76,6 +80,12 @@
     }
     if (p.flags && p.flags.length) h += '<p class="verify">整理说明：' + p.flags.map(KY.esc).join('；') + '</p>';
     if (KY.meta.status && KY.meta.status.reviewedYears.indexOf(p.year) < 0) h += '<p class="verify draft">这一年的解析是作者初稿：已用 SymPy 验算、对照过参考答案，但还没经过第二人独立审校。</p>';
+    // 解析末尾再放一组标记按钮：读完长解析不用滚回题目上方（刷题页再加「下一道」）
+    var st = KY.status(p.id);
+    h += '<div class="sol-end"><span>看完了，这道题：</span>' +
+      '<button type="button" class="btn mark ok" data-act="ok" aria-pressed="' + (st === 'ok') + '">会了</button>' +
+      '<button type="button" class="btn mark bad" data-act="bad" aria-pressed="' + (st === 'bad') + '">不会</button>' +
+      (inPractice ? '<button type="button" class="btn primary" data-act="next">下一道 →</button>' : '') + '</div>';
     return h;
   }
 
@@ -120,7 +130,7 @@
     if (act === 'sol') {
       if (!sol.hidden) { sol.hidden = true; setBtn(q, 'sol', false, LABELS.sol); return; }
       withSolution(p, function (s) {
-        if (!sol.dataset.filled) { sol.innerHTML = solHtml(p, s); sol.dataset.filled = '1'; }
+        if (!sol.dataset.filled) { sol.innerHTML = solHtml(p, s, !!q.closest('#pr-slot')); sol.dataset.filled = '1'; }
         if (!hint.dataset.filled) { hint.innerHTML = '<span class="lbl lbl-accent">思路分析</span>' + s.analysis; hint.dataset.filled = '1'; }
         reveal(hint); reveal(ans); reveal(sol);
         setBtn(q, 'hint', true, LABELS.hint); setBtn(q, 'ans', true, LABELS.ans); setBtn(q, 'sol', true, LABELS.sol);
@@ -132,25 +142,54 @@
     var st = KY.status(q.dataset.id);
     q.dataset.st = st;
     q.querySelector('.flag').textContent = FLAG[st] || '';
-    q.querySelector('[data-act="ok"]').setAttribute('aria-pressed', String(st === 'ok'));
-    q.querySelector('[data-act="bad"]').setAttribute('aria-pressed', String(st === 'bad'));
+    // 题目下方和解析末尾各有一组「会了 / 不会」
+    Array.prototype.forEach.call(q.querySelectorAll('[data-act="ok"], [data-act="bad"]'), function (b) {
+      b.setAttribute('aria-pressed', String(st === b.dataset.act));
+    });
   }
 
-  KY.markCard = function (q, act) {
+  // quiet：不弹通知（调用方自己在页面上说明了）
+  KY.markCard = function (q, act, quiet) {
+    var was = KY.status(q.dataset.id);
     KY.setStatus(q.dataset.id, act);
+    var st = KY.status(q.dataset.id);
     Array.prototype.forEach.call(document.querySelectorAll('.q[data-id="' + q.dataset.id + '"]'), syncCard);
-    if (act === 'bad' && KY.status(q.dataset.id) === 'bad') KY.toast('已加入错题本');
-    else if (act === 'ok' && KY.status(q.dataset.id) === 'ok') KY.toast('已标记为会了');
-    KY.emit('marked', { id: q.dataset.id, st: KY.status(q.dataset.id) });
+    if (!quiet) {
+      if (act === 'bad') KY.toast(was === 'bad' ? '这道题已在错题本里，标记时间更新为今天。做对了点「会了」移出' : '已加入错题本');
+      else if (st === 'ok') KY.toast('已标记为会了');
+    }
+    KY.emit('marked', { id: q.dataset.id, st: st });
   };
 
+  // 选择题点选：立即判对错；选错自动进错题本，选对不自动标「会了」
+  function pickOption(btn) {
+    var q = btn.closest('.q');
+    var p = KY.pById[q.dataset.id];
+    var right = btn.dataset.pick === p.answer;
+    var was = KY.status(p.id);
+    Array.prototype.forEach.call(q.querySelectorAll('[data-pick]'), function (b) {
+      b.disabled = true;
+      if (b.dataset.pick === p.answer) b.classList.add('right');
+    });
+    if (!right) btn.classList.add('wrong');
+    var fb = q.querySelector('.pick-fb');
+    fb.innerHTML = right
+      ? '<b class="ok-t">答对了。</b>有把握就点「会了」；想核对思路，看「完整解析」。'
+      : '<b class="bad-t">不对，</b>正确答案是 (' + p.answer + ')。' + (was === 'bad' ? '这道题还在错题本里' : '已加入错题本') + '，看看「完整解析」里错在哪一步。';
+    fb.hidden = false;
+    if (!right) KY.markCard(q, 'bad', true);
+  }
+
   document.addEventListener('click', function (e) {
+    var pk = e.target.closest('.q [data-pick]');
+    if (pk) { pickOption(pk); return; }
     var b = e.target.closest('.q [data-act]');
     if (!b) return;
     var q = b.closest('.q');
     var act = b.dataset.act;
     if (act === 'hint' || act === 'ans' || act === 'sol') KY.toggleCard(q, act);
     else if (act === 'ok' || act === 'bad') KY.markCard(q, act);
+    else if (act === 'next') { if (KY.practiceStep) KY.practiceStep(1); }
     else if (act === 'ai') {
       var p = KY.pById[q.dataset.id];
       withSolution(p, function () { KY.ai.open({ kind: 'problem', id: p.id }); }, b);

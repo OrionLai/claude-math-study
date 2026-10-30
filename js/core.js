@@ -69,8 +69,9 @@
   ['p', 'pt', 'l', 'quiz'].forEach(function (k) { if (!KY.prog[k]) KY.prog[k] = {}; });
   KY.saveProg = function () { writeJSON(PKEY, KY.prog); emit('progress'); };
   KY.status = function (id) { return KY.prog.p[id] || ''; };
+  // 再点一次「会了」是取消标记；已在错题本里的题再点「不会」不移出（移出要点「会了」），只刷新标记时间
   KY.setStatus = function (id, st) {
-    if (KY.prog.p[id] === st) { delete KY.prog.p[id]; delete KY.prog.pt[id]; } else { KY.prog.p[id] = st; KY.prog.pt[id] = Date.now(); }
+    if (st === 'ok' && KY.prog.p[id] === 'ok') { delete KY.prog.p[id]; delete KY.prog.pt[id]; } else { KY.prog.p[id] = st; KY.prog.pt[id] = Date.now(); }
     KY.saveProg();
   };
   // 标记后过了几天（没有记录的旧数据当作很久以前）

@@ -273,6 +273,9 @@
   function refreshPractice(repick) {
     var slot = document.getElementById('pr-slot');
     if (!slot) return;
+    // 焦点在刷题按钮或题目卡里（如解析末尾的「下一道」）时，换题后把焦点移到新题上
+    var a = document.activeElement;
+    var refocus = !!(a && a.closest && a.closest('.pr-nav, #pr-slot'));
     if (repick) { pick(); if (PR.cur) { PR.history.push(PR.cur); PR.back = 0; } }
     KY.untypeset(slot);
     slot.innerHTML = slotHtml();
@@ -280,7 +283,9 @@
     var prev = document.getElementById('pr-prev');
     if (prev) prev.disabled = PR.history.length - PR.back < 2;
     var first = slot.querySelector('[data-act="hint"]');
-    if (first && document.activeElement && document.activeElement.closest && document.activeElement.closest('.pr-nav')) first.focus({ preventScroll: true });
+    if (first && refocus) first.focus({ preventScroll: true });
+    // 从长解析末尾换题时，新题在屏幕上方（被顶栏挡住）：滚回题目开头
+    if (slot.getBoundingClientRect().top < document.querySelector('.top').getBoundingClientRect().bottom) slot.scrollIntoView();
   }
   document.addEventListener('change', function (e) {
     if (!e.target.closest('#pr-f')) return;
