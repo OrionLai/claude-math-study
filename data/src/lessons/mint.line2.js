@@ -2,7 +2,7 @@
 registerLesson(function (R) {
   return {
     id: 'mint.line2', ch: 'mint', title: '第二类曲线积分与格林公式',
-    summary: R`第二类曲线积分沿<b>有向</b>曲线累加"力 × 位移"，方向一反，积分就变号。本篇从变力做功出发讲透它的定义与计算、与第一类曲线积分的关系；严格证明格林公式，并由它推出"曲线积分与路径无关"的四个等价条件和全微分原函数的求法——补线、挖洞、换路径、求待定函数，是数学一大题的常客。`,
+    summary: R`第二类曲线积分沿<b>有向</b>曲线累加"力 × 位移"，方向一反，积分就变号。本篇从变力做功出发讲透它的定义与计算、与第一类曲线积分的关系；严格证明格林公式，并由它推出"曲线积分与路径无关"的四个等价条件和全微分原函数的求法——补线、挖洞、换路径、求待定函数，是数学一大题的常客；2016–2025 年的 6 道真题在「近十年真题精讲」两节中逐题讲透。`,
     prereq: ['mint.line1', 'mint.double', 'mdiff.diffable', 'mdiff.chain', 'int.ftc'],
     sections: [
       /* ───────── 1. 为什么 ───────── */
@@ -333,7 +333,7 @@ registerLesson(function (R) {
 </svg>
 <p><b>分析</b>　直接参数化 $x=\frac a2+\frac a2\cos t,y=\frac a2\sin t$，会出现 $e^{\frac a2(1+\cos t)}\sin\big(\frac a2\sin t\big)$ 这类积不出来的东西。但是 $$\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}=e^x\cos y-(e^x\cos y-m)=m,$$ 难算的部分在偏导数之差里<b>抵消了</b>——这就是"补线用格林"的信号。</p>
 <p><b>解</b>　补有向线段 $\overline{OA}$：$y=0$，$x$ 从 $0$ 到 $a$。$L+\overline{OA}$ 是闭曲线，从 $A$ 沿上半圆到 $O$ 再沿 $x$ 轴回到 $A$，正好是逆时针，即半圆域 $D$（半径 $\frac a2$）的正向边界。由格林公式 $$\oint_{L+\overline{OA}}=\iint_Dm\,dxdy=m\cdot\frac12\pi\Big(\frac a2\Big)^2=\frac{m\pi a^2}8.$$ 在 $\overline{OA}$ 上 $y=0$，$dy=0$，$P=e^x\sin0-0=0$，所以 $\int_{\overline{OA}}=0$。因此 $$I=\oint_{L+\overline{OA}}-\int_{\overline{OA}}=\frac{m\pi a^2}8.$$</p>
-<p><b>补线的三条要领</b>：(1) 补的线要让积分好算，首选坐标轴或平行于坐标轴的线段；(2) 补线的方向要与 $L$ 首尾相接，构成闭曲线，再判断是正向还是负向；(3) 最后一定要<b>减去</b>补线上的积分；补线围成的区域内不能有奇点。</p>
+<p><b>补线的三条要领</b>：(1) 补的线要让积分好算，首选坐标轴或平行于坐标轴的线段；(2) 补线的方向要与 $L$ 首尾相接，构成闭曲线，再判断是正向还是负向；(3) 最后一定要<b>减去</b>补线上的积分；补线围成的区域内不能有奇点。<span class="qref" data-q="1999-4">1999 年第四题</span>就是这个模型（把 $my$ 换成 $b(x+y)$、$m$ 换成 $ax$，同样补 $\overline{OA}$，答案为 $\left(\frac\pi2+2\right)a^2b-\frac\pi2a^3$）；<span class="qref" data-q="2025-14">2025 年第 14 题</span>把曲线换成抛物线，见"近十年真题精讲"。</p>
 <p><b>例 10（挖洞）</b>　设 $L$ 为不经过原点的分段光滑简单闭曲线，取逆时针方向，计算 $I=\displaystyle\oint_L\frac{x\,dy-y\,dx}{4x^2+y^2}$。</p>
 <p><b>先算偏导数</b>：$P=\dfrac{-y}{4x^2+y^2}$，$Q=\dfrac{x}{4x^2+y^2}$，当 $(x,y)\neq(0,0)$ 时 $$\frac{\partial Q}{\partial x}=\frac{(4x^2+y^2)-8x^2}{(4x^2+y^2)^2}=\frac{y^2-4x^2}{(4x^2+y^2)^2},\qquad\frac{\partial P}{\partial y}=\frac{-(4x^2+y^2)+2y^2}{(4x^2+y^2)^2}=\frac{y^2-4x^2}{(4x^2+y^2)^2}.$$ 二者相等。</p>
 <p><b>情形一：原点在 $L$ 外部。</b>$L$ 所围区域 $D$ 不含原点，$P,Q$ 在 $D$ 上一阶偏导连续，由格林公式 $I=\iint_D0\,dxdy=0$。</p>
@@ -358,7 +358,7 @@ registerLesson(function (R) {
 </svg>
 <p>在 $C_r$ 上取 $x=\frac r2\cos t,y=r\sin t$，$t:0\to2\pi$。则 $4x^2+y^2=r^2$，$$x\,dy-y\,dx=\frac r2\cos t\cdot r\cos t\,dt-r\sin t\cdot\Big(-\frac r2\sin t\Big)dt=\frac{r^2}2dt,$$ 所以 $\displaystyle I=\oint_{C_r}=\int_0^{2\pi}\frac{r^2/2}{r^2}dt=\pi$。</p>
 <p><b>为什么挖"椭圆"而不挖"圆"</b>：在 $C_r$ 上分母 $4x^2+y^2$ 恒为常数 $r^2$，被积函数立刻化简。挖圆也能做，但要算 $\int_0^{2\pi}\frac{dt}{1+3\cos^2t}$，麻烦得多。口诀："<b>洞的形状跟着分母走</b>"。</p>
-<p><b>结果的含义</b>：只要 $L$ 逆时针绕原点一圈，不论 $L$ 是什么形状，积分都是 $\pi$；不绕原点则是 $0$。积分只取决于"绕洞几圈"，这正是下一节的主题。</p>`
+<p><b>结果的含义</b>：只要 $L$ 逆时针绕原点一圈，不论 $L$ 是什么形状，积分都是 $\pi$；不绕原点则是 $0$。积分只取决于"绕洞几圈"，这正是下一节的主题。<span class="qref" data-q="2000-5">2000 年第五题</span>就是这个被积函数，$L$ 是圆心 $(1,0)$、半径 $R>1$ 的圆周——它绕原点一圈，答案 $\pi$；二十年后的 <span class="qref" data-q="2020-16">2020 年第 16 题</span>又把它翻新了一次，见"近十年真题精讲"。</p>`
       },
 
       /* ───────── 12. 路径无关与原函数的定义 ───────── */
@@ -447,7 +447,7 @@ registerLesson(function (R) {
 <p><b>另解（原函数）</b>　凑得 $u=\frac{x^3}3+x^2y+\frac{y^5}5$（验证：$u_x=x^2+2xy$，$u_y=x^2+y^4$），$I=u(1,1)-u(0,0)=\frac13+1+\frac15=\frac{23}{15}$。</p>
 <p><b>例 12（求待定函数）</b>　设 $\varphi(x)$ 具有连续导数，$\varphi(0)=0$，且曲线积分 $\int_Lxy^2dx+y\varphi(x)\,dy$ 与路径无关，求 $\varphi(x)$，并计算 $\displaystyle\int_{(0,0)}^{(1,1)}xy^2dx+y\varphi(x)\,dy$。</p>
 <p><b>解</b>　$P=xy^2$，$Q=y\varphi(x)$ 在全平面一阶偏导连续，全平面单连通，所以与路径无关 $\Leftrightarrow\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$，即 $$2xy=y\varphi'(x)\quad\text{对一切 }(x,y)\text{ 成立}.$$ 取 $y=1$ 得 $\varphi'(x)=2x$，故 $\varphi(x)=x^2+C$，由 $\varphi(0)=0$ 得 $\varphi(x)=x^2$。沿折线 $(0,0)\to(1,0)\to(1,1)$：第一段 $y=0$，被积式为零；第二段 $x=1,dx=0$：$\int_0^1y\cdot1\,dy=\frac12$。所以积分为 $\frac12$。</p>
-<p><b>为什么"与路径无关"能求出函数</b>：路径无关 $\Leftrightarrow$ $P_y=Q_x$，它把一个关于"积分"的条件变成了一个关于"导数"的方程——常常就是一个微分方程，这是数学一综合题的经典套路。</p>
+<p><b>为什么"与路径无关"能求出函数</b>：路径无关 $\Leftrightarrow$ $P_y=Q_x$，它把一个关于"积分"的条件变成了一个关于"导数"的方程——常常就是一个微分方程，这是数学一综合题的经典套路。例 12 就是 <span class="qref" data-q="1989-3-2">1989 年三(2)</span> 的原题。</p>
 <p><b>例 13（求原函数的三种方法）</b>　验证 $(2x\cos y+y^2\cos x)\,dx+(2y\sin x-x^2\sin y)\,dy$ 在全平面是某函数的全微分，并求其原函数。</p>
 <p><b>验证</b>　$\frac{\partial P}{\partial y}=-2x\sin y+2y\cos x$，$\frac{\partial Q}{\partial x}=2y\cos x-2x\sin y$，二者相等且连续，全平面单连通，所以原函数存在。</p>
 <p><b>法一（折线法）</b>　取 $(x_0,y_0)=(0,0)$：$$u=\int_0^xP(t,0)\,dt+\int_0^yQ(x,t)\,dt=\int_0^x2t\,dt+\int_0^y(2t\sin x-x^2\sin t)\,dt=x^2+y^2\sin x+x^2(\cos y-1)=x^2\cos y+y^2\sin x.$$</p>
@@ -455,10 +455,187 @@ registerLesson(function (R) {
 <p><b>法三（凑微分法）</b>　重新分组：$(2x\cos y\,dx-x^2\sin y\,dy)+(y^2\cos x\,dx+2y\sin x\,dy)=d(x^2\cos y)+d(y^2\sin x)$。</p>
 <p>所以全体原函数为 $u=x^2\cos y+y^2\sin x+C$。</p>
 <p><b>例 14（由全微分定参数）</b>　已知 $\dfrac{(x+ay)\,dx+y\,dy}{(x+y)^2}$ 为某函数的全微分，求 $a$。</p>
-<p><b>解</b>　在 $x+y>0$（或 $x+y\lt0$）这样的半平面内考虑，它是单连通的。$$\frac{\partial P}{\partial y}=\frac{a(x+y)-2(x+ay)}{(x+y)^3}=\frac{(a-2)x-ay}{(x+y)^3},\qquad\frac{\partial Q}{\partial x}=\frac{-2y}{(x+y)^3}.$$ 要求对区域内一切 $(x,y)$ 都有 $(a-2)x-ay=-2y$，比较系数得 $a=2$。此时可求出一个原函数 $u=\ln|x+y|+\dfrac{x}{x+y}$（请自行验证 $u_x=\frac{x+2y}{(x+y)^2}$，$u_y=\frac{y}{(x+y)^2}$）。</p>`
+<p><b>解</b>　在 $x+y>0$（或 $x+y\lt0$）这样的半平面内考虑，它是单连通的。$$\frac{\partial P}{\partial y}=\frac{a(x+y)-2(x+ay)}{(x+y)^3}=\frac{(a-2)x-ay}{(x+y)^3},\qquad\frac{\partial Q}{\partial x}=\frac{-2y}{(x+y)^3}.$$ 要求对区域内一切 $(x,y)$ 都有 $(a-2)x-ay=-2y$，比较系数得 $a=2$。此时可求出一个原函数 $u=\ln|x+y|+\dfrac{x}{x+y}$（请自行验证 $u_x=\frac{x+2y}{(x+y)^2}$，$u_y=\frac{y}{(x+y)^2}$）。例 14 是 <span class="qref" data-q="1996-2-1">1996 年二(1)</span> 的原题（选择题，四个选项是 $-1,0,1,2$）；<span class="qref" data-q="2017-11">2017 年第 11 题</span>是它的近年翻版，见"近十年真题精讲（续）"。</p>`
       },
 
-      /* ───────── 17. 常见误区 ───────── */
+      /* ───────── 17. 近十年真题精讲：格林公式类 ───────── */
+      {
+        kind: 'example', title: '近十年真题精讲',
+        html: R`<p>2016–2025 年以本考点为主考点的真题共 6 道，恰好分成两类：三道"格林公式"题（补线、挖洞）和三道"路径无关"题（筛选 $P$、求参数、全微分的积分）。本节讲前一类，下一节讲后一类；每道题都指出它用到了本篇的哪个定理或方法。</p>
+<p><b>真题 1</b>　<span class="qref" data-q="2025-14">2025 年第 14 题</span>（填空，5 分）</p>
+<blockquote><p>已知有向曲线 $L$ 是沿抛物线 $y=1-x^2$ 从点 $(1,0)$ 到点 $(-1,0)$ 的一段，则曲线积分 $\displaystyle\int_L(y+\cos x)\,\mathrm dx+(2x+\cos y)\,\mathrm dy=$ ______．</p></blockquote>
+<p><b>这题考什么：</b>不封闭曲线上的第二类曲线积分——补线后用格林公式（例 9 的套路），顺带考"从端点看方向"。</p>
+<p><b>从题面看到什么：</b>(1) 曲线不封闭，但两个端点都在 $x$ 轴上，补一条 $x$ 轴上的线段就闭合了，而且线段上 $y=0$、$dy=0$，积分一眼可算；(2) $P=y+\cos x$，$Q=2x+\cos y$，先算 $\dfrac{\partial Q}{\partial x}-\dfrac{\partial P}{\partial y}=2-1=1$：不为零，说明积分与路径<b>有关</b>，不能随意换路径；但它是常数，格林公式右端就是面积，极好算；(3) 方向：$L$ 从 $(1,0)$ 出发沿抛物线的上方走到 $(-1,0)$，是"从右往左"，补线就必须"从左往右"回到起点，两段合起来绕区域逆时针（见图）。</p>
+<svg viewBox="0 0 420 235" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
+<defs><marker id="ml2-a7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<polygon points="90.0,195.0 96.0,183.3 102.0,172.2 108.0,161.7 114.0,151.8 120.0,142.5 126.0,133.8 132.0,125.7 138.0,118.2 144.0,111.3 150.0,105.0 156.0,99.3 162.0,94.2 168.0,89.7 174.0,85.8 180.0,82.5 186.0,79.8 192.0,77.7 198.0,76.2 204.0,75.3 210.0,75.0 216.0,75.3 222.0,76.2 228.0,77.7 234.0,79.8 240.0,82.5 246.0,85.8 252.0,89.7 258.0,94.2 264.0,99.3 270.0,105.0 276.0,111.3 282.0,118.2 288.0,125.7 294.0,133.8 300.0,142.5 306.0,151.8 312.0,161.7 318.0,172.2 324.0,183.3 330.0,195.0" fill="currentColor" fill-opacity="0.08" stroke="none"/>
+<line x1="25" y1="195" x2="405" y2="195" stroke-width="1" marker-end="url(#ml2-a7)"/>
+<line x1="210" y1="222" x2="210" y2="28" stroke-width="1" marker-end="url(#ml2-a7)"/>
+<polyline points="90.0,195.0 96.0,183.3 102.0,172.2 108.0,161.7 114.0,151.8 120.0,142.5 126.0,133.8 132.0,125.7 138.0,118.2 144.0,111.3 150.0,105.0 156.0,99.3 162.0,94.2 168.0,89.7 174.0,85.8 180.0,82.5 186.0,79.8 192.0,77.7 198.0,76.2 204.0,75.3 210.0,75.0 216.0,75.3 222.0,76.2 228.0,77.7 234.0,79.8 240.0,82.5 246.0,85.8 252.0,89.7 258.0,94.2 264.0,99.3 270.0,105.0 276.0,111.3 282.0,118.2 288.0,125.7 294.0,133.8 300.0,142.5 306.0,151.8 312.0,161.7 318.0,172.2 324.0,183.3 330.0,195.0" stroke-width="2"/>
+<line x1="90" y1="195" x2="330" y2="195" stroke-width="2.5" stroke-dasharray="7 4"/>
+<line x1="232" y1="75" x2="200" y2="75" stroke-width="2" marker-end="url(#ml2-a7)"/>
+<line x1="150" y1="195" x2="178" y2="195" stroke-width="2" marker-end="url(#ml2-a7)"/>
+<circle cx="330" cy="195" r="3.5" fill="currentColor"/>
+<circle cx="90" cy="195" r="3.5" fill="currentColor"/>
+<g fill="currentColor" stroke="none" font-size="13">
+<text x="338" y="184">起点</text>
+<text x="316" y="214">(1, 0)</text>
+<text x="56" y="184">终点</text>
+<text x="60" y="214">(−1, 0)</text>
+<text x="400" y="212">x</text>
+<text x="218" y="36">y</text>
+<text x="244" y="62" font-size="12">L：y = 1 − x²，从右往左走</text>
+<text x="128" y="214" font-size="12">补线 L₀：y = 0，从左往右走</text>
+<text x="196" y="140">D</text>
+<text x="40" y="232" font-size="12">L + L₀ 绕 D 一圈，D 始终在左手边：这是正向边界</text>
+</g>
+</svg>
+<p><b>分步解答：</b></p>
+<ol>
+<li>记 $L_0$ 为 $x$ 轴上从 $(-1,0)$ 到 $(1,0)$ 的有向线段，则 $L+L_0$ 是闭曲线，所围区域 $D=\{(x,y)\mid-1\leqslant x\leqslant1,\ 0\leqslant y\leqslant1-x^2\}$。沿 $L$ 再沿 $L_0$ 走时 $D$ 始终在左手边，所以 $L+L_0$ 是 $D$ 的正向边界。</li>
+<li>$P,Q$ 是初等函数，在全平面有一阶连续偏导数，格林公式的三个条件（封闭、正向、偏导连续）齐备：$$\oint_{L+L_0}P\,dx+Q\,dy=\iint_D\Big(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\Big)dxdy=\iint_D1\,dxdy=\int_{-1}^1(1-x^2)\,dx=\frac43.$$</li>
+<li>补线上的积分：$L_0$ 上 $y=0$，$dy=0$，$x$ 从 $-1$ 到 $1$（下限对起点）：$$\int_{L_0}P\,dx+Q\,dy=\int_{-1}^1\cos x\,dx=\sin1-\sin(-1)=2\sin1.$$</li>
+<li>减去补线：$\displaystyle\int_L=\oint_{L+L_0}-\int_{L_0}=\frac43-2\sin1$。</li>
+</ol>
+<p><b>答案：</b>$\dfrac43-2\sin1$。</p>
+<p><b>另解（拆出全微分部分）：</b>$\cos x\,dx+\cos y\,dy=d(\sin x+\sin y)$ 是全微分，由"路径无关 ⇔ 存在原函数"定理，这部分只看端点：$(\sin x+\sin y)\big|_{(1,0)}^{(-1,0)}=-2\sin1$。剩下的 $y\,dx+2x\,dy$ 直接以 $x$ 为参数：$y=1-x^2$，$dy=-2x\,dx$，$x$ 从 $1$ 到 $-1$，$$\int_1^{-1}\big[(1-x^2)+2x\cdot(-2x)\big]dx=\int_1^{-1}(1-5x^2)\,dx=-\Big(2-\frac{10}3\Big)=\frac43.$$ 合计 $\dfrac43-2\sin1$，与格林公式的结果一致。</p>
+<p><b>这道题告诉我们：</b>看到不封闭的曲线，先算 $\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}$：是常数就补线用格林公式（本题）；是零就换路径。补线三件事——补的线段与 $L$ 首尾相接、判断整条闭曲线是不是正向、最后<b>减去</b>补线上的积分——一步都不能省。这题 5 分，典型错误是把 $L_0$ 的方向取成从 $(1,0)$ 到 $(-1,0)$（与 $L$ 接不上）或忘记减去 $2\sin1$。</p>
+<p><b>真题 2</b>　<span class="qref" data-q="2020-16">2020 年第 16 题</span>（解答，10 分）</p>
+<blockquote><p>计算曲线积分 $I=\displaystyle\int_L\frac{4x-y}{4x^2+y^2}\,\mathrm{d}x+\frac{x+y}{4x^2+y^2}\,\mathrm{d}y$，其中 $L$ 是 $x^2+y^2=2$，方向为逆时针方向.</p></blockquote>
+<p><b>这题考什么：</b>闭曲线内部含奇点的第二类曲线积分——挖洞法（例 10 的升级版：分母相同，分子多了 $4x$ 与 $y$ 两项）。</p>
+<p><b>从题面看到什么：</b>(1) $L$ 是闭曲线（半径 $\sqrt2$ 的圆，逆时针），第一反应是格林公式；(2) 但分母 $4x^2+y^2$ 在原点为零，原点在 $L$ 内部，$P,Q$ 不满足"在 $D$ 上有一阶连续偏导数"，<b>不能直接用</b>；(3) "分母二次、分子一次"的被积函数几乎总有 $\frac{\partial Q}{\partial x}=\frac{\partial P}{\partial y}$（原点除外），一旦验证成立，积分就只取决于"绕不绕原点"，可以把 $L$ 换成任何绕原点的小曲线；(4) 洞的形状跟着分母走：取椭圆 $4x^2+y^2=r^2$，在它上面分母是常数。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li><b>验证 $\dfrac{\partial Q}{\partial x}=\dfrac{\partial P}{\partial y}$（$(x,y)\neq(0,0)$）。</b>记 $s=4x^2+y^2$，$P=\dfrac{4x-y}s$，$Q=\dfrac{x+y}s$，由商的求导法则（$s_y=2y$，$s_x=8x$）：$$\frac{\partial P}{\partial y}=\frac{-s-(4x-y)\cdot2y}{s^2}=\frac{-4x^2+y^2-8xy}{s^2},\qquad\frac{\partial Q}{\partial x}=\frac{s-(x+y)\cdot8x}{s^2}=\frac{-4x^2+y^2-8xy}{s^2}.$$ 二者相等。</li>
+<li><b>挖洞。</b>取 $0\lt r\lt\sqrt2$，作椭圆 $C_r:\ 4x^2+y^2=r^2$，逆时针方向。$C_r$ 上的点满足 $x^2+y^2=r^2-3x^2\leqslant r^2\lt2$，所以 $C_r$ 完全落在 $L$ 内部。记 $L$ 与 $C_r$ 之间的环形闭区域为 $D_1$，它不含原点，$P,Q$ 在 $D_1$ 上一阶偏导连续；$D_1$ 的正向边界是 $L+C_r^-$（外圈逆时针，内圈顺时针）。由格林公式（复连通情形）$$\oint_LP\,dx+Q\,dy+\oint_{C_r^-}P\,dx+Q\,dy=\iint_{D_1}\Big(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\Big)dxdy=0,$$ 再由反向变号，$I=\oint_{C_r}P\,dx+Q\,dy$。</li>
+<li><b>在 $C_r$ 上先代入、再用格林公式。</b>曲线积分只用到曲线上的值，而 $C_r$ 上 $4x^2+y^2=r^2$：$$I=\frac1{r^2}\oint_{C_r}(4x-y)\,dx+(x+y)\,dy.$$ 现在 $P_1=4x-y$，$Q_1=x+y$ 是多项式，在椭圆内部 $D_r:\ 4x^2+y^2\leqslant r^2$ 上可以放心用格林公式：$\dfrac{\partial Q_1}{\partial x}-\dfrac{\partial P_1}{\partial y}=1-(-1)=2$，$$\oint_{C_r}(4x-y)\,dx+(x+y)\,dy=\iint_{D_r}2\,dxdy=2\cdot\pi\cdot\frac r2\cdot r=\pi r^2,$$ 这里椭圆 $\dfrac{x^2}{(r/2)^2}+\dfrac{y^2}{r^2}=1$ 的半轴是 $\dfrac r2$ 与 $r$，面积 $\dfrac{\pi r^2}2$。</li>
+<li>$I=\dfrac1{r^2}\cdot\pi r^2=\pi$，结果与 $r$ 无关。</li>
+</ol>
+<p><b>答案：</b>$I=\pi$。</p>
+<p><b>另解（参数化小椭圆）：</b>$x=\frac r2\cos t$，$y=r\sin t$，$t:0\to2\pi$，$$(4x-y)\,dx+(x+y)\,dy=\Big[(2r\cos t-r\sin t)\Big(-\frac r2\sin t\Big)+\Big(\frac r2\cos t+r\sin t\Big)r\cos t\Big]dt=\frac{r^2}2\,dt,$$ 所以 $I=\dfrac1{r^2}\displaystyle\int_0^{2\pi}\frac{r^2}2\,dt=\pi$。也可以把被积式拆开看：$\dfrac{4x\,dx+y\,dy}{4x^2+y^2}=d\Big(\dfrac12\ln(4x^2+y^2)\Big)$ 是全微分，沿闭曲线积分为零；剩下的 $\dfrac{x\,dy-y\,dx}{4x^2+y^2}$ 正是例 10，绕原点一圈等于 $\pi$。</p>
+<p><b>这道题告诉我们：</b>挖洞法的标准写法三句话（见"解题方法"）：验证 $Q_x=P_y$ → 在 $L$ 与小曲线之间用格林公式说明 $\oint_L=\oint_{C_r}$ → 在小曲线上把分母换成常数再算。阅卷时"不能直接用格林公式"的理由（原点是奇点）和"$C_r$ 在 $L$ 内部"都要写明。最典型的错误是无视奇点直接得 $I=0$；其次是挖圆而不是挖椭圆——圆上 $4x^2+y^2$ 不是常数，提不出来。</p>
+<p><b>真题 3</b>　<span class="qref" data-q="2021-20">2021 年第 20 题</span>（解答，12 分）</p>
+<blockquote><p>设 $D\subset\mathbf{R}^2$ 是有界单连通闭区域，$I(D)=\displaystyle\iint_D\left(4-x^2-y^2\right)\mathrm{d}x\,\mathrm{d}y$ 取得最大值的积分区域为 $D_1$．<br>（Ⅰ）求 $I(D_1)$ 的值；<br>（Ⅱ）计算 $\displaystyle\int_{\partial D_1}\frac{\left(x\mathrm{e}^{x^2+4y^2}+y\right)\mathrm{d}x+\left(4y\mathrm{e}^{x^2+4y^2}-x\right)\mathrm{d}y}{x^2+4y^2}$，其中 $\partial D_1$ 是 $D_1$ 的正向边界．</p></blockquote>
+<p><b>这题考什么：</b>（Ⅰ）二重积分的保号性（哪个区域让积分最大）；（Ⅱ）与真题 2 同型的挖洞法，只是分母换成 $x^2+4y^2$，分子里多了吓人的 $\mathrm{e}^{x^2+4y^2}$。</p>
+<p><b>从题面看到什么：</b>（Ⅰ）被积函数 $4-x^2-y^2$ 在圆 $x^2+y^2=4$ 内为正、外为负，要让积分最大就把所有"正贡献"收进来、"负贡献"排除出去，所以 $D_1$ 应是圆盘 $x^2+y^2\leqslant4$；题目说"单连通闭区域"，正是为了让 $\partial D_1$ 是一条简单闭曲线。（Ⅱ）$\partial D_1$ 是逆时针的圆周 $x^2+y^2=4$，被积函数的分母 $x^2+4y^2$ 在原点为零，原点在圆内 → 先验证 $Q_x=P_y$，再挖洞；分母是 $x^2+4y^2$，洞就挖 $x^2+4y^2=\varepsilon^2$，这回是"横着"的椭圆。</p>
+<svg viewBox="0 0 440 252" width="100%" style="max-width:440px" fill="none" stroke="currentColor">
+<defs><marker id="ml2-a8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<path d="M30,120 a80,80 0 1,0 160,0 a80,80 0 1,0 -160,0 Z M136,120 a26,51 0 1,0 -52,0 a26,51 0 1,0 52,0 Z" fill="currentColor" fill-opacity="0.08" fill-rule="evenodd" stroke="none"/>
+<circle cx="110" cy="120" r="80" stroke-width="2"/>
+<ellipse cx="110" cy="120" rx="26" ry="51" stroke-width="1.8"/>
+<circle cx="110" cy="120" r="2.5" fill="currentColor"/>
+<line x1="119" y1="40" x2="101" y2="40" stroke-width="2" marker-end="url(#ml2-a8)"/>
+<line x1="101" y1="200" x2="119" y2="200" stroke-width="2" marker-end="url(#ml2-a8)"/>
+<line x1="103" y1="69" x2="117" y2="69" stroke-width="2" marker-end="url(#ml2-a8)"/>
+<line x1="117" y1="171" x2="103" y2="171" stroke-width="2" marker-end="url(#ml2-a8)"/>
+<path d="M250,120 a80,80 0 1,0 160,0 a80,80 0 1,0 -160,0 Z M378,120 a48,24 0 1,0 -96,0 a48,24 0 1,0 96,0 Z" fill="currentColor" fill-opacity="0.08" fill-rule="evenodd" stroke="none"/>
+<circle cx="330" cy="120" r="80" stroke-width="2"/>
+<ellipse cx="330" cy="120" rx="48" ry="24" stroke-width="1.8"/>
+<circle cx="330" cy="120" r="2.5" fill="currentColor"/>
+<line x1="339" y1="40" x2="321" y2="40" stroke-width="2" marker-end="url(#ml2-a8)"/>
+<line x1="321" y1="200" x2="339" y2="200" stroke-width="2" marker-end="url(#ml2-a8)"/>
+<line x1="323" y1="96" x2="337" y2="96" stroke-width="2" marker-end="url(#ml2-a8)"/>
+<line x1="337" y1="144" x2="323" y2="144" stroke-width="2" marker-end="url(#ml2-a8)"/>
+<g fill="currentColor" stroke="none" font-size="12">
+<text x="18" y="18">2020 年第 16 题：分母 4x² + y²</text>
+<text x="238" y="18">2021 年第 20 题：分母 x² + 4y²</text>
+<text x="116" y="126" font-size="11">O</text>
+<text x="336" y="126" font-size="11">O</text>
+<text x="146" y="96" font-size="11">D₁</text>
+<text x="366" y="96" font-size="11">D<tspan font-size="8" dy="3">ε</tspan></text>
+<text x="172" y="40" font-size="11">L：x² + y² = 2</text>
+<text x="352" y="40" font-size="11">∂D₁：x² + y² = 4</text>
+<text x="18" y="226">挖"竖着"的椭圆 4x² + y² = r²</text>
+<text x="18" y="244">x 半轴 r/2，y 半轴 r</text>
+<text x="238" y="226">挖"横着"的椭圆 x² + 4y² = ε²</text>
+<text x="238" y="244">x 半轴 ε，y 半轴 ε/2</text>
+</g>
+</svg>
+<p>左图是真题 2，右图是真题 3：外圈都是逆时针的圆周，内圈都是顺时针的小椭圆，环形区域上 $Q_x-P_y=0$；两题的区别只在"洞"的朝向——分母是 $4x^2+y^2$ 就挖竖椭圆，是 $x^2+4y^2$ 就挖横椭圆。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li><b>（Ⅰ）确定 $D_1$。</b>记 $g=4-x^2-y^2$，$D_1=\{(x,y)\mid x^2+y^2\leqslant4\}$。对任意有界闭区域 $D$，由二重积分的区域可加性与保号性，$$I(D)=\iint_{D\cap D_1}g\,d\sigma+\iint_{D\setminus D_1}g\,d\sigma\leqslant\iint_{D\cap D_1}g\,d\sigma\leqslant\iint_{D_1}g\,d\sigma=I(D_1),$$ 第一个不等号因为 $D\setminus D_1$ 上 $g\lt0$，第二个因为 $D_1$ 中不属于 $D$ 的部分上 $g\geqslant0$。所以最大值在 $D_1$ 取得。</li>
+<li><b>（Ⅰ）极坐标计算。</b>$I(D_1)=\displaystyle\int_0^{2\pi}d\theta\int_0^2(4-r^2)\,r\,dr=2\pi\Big[2r^2-\frac{r^4}4\Big]_0^2=8\pi$。</li>
+<li><b>（Ⅱ）验证 $\dfrac{\partial Q}{\partial x}=\dfrac{\partial P}{\partial y}$（$(x,y)\neq(0,0)$）。</b>记 $s=x^2+4y^2$，把被积式拆成两部分。含指数的部分 $$\frac{x\mathrm{e}^s\,dx+4y\mathrm{e}^s\,dy}{s}=\frac{\mathrm{e}^s}{2s}\,(2x\,dx+8y\,dy)=\frac{\mathrm{e}^s}{2s}\,ds,$$ 它是一元函数 $\Phi(s)$（取 $\Phi'(s)=\dfrac{\mathrm{e}^s}{2s}$，$s>0$）复合上 $s=x^2+4y^2$ 之后的全微分 $d\Phi(x^2+4y^2)$，有原函数，由"存在原函数 ⇒ $P_y=Q_x$"（这一步不需要单连通），这部分的 $Q_x-P_y=0$；直接求导也可以：两个交叉偏导都等于 $\dfrac{8xy\,\mathrm{e}^s(s-1)}{s^2}$。其余部分 $\dfrac{y\,dx-x\,dy}{s}$：$$\frac{\partial}{\partial x}\Big(\frac{-x}s\Big)=\frac{-s+2x^2}{s^2}=\frac{x^2-4y^2}{s^2},\qquad\frac{\partial}{\partial y}\Big(\frac ys\Big)=\frac{s-8y^2}{s^2}=\frac{x^2-4y^2}{s^2},$$ 也相等。所以在原点以外处处 $\dfrac{\partial Q}{\partial x}-\dfrac{\partial P}{\partial y}=0$。</li>
+<li><b>（Ⅱ）挖洞。</b>取 $0\lt\varepsilon\lt2$，作椭圆 $L_\varepsilon:\ x^2+4y^2=\varepsilon^2$，逆时针；它上面的点满足 $x^2+y^2\leqslant x^2+4y^2=\varepsilon^2\lt4$，在圆内。圆与椭圆之间的环形区域 $D_\varepsilon$ 不含原点，其正向边界为 $\partial D_1+L_\varepsilon^-$，由格林公式 $\displaystyle\oint_{\partial D_1}+\oint_{L_\varepsilon^-}=\iint_{D_\varepsilon}0\,dxdy=0$，故 $\displaystyle\oint_{\partial D_1}=\oint_{L_\varepsilon}$。</li>
+<li><b>（Ⅱ）在 $L_\varepsilon$ 上先代入分母，再用格林公式。</b>$L_\varepsilon$ 上 $x^2+4y^2=\varepsilon^2$，$$\oint_{L_\varepsilon}=\frac1{\varepsilon^2}\oint_{L_\varepsilon}\big(x\mathrm{e}^{x^2+4y^2}+y\big)dx+\big(4y\mathrm{e}^{x^2+4y^2}-x\big)dy.$$ 新的 $\tilde P=x\mathrm{e}^{x^2+4y^2}+y$，$\tilde Q=4y\mathrm{e}^{x^2+4y^2}-x$ 在全平面光滑，$$\frac{\partial\tilde Q}{\partial x}-\frac{\partial\tilde P}{\partial y}=\big(8xy\mathrm{e}^{x^2+4y^2}-1\big)-\big(8xy\mathrm{e}^{x^2+4y^2}+1\big)=-2,$$ 椭圆 $x^2+4y^2\leqslant\varepsilon^2$ 的半轴为 $\varepsilon$ 与 $\dfrac\varepsilon2$，面积 $\dfrac{\pi\varepsilon^2}2$，所以 $$\oint_{L_\varepsilon}=\frac1{\varepsilon^2}\cdot(-2)\cdot\frac{\pi\varepsilon^2}2=-\pi.$$</li>
+</ol>
+<p><b>答案：</b>（Ⅰ）$I(D_1)=8\pi$；（Ⅱ）$-\pi$。</p>
+<p><b>这道题告诉我们：</b>12 分的大题里，曲线积分只是后一半，前一半考的是对二重积分"正负贡献"的理解。（Ⅱ）中的指数项看着吓人，其实是全微分（或者说在 $L_\varepsilon$ 上 $\mathrm{e}^{x^2+4y^2}=\mathrm{e}^{\varepsilon^2}$ 是常数），真正起作用的只有 $\dfrac{y\,dx-x\,dy}{x^2+4y^2}$，它与例 10 的 $\dfrac{x\,dy-y\,dx}{4x^2+y^2}$ 差一个符号、换了椭圆的朝向，所以答案是 $-\pi$ 而不是 $\pi$。把本题与真题 2 放在一起看：连续两年考同一个套路，只改分母的系数，说明"洞的形状跟着分母走"是命题人反复检验的知识点。</p>`
+      },
+
+      /* ───────── 18. 近十年真题精讲（续）：路径无关类 ───────── */
+      {
+        kind: 'example', title: '近十年真题精讲（续）',
+        html: R`<p>这一节的三道题都围绕"路径无关 ⇔ $P_y=Q_x$ ⇔ 存在原函数"：一道用它<b>筛选</b> $P$（选择题），一道用它<b>求参数</b>（填空题），一道用它<b>算积分</b>（解答题）。</p>
+<p><b>真题 4</b>　<span class="qref" data-q="2019-4">2019 年第 4 题</span>（选择，4 分）</p>
+<blockquote><p>设函数 $Q(x,y)=\dfrac{x}{y^2}$. 如果对上半平面 $(y>0)$ 内的任意有向光滑封闭曲线 $C$ 都有 $\displaystyle\oint_C P(x,y)\,\mathrm{d}x+Q(x,y)\,\mathrm{d}y=0$，那么函数 $P(x,y)$ 可取为（　　）.</p>
+<p>(A) $y-\dfrac{x^2}{y^3}$.　(B) $\dfrac1y-\dfrac{x^2}{y^3}$.　(C) $\dfrac1x-\dfrac1y$.　(D) $x-\dfrac1y$.</p></blockquote>
+<p><b>这题考什么：</b>"任意闭曲线积分为零"的判别——单连通区域上 $\dfrac{\partial P}{\partial y}=\dfrac{\partial Q}{\partial x}$，以及这个判别法容易被忽视的前提：$P,Q$ 必须在<b>整个</b>区域内有一阶连续偏导数。</p>
+<p><b>从题面看到什么：</b>"上半平面内任意闭曲线积分为零"就是等价定理里的 (2)，而上半平面是单连通的，所以它等价于 (4)：$P_y=Q_x$ 在上半平面处处成立——但前提是 $P,Q$ 在上半平面光滑。于是要过两道关：第一关算 $Q_x=\dfrac1{y^2}$，逐个比较 $P_y$；第二关检查候选的 $P$ 在上半平面有没有奇点。选项里 $\dfrac1x$ 这种在 $x=0$ 处无定义的式子，就是为第二关准备的。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>$\dfrac{\partial Q}{\partial x}=\dfrac{\partial}{\partial x}\Big(\dfrac x{y^2}\Big)=\dfrac1{y^2}$。</li>
+<li>逐个求 $\dfrac{\partial P}{\partial y}$：(A) $1+\dfrac{3x^2}{y^4}$，在 $(1,1)$ 处为 $4\neq1$；(B) $-\dfrac1{y^2}+\dfrac{3x^2}{y^4}$，在 $(0,1)$ 处为 $-1\neq1$；(C) $\dfrac1{y^2}$；(D) $\dfrac1{y^2}$。(A)(B) 不满足 (4)：事实上若 $Q_x-P_y$ 在某点不为零，由连续性它在该点附近的一个小圆盘内保持同号，对这个小圆周用格林公式，积分就不为零，与题设矛盾。</li>
+<li>排除 (C)：$P=\dfrac1x-\dfrac1y$ 在射线 $\{x=0,\ y>0\}$ 上没有定义，而这条射线在上半平面内，定理的前提不成立。具体地，取跨过 $y$ 轴的闭曲线 $C:\ x=\cos\theta,\ y=2+\sin\theta$（$0\leqslant\theta\leqslant2\pi$），积分中的 $\displaystyle\oint_C\frac{dx}x=-\int_0^{2\pi}\tan\theta\,d\theta$ 在 $\theta=\dfrac\pi2$ 附近发散，这个曲线积分根本不存在，更谈不上等于零。</li>
+<li>确认 (D)：$P=x-\dfrac1y$ 与 $Q=\dfrac x{y^2}$ 在上半平面处处有连续偏导数，$P_y=Q_x$，上半平面单连通，由判别定理，上半平面内任意闭曲线上的积分都为零。也可直接写出原函数 $u=\dfrac{x^2}2-\dfrac xy$（验证：$u_x=x-\dfrac1y$，$u_y=\dfrac x{y^2}$），闭曲线上 $\oint du=u(\text{终点})-u(\text{起点})=0$。</li>
+</ol>
+<svg viewBox="0 0 420 235" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
+<defs><marker id="ml2-a9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<rect x="30" y="22" width="365" height="168" fill="currentColor" fill-opacity="0.06" stroke="none"/>
+<line x1="20" y1="190" x2="405" y2="190" stroke-width="1" marker-end="url(#ml2-a9)"/>
+<line x1="210" y1="215" x2="210" y2="20" stroke-width="1" marker-end="url(#ml2-a9)"/>
+<line x1="210" y1="190" x2="210" y2="34" stroke-width="3.5" stroke-dasharray="6 5" stroke-opacity="0.7"/>
+<circle cx="210" cy="90" r="50" stroke-width="2"/>
+<line x1="220" y1="40" x2="200" y2="40" stroke-width="2" marker-end="url(#ml2-a9)"/>
+<circle cx="110" cy="120" r="18" stroke-width="1.6"/>
+<line x1="118" y1="102" x2="102" y2="102" stroke-width="1.6" marker-end="url(#ml2-a9)"/>
+<circle cx="110" cy="120" r="2.5" fill="currentColor"/>
+<g fill="currentColor" stroke="none" font-size="12">
+<text x="36" y="40">上半平面 y &gt; 0（单连通）</text>
+<text x="400" y="207">x</text>
+<text x="218" y="30">y</text>
+<text x="200" y="207">O</text>
+<text x="266" y="80">C：x² + (y − 2)² = 1</text>
+<text x="266" y="96">跨过 y 轴，(C) 的积分不存在</text>
+<text x="222" y="150">x = 0：(C) 的 P = 1/x − 1/y</text>
+<text x="222" y="166">在这条射线上没有定义</text>
+<text x="34" y="160">(A)(B)：某点处 Q<tspan font-size="9" dy="3">x</tspan><tspan dy="-3"> − P</tspan><tspan font-size="9" dy="3">y</tspan><tspan dy="-3"> ≠ 0，</tspan></text>
+<text x="34" y="176">绕它的小圆周积分 ≠ 0</text>
+<text x="20" y="230">(D)：P、Q 在整个上半平面光滑且 P<tspan font-size="9" dy="3">y</tspan><tspan dy="-3"> = Q</tspan><tspan font-size="9" dy="3">x</tspan><tspan dy="-3">，任何闭曲线上积分都为 0</tspan></text>
+</g>
+</svg>
+<p><b>答案：</b>(D)。</p>
+<p><b>这道题告诉我们：</b>判别条件 $P_y=Q_x$ 有两个前提——区域单连通、$P,Q$ 在区域内偏导连续——命题人专门用选项 (C) 考第二个前提，只会机械比较偏导数的人会在 (C)(D) 之间犹豫甚至误选 (C)。另一个有效的思路是"反解"：由 $P_y=\dfrac1{y^2}$ 对 $y$ 积分得 $P=-\dfrac1y+\varphi(x)$，其中 $\varphi$ 必须在整条实轴上连续可导（上半平面里 $x$ 可以取任何实数），(D) 对应 $\varphi(x)=x$，(C) 对应 $\varphi(x)=\dfrac1x$，在 $x=0$ 处断了。</p>
+<p><b>真题 5</b>　<span class="qref" data-q="2017-11">2017 年第 11 题</span>（填空，4 分）</p>
+<blockquote><p>若曲线积分 $\displaystyle\int_L\frac{x\,\mathrm{d}x-ay\,\mathrm{d}y}{x^2+y^2-1}$ 在区域 $D=\{(x,y)\mid x^2+y^2 < 1\}$ 内与路径无关，则 $a=$ ______.</p></blockquote>
+<p><b>这题考什么：</b>由"与路径无关"反求参数：列 $\dfrac{\partial P}{\partial y}=\dfrac{\partial Q}{\partial x}$（例 14 的同款）。</p>
+<p><b>从题面看到什么：</b>(1) 先核对判别定理的前提：$D$ 是单位圆盘的内部，单连通；在 $D$ 内 $x^2+y^2-1\lt0$，分母不为零，$P,Q$ 在 $D$ 内一阶偏导连续。题目把区域限制在圆内，正是为了避开分母为零的单位圆周；(2) 前提齐备，"与路径无关"就等价于 $P_y=Q_x$ 在 $D$ 内<b>处处</b>成立，这是一个关于 $a$ 的恒等式。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>$P=\dfrac{x}{x^2+y^2-1}$，$Q=\dfrac{-ay}{x^2+y^2-1}$（注意 $Q$ 带负号）。</li>
+<li>$\dfrac{\partial P}{\partial y}=\dfrac{-2xy}{(x^2+y^2-1)^2}$（分子不含 $y$，只对分母求导），$\dfrac{\partial Q}{\partial x}=\dfrac{-ay\cdot(-2x)}{(x^2+y^2-1)^2}=\dfrac{2axy}{(x^2+y^2-1)^2}$。</li>
+<li>令二者在 $D$ 内处处相等：$2axy=-2xy$，即 $2(a+1)xy=0$ 对 $D$ 内一切点成立。取一点使 $xy\neq0$（如 $\big(\frac12,\frac12\big)$）得 $a=-1$。</li>
+<li>反过来验证：$a=-1$ 时被积式为 $\dfrac{x\,dx+y\,dy}{x^2+y^2-1}=\dfrac{\frac12d(x^2+y^2)}{x^2+y^2-1}=d\Big(\frac12\ln(1-x^2-y^2)\Big)$，在 $D$ 内确是全微分，积分只看端点。</li>
+</ol>
+<p><b>答案：</b>$a=-1$。</p>
+<p><b>这道题告诉我们：</b>"求参数"型题的两句话：写清前提（单连通、无奇点），列 $P_y=Q_x$ 并强调"处处成立"再比较系数。本题若把 $Q$ 的负号漏掉会得到 $a=1$；若只在某一点令两偏导相等也可能得到错误的"解"。凑微分的眼光能当场核对答案：$x\,dx+y\,dy=\frac12d(x^2+y^2)$ 与分母 $x^2+y^2-1$ 正好配成 $\frac12d\ln|x^2+y^2-1|$，所以 $y\,dy$ 前的系数只能是 $+1$，即 $a=-1$。</p>
+<p><b>真题 6</b>　<span class="qref" data-q="2016-17">2016 年第 17 题</span>（解答，10 分）</p>
+<blockquote><p>设函数 $f(x,y)$ 满足 $\dfrac{\partial f(x,y)}{\partial x}=(2x+1)\mathrm{e}^{2x-y}$，且 $f(0,y)=y+1$，$L_t$ 是从点 $(0,0)$ 到点 $(1,t)$ 的光滑曲线. 计算曲线积分 $I(t)=\displaystyle\int_{L_t}\frac{\partial f(x,y)}{\partial x}\mathrm{d}x+\frac{\partial f(x,y)}{\partial y}\mathrm{d}y$，并求 $I(t)$ 的最小值.</p></blockquote>
+<p><b>这题考什么：</b>全微分的曲线积分——曲线积分的牛顿–莱布尼茨公式 $\int_A^Bdu=u(B)-u(A)$；由偏导数还原函数（偏积分法，"常数"是 $\varphi(y)$）；最后接一个一元函数求最值。</p>
+<p><b>从题面看到什么：</b>(1) 被积式是 $\dfrac{\partial f}{\partial x}dx+\dfrac{\partial f}{\partial y}dy=df$——$f$ 自己的全微分，由"存在原函数 ⇒ 路径无关，且 $\int_A^B=u(B)-u(A)$"，$I(t)=f(1,t)-f(0,0)$。这解释了为什么题目只说"光滑曲线"而不给方程：答案不依赖曲线；(2) 于是任务变成求 $f$：已知 $f_x$，对 $x$ 积分，积分"常数"是 $y$ 的函数 $\varphi(y)$，再用 $f(0,y)=y+1$ 定出它。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li><b>还原 $f$。</b>对 $x$ 积分（$y$ 视为常数）：$$f(x,y)=\int(2x+1)\mathrm{e}^{2x-y}\,dx=\mathrm{e}^{-y}\int(2x+1)\mathrm{e}^{2x}\,dx=x\mathrm{e}^{2x-y}+\varphi(y),$$ 其中 $\displaystyle\int(2x+1)\mathrm{e}^{2x}dx=x\mathrm{e}^{2x}+C$ 可由分部积分得到，也可直接验证 $(x\mathrm{e}^{2x})'=\mathrm{e}^{2x}+2x\mathrm{e}^{2x}=(2x+1)\mathrm{e}^{2x}$。令 $x=0$：$f(0,y)=\varphi(y)=y+1$，所以 $f(x,y)=x\mathrm{e}^{2x-y}+y+1$。</li>
+<li><b>认出全微分，直接写答案。</b>$f$ 在全平面有连续偏导数（$f_x=(2x+1)\mathrm{e}^{2x-y}$，$f_y=1-x\mathrm{e}^{2x-y}$），故可微，$\dfrac{\partial f}{\partial x}dx+\dfrac{\partial f}{\partial y}dy=df$。由"路径无关 ⇔ 存在原函数"定理中的牛顿–莱布尼茨公式，对任何从 $(0,0)$ 到 $(1,t)$ 的光滑曲线 $L_t$，$$I(t)=f(1,t)-f(0,0)=\big(\mathrm{e}^{2-t}+t+1\big)-1=t+\mathrm{e}^{2-t}.$$</li>
+<li><b>求最小值。</b>$I'(t)=1-\mathrm{e}^{2-t}$，唯一驻点 $t=2$；$t\lt2$ 时 $\mathrm{e}^{2-t}>1$，$I'(t)\lt0$；$t>2$ 时 $I'(t)>0$。所以 $I(t)$ 在 $(-\infty,+\infty)$ 上先减后增，最小值为 $I(2)=2+\mathrm{e}^0=3$。</li>
+</ol>
+<p><b>答案：</b>$I(t)=t+\mathrm{e}^{2-t}$，最小值 $I(2)=3$。</p>
+<p><b>另解（换成折线）：</b>$P=f_x$，$Q=f_y=1-x\mathrm{e}^{2x-y}$，$P_y=-(2x+1)\mathrm{e}^{2x-y}=Q_x$，全平面单连通，积分与路径无关。取折线 $(0,0)\to(1,0)\to(1,t)$：$$I(t)=\int_0^1(2x+1)\mathrm{e}^{2x}\,dx+\int_0^t\big(1-\mathrm{e}^{2-y}\big)dy=\mathrm{e}^2+\big(t+\mathrm{e}^{2-t}-\mathrm{e}^2\big)=t+\mathrm{e}^{2-t}.$$ 走折线也得先求出 $f_y$，所以并不比"认出 $df$"省事。</p>
+<p><b>这道题告诉我们：</b>看到被积式是 $f_x\,dx+f_y\,dy$，或者题目根本没给曲线方程，就该想到"全微分 → 终点值减起点值"。两个常见失分点：把对 $x$ 积分的"常数"写成 $C$ 而不是 $\varphi(y)$（这样 $f(0,y)=y+1$ 就无法满足）；只算出驻点 $t=2$ 而不说明两侧单调性（或 $I''(t)=\mathrm{e}^{2-t}>0$），就断言它是最小值。</p>`
+      },
+
+      /* ───────── 19. 常见误区 ───────── */
       {
         kind: 'pitfall', title: '常见误区',
         html: R`<ol>
@@ -468,6 +645,7 @@ registerLesson(function (R) {
 <li><b>忘记方向。</b>顺时针的闭曲线用格林公式要加负号；复连通区域的内边界正向是顺时针；补线后要判断整条闭曲线是正向还是负向。</li>
 <li><b>把 $\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}$ 写反。</b>记住"配 $dy$ 的 $Q$ 对 $x$ 求导在前"。自检：$\oint_Lx\,dy$（逆时针）应当等于面积，是正数，而 $P=0,Q=x$ 时 $Q_x-P_y=1$，对得上。</li>
 <li><b>"$\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$，所以任意闭曲线积分为零"。</b>漏了"单连通"和"偏导连续"。反例就是例 3：绕原点积分为 $2\pi$。同样，"某一条闭曲线上积分为零"也推不出与路径无关——(2) 要求<b>所有</b>闭曲线。</li>
+<li><b>只比较 $P_y$ 与 $Q_x$，不查 $P,Q$ 在区域内是否处处有定义。</b><span class="qref" data-q="2019-4">2019 年第 4 题</span>的选项 (C) $P=\frac1x-\frac1y$ 形式上满足 $P_y=Q_x$，却在上半平面内的射线 $x=0$ 上无定义，判别定理不适用，这个选项是错的。凡是含 $\frac1x$、$\frac1{x^2+y^2}$ 这类式子，先看奇点在不在区域里。</li>
 <li><b>补线后忘记减去补线上的积分</b>，或者补线的方向与 $L$ 没有首尾相接。</li>
 <li><b>用格林公式之后再把曲线方程代入二重积分。</b>代入曲线方程只能在<b>曲线积分</b>里做（$L$ 上的点满足方程）；一旦化成 $\iint_D$，$D$ 内部的点并不满足曲线方程。例如 $L:x^2+y^2=a^2$ 时，$\iint_D(x^2+y^2)\,dxdy\neq\iint_Da^2\,dxdy$。正确顺序是"先代入、再格林"（例 8）。</li>
 <li><b>偏积分法中把"积分常数"写成常数 $C$。</b>对 $x$ 积分时 $y$ 是常数，所以"常数"应是 $y$ 的任意函数 $\varphi(y)$，否则会漏掉只含 $y$ 的项。</li>
@@ -475,7 +653,7 @@ registerLesson(function (R) {
 </ol>`
       },
 
-      /* ───────── 18. 方法 ───────── */
+      /* ───────── 20. 方法 ───────── */
       {
         kind: 'method', title: '解题方法与题型识别',
         html: R`<p><b>总流程</b>：拿到一个平面第二类曲线积分 $\int_LP\,dx+Q\,dy$，先问两个问题——<b>$L$ 封闭吗？$\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}$ 是什么？</b>然后按下表对号入座。</p>
@@ -490,6 +668,7 @@ registerLesson(function (R) {
 <tr><td>曲线不封闭，$Q_x=P_y$（单连通区域内）</td><td>换路径（折线）或求原函数用 $u(B)-u(A)$</td><td>新路径不能穿过奇点</td></tr>
 <tr><td>"与路径无关""是全微分"，求未知函数或参数</td><td>列 $\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$</td><td>常化为微分方程；利用初值定常数</td></tr>
 <tr><td>求 $P\,dx+Q\,dy$ 的原函数</td><td>折线法 / 偏积分法 / 凑微分法</td><td>答案要加 $+C$</td></tr>
+<tr><td>被积式是 $f_x\,dx+f_y\,dy$，或题目不给曲线方程</td><td>认出全微分 $df$：积分 $=f(\text{终点})-f(\text{起点})$；先由已知偏导数还原 $f$</td><td>对 $x$ 积分的"常数"是 $\varphi(y)$（<span class="qref" data-q="2016-17">2016 年第 17 题</span>）</td></tr>
 <tr><td>两类曲线积分互化</td><td>$dx=\cos\alpha\,ds$，$dy=\cos\beta\,ds$</td><td>切向量与 $L$ 同向，用端点检验</td></tr>
 <tr><td>空间曲线</td><td>参数化；闭曲线考虑斯托克斯公式</td><td>不能用格林公式</td></tr>
 </tbody>
@@ -505,22 +684,23 @@ registerLesson(function (R) {
 <p><b>挖洞法的标准写法</b>（三句话）：① 验证除奇点外 $Q_x=P_y$；② 作与分母同形的小曲线 $C_r$，在 $L$ 与 $C_r$ 之间用格林公式，得 $\oint_L=\oint_{C_r}$（同向）；③ 在 $C_r$ 上先代入使分母为常数，再计算（常再用一次格林公式或面积公式）。</p>`
       },
 
-      /* ───────── 19. 考研怎么考 ───────── */
+      /* ───────── 21. 考研怎么考 ───────── */
       {
-        kind: 'exam', title: '数学一怎么考',
-        html: R`<p>第二类曲线积分与格林公式是数学一多元积分学中出现频率很高的考点，选择、填空、解答题都考过，而且常作为综合题的一环出现。</p>
+        kind: 'exam', title: '考研怎么考',
+        html: R`<p>第二类曲线积分与格林公式是数学一多元积分学里出镜最稳定的考点之一。按题库统计，2016–2025 年以它为主考点的真题有 6 道（2016、2017、2019、2020、2021、2025 年各一道，合计 45 分），另有 1 道以它为次要考点。上面两节已把 6 道主考点真题逐题讲完，下面按考法归纳。</p>
 <ul>
-<li><b>小题（选择、填空）</b>：直接用格林公式计算闭曲线积分（$Q_x-P_y$ 为常数，结果是面积的倍数）；利用"是全微分"或"与路径无关"求参数（如例 14）；判断关于曲线积分的命题对错（考察格林公式的条件、奇点、单连通）；两类曲线积分的概念。</li>
-<li><b>解答题之一：补线 + 格林</b>。给一段不封闭的曲线（半圆、抛物线、正弦曲线等），被积函数直接算很麻烦，但 $Q_x-P_y$ 简单，补一条坐标轴上的线段解决。</li>
-<li><b>解答题之二：挖洞</b>。被积函数的分母形如 $ax^2+by^2$，曲线绕原点，要求取与分母同形的小曲线，在两者之间用格林公式。也常问"对任意绕原点的闭曲线，积分为同一常数"。</li>
-<li><b>解答题之三：路径无关 + 微分方程</b>。被积函数中含未知函数 $\varphi(x)$ 或 $f(x,y)$，由"与路径无关"或"对某类闭曲线积分为零 / 为常数"列出 $Q_x=P_y$，得到一个微分方程或偏微分方程，解出未知函数后再求积分或原函数。这是最能体现综合能力的题型。</li>
-<li><b>证明题</b>：用格林公式把两个曲线积分化为二重积分，再借助区域的对称性（含轮换对称性）或基本不等式证明等式、不等式。</li>
-<li><b>与其他考点综合</b>：空间曲线积分常与斯托克斯公式一起考；"变力做功""环流量"类应用题与场论结合；"全微分方程"与常微分方程结合。</li>
+<li><b>解答题之一：闭曲线 + 奇点 → 挖洞。</b>连续两年的大题 <span class="qref" data-q="2020-16">2020 年第 16 题</span>（10 分）与 <span class="qref" data-q="2021-20">2021 年第 20 题</span>（12 分，前半问是二重积分）都是"分母 $ax^2+by^2$、原点在曲线内、$Q_x=P_y$"的标准挖洞题，洞分别挖 $4x^2+y^2=r^2$ 与 $x^2+4y^2=\varepsilon^2$。更早的 <span class="qref" data-q="2000-5">2000 年第五题</span>（例 10 的原型：分母 $4x^2+y^2$，曲线是圆心 $(1,0)$、半径 $R>1$ 的圆周）、<span class="qref" data-q="2013-4">2013 年第 4 题</span>（比较四条闭曲线上的积分哪个最大：用格林公式化成二重积分后看被积函数的正负）是同一题型的不同问法；<span class="qref" data-q="2005-19">2005 年第 19 题</span>则把"绕原点的闭曲线上积分恒为常数"作为条件反求未知函数。</li>
+<li><b>小题：不封闭曲线 → 补线用格林公式，或拆出全微分。</b><span class="qref" data-q="2025-14">2025 年第 14 题</span>（填空，5 分）：抛物线弧，$Q_x-P_y=1$，补 $x$ 轴上的线段。更早同型的有 <span class="qref" data-q="2008-16">2008 年第 16 题</span>（沿 $y=\sin x$ 从 $(0,0)$ 到 $(\pi,0)$）、<span class="qref" data-q="2012-19">2012 年第 19 题</span>（两段圆弧拼成的曲线）、<span class="qref" data-q="1999-4">1999 年第四题</span>（例 9 的原型：上半圆周上 $\mathrm{e}^x\sin y$ 型的被积函数），它们当年都是解答题。补线、定向、减补线三个步骤一个都不能错。</li>
+<li><b>小题：路径无关 / 全微分 → 列 $P_y=Q_x$ 求参数或筛选。</b><span class="qref" data-q="2017-11">2017 年第 11 题</span>（填空，求 $a$）与 <span class="qref" data-q="2019-4">2019 年第 4 题</span>（选择，筛选 $P$，并用奇点淘汰一个"形式上满足"的选项）。例 14 就是 <span class="qref" data-q="1996-2-1">1996 年二(1)</span> 的原题。这类题 4–5 分，两三行写完，失分全在前提：区域是否单连通、$P,Q$ 有没有奇点。</li>
+<li><b>解答题之二：全微分的积分 + 还原函数 + 其他考点。</b><span class="qref" data-q="2016-17">2016 年第 17 题</span>：被积式是 $f_x\,dx+f_y\,dy$，由偏导数还原 $f$，用 $I=f(B)-f(A)$，再求一元函数的最小值。更早的同类题有 <span class="qref" data-q="1989-3-2">1989 年三(2)</span>（例 12 的原题：由路径无关定 $\varphi(x)$ 再积分）、<span class="qref" data-q="1995-6">1995 年第六题</span>（由路径无关与一个恒等式反求 $Q$）、<span class="qref" data-q="1998-4">1998 年第四题</span>（定 $\lambda$ 使向量场是梯度场并求势函数）、<span class="qref" data-q="2002-6">2002 年第六题</span>（先证路径无关再求值）。"路径无关 → $P_y=Q_x$ → 微分方程"是这一类的主线。</li>
+<li><b>与斯托克斯公式综合。</b>空间闭曲线上的第二类曲线积分近十年考过一次：<span class="qref" data-q="2022-19">2022 年第 19 题</span>（12 分，主考点是斯托克斯公式，本考点是次要考点；它的另解"拆出全微分 $d(xyz^2-x\cos z)$，只剩 $\oint xz^2\,dy$"用的正是本篇的方法）。更早的 <span class="qref" data-q="2011-12">2011 年第 12 题</span>、<span class="qref" data-q="2014-12">2014 年第 12 题</span>（柱面与平面的交线）和 <span class="qref" data-q="2015-19">2015 年第 19 题</span>（球面与平面的交线）也是空间曲线积分。平面上的格林公式对它们无能为力，要用参数化或斯托克斯公式。</li>
+<li><b>近十年没有直接考的：</b>格林公式证明题（<span class="qref" data-q="2003-5">2003 年第五题</span>、<span class="qref" data-q="2006-19">2006 年第 19 题</span>是早年的两道）、两类曲线积分的概念辨析（<span class="qref" data-q="2007-6">2007 年第 6 题</span>：四个抽象的曲线积分哪个小于零）、变力做功的应用题（<span class="qref" data-q="1988-6">1988 年第六题</span>、<span class="qref" data-q="1990-9">1990 年第九题</span>）。它们没有退出大纲，仍要会。</li>
 </ul>
-<p><b>阅卷关注点</b>：格林公式条件的验证（尤其是奇点）、方向是否标明、补线是否减去、原函数是否加常数。解答题中写清"因为 $P,Q$ 在 $D$ 上具有一阶连续偏导数，由格林公式……"这样的条件陈述，是拿满分的习惯。</p>`
+<p><b>阅卷关注点</b>：挖洞题要写明"原点是奇点，不能直接用格林公式"、$Q_x=P_y$ 的验证、小曲线在 $L$ 内部以及内外边界的方向；补线题要写明补线的方向、闭曲线是正向、最后减去补线；路径无关题要写明区域单连通和 $P,Q$ 偏导连续。解答中的一句"因为 $P,Q$ 在 $D$ 上具有一阶连续偏导数，由格林公式……"，是拿满分的习惯。</p>
+<p><b>备考建议</b>：把本篇例 9、例 10、例 12、例 14 和上面 6 道真题当作模板反复练；挖洞题记住"洞跟着分母走"（<span class="qref" data-q="2020-16">2020 年第 16 题</span>与 <span class="qref" data-q="2021-20">2021 年第 20 题</span>的椭圆朝向正好相反）；做小题时养成先查前提（单连通、奇点）的习惯（<span class="qref" data-q="2019-4">2019 年第 4 题</span>）。</p>`
       },
 
-      /* ───────── 20. 小结 ───────── */
+      /* ───────── 22. 小结 ───────── */
       {
         kind: 'text', title: '小结：两类曲线积分对比与本篇逻辑链',
         html: R`<table>
@@ -544,7 +724,7 @@ registerLesson(function (R) {
 </ol>`
       },
 
-      /* ───────── 21. 自测 ───────── */
+      /* ───────── 23. 自测 ───────── */
       {
         kind: 'check', title: '自测',
         items: [
@@ -556,6 +736,7 @@ registerLesson(function (R) {
           { q: R`<p>把有向曲线 $L$ 改为反方向 $L^-$，$\int_LP\,dx+Q\,dy$ 与 $\int_L(P\cos\alpha+Q\cos\beta)\,ds$ 分别怎样变化？这与两类曲线积分的关系矛盾吗？</p>`, a: R`<p>前者变号（反向变号）。后者中 $ds$ 与方向无关，但 $(\cos\alpha,\cos\beta)$ 是"与 $L$ 方向一致"的单位切向量，反向后变成 $(-\cos\alpha,-\cos\beta)$，所以后者也变号。两边同时变号，关系式仍成立，不矛盾。方向信息完全藏在切向量里。</p>` },
           { q: R`<p>用曲线积分求星形线 $x=a\cos^3t,y=a\sin^3t$（$a>0$）所围图形的面积。</p>`, a: R`<p>$t:0\to2\pi$ 为逆时针。$x\,dy-y\,dx=\big[a\cos^3t\cdot3a\sin^2t\cos t+a\sin^3t\cdot3a\cos^2t\sin t\big]dt=3a^2\sin^2t\cos^2t\,dt$。$$A=\frac12\int_0^{2\pi}3a^2\sin^2t\cos^2t\,dt=\frac{3a^2}2\int_0^{2\pi}\frac{\sin^22t}4\,dt=\frac{3a^2}2\cdot\frac\pi4=\frac{3\pi a^2}8.$$ 对称形式 $\frac12\oint x\,dy-y\,dx$ 让 $\cos^2+\sin^2$ 合并，计算最省。</p>` },
           { q: R`<p>$L$ 为圆周 $(x-2)^2+y^2=1$，逆时针方向，则 $\oint_L\dfrac{x\,dy-y\,dx}{x^2+y^2}=$</p>`, options: [R`<p>$0$</p>`, R`<p>$2\pi$</p>`, R`<p>$-2\pi$</p>`, R`<p>$\pi$</p>`], correct: 0, explain: R`<p>圆心 $(2,0)$、半径 $1$，原点在圆外，所围圆盘内 $P,Q$ 一阶偏导连续且 $Q_x-P_y=0$，由格林公式积分为 $0$。是否为 $2\pi$ 只取决于曲线是否绕原点，而不是被积函数长什么样。</p>` },
+          { q: R`<p>$L$ 为圆周 $x^2+y^2=4$，逆时针方向，则 $\oint_L\dfrac{y\,dx-x\,dy}{x^2+4y^2}=$</p>`, options: [R`<p>$0$</p>`, R`<p>$\pi$</p>`, R`<p>$-\pi$</p>`, R`<p>$-2\pi$</p>`], correct: 2, explain: R`<p>原点是奇点且在 $L$ 内，不能直接用格林公式（否则会错得 $0$）。原点外 $Q_x=P_y$，用挖洞法换成椭圆 $L_\varepsilon:x^2+4y^2=\varepsilon^2$（逆时针）：$\oint_{L_\varepsilon}=\frac1{\varepsilon^2}\oint_{L_\varepsilon}y\,dx-x\,dy=\frac1{\varepsilon^2}\cdot(-2)\cdot\frac{\pi\varepsilon^2}2=-\pi$。这正是 2021 年第 20 题（Ⅱ）去掉指数项后的骨架；注意 $y\,dx-x\,dy$ 与面积公式里的 $x\,dy-y\,dx$ 差一个符号。</p>` },
           { q: R`<p>设 $\varphi(x)$ 具有连续导数，$\varphi(0)=1$，且 $\int_L[\varphi(x)-e^x]y\,dx+\varphi(x)\,dy$ 在全平面与路径无关，求 $\varphi(x)$。</p>`, a: R`<p>$P=[\varphi(x)-e^x]y$，$Q=\varphi(x)$。与路径无关 $\Leftrightarrow P_y=Q_x$：$\varphi(x)-e^x=\varphi'(x)$，即一阶线性方程 $\varphi'-\varphi=-e^x$。通解 $\varphi=e^{x}\big(\int-e^x\cdot e^{-x}dx+C\big)=e^x(C-x)$。由 $\varphi(0)=1$ 得 $C=1$，故 $\varphi(x)=(1-x)e^x$。验证：$\varphi'=-xe^x$，$\varphi-e^x=-xe^x$，相等。</p>` },
           { q: R`<p>某同学这样计算：$L$ 为 $x^2+y^2=a^2$（逆时针），由格林公式 $\oint_L-x^2y\,dx+xy^2\,dy=\iint_D(x^2+y^2)\,dxdy=\iint_Da^2\,dxdy=\pi a^4$。指出错误并改正。</p>`, a: R`<p>第一个等号正确（$Q_x-P_y=y^2+x^2$）。错在第二个等号：$D$ 内部的点不满足 $x^2+y^2=a^2$，不能代入。正确做法用极坐标：$\iint_D(x^2+y^2)\,dxdy=\int_0^{2\pi}d\theta\int_0^ar^2\cdot r\,dr=\frac{\pi a^4}2$。曲线方程只能在曲线积分中代入。</p>` }
         ]

@@ -17,6 +17,11 @@
     "series.sum",
     "diff.calc",
     "mdiff.dir",
-    "ode.const"
+    "ode.const",
+    "mint.surf2",
+    "diff.def",
+    "mint.line2",
+    "diff.mvt",
+    "mint.double"
   ]
 }

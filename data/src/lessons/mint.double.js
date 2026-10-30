@@ -2,7 +2,7 @@
 registerLesson(function (R) {
   return {
     id: 'mint.double', ch: 'mint', title: '二重积分',
-    summary: R`二重积分把定积分"分割、近似、求和、取极限"的思想从区间搬到平面区域：曲顶柱体的体积、薄片的质量都是它。本篇从定义出发严格证明它的性质与中值定理，证明"化为累次积分"和"极坐标变换"两个计算公式，讲透交换积分次序、奇偶对称与轮换对称、无界区域与概率积分——计算题要会"画图、定序、定限"，选择填空要会"看对称、比大小、换次序"。`,
+    summary: R`二重积分把定积分"分割、近似、求和、取极限"的思想从区间搬到平面区域：曲顶柱体的体积、薄片的质量都是它。本篇从定义出发严格证明它的性质与中值定理，证明"化为累次积分"和"极坐标变换"两个计算公式，讲透交换积分次序、奇偶对称与轮换对称、无界区域与概率积分——计算题要会"画图、定序、定限"，选择填空要会"看对称、比大小、换次序"。近十年以本考点为主考点的真题有 4 道（三道极坐标解答题、一道换序选择题），在「近十年真题精讲」两节中逐题讲透。`,
     prereq: ['int.def', 'int.ftc', 'int.improper', 'mdiff.limit', 'lim.closed'],
     sections: [
       /* ───────── 1. 为什么 ───────── */
@@ -153,7 +153,7 @@ registerLesson(function (R) {
       /* ───────── 8. X 型、Y 型 ───────── */
       {
         kind: 'def', title: 'X 型、Y 型区域与累次积分',
-        html: R`<p><b>X 型区域</b>：$D=\{(x,y)\mid a\le x\le b,\ \varphi_1(x)\le y\le\varphi_2(x)\}$，其中 $\varphi_1,\varphi_2$ 在 $[a,b]$ 上连续，$\varphi_1\le\varphi_2$。它的特点：左右两边是竖直线段（或缩成一点），下边界是一条曲线 $y=\varphi_1(x)$，上边界是一条曲线 $y=\varphi_2(x)$；<b>穿过 $D$ 内部且平行于 $y$ 轴的直线，与 $D$ 的边界恰好交于两点</b>。</p>
+        html: R`<p><b>X 型区域</b>：$D=\{(x,y)\mid a\le x\le b,\ \varphi_1(x)\le y\le\varphi_2(x)\}$，其中 $\varphi_1,\varphi_2$ 在 $[a,b]$ 上连续，$\varphi_1\le\varphi_2$。它的特点：左右两边是竖直线段（或缩成一点），下边界是一条曲线 $y=\varphi_1(x)$，上边界是一条曲线 $y=\varphi_2(x)$；<b>穿过 $D$ 内部且平行于 $y$ 轴的直线，与 $D$ 的边界至多交于两点</b>（一进一出；若边界含竖直线段，交点可能连成一段）。</p>
 <p><b>Y 型区域</b>：$D=\{(x,y)\mid c\le y\le d,\ \psi_1(y)\le x\le\psi_2(y)\}$，$\psi_1,\psi_2$ 在 $[c,d]$ 上连续，$\psi_1\le\psi_2$；平行于 $x$ 轴的直线穿过内部时，从左边界 $x=\psi_1(y)$ 进入、从右边界 $x=\psi_2(y)$ 穿出。</p>
 <svg viewBox="0 0 420 225" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
 <defs><marker id="mdb-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
@@ -375,7 +375,7 @@ registerLesson(function (R) {
           { s: R`<p><b>取极限</b>。令网格细度 $\to0$：左端 $\to\iint_S\tilde f\,d\sigma=\iint_Df\,d\sigma$，右端 $\to\iint_{Q'}\tilde g\,dr\,d\theta=\iint_{D'}f(r\cos\theta,r\sin\theta)\,r\,dr\,d\theta$。两端相等，第一个等号得证。</p>`, why: R`<p>两个积分都存在（第 1 步），而同一列和式的极限是唯一的。后面证明对称性时，用的也是这个"一个和式同时是两个积分的积分和"的手法。</p>` },
           { s: R`<p><b>化为累次积分</b>。$D'=\{\alpha\le\theta\le\beta,\ r_1(\theta)\le r\le r_2(\theta)\}$ 在 $r\theta$ 平面上是以 $\theta$ 为外层变量的"X 型"区域，$g(r,\theta)=f(r\cos\theta,r\sin\theta)\,r$ 在 $D'$ 上连续，由化累次积分定理得第二个等号。</p>`, why: R`<p>换元之后，极坐标下的计算又回到了直角坐标的累次积分，只不过"坐标轴"变成了 $\theta$ 和 $r$。</p>` }
         ],
-        remark: R`<p>① <b>何时用极坐标</b>：区域是圆、扇形、圆环或其一部分（边界含 $x^2+y^2$）；被积函数形如 $f(x^2+y^2)$、$f(\frac yx)$、$f(\frac xy)$。两条中占一条就该考虑，两条都占几乎必用。</p><p>② <b>广义极坐标</b>：对椭圆 $\frac{x^2}{a^2}+\frac{y^2}{b^2}\le1$，令 $x=ar\cos\theta$，$y=br\sin\theta$，则 $d\sigma=ab\,r\,dr\,d\theta$，区域变为 $0\le r\le1$，$0\le\theta\le2\pi$。理由：先作伸缩 $x=au$、$y=bv$，$uv$ 平面上的网格小矩形 $\Delta u\Delta v$ 变成 $xOy$ 平面上面积为 $ab\,\Delta u\Delta v$ 的小矩形，用与第 4、5 步相同的"一个和式两种身份"论证得 $d\sigma=ab\,du\,dv$；再对 $(u,v)$ 用极坐标。例：$\iint_D\big(\frac{x^2}{a^2}+\frac{y^2}{b^2}\big)d\sigma=ab\int_0^{2\pi}d\theta\int_0^1r^2\cdot r\,dr=\frac{\pi ab}2$。</p><p>③ 一般的变量代换公式 $d\sigma=\Big|\dfrac{\partial(x,y)}{\partial(u,v)}\Big|\,du\,dv$（雅可比行列式）不在数学一大纲要求之内；极坐标是它的特例：$\dfrac{\partial(x,y)}{\partial(r,\theta)}=\begin{vmatrix}\cos\theta&-r\sin\theta\\\sin\theta&r\cos\theta\end{vmatrix}=r$。</p><p>④ 被积函数在极点无界时（如 $\iint_{x^2+y^2\le1}\frac{d\sigma}{\sqrt{x^2+y^2}}$），这是反常积分：先挖去小圆盘 $r\le\varepsilon$，再令 $\varepsilon\to0^+$。极坐标中的因子 $r$ 恰好抵消了奇性：$\int_0^{2\pi}d\theta\int_\varepsilon^1\frac1r\cdot r\,dr=2\pi(1-\varepsilon)\to2\pi$。</p>`
+        remark: R`<p>① <b>何时用极坐标</b>：区域是圆、扇形、圆环或其一部分（边界含 $x^2+y^2$）；被积函数形如 $f(x^2+y^2)$、$f(\frac yx)$、$f(\frac xy)$。两条中占一条就该考虑，两条都占几乎必用。近十年三道解答题 <span class="qref" data-q="2016-15">2016 年第 15 题</span>、<span class="qref" data-q="2022-18">2022 年第 18 题</span>、<span class="qref" data-q="2024-17">2024 年第 17 题</span>都是极坐标，而且后两道的区域由圆弧与直线拼成，射线碰到的边界在某个 $\theta$ 处换了曲线，要按 $\theta$ 分段写上限（直线 $ax+by=c$ 的极坐标方程是 $r=\dfrac{c}{a\cos\theta+b\sin\theta}$）。</p><p>② <b>广义极坐标</b>：对椭圆 $\frac{x^2}{a^2}+\frac{y^2}{b^2}\le1$，令 $x=ar\cos\theta$，$y=br\sin\theta$，则 $d\sigma=ab\,r\,dr\,d\theta$，区域变为 $0\le r\le1$，$0\le\theta\le2\pi$。理由：先作伸缩 $x=au$、$y=bv$，$uv$ 平面上的网格小矩形 $\Delta u\Delta v$ 变成 $xOy$ 平面上面积为 $ab\,\Delta u\Delta v$ 的小矩形，用与第 4、5 步相同的"一个和式两种身份"论证得 $d\sigma=ab\,du\,dv$；再对 $(u,v)$ 用极坐标。例：$\iint_D\big(\frac{x^2}{a^2}+\frac{y^2}{b^2}\big)d\sigma=ab\int_0^{2\pi}d\theta\int_0^1r^2\cdot r\,dr=\frac{\pi ab}2$。</p><p>③ 一般的变量代换公式 $d\sigma=\Big|\dfrac{\partial(x,y)}{\partial(u,v)}\Big|\,du\,dv$（雅可比行列式）不在数学一大纲要求之内；极坐标是它的特例：$\dfrac{\partial(x,y)}{\partial(r,\theta)}=\begin{vmatrix}\cos\theta&-r\sin\theta\\\sin\theta&r\cos\theta\end{vmatrix}=r$。</p><p>④ 被积函数在极点无界时（如 $\iint_{x^2+y^2\le1}\frac{d\sigma}{\sqrt{x^2+y^2}}$），这是反常积分：先挖去小圆盘 $r\le\varepsilon$，再令 $\varepsilon\to0^+$。极坐标中的因子 $r$ 恰好抵消了奇性：$\int_0^{2\pi}d\theta\int_\varepsilon^1\frac1r\cdot r\,dr=2\pi(1-\varepsilon)\to2\pi$。</p>`
       },
 
       /* ───────── 18. 例 6 ───────── */
@@ -555,6 +555,200 @@ registerLesson(function (R) {
 <p><b>解法二（极坐标，扇形扩张）</b>：$J=\int_0^{\pi/2}\sin\theta\cos\theta\,d\theta\int_0^{+\infty}r^3e^{-r^2}dr=\frac12\cdot\frac12=\frac14$，其中 $\int_0^{+\infty}r^3e^{-r^2}dr$ 令 $u=r^2$ 得 $\frac12\int_0^{+\infty}ue^{-u}du=\frac12$。两种扩张方式结果相同，正是上面的定理所保证的。</p>`
       },
 
+      /* ───────── 28a. 近十年真题精讲 ───────── */
+      {
+        kind: 'example', title: '近十年真题精讲',
+        html: R`<p>2016–2025 年以二重积分为主考点的真题共 4 道：1 道选择题考交换积分次序，3 道解答题全是极坐标计算。本节与下一节逐题讲透，题面照抄原题，每题都指出用到了本篇哪条定理或方法。</p>
+<p><b>真题 1</b>　<span class="qref" data-q="2025-4">2025 年第 4 题</span>（选择，5 分）</p>
+<blockquote><p>设函数 $f(x,y)$ 连续，则 $\displaystyle\int_{-2}^{2}\mathrm dx\int_{4-x^2}^{4}f(x,y)\,\mathrm dy=$</p>
+<p>(A) $\displaystyle\int_0^4\left[\int_{-2}^{-\sqrt{4-y}}f(x,y)\,\mathrm dx+\int_{\sqrt{4-y}}^{2}f(x,y)\,\mathrm dx\right]\mathrm dy$</p>
+<p>(B) $\displaystyle\int_0^4\left[\int_{-2}^{\sqrt{4-y}}f(x,y)\,\mathrm dx+\int_{\sqrt{4-y}}^{2}f(x,y)\,\mathrm dx\right]\mathrm dy$</p>
+<p>(C) $\displaystyle\int_0^4\left[\int_{-2}^{-\sqrt{4-y}}f(x,y)\,\mathrm dx+\int_{2}^{\sqrt{4-y}}f(x,y)\,\mathrm dx\right]\mathrm dy$</p>
+<p>(D) $\displaystyle2\int_0^4\mathrm dy\int_{\sqrt{4-y}}^{2}f(x,y)\,\mathrm dx$</p></blockquote>
+<p><b>这题考什么：</b>交换积分次序（本篇"累次积分可以交换次序"定理与"交换积分次序三步走"）。$f$ 只假设连续、没有具体表达式，所以考的纯粹是"由限画域、换向穿线"。</p>
+<p><b>从题面看到什么：</b>外层 $-2\le x\le2$，内层 $4-x^2\le y\le4$——区域夹在抛物线 $y=4-x^2$ 的<b>上方</b>与直线 $y=4$ 的下方。抛物线顶点 $(0,4)$ 恰好顶在直线上，把区域劈成左右两块"弯角"；四个选项外层都是 $\int_0^4\mathrm dy$，区别全在内层，所以关键是：固定 $y$ 作水平线，它与区域交成几段。</p>
+<svg viewBox="0 0 420 240" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
+<defs><marker id="mdq-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<polygon points="70.0,200.0 70.0,40.0 210.0,40.0 198.3,41.1 186.7,44.4 175.0,50.0 163.3,57.8 151.7,67.8 140.0,80.0 128.3,94.4 116.7,111.1 105.0,130.0 93.3,151.1 81.7,174.4 70.0,200.0" fill="currentColor" fill-opacity="0.15" stroke="none"/>
+<polygon points="350.0,200.0 350.0,40.0 210.0,40.0 221.7,41.1 233.3,44.4 245.0,50.0 256.7,57.8 268.3,67.8 280.0,80.0 291.7,94.4 303.3,111.1 315.0,130.0 326.7,151.1 338.3,174.4 350.0,200.0" fill="currentColor" fill-opacity="0.15" stroke="none"/>
+<line x1="20" y1="200" x2="400" y2="200" stroke-width="1.2" marker-end="url(#mdq-ar)"/>
+<line x1="210" y1="226" x2="210" y2="16" stroke-width="1.2" marker-end="url(#mdq-ar)"/>
+<polyline points="64.4,213.1 71.7,196.2 79.0,180.2 86.2,165.0 93.5,150.8 100.8,137.3 108.1,124.8 115.4,113.1 122.6,102.3 129.9,92.3 137.2,83.3 144.5,75.0 151.8,67.7 159.0,61.2 166.3,55.6 173.6,50.8 180.9,46.9 188.2,43.9 195.4,41.7 202.7,40.4 210.0,40.0 217.3,40.4 224.6,41.7 231.8,43.9 239.1,46.9 246.4,50.8 253.7,55.6 261.0,61.2 268.2,67.7 275.5,75.0 282.8,83.3 290.1,92.3 297.4,102.3 304.6,113.1 311.9,124.8 319.2,137.3 326.5,150.8 333.8,165.0 341.0,180.2 348.3,196.2 355.6,213.1" stroke-width="1.8"/>
+<line x1="70" y1="40" x2="350" y2="40" stroke-width="1.6"/>
+<line x1="70" y1="40" x2="70" y2="200" stroke-dasharray="4 3" stroke-width="1"/>
+<line x1="350" y1="40" x2="350" y2="200" stroke-dasharray="4 3" stroke-width="1"/>
+<line x1="70" y1="112.0" x2="116.1" y2="112.0" stroke-width="3"/>
+<line x1="303.9" y1="112.0" x2="350" y2="112.0" stroke-width="3"/>
+<line x1="116.1" y1="112.0" x2="303.9" y2="112.0" stroke-width="1" stroke-dasharray="2 3"/>
+<circle cx="116.1" cy="112.0" r="3" fill="currentColor"/>
+<circle cx="303.9" cy="112.0" r="3" fill="currentColor"/>
+<g fill="currentColor" stroke="none" font-size="12">
+<text x="404" y="196">x</text>
+<text x="216" y="22">y</text>
+<text x="50" y="216">−2</text>
+<text x="338" y="216">2</text>
+<text x="198" y="216">O</text>
+<text x="354" y="44">y=4</text>
+<text x="96" y="70">D₁</text>
+<text x="312" y="70">D₂</text>
+<text x="362" y="216">y=4−x²</text>
+<text x="356" y="116.0">y=c</text>
+<text x="120" y="130.0" font-size="11">x=−√(4−y)</text>
+<text x="246" y="130.0" font-size="11">x=√(4−y)</text>
+<text x="20" y="236" font-size="11">水平线 y=c 与 D 交成两段（粗线）⇒ 内层写成两个积分之和</text>
+</g>
+</svg>
+<p>图中阴影是区域 $D$ 的两块 $D_1,D_2$；水平线 $y=c$ 与 $D$ 交成两段（粗线），中间虚线部分在抛物线下方，不属于 $D$。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li><b>由限画域。</b>$D=\{(x,y)\mid-2\le x\le2,\ 4-x^2\le y\le4\}$。抛物线 $y=4-x^2$ 开口向下，顶点 $(0,4)$，与 $x$ 轴交于 $(\pm2,0)$；$D$ 在它上方、$y=4$ 下方，是左右两块只在 $(0,4)$ 处相接的角落。</li>
+<li><b>新外层的范围。</b>$D$ 在 $y$ 轴上的投影：最低点是 $x=\pm2$ 处的 $y=0$，最高是 $y=4$，所以外层为 $0\le y\le4$。</li>
+<li><b>换向穿线。</b>固定 $y\in[0,4]$，条件 $4-x^2\le y$ 即 $x^2\ge4-y$，解得 $x\le-\sqrt{4-y}$ 或 $x\ge\sqrt{4-y}$；再与 $-2\le x\le2$ 取交，得 $x\in[-2,-\sqrt{4-y}]\cup[\sqrt{4-y},2]$。水平线进入 $D_1$ 又穿出，再进入 $D_2$——交成<b>两段</b>，内层就是两个积分之和（区域由两块拼成，就按块分别写内层、再相加）。</li>
+<li><b>写新积分。</b>$$\int_{-2}^{2}\mathrm dx\int_{4-x^2}^{4}f\,\mathrm dy=\int_0^4\left[\int_{-2}^{-\sqrt{4-y}}f\,\mathrm dx+\int_{\sqrt{4-y}}^{2}f\,\mathrm dx\right]\mathrm dy,$$ 即选项 (A)。</li>
+<li><b>用特殊函数核对并排除。</b>取 $f\equiv1$，原式 $=\int_{-2}^2x^2\,\mathrm dx=\dfrac{16}3$（$D$ 的面积）；(A) 给出 $\int_0^4 2\big(2-\sqrt{4-y}\big)\mathrm dy=16-\dfrac{32}3=\dfrac{16}3$，一致。(B) 第一个内层从 $-2$ 积到 $+\sqrt{4-y}$，把抛物线下方不属于 $D$ 的部分也算了进去且与第二段重叠，$f\equiv1$ 时得 $16$；(C) 第二个内层下限 $2$ 大于上限 $\sqrt{4-y}$，等于 $-\int_{\sqrt{4-y}}^2$，$f\equiv1$ 时得 $0$；(D) "乘 2"需要 $f$ 关于 $x$ 为偶函数，题目没给——取 $f=x$，原式 $=\int_{-2}^2x\cdot x^2\,\mathrm dx=0$，而 (D) $=2\int_0^4\dfrac{4-(4-y)}2\,\mathrm dy=8$。</li>
+</ol>
+<p><b>答案：</b>(A)。</p>
+<p><b>这道题告诉我们：</b>换序题的三个陷阱都埋在选项里：把"$y\ge4-x^2$"画成抛物线下方（横线就只交一段）；解 $x^2\ge4-y$ 时丢掉负的一支；看到区域左右对称就"乘 2"——对称性要求区域与被积函数<b>同时</b>满足条件（本篇"反射引理与奇偶对称性"定理）。拿不准时取 $f\equiv1$ 比面积、取 $f=x$ 查奇偶，两分钟就能排除错误选项。</p>
+
+<p><b>真题 2</b>　<span class="qref" data-q="2016-15">2016 年第 15 题</span>（解答，10 分）</p>
+<blockquote><p>已知平面区域 $D=\left\{(r,\theta)\mid 2\leqslant r\leqslant 2(1+\cos\theta),\ -\dfrac{\pi}{2}\leqslant\theta\leqslant\dfrac{\pi}{2}\right\}$，计算二重积分 $\displaystyle\iint_{D}x\,\mathrm{d}x\,\mathrm{d}y$.</p></blockquote>
+<p><b>这题考什么：</b>极坐标下计算二重积分（本篇"极坐标变换公式"定理），外加 $\cos^n\theta$ 在 $[0,\frac\pi2]$ 上的积分（点火公式）。</p>
+<p><b>从题面看到什么：</b>区域直接用 $(r,\theta)$ 给出——"$\alpha\le\theta\le\beta,\ r_1(\theta)\le r\le r_2(\theta)$"正是极坐标公式的标准形式，连定限都替你做好了。$r=2$ 是圆，$r=2(1+\cos\theta)$ 是<b>心形线</b>；$\theta\in[-\frac\pi2,\frac\pi2]$ 时 $\cos\theta\ge0$，心形线在圆外，二者在 $\theta=\pm\frac\pi2$（点 $(0,\pm2)$）处相接，$D$ 是右半平面上的一块"月牙"。被积函数 $x=r\cos\theta$。</p>
+<svg viewBox="0 0 420 260" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
+<defs><marker id="mdr-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<path d="M150.0,41.0 L155.9,35.7 L162.4,30.8 L169.6,26.5 L177.4,22.9 L185.7,19.9 L194.4,17.7 L203.6,16.3 L213.0,15.9 L222.6,16.4 L232.3,17.8 L241.9,20.2 L251.4,23.6 L260.6,28.0 L269.5,33.3 L277.9,39.5 L285.7,46.6 L292.9,54.5 L299.3,63.2 L304.9,72.4 L309.5,82.3 L313.2,92.5 L315.9,103.2 L317.5,114.0 L318.0,125.0 L317.5,136.0 L315.9,146.8 L313.2,157.5 L309.5,167.7 L304.9,177.6 L299.3,186.8 L292.9,195.5 L285.7,203.4 L277.9,210.5 L269.5,216.7 L260.6,222.0 L251.4,226.4 L241.9,229.8 L232.3,232.2 L222.6,233.6 L213.0,234.1 L203.6,233.7 L194.4,232.3 L185.7,230.1 L177.4,227.1 L169.6,223.5 L162.4,219.2 L155.9,214.3 L150.0,209.0 A84,84 0 0 0 150.0,41.0 Z" fill="currentColor" fill-opacity="0.15" stroke="none"/>
+<line x1="30" y1="125.0" x2="400" y2="125.0" stroke-width="1.2" marker-end="url(#mdr-ar)"/>
+<line x1="150.0" y1="250" x2="150.0" y2="10" stroke-width="1.2" marker-end="url(#mdr-ar)"/>
+<circle cx="150.0" cy="125.0" r="84" stroke-width="1" stroke-dasharray="4 3"/>
+<path d="M150.0,209.0 A84,84 0 0 0 150.0,41.0" stroke-width="1.8"/>
+<polyline points="150.0,41.0 155.9,35.7 162.4,30.8 169.6,26.5 177.4,22.9 185.7,19.9 194.4,17.7 203.6,16.3 213.0,15.9 222.6,16.4 232.3,17.8 241.9,20.2 251.4,23.6 260.6,28.0 269.5,33.3 277.9,39.5 285.7,46.6 292.9,54.5 299.3,63.2 304.9,72.4 309.5,82.3 313.2,92.5 315.9,103.2 317.5,114.0 318.0,125.0 317.5,136.0 315.9,146.8 313.2,157.5 309.5,167.7 304.9,177.6 299.3,186.8 292.9,195.5 285.7,203.4 277.9,210.5 269.5,216.7 260.6,222.0 251.4,226.4 241.9,229.8 232.3,232.2 222.6,233.6 213.0,234.1 203.6,233.7 194.4,232.3 185.7,230.1 177.4,227.1 169.6,223.5 162.4,219.2 155.9,214.3 150.0,209.0" stroke-width="1.8"/>
+<polyline points="150.0,41.0 144.9,46.7 140.5,52.6 136.8,58.7 133.9,64.9 131.7,71.0 130.2,77.1 129.3,83.0 129.0,88.6 129.3,94.0 130.0,98.9 131.1,103.5 132.6,107.6 134.3,111.3 136.2,114.4 138.2,117.1 140.3,119.4 142.2,121.2 144.1,122.6 145.8,123.6 147.2,124.3 148.4,124.7 149.3,124.9 149.8,125.0 150.0,125.0 149.8,125.0 149.3,125.1 148.4,125.3 147.2,125.7 145.8,126.4 144.1,127.4 142.2,128.8 140.3,130.6 138.2,132.9 136.2,135.6 134.3,138.7 132.6,142.4 131.1,146.5 130.0,151.1 129.3,156.0 129.0,161.4 129.3,167.0 130.2,172.9 131.7,179.0 133.9,185.1 136.8,191.3 140.5,197.4 144.9,203.3 150.0,209.0" stroke-width="0.8" stroke-dasharray="3 3"/>
+<line x1="150.0" y1="125.0" x2="285.7" y2="46.6" stroke-width="1" stroke-dasharray="4 3"/>
+<circle cx="222.7" cy="83.0" r="3" fill="currentColor"/>
+<circle cx="285.7" cy="46.6" r="3" fill="currentColor"/>
+<circle cx="150.0" cy="41.0" r="2.5" fill="currentColor"/>
+<circle cx="150.0" cy="209.0" r="2.5" fill="currentColor"/>
+<g fill="currentColor" stroke="none" font-size="12">
+<text x="402" y="141.0">x</text>
+<text x="156.0" y="18">y</text>
+<text x="138.0" y="141.0">O</text>
+<text x="238.0" y="141.0">2</text>
+<text x="322.0" y="141.0">4</text>
+<text x="156.0" y="37.0">(0,2)</text>
+<text x="156.0" y="223.0">(0,−2)</text>
+<text x="271.8" y="162.8" font-size="14">D</text>
+<text x="82.8" y="150.2" font-size="11">圆 r=2</text>
+<text x="192.7" y="73.0" font-size="11">r=2</text>
+<text x="291.7" y="42.6" font-size="11">r=2(1+cosθ)</text>
+<text x="187.8" y="120.0" font-size="11">θ</text>
+<text x="242.4" y="45.2" font-size="11">心形线</text>
+<text x="16" y="256" font-size="11">射线 θ=π/6 先交圆 r=2（下限），后交心形线 r=2(1+cosθ)（上限）</text>
+</g>
+</svg>
+<p>图中射线 $\theta=\frac\pi6$ 先交圆 $r=2$（下限）、后交心形线（上限）；心形线在左半平面的小半叶（虚线）与本题无关。$D$ 关于 $x$ 轴对称。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li><b>写成累次积分。</b>$x=r\cos\theta$，$\mathrm dx\,\mathrm dy=r\,\mathrm dr\,\mathrm d\theta$：$$I=\int_{-\pi/2}^{\pi/2}\mathrm d\theta\int_{2}^{2(1+\cos\theta)}r\cos\theta\cdot r\,\mathrm dr=\int_{-\pi/2}^{\pi/2}\cos\theta\cdot\frac{r^3}{3}\bigg|_{2}^{2(1+\cos\theta)}\mathrm d\theta .$$ 被积函数里的 $r$ 与面积元素里的 $r$ 相乘得 $r^2$。</li>
+<li><b>算内层。</b>$\dfrac{r^3}3\Big|_2^{2(1+\cos\theta)}=\dfrac83\big[(1+\cos\theta)^3-1\big]=\dfrac83\big(3\cos\theta+3\cos^2\theta+\cos^3\theta\big)$，再乘 $\cos\theta$：$$I=\frac83\int_{-\pi/2}^{\pi/2}\big(3\cos^2\theta+3\cos^3\theta+\cos^4\theta\big)\mathrm d\theta .$$</li>
+<li><b>偶函数折半。</b>$\cos\theta$ 的各次幂都是偶函数，区间关于 $0$ 对称：$$I=\frac{16}3\int_0^{\pi/2}\big(3\cos^2\theta+3\cos^3\theta+\cos^4\theta\big)\mathrm d\theta .$$</li>
+<li><b>点火公式。</b>$\int_0^{\pi/2}\cos^2\theta\,\mathrm d\theta=\frac12\cdot\frac\pi2=\frac\pi4$，$\int_0^{\pi/2}\cos^3\theta\,\mathrm d\theta=\frac23$，$\int_0^{\pi/2}\cos^4\theta\,\mathrm d\theta=\frac34\cdot\frac12\cdot\frac\pi2=\frac{3\pi}{16}$（偶数次末尾乘 $\frac\pi2$，奇数次末尾乘 $1$）。代入：$$I=\frac{16}3\Big(\frac{3\pi}4+2+\frac{3\pi}{16}\Big)=\frac{16}3\Big(\frac{15\pi}{16}+2\Big)=5\pi+\frac{32}3 .$$</li>
+<li><b>检验。</b>$D$ 的面积 $\sigma=\int_{-\pi/2}^{\pi/2}\mathrm d\theta\int_2^{2(1+\cos\theta)}r\,\mathrm dr=\int_{-\pi/2}^{\pi/2}(4\cos\theta+2\cos^2\theta)\,\mathrm d\theta=8+\pi$，于是 $D$ 的形心横坐标 $\bar x=\dfrac I\sigma=\dfrac{5\pi+32/3}{8+\pi}\approx2.37$，落在月牙最厚的一段 $2\le x\le4$ 之内，合理。</li>
+</ol>
+<p><b>答案：</b>$5\pi+\dfrac{32}{3}$。</p>
+<p><b>另一种拆法：</b>$I=\iint_{\text{右半心形线}}x\,\mathrm d\sigma-\iint_{\text{右半圆盘}}x\,\mathrm d\sigma$（可加性），前者 $=\frac83\int_{-\pi/2}^{\pi/2}(1+\cos\theta)^3\cos\theta\,\mathrm d\theta=16+5\pi$，后者 $=\frac83\int_{-\pi/2}^{\pi/2}\cos\theta\,\mathrm d\theta=\frac{16}3$，相减同样得 $5\pi+\frac{32}3$。</p>
+<p><b>这道题告诉我们：</b>区域以极坐标给出时，要做的只有"<b>被积函数换元 + 乘 $r$</b>"，剩下的全是一元积分的功夫：立方展开、偶函数折半、点火公式。丢分点全在细节：忘乘 $r$（内层变成 $\int r\cos\theta\,\mathrm dr$，整题全错）、$(1+\cos\theta)^3-1$ 展开漏项、点火公式偶数次忘乘 $\frac\pi2$。</p>`
+      },
+
+      /* ───────── 28b. 近十年真题精讲（续） ───────── */
+      {
+        kind: 'example', title: '近十年真题精讲（续）',
+        html: R`<p>下面两道是近年的两道解答题，套路相同：区域由圆弧与直线拼成、被积函数含 $x^2+y^2$，都用极坐标，都要按射线碰到的边界分段。</p>
+<p><b>真题 3</b>　<span class="qref" data-q="2022-18">2022 年第 18 题</span>（解答，12 分）</p>
+<blockquote><p>已知平面区域 $D=\left\{(x,y)\mid y-2\leqslant x\leqslant\sqrt{4-y^2},\ 0\leqslant y\leqslant2\right\}$，计算 $I=\displaystyle\iint_D\frac{(x-y)^2}{x^2+y^2}\,\mathrm{d}x\,\mathrm{d}y$.</p></blockquote>
+<p><b>这题考什么：</b>由不等式画出区域，选极坐标，按 $\theta$ 分块定限（本篇"极坐标系下区域的表示"与"极坐标变换公式"）。</p>
+<p><b>从题面看到什么：</b>① 区域是 Y 型写法：$0\le y\le2$，$x$ 从直线 $x=y-2$ 走到右半圆 $x=\sqrt{4-y^2}$（即 $x^2+y^2=4$，$x\ge0$）。直线过 $(-2,0)$、$(0,2)$，圆弧从 $(2,0)$ 到 $(0,2)$，所以 $D$ 由两块拼成：第一象限的四分之一圆盘 $D_1$ 和第二象限中以 $(-2,0),(0,0),(0,2)$ 为顶点的直角三角形 $D_2$。② 被积函数的分母是 $x^2+y^2$，加上圆弧边界，两个信号都指向极坐标；而且 $$\frac{(x-y)^2}{x^2+y^2}=\frac{r^2(\cos\theta-\sin\theta)^2}{r^2}=(\cos\theta-\sin\theta)^2=1-\sin2\theta ,$$ 只与 $\theta$ 有关。③ 从极点出发的射线在 $D_1$ 中碰到圆、在 $D_2$ 中碰到直线——上限换了曲线，必须以 $y$ 轴（$\theta=\frac\pi2$）为界分块。</p>
+<svg viewBox="0 0 420 230" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
+<defs><marker id="mds-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<path d="M200.0,190.0 L320.0,190.0 A120,120 0 0 0 200.0,70.0 Z" fill="currentColor" fill-opacity="0.15" stroke-width="1.6"/>
+<polygon points="80.0,190.0 200.0,190.0 200.0,70.0" fill="currentColor" fill-opacity="0.28" stroke-width="1.6"/>
+<line x1="50" y1="190.0" x2="400" y2="190.0" stroke-width="1.2" marker-end="url(#mds-ar)"/>
+<line x1="200.0" y1="216" x2="200.0" y2="14" stroke-width="1.2" marker-end="url(#mds-ar)"/>
+<line x1="200.0" y1="190.0" x2="303.9" y2="130.0" stroke-width="1" stroke-dasharray="4 3"/>
+<line x1="200.0" y1="190.0" x2="140.0" y2="130.0" stroke-width="1" stroke-dasharray="4 3"/>
+<circle cx="303.9" cy="130.0" r="3" fill="currentColor"/>
+<circle cx="140.0" cy="130.0" r="3" fill="currentColor"/>
+<g fill="currentColor" stroke="none" font-size="12">
+<text x="402" y="206.0">x</text>
+<text x="206.0" y="22">y</text>
+<text x="188.0" y="206.0">O</text>
+<text x="316.0" y="206.0">2</text>
+<text x="72.0" y="206.0">−2</text>
+<text x="206.0" y="66.0">2</text>
+<text x="272.0" y="169.0" font-size="14">D₁</text>
+<text x="134.0" y="169.0" font-size="14">D₂</text>
+<text x="293.0" y="91.0" font-size="11">x²+y²=4</text>
+<text x="62" y="160" font-size="11">y=x+2</text>
+<text x="311.9" y="124.0" font-size="11">r=2</text>
+<text x="30" y="104" font-size="11">r=2/(sinθ−cosθ)</text>
+<text x="16" y="226" font-size="11">θ∈[0,π/2] 射线止于圆弧；θ∈[π/2,π] 射线止于直线 ⇒ 以 y 轴为界分块</text>
+</g>
+</svg>
+<p>图中两条虚线是两类射线：$\theta\in[0,\frac\pi2]$ 时射线止于圆 $r=2$，$\theta\in[\frac\pi2,\pi]$ 时止于直线 $y=x+2$。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li><b>化为极坐标并分块。</b>$x=r\cos\theta$，$y=r\sin\theta$，$\mathrm dx\,\mathrm dy=r\,\mathrm dr\,\mathrm d\theta$，被积函数为 $1-\sin2\theta$。原点处被积函数无定义，但它有界（$0\le\frac{(x-y)^2}{x^2+y^2}\le2$），一个点不影响可积性与积分值（存在定理 (2)）。$D_1$：$0\le\theta\le\frac\pi2$，$0\le r\le2$；$D_2$：$\frac\pi2\le\theta\le\pi$，直线 $y=x+2$ 化为 $r\sin\theta=r\cos\theta+2$，即 $0\le r\le\dfrac{2}{\sin\theta-\cos\theta}$（此时 $\sin\theta\ge0\ge\cos\theta$，分母 $\ge1$，上限有意义）。</li>
+<li><b>$D_1$ 上。</b>在 $r\theta$ 平面上是矩形，被积函数分离变量：$$I_1=\int_0^{\pi/2}(1-\sin2\theta)\,\mathrm d\theta\int_0^2r\,\mathrm dr=\Big[\theta+\frac{\cos2\theta}2\Big]_0^{\pi/2}\cdot2=\Big(\frac\pi2-1\Big)\cdot2=\pi-2 .$$</li>
+<li><b>$D_2$ 上。</b>$$I_2=\int_{\pi/2}^{\pi}(1-\sin2\theta)\,\mathrm d\theta\int_0^{\frac{2}{\sin\theta-\cos\theta}}r\,\mathrm dr=\int_{\pi/2}^{\pi}(1-\sin2\theta)\cdot\frac12\cdot\frac{4}{(\sin\theta-\cos\theta)^2}\,\mathrm d\theta .$$ 关键一步：$(\sin\theta-\cos\theta)^2=1-2\sin\theta\cos\theta=1-\sin2\theta$，恰与被积函数相同，约掉！$$I_2=\int_{\pi/2}^{\pi}2\,\mathrm d\theta=\pi .$$</li>
+<li><b>相加。</b>$I=I_1+I_2=(\pi-2)+\pi=2\pi-2$。</li>
+</ol>
+<p><b>答案：</b>$I=2\pi-2$。</p>
+<p><b>为什么会"约掉"：</b>在直线 $y-x=2$ 上 $(y-x)^2=4$，即 $r^2(\sin\theta-\cos\theta)^2=4$；而沿每条射线 $\int_0^{r_{\max}}(\sin\theta-\cos\theta)^2\,r\,\mathrm dr=\frac12r_{\max}^2(\sin\theta-\cos\theta)^2=\frac12\cdot4=2$，与 $\theta$ 无关，所以 $I_2=2\times\frac\pi2=\pi$。顺便检验：$D_2$ 的面积只有 $2$，被积函数 $1-\sin2\theta$ 在 $\theta\in[\frac\pi2,\pi]$ 上介于 $1$ 与 $2$ 之间，积分 $\pi\approx3.14$ 落在 $2$ 与 $4$ 之间，合理。</p>
+<p><b>这道题告诉我们：</b>极坐标不等于"$0\le r\le R$、$0\le\theta\le2\pi$"：射线碰到的边界曲线一换，就要按 $\theta$ 分块，直线也要写成 $r=\dfrac{c}{a\cos\theta+b\sin\theta}$ 的形式。常见错误：把 $x$ 的下限 $y-2$ 看成常数 $-2$、整个 $D$ 统一用 $0\le r\le2$、直线的极坐标方程符号写反（用 $\theta=\frac\pi2$ 代入检验：$r=2$ 对应点 $(0,2)$，正确）。</p>
+
+<p><b>真题 4</b>　<span class="qref" data-q="2024-17">2024 年第 17 题</span>（解答，10 分）</p>
+<blockquote><p>已知平面区域 $D=\left\{(x,y)\,\middle|\,\sqrt{1-y^2}\leqslant x\leqslant1,\ -1\leqslant y\leqslant1\right\}$，计算 $\displaystyle\iint_D\frac{x}{\sqrt{x^2+y^2}}\,\mathrm{d}\sigma$．</p></blockquote>
+<p><b>这题考什么：</b>画区域、用奇偶对称性减半、极坐标分段定限（本篇"反射引理与奇偶对称性"定理与"极坐标变换公式"定理），最后是 $\int\sec\theta\,\mathrm d\theta$ 这类一元积分。</p>
+<p><b>从题面看到什么：</b>① $x=\sqrt{1-y^2}$ 即 $x^2+y^2=1$（$x\ge0$），是右半单位圆；$D$ 是正方形 $[0,1]\times[-1,1]$ <b>挖掉右半单位圆盘</b>后剩下的上下两块角落。② 被积函数 $\dfrac{x}{\sqrt{x^2+y^2}}=\dfrac{r\cos\theta}{r}=\cos\theta$，极其简单，内边界又是圆弧 $r=1$——用极坐标。③ 外边界是正方形的边：$x=1$ 即 $r=\sec\theta$，$y=1$ 即 $r=\csc\theta$，在角点 $(1,1)$ 即 $\theta=\frac\pi4$ 处换边，要分段。④ $D$ 关于 $x$ 轴对称，被积函数关于 $y$ 是偶函数，只算上半块 $D_1$ 再乘 $2$。</p>
+<svg viewBox="0 0 420 260" width="100%" style="max-width:420px" fill="none" stroke="currentColor">
+<defs><marker id="mdt-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/></marker></defs>
+<path d="M250.0,130.0 L250.0,30.0 L150.0,30.0 A100,100 0 0 1 250.0,130.0 Z" fill="currentColor" fill-opacity="0.18" stroke="none"/>
+<path d="M250.0,130.0 A100,100 0 0 1 150.0,230.0 L250.0,230.0 Z" fill="currentColor" fill-opacity="0.18" stroke="none"/>
+<line x1="20" y1="130.0" x2="400" y2="130.0" stroke-width="1.2" marker-end="url(#mdt-ar)"/>
+<line x1="150.0" y1="252" x2="150.0" y2="12" stroke-width="1.2" marker-end="url(#mdt-ar)"/>
+<rect x="150.0" y="30.0" width="100" height="200" stroke-width="1.4"/>
+<path d="M150.0,30.0 A100,100 0 0 1 150.0,230.0" stroke-width="1.8"/>
+<line x1="150.0" y1="130.0" x2="250.0" y2="30.0" stroke-width="1" stroke-dasharray="4 3"/>
+<line x1="150.0" y1="130.0" x2="250.0" y2="230.0" stroke-width="1" stroke-dasharray="4 3"/>
+<g fill="currentColor" stroke="none" font-size="12">
+<text x="402" y="146.0">x</text>
+<text x="136.0" y="20">y</text>
+<text x="138.0" y="146.0">O</text>
+<text x="256.0" y="146.0">1</text>
+<text x="136.0" y="34.0">1</text>
+<text x="130.0" y="234.0">−1</text>
+<text x="258.0" y="75.0" font-size="11">x=1，即 r=secθ</text>
+<text x="180.0" y="24.0" font-size="11">y=1，即 r=cscθ</text>
+<text x="180.0" y="78.0" font-size="11">θ=π/4</text>
+<text x="168.0" y="120.0" font-size="11">x²+y²=1</text>
+<text x="240" y="72" font-size="12">D</text>
+<text x="240" y="200" font-size="12">D</text>
+<text x="16" y="256" font-size="11">D = 正方形 [0,1]×[−1,1] 挖去右半圆盘；θ=π/4 指向角点 (1,1)，外边界在此换边</text>
+</g>
+</svg>
+<p>图中阴影是 $D$（两块角落）。在上半块内，$\theta\in[0,\frac\pi4]$ 的射线从圆弧进入、从右边 $x=1$ 穿出；$\theta\in[\frac\pi4,\frac\pi2]$ 的射线从上边 $y=1$ 穿出。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li><b>对称性减半。</b>记 $D_1=D\cap\{y\ge0\}$。$D$ 关于 $x$ 轴对称，且 $\frac{x}{\sqrt{x^2+(-y)^2}}=\frac{x}{\sqrt{x^2+y^2}}$，由奇偶对称性 $I=2\iint_{D_1}\frac{x}{\sqrt{x^2+y^2}}\,\mathrm d\sigma$。</li>
+<li><b>极坐标与定限。</b>$\frac{x}{\sqrt{x^2+y^2}}\,\mathrm d\sigma=\cos\theta\cdot r\,\mathrm dr\,\mathrm d\theta$。在 $D_1$ 中作射线：下限总是圆弧 $r=1$；上限当 $0\le\theta\le\frac\pi4$ 时是 $x=1$，即 $r\cos\theta=1$，$r=\sec\theta$；当 $\frac\pi4\le\theta\le\frac\pi2$ 时是 $y=1$，即 $r=\csc\theta$。于是 $$\frac I2=\int_0^{\pi/4}\cos\theta\,\mathrm d\theta\int_1^{\sec\theta}r\,\mathrm dr+\int_{\pi/4}^{\pi/2}\cos\theta\,\mathrm d\theta\int_1^{\csc\theta}r\,\mathrm dr=:I_1+I_2 .$$</li>
+<li><b>算 $I_1$。</b>内层 $\int_1^{\sec\theta}r\,\mathrm dr=\frac{\sec^2\theta-1}2=\frac{\tan^2\theta}2$，于是 $$I_1=\frac12\int_0^{\pi/4}\cos\theta\cdot\frac{\sin^2\theta}{\cos^2\theta}\,\mathrm d\theta=\frac12\int_0^{\pi/4}\frac{1-\cos^2\theta}{\cos\theta}\,\mathrm d\theta=\frac12\int_0^{\pi/4}(\sec\theta-\cos\theta)\,\mathrm d\theta=\frac12\Big[\ln(\sec\theta+\tan\theta)-\sin\theta\Big]_0^{\pi/4}=\frac12\Big[\ln(1+\sqrt2)-\frac{\sqrt2}2\Big].$$ 其中 $\int\sec\theta\,\mathrm d\theta=\ln|\sec\theta+\tan\theta|+C$（分子分母同乘 $\sec\theta+\tan\theta$，分子恰是分母的导数）。</li>
+<li><b>算 $I_2$。</b>内层 $\int_1^{\csc\theta}r\,\mathrm dr=\frac{\csc^2\theta-1}2=\frac{\cot^2\theta}2$，于是 $$I_2=\frac12\int_{\pi/4}^{\pi/2}\frac{\cos^3\theta}{\sin^2\theta}\,\mathrm d\theta\overset{u=\sin\theta}{=}\frac12\int_{\sqrt2/2}^{1}\frac{1-u^2}{u^2}\,\mathrm du=\frac12\Big[-\frac1u-u\Big]_{\sqrt2/2}^{1}=\frac12\Big(-2+\sqrt2+\frac{\sqrt2}2\Big)=\frac{3\sqrt2}4-1 .$$</li>
+<li><b>合并。</b>$$I=2(I_1+I_2)=\ln(1+\sqrt2)-\frac{\sqrt2}2+\frac{3\sqrt2}2-2=\sqrt2+\ln(1+\sqrt2)-2\approx0.296 .$$ 检验：$D$ 的面积为 $2-\frac\pi2\approx0.43$，而 $D$ 的面积大部分集中在角点附近，那里 $\theta\approx\frac\pi4$、$\cos\theta\approx0.71$，$0.43\times0.71\approx0.30$，吻合。</li>
+</ol>
+<p><b>答案：</b>$\sqrt2+\ln(1+\sqrt2)-2$。</p>
+<p><b>补形另解：</b>$D=$ 正方形 $Q=[0,1]\times[-1,1]$ 挖去右半圆盘 $H$。$\iint_H\cos\theta\cdot r\,\mathrm dr\,\mathrm d\theta=\int_{-\pi/2}^{\pi/2}\cos\theta\,\mathrm d\theta\int_0^1r\,\mathrm dr=1$；正方形上仍用极坐标，只是下限变成 $0$：$$\iint_Q=2\Big[\int_0^{\pi/4}\cos\theta\cdot\frac{\sec^2\theta}2\,\mathrm d\theta+\int_{\pi/4}^{\pi/2}\cos\theta\cdot\frac{\csc^2\theta}2\,\mathrm d\theta\Big]=\int_0^{\pi/4}\sec\theta\,\mathrm d\theta+\Big[-\frac1{\sin\theta}\Big]_{\pi/4}^{\pi/2}=\ln(1+\sqrt2)+\sqrt2-1 ,$$ 相减得同样的结果，而且少了下限 $1$ 带来的零碎项。</p>
+<p><b>这道题告诉我们：</b>与 2022 年第 18 题同一套路——"圆弧 + 直线"拼成的区域、含 $x^2+y^2$ 的被积函数，用极坐标，按射线碰到的边界分段；直线 $x=1$、$y=1$ 在极坐标下是 $r=\sec\theta$、$r=\csc\theta$，不是 $r=1$。对称性先减半能少算一半；最后的一元积分 $\int\sec\theta\,\mathrm d\theta$、$\int\frac{\cos^3\theta}{\sin^2\theta}\,\mathrm d\theta$ 才是真正的计算量，平时要练熟。</p>`
+      },
+
       /* ───────── 29. 误区 ───────── */
       {
         kind: 'pitfall', title: '常见误区',
@@ -566,6 +760,8 @@ registerLesson(function (R) {
 <li><b>把关于原点对称当成关于坐标轴对称。</b>区域只关于原点对称时，$xy$ 满足 $f(-x,-y)=f(x,y)$，不能扔掉。</li>
 <li><b>轮换对称看错对象。</b>轮换对称要求的是<b>区域</b>关于 $y=x$ 对称，与被积函数本身对不对称无关；区域不对称时不能把 $\iint x\,d\sigma$ 换成 $\iint y\,d\sigma$。</li>
 <li><b>极坐标的角度范围写错。</b>$x^2+y^2\le2x$ 的 $\theta$ 范围是 $[-\frac\pi2,\frac\pi2]$ 而不是 $[0,2\pi]$；区域不含极点时 $r$ 的下限不是 $0$；直线 $x=1$ 在极坐标中是 $r=\sec\theta$，不是 $r=1$。</li>
+<li><b>极坐标下该分段却不分段。</b>射线碰到的边界曲线一换，$r$ 的上限就换表达式：<span class="qref" data-q="2022-18">2022 年第 18 题</span>在 $\theta=\frac\pi2$ 处由圆 $r=2$ 换成直线 $r=\frac{2}{\sin\theta-\cos\theta}$，<span class="qref" data-q="2024-17">2024 年第 17 题</span>在 $\theta=\frac\pi4$ 处由 $x=1$（$r=\sec\theta$）换成 $y=1$（$r=\csc\theta$）。把整个区域统一写成 $0\le r\le2$ 之类，是这两题最常见的失分点。</li>
+<li><b>换序时横线交成两段却只写一段。</b><span class="qref" data-q="2025-4">2025 年第 4 题</span>的区域被抛物线劈成两块，固定 $y$ 后 $x$ 的范围是两个区间的并，内层必须写成两个积分之和；解 $x^2\ge4-y$ 时丢掉负的一支，就只剩一段。</li>
 <li><b>二重积分就是体积？</b>只有 $f\ge0$ 时才是。$f$ 变号时积分是上下体积的代数和。求两曲面之间立体的体积时，被积函数应是"上顶 − 下底"，且要保证非负。</li>
 <li><b>中值定理里的点当常数。</b>$(\xi,\eta)$ 依赖于区域，区域变化它就变；求极限时要说明它被夹在缩小的区域里，才能得到"$\to$ 某点"。</li>
 <li><b>无界区域直接"代入无穷"。</b>应先在有界部分上积分再取极限，并判断是否收敛；"扩张方式可以任选"只对非负被积函数成立。</li>
@@ -589,17 +785,18 @@ registerLesson(function (R) {
 <table>
 <thead><tr><th>看到</th><th>想到</th></tr></thead>
 <tbody>
-<tr><td>内层是 $e^{\pm y^2}$、$\frac{\sin y}y$、$\sin y^2$、$e^{y/x}$ 等积不出的函数</td><td>交换积分次序</td></tr>
+<tr><td>内层是 $e^{\pm y^2}$、$\frac{\sin y}y$、$\sin y^2$、$e^{y/x}$ 等积不出的函数</td><td>交换积分次序（<span class="qref" data-q="1990-1-4">1990 年一(4)</span>）</td></tr>
+<tr><td>选择题给出几种换序结果让你挑</td><td>由限画域、换向穿线，横线交成几段内层就写几个积分；用 $f\equiv1$（比面积）、$f=x$（查奇偶）排除（<span class="qref" data-q="2025-4">2025 年第 4 题</span>、<span class="qref" data-q="2001-1-3">2001 年一(3)</span>）</td></tr>
 <tr><td>给出累次积分求值，内层积不出</td><td>由限还原区域，换次序或换极坐标</td></tr>
-<tr><td>区域关于坐标轴对称</td><td>把被积函数按奇偶拆开，奇的部分为 $0$</td></tr>
-<tr><td>区域关于 $y=x$ 对称；被积函数含 $f(x)$、$f(y)$ 的分式，或只有 $x^2$</td><td>轮换对称，互换后相加</td></tr>
-<tr><td>边界含 $x^2+y^2$；被积函数含 $x^2+y^2$、$\frac yx$</td><td>极坐标</td></tr>
-<tr><td>$|\cdot|$、$\max$、$\min$、$\operatorname{sgn}$、取整</td><td>按分界线分块</td></tr>
+<tr><td>区域关于坐标轴对称</td><td>把被积函数按奇偶拆开，奇的部分为 $0$，偶的部分减半（<span class="qref" data-q="2006-15">2006 年第 15 题</span>、<span class="qref" data-q="2024-17">2024 年第 17 题</span>）；区域整体不对称时先用辅助线切成各自对称的块（<span class="qref" data-q="1991-2-4">1991 年二(4)</span>）</td></tr>
+<tr><td>区域关于 $y=x$ 对称；被积函数含 $f(x)$、$f(y)$ 的分式，或只有 $x^2$</td><td>轮换对称，互换后相加；区域不对称时用反射引理把 $x\le y$ 与 $y\le x$ 两块拼成正方形（<span class="qref" data-q="1995-3-2">1995 年三(2)</span>：$\int_0^1dx\int_x^1f(x)f(y)\,dy=\frac12\big(\int_0^1f\big)^2$）</td></tr>
+<tr><td>边界含 $x^2+y^2$；被积函数含 $x^2+y^2$、$\frac yx$</td><td>极坐标；射线碰到的边界换曲线时按 $\theta$ 分段，直线写成 $r=\frac{c}{a\cos\theta+b\sin\theta}$（<span class="qref" data-q="2016-15">2016 年第 15 题</span>、<span class="qref" data-q="2022-18">2022 年第 18 题</span>、<span class="qref" data-q="2024-17">2024 年第 17 题</span>）</td></tr>
+<tr><td>$|\cdot|$、$\max$、$\min$、$\operatorname{sgn}$、取整</td><td>按分界线分块（<span class="qref" data-q="2002-5">2002 年五</span>的 $e^{\max\{x^2,y^2\}}$、<span class="qref" data-q="2005-15">2005 年第 15 题</span>的取整函数）</td></tr>
 <tr><td>比较两个二重积分的大小（区域相同）</td><td>保序性：在区域上比较被积函数，关键是求出 $x+y$ 等量在区域上的范围</td></tr>
 <tr><td>$\lim\limits_{t\to0^+}\frac1{t^2}\iint_{x^2+y^2\le t^2}f\,d\sigma$</td><td>中值定理；或用极坐标化成变限积分再用洛必达</td></tr>
 <tr><td>积分区域依赖参数 $t$，求导或求极限</td><td>化成以 $t$ 为上限的定积分</td></tr>
 <tr><td>两个定积分之积的不等式</td><td>写成正方形上的二重积分，轮换对称后用基本不等式</td></tr>
-<tr><td>二次积分 $\int_0^xdt\int_0^tf(u)\,du$</td><td>换序化成 $\int_0^x(x-u)f(u)\,du$</td></tr>
+<tr><td>二次积分 $\int_0^xdt\int_0^tf(u)\,du$，或 $F(t)=\int_1^tdy\int_y^tf(x)\,dx$ 求导</td><td>换序化成一次积分 $\int_0^x(x-u)f(u)\,du$、$\int_1^t(x-1)f(x)\,dx$（<span class="qref" data-q="2004-10">2004 年第 10 题</span>）</td></tr>
 <tr><td>$\int_{-\infty}^{+\infty}e^{-x^2}dx$ 及其变形</td><td>概率积分 $\sqrt\pi$（平方后用极坐标）</td></tr>
 <tr><td>无界区域，被积函数非负</td><td>选最方便的扩张方式：极坐标（圆盘、扇形）或矩形累次积分</td></tr>
 </tbody>
@@ -609,22 +806,13 @@ registerLesson(function (R) {
       /* ───────── 31. 考研 ───────── */
       {
         kind: 'exam', title: '考研怎么考',
-        html: R`<p>二重积分是数学一多元积分学的"地基"，几乎每年都直接或间接考到。常见形式：</p>
+        html: R`<p>二重积分是数学一多元积分学的"地基"：它既单独命题，又是曲线积分、曲面积分、三重积分最后一步的落脚点。下面按近十年（2016–2025）真题的实际考法逐条说明，每条都点名对应真题。</p>
 <ul>
-<li><b>选择、填空</b>：① 交换积分次序，或直角坐标与极坐标互化（给一个累次积分，选等价的另一种写法），关键是由限画出区域；② 比较几个二重积分的大小，用保序性与对称性；③ 利用对称性、几何意义快速求值；④ 含二重积分的极限（中值定理、极坐标 + 洛必达）。</li>
-<li><b>解答题（10 分左右）</b>：计算二重积分。区域常由圆、直线、抛物线围成，被积函数常含绝对值、$\max/\min$、$x^2+y^2$ 或分段定义，需要"画图 + 对称性 + 选坐标 + 分块"综合运用；有时积分区域无界，要用到概率积分或反常积分的计算。</li>
-<li><b>与其他考点的综合</b>：
-<ul>
-<li>与<b>变限积分</b>：$F(t)$ 由区域随 $t$ 变化的二重积分定义，讨论其导数、极限、单调性；或通过交换次序证明含变限积分的等式。</li>
-<li>与<b>积分不等式证明</b>：定积分之积化成二重积分，用轮换对称。</li>
-<li>与<b>格林公式</b>：平面闭曲线上的第二类曲线积分化为二重积分（见「第二类曲线积分与格林公式」），后半程就是本篇的计算。</li>
-<li>与<b>曲面积分</b>：第一、二类曲面积分最终都投影到坐标面上化为二重积分（见「第一类曲面积分」「第二类曲面积分与高斯公式」）。</li>
-<li>与<b>三重积分</b>："先二后一"中截面上的积分就是二重积分（见「三重积分」）。</li>
-<li>与<b>几何、物理应用</b>：面积、体积、质量、质心、转动惯量（见「场论初步与积分的应用」）。</li>
-<li>与<b>概率论</b>：二维连续型随机变量落在区域内的概率 $P\{(X,Y)\in G\}=\iint_G f(x,y)\,d\sigma$，正态分布的归一化常数 $\sqrt{2\pi}$。</li>
-</ul></li>
-</ul>
-<p><b>备考建议</b>：计算题的分数大多丢在"区域画错、限写错、忘记 $r$、对称性误用"上，而不是积分技巧本身。养成固定流程：画图 → 对称 → 坐标 → 次序 → 定限 → 自查。</p>`
+<li><b>以本考点为主考点的题：4 道，三道解答题 + 一道选择题。</b>解答题 <span class="qref" data-q="2016-15">2016 年第 15 题</span>（10 分，区域以极坐标给出，圆与心形线之间的月牙）、<span class="qref" data-q="2022-18">2022 年第 18 题</span>（12 分，四分之一圆盘 + 三角形，被积函数 $\frac{(x-y)^2}{x^2+y^2}$）、<span class="qref" data-q="2024-17">2024 年第 17 题</span>（10 分，正方形挖去半圆盘，被积函数 $\frac{x}{\sqrt{x^2+y^2}}$）——<b>三道全用极坐标</b>，后两道都要按射线碰到的边界分段；选择题 <span class="qref" data-q="2025-4">2025 年第 4 题</span>（5 分）考交换积分次序，横线与区域交成两段。这 4 道在"近十年真题精讲"两节中已逐题讲完。按题库的考点标注，2017、2018 两年没有直接考二重积分的题。</li>
+<li><b>作为次要考点出现：6 道，都是别的积分化成二重积分后的"最后一步"。</b>曲面积分投影到坐标面：<span class="qref" data-q="2019-12">2019 年第 12 题</span>（化为圆盘 $x^2+y^2\le4$ 上 $|y|$ 的积分，极坐标 + 对称性，得 $\frac{32}3$）、<span class="qref" data-q="2020-18">2020 年第 18 题</span>（化为圆环 $1\le x^2+y^2\le4$ 上的极坐标积分）、<span class="qref" data-q="2023-19">2023 年第 19 题</span>（高斯公式之后在单位圆盘上积分，奇函数项用对称性扔掉）；曲面面积：<span class="qref" data-q="2019-16">2019 年第 16 题</span>（$\iint_D\sqrt{1+4x^2+4y^2}\,d\sigma$，极坐标，得 $\frac{13\pi}3$）；格林公式：<span class="qref" data-q="2020-16">2020 年第 16 题</span>（挖去奇点后在小椭圆 $4x^2+y^2=\varepsilon^2$ 内用格林公式，二重积分化成椭圆面积的常数倍）、<span class="qref" data-q="2021-20">2021 年第 20 题</span>（第 (Ⅰ) 问：使 $\iint_D(4-x^2-y^2)\,d\sigma$ 最大的区域是被积函数非负的部分，即圆盘 $x^2+y^2\le4$，极坐标算得 $8\pi$——这是保序性的直接应用）。这些题里二重积分本身不难，难在前面的转化；但极坐标与对称性不熟，前面的功夫就白费。</li>
+<li><b>命题规律。</b>(1) 解答题的区域总由圆弧与直线拼成、被积函数含 $x^2+y^2$，考点集中在"画域 → 极坐标 → 分段定限 → 一元积分（点火公式、$\int\sec\theta\,d\theta$）"这条链上，与早年的 <span class="qref" data-q="2006-15">2006 年第 15 题</span>（半圆盘上 $\frac{1+xy}{1+x^2+y^2}$，先对称后极坐标）一脉相承。(2) 小题考交换次序（<span class="qref" data-q="2025-4">2025 年第 4 题</span>；更早有 <span class="qref" data-q="2001-1-3">2001 年一(3)</span>、<span class="qref" data-q="1990-1-4">1990 年一(4)</span> 的 $e^{-y^2}$ 换序求值）与对称性（<span class="qref" data-q="1991-2-4">1991 年二(4)</span>）。(3) 被积函数含 $\max$、取整的分块型（<span class="qref" data-q="2002-5">2002 年五</span>、<span class="qref" data-q="2005-15">2005 年第 15 题</span>）和与变限积分、分部积分结合的抽象函数型（<span class="qref" data-q="1995-3-2">1995 年三(2)</span>、<span class="qref" data-q="2004-10">2004 年第 10 题</span>、<span class="qref" data-q="2011-19">2011 年第 19 题</span>）近十年没有再单独出现，但仍是综合题的素材。(4) 中值定理、估值不等式、无界区域近十年没有以它们为主考点的题；概率积分 $\int_{-\infty}^{+\infty}e^{-x^2}dx=\sqrt\pi$ 在概率论里反复用到，结论要记牢。</li>
+<li><b>备考建议。</b>按近十年的实际考法，功夫要花在：画准区域（包括由 $(r,\theta)$ 不等式或 Y 型不等式还原区域）、直线的极坐标方程 $r=\frac{c}{a\cos\theta+b\sin\theta}$、按 $\theta$ 分段、点火公式与 $\int\sec\theta\,d\theta$；小题则是换序的"由限画域"和对称性的两个条件。计算题的分数大多丢在"区域画错、限写错、忘记 $r$、对称性误用"上，而不是积分技巧本身。养成固定流程：画图 → 对称 → 坐标 → 次序 → 定限 → 自查。</li>
+</ul>`
       },
 
       /* ───────── 32. 自测 ───────── */
@@ -635,6 +823,7 @@ registerLesson(function (R) {
           { q: R`<p>判断并说明理由：二重积分定义中的"$\lambda\to0$"（$\lambda$ 为各小块直径的最大值）可以换成"$n\to\infty$"，也可以换成"各小块面积的最大值 $\to0$"。</p>`, a: R`<p>都不行。$n\to\infty$ 不能保证每一块都变小（可以有一块始终很大）；面积 $\to0$ 也不能保证小块缩向一点（细长条面积很小，直径却不小），这时"在小块上 $f$ 近似为常数"不成立。只有直径的最大值 $\to0$ 才保证每块都缩向一点。</p>` },
           { q: R`<p>交换积分次序：$\displaystyle\int_0^1dy\int_y^{\sqrt y}f(x,y)\,dx=$（　）</p>`, options: [R`<p>$\int_0^1dx\int_x^{x^2}f(x,y)\,dy$</p>`, R`<p>$\int_0^1dx\int_{x^2}^{x}f(x,y)\,dy$</p>`, R`<p>$\int_0^1dx\int_{\sqrt x}^{x}f(x,y)\,dy$</p>`, R`<p>$\int_0^1dx\int_{x}^{\sqrt x}f(x,y)\,dy$</p>`], correct: 1, explain: R`<p>由限：$0\le y\le1$，$y\le x\le\sqrt y$，即 $x\ge y$ 且 $x^2\le y$，所以区域是 $x^2\le y\le x$，$0\le x\le1$（抛物线 $y=x^2$ 与直线 $y=x$ 之间）。竖直穿线：先交抛物线 $y=x^2$（下限），后交直线 $y=x$（上限）。A 上下限颠倒；C、D 把 $x$ 与 $y$ 的关系弄反了。</p>` },
           { q: R`<p>设 $D:x^2+y^2\le2y$，则 $\iint_D f(x,y)\,d\sigma$ 化为极坐标下的累次积分是（　）</p>`, options: [R`<p>$\int_0^{\pi}d\theta\int_0^{2\sin\theta}f(r\cos\theta,r\sin\theta)\,r\,dr$</p>`, R`<p>$\int_0^{2\pi}d\theta\int_0^{2\sin\theta}f(r\cos\theta,r\sin\theta)\,r\,dr$</p>`, R`<p>$\int_0^{\pi}d\theta\int_0^{2\sin\theta}f(r\cos\theta,r\sin\theta)\,dr$</p>`, R`<p>$\int_{-\pi/2}^{\pi/2}d\theta\int_0^{2\cos\theta}f(r\cos\theta,r\sin\theta)\,r\,dr$</p>`], correct: 0, explain: R`<p>$r^2\le2r\sin\theta$ 即 $r\le2\sin\theta$，需要 $\sin\theta\ge0$，所以 $\theta\in[0,\pi]$（圆心 $(0,1)$，圆在上半平面，与 $x$ 轴相切于原点）。B 的角度范围错（$\theta\in(\pi,2\pi)$ 时上限为负）；C 漏了 $r$；D 是圆 $x^2+y^2\le2x$。</p>` },
+          { q: R`<p>设 $D=[0,1]\times[0,1]$，把 $\iint_D f(x,y)\,d\sigma$ 化为极坐标下的累次积分。</p>`, a: R`<p>从原点出发作射线：$0\le\theta\le\frac\pi4$ 时从右边 $x=1$（即 $r\cos\theta=1$，$r=\sec\theta$）穿出，$\frac\pi4\le\theta\le\frac\pi2$ 时从上边 $y=1$（即 $r=\csc\theta$）穿出，分界角 $\frac\pi4$ 指向角点 $(1,1)$：$$\iint_D f\,d\sigma=\int_0^{\pi/4}d\theta\int_0^{\sec\theta}f(r\cos\theta,r\sin\theta)\,r\,dr+\int_{\pi/4}^{\pi/2}d\theta\int_0^{\csc\theta}f(r\cos\theta,r\sin\theta)\,r\,dr .$$ 自查：取 $f\equiv1$，$\frac12\int_0^{\pi/4}\sec^2\theta\,d\theta+\frac12\int_{\pi/4}^{\pi/2}\csc^2\theta\,d\theta=\frac12\tan\theta\Big|_0^{\pi/4}-\frac12\cot\theta\Big|_{\pi/4}^{\pi/2}=\frac12+\frac12=1$，恰为正方形面积。这正是 2024 年第 17 题的定限方式（那里内边界换成圆弧 $r=1$）。</p>` },
           { q: R`<p>计算 $\iint\limits_{|x|+|y|\le1}(x+y^3+|x|)\,d\sigma$。</p>`, a: R`<p>菱形关于 $y$ 轴对称，$x$ 关于 $x$ 为奇函数，积分为 $0$；菱形关于 $x$ 轴对称，$y^3$ 关于 $y$ 为奇函数，积分为 $0$。$|x|$ 关于 $x$、$y$ 都是偶函数，$\iint|x|\,d\sigma=4\int_0^1dx\int_0^{1-x}x\,dy=4\int_0^1x(1-x)\,dx=4\cdot\frac16=\frac23$。答案为 $\frac23$。</p>` },
           { q: R`<p>设 $D$ 由 $x=0$、$y=0$、$x+y=\frac12$、$x+y=1$ 围成，$I_1=\iint_D[\ln(x+y)]^3d\sigma$，$I_2=\iint_D(x+y)^3d\sigma$，$I_3=\iint_D[\sin(x+y)]^3d\sigma$，则（　）</p>`, options: [R`<p>$I_1\lt I_2\lt I_3$</p>`, R`<p>$I_3\lt I_2\lt I_1$</p>`, R`<p>$I_1\lt I_3\lt I_2$</p>`, R`<p>$I_3\lt I_1\lt I_2$</p>`], correct: 2, explain: R`<p>在 $D$ 上 $\frac12\le x+y\le1$，所以 $\ln(x+y)\le0\lt\sin(x+y)\lt x+y$（$0\lt t\le1$ 时 $\sin t\lt t$）。立方保持大小顺序，故 $[\ln(x+y)]^3\le0\lt[\sin(x+y)]^3\lt(x+y)^3$，由保序性及连续函数的严格保号性，$I_1\lt I_3\lt I_2$。比较大小的关键：先求出 $x+y$ 在区域上的范围。</p>` },
           { q: R`<p>求 $\displaystyle\lim_{r\to0^+}\frac1{r^2}\iint\limits_{x^2+y^2\le r^2}e^x\cos y\,d\sigma$。</p>`, a: R`<p>由中值定理，积分 $=e^\xi\cos\eta\cdot\pi r^2$，$(\xi,\eta)$ 在半径为 $r$ 的圆盘内。所以原式 $=\lim\limits_{r\to0^+}\pi e^\xi\cos\eta=\pi e^0\cos0=\pi$。注意分母是 $r^2$ 而不是 $\pi r^2$，所以答案带 $\pi$。</p>` },

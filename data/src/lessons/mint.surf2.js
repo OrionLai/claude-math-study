@@ -2,7 +2,7 @@
 registerLesson(function (R) {
   return {
     id: 'mint.surf2', ch: 'mint', title: '第二类曲面积分与高斯公式',
-    summary: R`第二类曲面积分计算的是"流过一张有方向的曲面的流量"：先给曲面定侧，再用带号投影 $dx\,dy$ 累加。本篇从流量问题出发，严格定义有向曲面与对坐标的曲面积分，证明投影计算公式、两类曲面积分的关系、合一投影法、对称性规律、高斯公式、通量为零的条件与点源通量（挖洞法），并系统整理补面法、先代入后高斯等解题套路。`,
+    summary: R`第二类曲面积分计算的是"流过一张有方向的曲面的流量"：先给曲面定侧，再用带号投影 $dx\,dy$ 累加。本篇从流量问题出发，严格定义有向曲面与对坐标的曲面积分，证明投影计算公式、两类曲面积分的关系、合一投影法、对称性规律、高斯公式、通量为零的条件与点源通量（挖洞法），并系统整理补面法、先代入后高斯等解题套路，最后在「近十年真题精讲」中逐题讲透 2016–2025 年的全部 8 道主考点真题。`,
     prereq: ['mint.surf1', 'mint.triple', 'mint.double', 'mint.line2', 'mdiff.geo', 'vec.vector'],
     sections: [
       /* ───────── 1. 为什么 ───────── */
@@ -145,6 +145,7 @@ registerLesson(function (R) {
 <li><b>"单值"条件</b>：若 $\Sigma$ 在 $xOy$ 面上的投影有重叠（如整个球面），先分成若干片，使每片都是单值显式曲面，分别投影、各自定号，再相加。若 $\Sigma$ 含有竖直部分，那部分的 $dx\,dy$ 积分为 $0$（性质（4））。</li>
 <li><b>三个投影各管各的</b>：$dx\,dy$ 投到 $xOy$ 面、$dy\,dz$ 投到 $yOz$ 面、$dz\,dx$ 投到 $zOx$ 面。一个含三项的积分若用这种"分项投影"，往往要投三个不同的面并各自定号——这正是后面"合一投影法"要简化的地方。</li>
 <li><b>左右两边的 $dx\,dy$ 含义不同</b>：左边是带号投影，右边是普通二重积分的面积元（恒正）。闭曲面上 $\displaystyle\iint_\Sigma dx\,dy=0$（上下两片投影相同、符号相反），就是"左边的 $dx\,dy$ 不是面积"的明证。</li>
+<li><b>真题</b>：<span class="qref" data-q="2019-12">2019 年第 12 题</span>只有一项 $dx\,dy$，正是"一投二代三定号"加"先用曲面方程化简被积函数"的直接考查，见「近十年真题精讲（续）」。</li>
 </ul>`
       },
 
@@ -199,6 +200,7 @@ registerLesson(function (R) {
 <li><b>适用条件</b>：$\Sigma$ 能写成单值显式 $z=z(x,y)$，且 $z$ 可偏导。若 $\Sigma$ 写成 $x=x(y,z)$ 更方便，同理有 $\displaystyle\pm\iint_{D_{yz}}\big[P+Q(-x_y)+R(-x_z)\big]dy\,dz$（前侧取正）。</li>
 <li><b>易错</b>：不要漏代 $z=z(x,y)$，不要丢掉 $-z_x$ 的负号。记向量形式 $(P,Q,R)\cdot(-z_x,-z_y,1)$ 最不容易出错。</li>
 <li>这个公式的本质是"两类关系 + 第一类计算公式"，不是新的原理。它也解释了为什么 $dy\,dz$ 项可以投到 $xOy$ 面：看似"投错了面"，其实已经用因子 $-z_x$ 修正过了。</li>
+<li><b>真题</b>：<span class="qref" data-q="2024-2">2024 年第 2 题</span>直接考这个公式的符号；<span class="qref" data-q="2020-18">2020 年第 18 题</span>用它处理含抽象函数的被积式（$f$ 只连续，高斯公式不能用）。两题都在「近十年真题精讲（续）」中。</li>
 </ul>`
       },
 
@@ -283,6 +285,7 @@ registerLesson(function (R) {
 <li><b>求体积</b>：取 $(P,Q,R)=(x,0,0)$ 等，得 $\displaystyle V=\iint_\Sigma x\,dy\,dz=\iint_\Sigma y\,dz\,dx=\iint_\Sigma z\,dx\,dy=\frac13\iint_\Sigma x\,dy\,dz+y\,dz\,dx+z\,dx\,dy$（$\Sigma$ 取外侧）。</li>
 <li><b>与格林公式</b>：平面上 $\displaystyle\oint_LP\,dy-Q\,dx=\iint_D\Big(\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}\Big)dx\,dy$（$L$ 取正向）是格林公式的"通量形式"，也就是二维的高斯公式。</li>
 <li><b>向量形式</b>：$\displaystyle\iiint_\Omega\operatorname{div}\mathbf A\,dV=\iint_\Sigma\mathbf A\cdot\mathbf n\,dS$；散度的定义与物理意义见「场论初步」。</li>
+<li><b>真题</b>：近十年直接用高斯公式的有 <span class="qref" data-q="2016-18">2016 年第 18 题</span>、<span class="qref" data-q="2021-14">2021 年第 14 题</span>、<span class="qref" data-q="2023-19">2023 年第 19 题</span>，三道题都在高斯之后靠 $\Omega$ 的对称性砍掉散度里的奇函数项，见「近十年真题精讲」。</li>
 </ul>`
       },
 
@@ -326,7 +329,8 @@ registerLesson(function (R) {
 <li>补完后 $P,Q,R$ 要在整个 $\Omega$ 上有一阶连续偏导数——<b>补面不能经过奇点，$\Omega$ 内也不能含奇点</b>；若做不到，先用曲面方程把奇点"代掉"（例 6），或挖洞；</li>
 <li>补完后的三重积分要好算：$\Omega$ 最好是球、半球、柱、锥、旋转体等标准形状，便于用球坐标、柱坐标或截面法。</li>
 </ul>
-<p><b>看到什么想到补面法</b>：曲面不封闭 + 散度明显比原被积函数简单（常数、一次式、$x^2+y^2+z^2$ 之类）+ 曲面的"缺口"是一块平面区域。</p>`
+<p><b>看到什么想到补面法</b>：曲面不封闭 + 散度明显比原被积函数简单（常数、一次式、$x^2+y^2+z^2$ 之类）+ 曲面的"缺口"是一块平面区域。</p>
+<p><b>真题</b>：<span class="qref" data-q="2018-17">2018 年第 17 题</span>（半个旋转椭球面，补 $x=0$ 上的圆盘取后侧）与 <span class="qref" data-q="2025-20">2025 年第 20 题</span>（圆锥面，补斜平面上的圆盘）都是这一型，详见「近十年真题精讲」。</p>`
       },
 
       /* ───────── 15. 例 5、例 6 ───────── */
@@ -362,7 +366,7 @@ registerLesson(function (R) {
         remark: R`<ul>
 <li>（2）中"二维单连通"不能去掉：$G=\mathbb R^3\setminus\{O\}$ 内场 $\dfrac{(x,y,z)}{r^3}$ 的散度为零，但包住原点的球面上积分为 $4\pi$（下一节）。$G$ 不是二维单连通的：球面在 $G$ 内，它所围的球体却含有不属于 $G$ 的原点。</li>
 <li>类比：平面上由格林公式得"单连通区域内沿任意闭曲线积分为零 ⇔ $\dfrac{\partial Q}{\partial x}=\dfrac{\partial P}{\partial y}$"；空间曲线积分对应"旋度为零"（见「斯托克斯公式」）。本定理是曲面积分版本。</li>
-<li><b>考法</b>：已知在某区域（如半空间 $x>0$）内对任意闭曲面积分为零，被积表达式含未知函数 $f(x)$，由（1）得散度为零，化为关于 $f$ 的微分方程，再由初始条件或极限条件定常数。</li>
+<li><b>考法</b>：已知在某区域（如半空间 $x>0$）内对任意闭曲面积分为零，被积表达式含未知函数 $f(x)$，由（1）得散度为零，化为关于 $f$ 的微分方程，再由初始条件或极限条件定常数（<span class="qref" data-q="2000-6">2000 年第六题</span>就是这样出的：在 $x>0$ 内对任意闭曲面积分为零，求 $f(x)$）。</li>
 </ul>`
       },
 
@@ -396,6 +400,7 @@ registerLesson(function (R) {
         remark: R`<ul>
 <li><b>挖的形状要让分母变成常数</b>。若分母是 $(ax^2+by^2+cz^2)^{3/2}\ (a,b,c>0)$，可以验证场 $\dfrac{(x,y,z)}{(ax^2+by^2+cz^2)^{3/2}}$ 的散度也为零（与第一步同样计算）。此时挖去小椭球面 $ax^2+by^2+cz^2=\varepsilon^2$，分母在其上为常数 $\varepsilon^3$；该椭球的半轴为 $\dfrac{\varepsilon}{\sqrt a},\dfrac{\varepsilon}{\sqrt b},\dfrac{\varepsilon}{\sqrt c}$，体积为 $\dfrac43\pi\dfrac{\varepsilon^3}{\sqrt{abc}}$，结果为 $\dfrac{1}{\varepsilon^3}\cdot3\cdot\dfrac43\pi\dfrac{\varepsilon^3}{\sqrt{abc}}=\dfrac{4\pi}{\sqrt{abc}}$。</li>
 <li>原点在 $\Sigma$ 上时，积分是反常积分，超出考研范围。</li>
+<li><b>真题</b>：<span class="qref" data-q="2009-19">2009 年第 19 题</span>（椭球面 $2x^2+2y^2+z^2=4$ 的外侧，同样的被积式）就是例 7 的原型，答案 $4\pi$；近十年没有再考，但它是"高斯公式条件不满足"的经典题。</li>
 <li>本定理说明"散度为零"推不出"闭曲面积分为零"，关键在区域是否二维单连通（见上一节）。它和平面上 $\displaystyle\oint_L\frac{x\,dy-y\,dx}{x^2+y^2}=2\pi$（$L$ 为包围原点的正向闭曲线）是同一类现象。</li>
 </ul>`
       },
@@ -411,7 +416,168 @@ registerLesson(function (R) {
 <p><b>对照</b>　若 $\Sigma$ 换成不包含原点的闭曲面，例如球面 $(x-3)^2+y^2+z^2=1$ 的外侧，原点在其外部，三个条件都满足，直接由高斯公式得 $I=0$。<b>同一个被积表达式，答案取决于曲面是否包住奇点。</b></p>`
       },
 
-      /* ───────── 19. 误区 ───────── */
+      /* ───────── 19. 近十年真题精讲 ───────── */
+      {
+        kind: 'example', title: '近十年真题精讲',
+        html: R`<p>2016–2025 年以本考点为主考点的真题共 8 道，本节和下一节把它们全部讲一遍。按解法分成两组：本节 5 道是"闭曲面直接高斯"与"补面 + 高斯"，顺序由易到难；下一节 3 道是"不能或不必用高斯公式"的题。每道题都标出用到了本篇的哪条定理或方法。</p>
+
+<p><b>真题 1</b>　<span class="qref" data-q="2021-14">2021 年第 14 题</span>（填空，5 分）</p>
+<blockquote><p>设 $\Sigma$ 为空间区域 $\{(x,y,z)\mid x^2+4y^2\leqslant4,\ 0\leqslant z\leqslant2\}$ 表面的外侧，则曲面积分 $\displaystyle\iint_{\Sigma}x^2\,\mathrm{d}y\,\mathrm{d}z+y^2\,\mathrm{d}z\,\mathrm{d}x+z\,\mathrm{d}x\,\mathrm{d}y=$ ______．</p></blockquote>
+<p><b>这题考什么：</b>闭曲面上的第二类曲面积分——高斯公式，外加三重积分的对称性和椭圆面积公式。</p>
+<p><b>从题面看到什么：</b>"空间区域……表面的外侧" ⇒ 曲面封闭、取外侧；$P=x^2,\ Q=y^2,\ R=z$ 是多项式，处处有连续偏导数 ⇒ 高斯公式的三个条件（封闭、外侧、无奇点）全部满足，直接用（本篇「高斯公式」定理）。散度 $2x+2y+1$ 里的一次项 $2x$、$2y$ 是奇函数，而椭圆柱体关于 $yOz$ 面、$zOx$ 面都对称 ⇒ 这两项的三重积分为 $0$，最后只剩体积。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>记 $\Omega=\{x^2+4y^2\le4,\ 0\le z\le2\}$，$\Sigma$ 是它的整个边界曲面、取外侧，$P,Q,R$ 在 $\Omega$ 上有连续偏导数。散度 $\dfrac{\partial P}{\partial x}+\dfrac{\partial Q}{\partial y}+\dfrac{\partial R}{\partial z}=2x+2y+1$，由高斯公式 $$\iint_\Sigma x^2\,dy\,dz+y^2\,dz\,dx+z\,dx\,dy=\iiint_\Omega(2x+2y+1)\,dV .$$</li>
+<li>$\Omega$ 关于 $yOz$ 面对称（$(x,y,z)\in\Omega\iff(-x,y,z)\in\Omega$），$2x$ 关于 $x$ 为奇函数，故 $\displaystyle\iiint_\Omega2x\,dV=0$；同理 $\Omega$ 关于 $zOx$ 面对称，$\displaystyle\iiint_\Omega2y\,dV=0$。这是三重积分的对称性，照常使用（第二类曲面积分的"偶零奇倍"只用于曲面积分本身，一旦化成了三重积分就回到普通规则）。</li>
+<li>剩下 $\displaystyle\iiint_\Omega1\,dV=V(\Omega)$。底面是椭圆 $\dfrac{x^2}{4}+y^2\le1$，半轴 $a=2,\ b=1$，面积 $\pi ab=2\pi$；高为 $2$，所以 $V=2\pi\cdot2=4\pi$。</li>
+</ol>
+<p><b>答案：</b>$4\pi$。</p>
+<p><b>检验</b>（也是理解"侧"的好练习）：直接分三块算。顶面 $z=2$ 取上侧，其上 $dy\,dz=dz\,dx=0$（性质（4）），只剩 $\displaystyle\iint z\,dx\,dy=2\cdot2\pi=4\pi$；底面 $z=0$ 上 $z\,dx\,dy$ 的 $z=0$，贡献 $0$；侧面是竖直柱面，$dx\,dy$ 项为 $0$，而 $x^2\,dy\,dz$ 项在前片（$x>0$）与后片（$x\lt0$）处 $x^2$ 相同、法向量的 $x$ 分量相反，恰好抵消，$y^2\,dz\,dx$ 同理。合计 $4\pi$。</p>
+<p><b>这道题告诉我们：</b>"高斯 + 对称性 + 体积公式"三步就是 5 分，关键是不要被"表面"二字吓到去补面——题目说的是整个表面，本来就封闭。易错点在椭圆的半轴：$x^2+4y^2\le4$ 化成标准式后半轴是 $2$ 和 $1$，底面积 $2\pi$，不是 $4\pi$ 也不是 $\pi$。</p>
+
+<p><b>真题 2</b>　<span class="qref" data-q="2016-18">2016 年第 18 题</span>（解答，10 分）</p>
+<blockquote><p>设有界区域 $\Omega$ 由平面 $2x+y+2z=2$ 与三个坐标平面围成，$\Sigma$ 为 $\Omega$ 整个表面的外侧，计算曲面积分 $I=\displaystyle\iint_{\Sigma}(x^{2}+1)\,\mathrm{d}y\,\mathrm{d}z-2y\,\mathrm{d}z\,\mathrm{d}x+3z\,\mathrm{d}x\,\mathrm{d}y$.</p></blockquote>
+<p><b>这题考什么：</b>闭曲面上的高斯公式，以及四面体上的三重积分（截面法或形心公式）。</p>
+<p><b>从题面看到什么：</b>"$\Omega$ 整个表面的外侧" ⇒ 闭曲面外侧，$P=x^2+1,\ Q=-2y,\ R=3z$ 是多项式 ⇒ 直接高斯。直接算要分四个面（三个坐标面上的三角形加一个斜面），每个面还要定侧、投影；而散度 $2x+1$ 只是一次式，三重积分只需要体积和 $\displaystyle\iiint_\Omega x\,dV$。四面体由截距式 $\dfrac x1+\dfrac y2+\dfrac z1=1$ 认出：顶点 $O$、$(1,0,0)$、$(0,2,0)$、$(0,0,1)$。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>条件检查：$\Sigma$ 封闭、取外侧，$P,Q,R$ 在 $\Omega$ 上有连续偏导数。散度 $\dfrac{\partial P}{\partial x}+\dfrac{\partial Q}{\partial y}+\dfrac{\partial R}{\partial z}=2x+(-2)+3=2x+1$（$x^2+1$ 中的常数求导为 $0$，$-2y$ 的导数是 $-2$，这两处最容易错）。由高斯公式 $$I=\iiint_\Omega(2x+1)\,dV=2\iiint_\Omega x\,dV+\iiint_\Omega dV .$$</li>
+<li>体积：$\Omega$ 是截距为 $1,2,1$ 的四面体，$V=\dfrac{1\cdot2\cdot1}{6}=\dfrac13$（底面是 $xOy$ 面上直角边为 $1,2$ 的直角三角形，面积 $1$，高 $1$，$V=\frac13\cdot1\cdot1$）。</li>
+<li>$\displaystyle\iiint_\Omega x\,dV$ 用截面法（先二后一）：被积函数只含 $x$，固定 $x\in[0,1]$，截面 $D_x=\{(y,z)\mid y\ge0,\ z\ge0,\ y+2z\le2-2x\}$ 是直角边为 $2(1-x)$ 与 $1-x$ 的直角三角形，面积 $(1-x)^2$，于是 $$\iiint_\Omega x\,dV=\int_0^1x(1-x)^2\,dx=\int_0^1(x-2x^2+x^3)\,dx=\frac12-\frac23+\frac14=\frac1{12}.$$ 也可用形心：四面体形心的横坐标是四个顶点横坐标的平均 $\bar x=\dfrac{0+1+0+0}{4}=\dfrac14$，$\displaystyle\iiint_\Omega x\,dV=\bar x\,V=\dfrac14\cdot\dfrac13=\dfrac1{12}$，一致。</li>
+<li>合并：$I=2\cdot\dfrac1{12}+\dfrac13=\dfrac12$。</li>
+</ol>
+<p><b>答案：</b>$I=\dfrac12$。</p>
+<p><b>这道题告诉我们：</b>解答题里的"裸高斯"，得分点有三处：写明条件（封闭、外侧、连续偏导），散度算对，三重积分算对。若直接逐面计算：斜面 $z=1-x-\frac y2$ 取上侧用合一投影得 $\dfrac32$，$x=0$ 面（外侧朝 $-x$ 方向，其上只有 $P=1$ 一项，投影三角形面积为 $1$）得 $-1$，$y=0$ 与 $z=0$ 两个面上分别因 $Q=-2y=0$、$R=3z=0$ 而贡献 $0$，总和同样是 $\dfrac12$——可作为检验，但考场上四个面定侧、投影的工作量远大于一个三重积分。</p>
+
+<p><b>真题 3</b>　<span class="qref" data-q="2023-19">2023 年第 19 题</span>（解答，12 分）</p>
+<blockquote><p>设空间有界区域 $\Omega$ 由柱面 $x^2+y^2=1$ 与平面 $z=0$ 和 $x+z=1$ 围成，$\Sigma$ 为 $\Omega$ 的边界曲面的外侧. 计算曲面积分 $$I=\iint_{\Sigma}2xz\,\mathrm{d}y\,\mathrm{d}z+xz\cos y\,\mathrm{d}z\,\mathrm{d}x+3yz\sin x\,\mathrm{d}x\,\mathrm{d}y.$$</p></blockquote>
+<p><b>这题考什么：</b>高斯公式 + 三重积分的对称性 + 先一后二（投影法）与极坐标。</p>
+<p><b>从题面看到什么：</b>"边界曲面的外侧" ⇒ 闭曲面外侧，被积函数是初等函数、处处光滑 ⇒ 高斯公式。被积函数里的 $\cos y$、$\sin x$ 看起来吓人，但求散度后得到 $2z-xz\sin y+3y\sin x$，后两项都是 $y$ 的奇函数；而 $\Omega$ 的三张边界 $x^2+y^2=1$、$z=0$、$x+z=1$ 中 $y$ 只以 $y^2$ 的形式出现 ⇒ $\Omega$ 关于 $xOz$ 面对称 ⇒ 两个难看的项积分为 $0$。这正是出题人的设计：不用对称性几乎算不动。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>条件检查后算散度：$P=2xz,\ Q=xz\cos y,\ R=3yz\sin x$， $$\frac{\partial P}{\partial x}=2z,\qquad\frac{\partial Q}{\partial y}=-xz\sin y,\qquad\frac{\partial R}{\partial z}=3y\sin x,$$ 由高斯公式 $I=\displaystyle\iiint_\Omega(2z-xz\sin y+3y\sin x)\,dV$。</li>
+<li>对称性：$\Omega=\{(x,y,z)\mid x^2+y^2\le1,\ 0\le z\le1-x\}$，$(x,y,z)\in\Omega\iff(x,-y,z)\in\Omega$，而 $-xz\sin y$、$3y\sin x$ 都是 $y$ 的奇函数，积分为 $0$。于是 $I=\displaystyle\iiint_\Omega2z\,dV$。</li>
+<li>先一后二：$\Omega$ 在 $xOy$ 面上的投影是单位圆盘 $D$，对 $(x,y)\in D$ 有 $0\le z\le1-x$（在 $D$ 上 $1-x\ge0$，顶面确实在底面上方）： $$I=\iint_D dx\,dy\int_0^{1-x}2z\,dz=\iint_D(1-x)^2\,dx\,dy=\iint_D(1-2x+x^2)\,dx\,dy .$$</li>
+<li>逐项：$\displaystyle\iint_D1\,dx\,dy=\pi$；$\displaystyle\iint_Dx\,dx\,dy=0$（$D$ 关于 $y$ 轴对称，$x$ 为奇函数）；$\displaystyle\iint_Dx^2\,dx\,dy=\frac12\iint_D(x^2+y^2)\,dx\,dy=\frac12\int_0^{2\pi}d\theta\int_0^1r^3\,dr=\frac{\pi}{4}$（轮换对称 $\iint x^2=\iint y^2$）。所以 $I=\pi-0+\dfrac{\pi}{4}=\dfrac{5\pi}{4}$。</li>
+</ol>
+<p><b>答案：</b>$I=\dfrac{5\pi}{4}$。</p>
+<p><b>这道题告诉我们：</b>高斯公式之后的三重积分，第一件事是用 $\Omega$ 的对称性砍掉奇函数项，"奇函数 × 对称区域"要形成条件反射；但对称的方向必须和奇函数的变量一致——$2z$ 不是奇函数、$\Omega$ 也不关于 $z=0$ 对称，不能砍。"柱面 + 两张平面"围成的区域，投影是圆盘、$z$ 的上下限是两张平面，先一后二最自然。常用结论 $\displaystyle\iint_{x^2+y^2\le R^2}x^2\,d\sigma=\frac{\pi R^4}{4}$ 值得记住。</p>
+
+<p><b>真题 4</b>　<span class="qref" data-q="2018-17">2018 年第 17 题</span>（解答，10 分）</p>
+<blockquote><p>设 $\Sigma$ 是曲面 $x=\sqrt{1-3y^2-3z^2}$ 的前侧，计算曲面积分</p>$$I=\iint_\Sigma x\,\mathrm{d}y\,\mathrm{d}z+(y^3+2)\,\mathrm{d}z\,\mathrm{d}x+z^3\,\mathrm{d}x\,\mathrm{d}y.$$</blockquote>
+<p><b>这题考什么：</b>不封闭曲面上的第二类曲面积分——补面法 + 高斯公式；三重积分用以 $x$ 轴为轴的柱面坐标或截面法。</p>
+<p><b>从题面看到什么：</b>曲面 $x=\sqrt{1-3y^2-3z^2}$ 两边平方得 $x^2+3y^2+3z^2=1$（$x\ge0$），是绕 $x$ 轴的旋转椭球面的前半个（$x$ 方向半轴 $1$，$y,z$ 方向半轴 $\frac{1}{\sqrt3}$），不封闭；"前侧"即 $\cos\alpha>0$，对这半个椭球面来说就是外侧。散度 $1+3y^2+3z^2$ 比原被积函数简单，缺口是平面 $x=0$ 上的圆盘 $y^2+z^2\le\frac13$——补面法的三个信号齐全（本篇「补面法」）。而且补上的平面垂直于 $zOx$ 面和 $xOy$ 面、其上 $x\equiv0$，可以预计补面上三项全为 $0$。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>补面并配侧：取 $\Sigma_1:\ x=0,\ y^2+z^2\le\frac13$，取<b>后侧</b>（法向量 $(-1,0,0)$）。$\Sigma$ 的前侧指向半椭球体 $\Omega=\{0\le x\le\sqrt{1-3y^2-3z^2}\}$ 的外部，$\Sigma_1$ 的后侧也指向外部，所以 $\Sigma+\Sigma_1$ 是 $\Omega$ 边界的外侧。</li>
+<li>高斯公式：$P=x,\ Q=y^3+2,\ R=z^3$ 处处有连续偏导数， $$\iint_{\Sigma+\Sigma_1}=\iiint_\Omega(1+3y^2+3z^2)\,dV .$$</li>
+<li>补面上的积分：$\Sigma_1$ 上 $x\equiv0$，$x\,dy\,dz$ 项为 $0$；$\Sigma_1$ 位于平面 $x=0$ 内，它在 $zOx$ 面、$xOy$ 面上的投影都是线段，面积为零，由性质（4）$(y^3+2)\,dz\,dx$ 与 $z^3\,dx\,dy$ 两项都为 $0$。所以 $\displaystyle\iint_{\Sigma_1}=0$，$I=\displaystyle\iiint_\Omega(1+3y^2+3z^2)\,dV$。</li>
+<li>三重积分：$\Omega$ 绕 $x$ 轴旋转对称、被积函数含 $y^2+z^2$，用以 $x$ 轴为轴的柱面坐标 $y=r\cos\theta,\ z=r\sin\theta$，$dV=r\,dr\,d\theta\,dx$，范围 $0\le\theta\le2\pi$，$0\le r\le\frac{1}{\sqrt3}$，$0\le x\le\sqrt{1-3r^2}$： $$I=\int_0^{2\pi}d\theta\int_0^{1/\sqrt3}(1+3r^2)\,r\,dr\int_0^{\sqrt{1-3r^2}}dx=2\pi\int_0^{1/\sqrt3}(1+3r^2)\sqrt{1-3r^2}\,r\,dr .$$ 令 $t=\sqrt{1-3r^2}$，则 $r\,dr=-\frac t3\,dt$，$1+3r^2=2-t^2$，$r:0\to\frac{1}{\sqrt3}$ 对应 $t:1\to0$： $$\int_0^{1/\sqrt3}(1+3r^2)\sqrt{1-3r^2}\,r\,dr=\frac13\int_0^1(2t^2-t^4)\,dt=\frac13\Big(\frac23-\frac15\Big)=\frac{7}{45},\qquad I=2\pi\cdot\frac{7}{45}=\frac{14\pi}{45}.$$</li>
+</ol>
+<p><b>答案：</b>$I=\dfrac{14\pi}{45}$。</p>
+<p><b>另解（截面法检验）</b>　用垂直于 $x$ 轴的平面截 $\Omega$，截面是圆盘 $y^2+z^2\le\rho^2$，$\rho^2=\dfrac{1-x^2}{3}$，$0\le x\le1$。圆盘上 $\displaystyle\iint1\,dy\,dz=\pi\rho^2$，$\displaystyle\iint(y^2+z^2)\,dy\,dz=\frac{\pi\rho^4}{2}$，故 $$I=\int_0^1\Big[\pi\cdot\frac{1-x^2}{3}+3\cdot\frac{\pi}{2}\cdot\frac{(1-x^2)^2}{9}\Big]dx=\frac{2\pi}{9}+\frac{4\pi}{45}=\frac{14\pi}{45},$$ 其中 $\dfrac{2\pi}{9}$ 恰是半椭球的体积 $\dfrac12\cdot\dfrac43\pi\cdot1\cdot\dfrac{1}{\sqrt3}\cdot\dfrac{1}{\sqrt3}$，可以顺手检验。</p>
+<p><b>这道题告诉我们：</b>曲面以 $x=x(y,z)$ 给出时，"前侧 / 后侧"按 $\cos\alpha$ 的符号判断，补面要补 $x=$ 常数的平面并配成同一外侧；补面上三项为 $0$ 的理由要分开写清楚（一项因 $x=0$，两项因投影面积为零）；绕 $x$ 轴的旋转体用以 $x$ 轴为轴的柱面坐标，不要习惯性地对 $x,y$ 用极坐标，也不要漏掉体积元里的因子 $r$。</p>
+
+<p><b>真题 5</b>　<span class="qref" data-q="2025-20">2025 年第 20 题</span>（解答，10 分）</p>
+<blockquote><p>设 $\Sigma$ 是由直线 $\begin{cases}x=0,\\y=0\end{cases}$ 绕直线 $\begin{cases}x=t,\\y=t,\\z=t\end{cases}$（$t$ 为参数）旋转一周得到的曲面，$\Sigma_1$ 是 $\Sigma$ 介于平面 $x+y+z=0$ 与平面 $x+y+z=1$ 之间部分的外侧，计算曲面积分 $$I=\iint_{\Sigma_1}x\,\mathrm dy\,\mathrm dz+(y+1)\,\mathrm dz\,\mathrm dx+(z+2)\,\mathrm dx\,\mathrm dy.$$</p></blockquote>
+<p><b>这题考什么：</b>三件事串成一题——认出旋转曲面（「曲面与空间曲线」的纬圆法）、不封闭曲面的补面 + 高斯公式、在平面补面上用两类曲面积分的关系算通量。</p>
+<p><b>从题面看到什么：</b>母线是 $z$ 轴，旋转轴是过原点、方向为 $(1,1,1)$ 的直线，两条直线<b>相交于原点</b>，夹角 $\theta$ 满足 $\cos\theta=\dfrac{1}{\sqrt3}$（$\mathbf k$ 与 $(1,1,1)$ 的夹角）⇒ 扫出的是以原点为顶点、以 $x=y=z$ 为轴、半顶角为 $\theta$ 的<b>圆锥面</b>（相交得圆锥，平行才得圆柱）。散度 $1+1+1=3$ 是常数 ⇒ 三重积分就是 $3\times$ 体积；"介于两平面之间的外侧" ⇒ 缺口是平面 $x+y+z=1$ 上的一个圆盘，补上它。补面是平面，法向量是常向量 $\dfrac{(1,1,1)}{\sqrt3}$，可用两类关系算通量。整道题最终归结为求圆锥的高与底面半径。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>求 $\Sigma$ 的方程（纬圆法）：母线上任一点 $M_0(0,0,z_0)$ 绕轴转出一个纬圆。点 $P(x,y,z)$ 在这个纬圆上 ⇔ $P$ 与 $M_0$ 在同一张垂直于轴的平面内：$(x,y,z-z_0)\cdot(1,1,1)=0$，即 $z_0=x+y+z$；且 $P$、$M_0$ 到轴上定点 $O$ 等距：$x^2+y^2+z^2=z_0^2$。消去 $z_0$： $$\Sigma:\ x^2+y^2+z^2=(x+y+z)^2\iff xy+yz+zx=0 .$$ 平面 $x+y+z=0$ 与 $\Sigma$ 只交于原点（代入得 $x^2+y^2+z^2=0$），所以 $\Sigma_1$ 是从顶点 $O$ 到平面 $x+y+z=1$ 的一段锥面。</li>
+<li>圆锥的尺寸：轴与平面 $x+y+z=1$ 交于 $C\big(\tfrac13,\tfrac13,\tfrac13\big)$，它是底面圆心，高 $H=|OC|=\dfrac{1}{\sqrt3}$（即原点到该平面的距离）；母线 $z$ 轴与该平面交于 $A(0,0,1)$，它在底面圆周上，半径 $R=|CA|=\sqrt{\tfrac19+\tfrac19+\tfrac49}=\dfrac{\sqrt6}{3}$（检验：$\dfrac RH=\sqrt2=\tan\theta$，与 $\cos\theta=\frac{1}{\sqrt3}$ 一致）。圆锥体 $\Omega$ 的体积 $V=\dfrac13\pi R^2H=\dfrac13\pi\cdot\dfrac23\cdot\dfrac{1}{\sqrt3}=\dfrac{2\sqrt3}{27}\pi$。</li>
+<li>补面并用高斯公式：补 $\Sigma_0$——平面 $x+y+z=1$ 上以 $C$ 为圆心、$R$ 为半径的圆盘，取法向量为 $\mathbf n_0=\dfrac{(1,1,1)}{\sqrt3}$ 的一侧（指向远离原点的方向）。锥面的外侧指向远离轴的一侧，正是 $\Omega$ 的外法向；$\Sigma_0$ 的这一侧也是 $\Omega$ 的外法向，所以 $\Sigma_1+\Sigma_0$ 是 $\Omega$ 边界的外侧。$P=x,\ Q=y+1,\ R=z+2$ 处处光滑， $$\iint_{\Sigma_1+\Sigma_0}=\iiint_\Omega3\,dV=3V=\frac{2\sqrt3}{9}\pi .$$</li>
+<li>补面上的积分：由两类曲面积分的关系，在 $\Sigma_0$ 上 $\cos\alpha=\cos\beta=\cos\gamma=\dfrac{1}{\sqrt3}$，并先代入平面方程 $x+y+z=1$： $$P\cos\alpha+Q\cos\beta+R\cos\gamma=\frac{x+(y+1)+(z+2)}{\sqrt3}=\frac{(x+y+z)+3}{\sqrt3}=\frac{4}{\sqrt3},$$ 被积函数是常数，$\displaystyle\iint_{\Sigma_0}=\frac{4}{\sqrt3}\cdot\pi R^2=\frac{4}{\sqrt3}\cdot\frac{2\pi}{3}=\frac{8\sqrt3}{9}\pi$。</li>
+<li>相减：$I=\dfrac{2\sqrt3}{9}\pi-\dfrac{8\sqrt3}{9}\pi=-\dfrac{2\sqrt3}{3}\pi$。</li>
+</ol>
+<p><b>答案：</b>$I=-\dfrac{2\sqrt3}{3}\pi$。</p>
+<p><b>另解（拆向量场）</b>　记 $\mathbf r=(x,y,z)$，$\mathbf c=(0,1,2)$，则被积向量场 $\mathbf F=\mathbf r+\mathbf c$。以原点为顶点的锥面上，任一点的位置向量 $\mathbf r$ 恰好沿过该点的母线，母线躺在锥面上，所以 $\mathbf r$ 在切平面内、与法向量垂直，$\displaystyle\iint_{\Sigma_1}\mathbf r\cdot\mathbf n\,dS=0$（下一节真题 8 的图把这件事画了出来）。常向量场 $\mathbf c$ 的散度为 $0$，它穿过闭曲面 $\Sigma_1+\Sigma_0$ 的通量为 $0$，于是 $$\iint_{\Sigma_1}\mathbf c\cdot\mathbf n\,dS=-\iint_{\Sigma_0}\mathbf c\cdot\mathbf n_0\,dS=-\frac{0+1+2}{\sqrt3}\cdot\frac{2\pi}{3}=-\frac{2\sqrt3}{3}\pi ,$$ 两部分相加得同样的结果。</p>
+<p><b>这道题告诉我们：</b>这是近年最"综合"的考法：先用「曲面与空间曲线」的知识把曲面认出来，再走补面法的四步（补、配侧、高斯、减）。三个典型错误：把"直线绕直线"想成圆柱面（相交才是圆锥）；把补面当成平面 $x+y+z=1$ 在第一卦限的三角形——补面是圆盘，它在 $xOy$ 面上的投影是椭圆区域，所以不要投影，直接用"$\mathbf F\cdot\mathbf n$ 为常数 × 圆盘面积"；圆锥的 $R,H$ 算错（例如都误当成 $\frac{\sqrt2}{2}$）。补面上"先代入平面方程 $x+y+z=1$"再积分，正是"被积函数只在曲面上取值"的又一次使用。</p>`
+      },
+
+      /* ───────── 20. 近十年真题精讲（续） ───────── */
+      {
+        kind: 'example', title: '近十年真题精讲（续）',
+        html: R`<p>这一节的 3 道题，高斯公式要么用不了，要么不必用：只有一项时直接投影最快；被积函数含只连续的抽象函数时高斯公式的条件不满足；选择题则直接考合一投影公式本身。它们检验的是对"带号投影""两类关系"这些基本概念的理解。</p>
+
+<p><b>真题 6</b>　<span class="qref" data-q="2019-12">2019 年第 12 题</span>（填空，4 分）</p>
+<blockquote><p>设 $\Sigma$ 为曲面 $x^2+y^2+4z^2=4\ (z\geqslant0)$ 的上侧，则 $\displaystyle\iint_\Sigma\sqrt{4-x^2-4z^2}\,\mathrm{d}x\,\mathrm{d}y=$______.</p></blockquote>
+<p><b>这题考什么：</b>只含 $dx\,dy$ 一项的第二类曲面积分——"一投二代三定号"，外加"用曲面方程化简被积函数"。</p>
+<p><b>从题面看到什么：</b>只有 $dx\,dy$ 一项、曲面不封闭 ⇒ 不必补面，直接投影（本篇「投影法」定理）。被积函数里的 $4-x^2-4z^2$ 与曲面方程 $x^2+y^2+4z^2=4$ 长得很像 ⇒ 在 $\Sigma$ 上 $4-x^2-4z^2=y^2$，被积函数就是 $\sqrt{y^2}=|y|$——这是"被积函数只在曲面上取值"的直接应用。上半椭球面 $z\ge0$ 向 $xOy$ 面投影是单值的，投影区域由 $z=0$ 得 $D:\ x^2+y^2\le4$；"上侧"取正号。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>代入化简：在 $\Sigma$ 上 $x^2+y^2+4z^2=4$，故 $\sqrt{4-x^2-4z^2}=\sqrt{y^2}=|y|$，原式 $=\displaystyle\iint_\Sigma|y|\,dx\,dy$。<b>注意是 $|y|$ 不是 $y$</b>：$\Sigma$ 上 $y$ 可正可负。</li>
+<li>一投二代三定号：$\Sigma:\ z=\frac12\sqrt{4-x^2-y^2}$，$(x,y)\in D=\{x^2+y^2\le4\}$；被积函数 $|y|$ 不含 $z$，代入后不变；上侧取"$+$"： $$\iint_\Sigma|y|\,dx\,dy=\iint_D|y|\,dx\,dy .$$</li>
+<li>这已是普通二重积分，奇偶性照常使用：$D$ 关于两条坐标轴都对称，$|y|$ 关于 $x$、$y$ 都是偶函数，等于第一象限部分 $D_1$ 上积分的 $4$ 倍，而 $D_1$ 上 $|y|=y$。极坐标： $$\iint_D|y|\,dx\,dy=4\int_0^{\pi/2}d\theta\int_0^2r\sin\theta\cdot r\,dr=4\int_0^{\pi/2}\sin\theta\,d\theta\int_0^2r^2\,dr=4\cdot1\cdot\frac83=\frac{32}{3}.$$</li>
+</ol>
+<p><b>答案：</b>$\dfrac{32}{3}$。</p>
+<p><b>这道题告诉我们：</b>4 分填空，陷阱有两个：把 $\sqrt{y^2}$ 写成 $y$——那样 $D$ 关于 $x$ 轴对称、$y$ 为奇函数，会得到错误答案 $0$；投影区域的半径是 $2$（令 $z=0$），不是 $z$ 方向的半轴 $1$。另外，不先代入而直接把 $z=\frac12\sqrt{4-x^2-y^2}$ 代进 $\sqrt{4-x^2-4z^2}$，最终也得 $\sqrt{y^2}$，只是更绕。单项、显式、不封闭——这种题不要条件反射地去补面用高斯。</p>
+
+<p><b>真题 7</b>　<span class="qref" data-q="2024-2">2024 年第 2 题</span>（选择，5 分）</p>
+<blockquote><p>设 $P=P(x,y,z)$，$Q=Q(x,y,z)$ 均为连续函数，$\Sigma$ 为曲面 $z=\sqrt{1-x^2-y^2}$（$x\geqslant0,\ y\geqslant0$）的上侧，则 $\displaystyle\iint_\Sigma P\,\mathrm{d}y\,\mathrm{d}z+Q\,\mathrm{d}z\,\mathrm{d}x=$</p>
+<p>(A) $\displaystyle\iint_\Sigma\left(\frac{x}{z}P+\frac{y}{z}Q\right)\mathrm{d}x\,\mathrm{d}y$　(B) $\displaystyle\iint_\Sigma\left(-\frac{x}{z}P+\frac{y}{z}Q\right)\mathrm{d}x\,\mathrm{d}y$</p>
+<p>(C) $\displaystyle\iint_\Sigma\left(\frac{x}{z}P-\frac{y}{z}Q\right)\mathrm{d}x\,\mathrm{d}y$　(D) $\displaystyle\iint_\Sigma\left(-\frac{x}{z}P-\frac{y}{z}Q\right)\mathrm{d}x\,\mathrm{d}y$</p></blockquote>
+<p><b>这题考什么：</b>合一投影法（转换投影法）的公式本身：在 $z=z(x,y)$ 的有向曲面上，$dy\,dz=-z_x\,dx\,dy$，$dz\,dx=-z_y\,dx\,dy$。</p>
+<p><b>从题面看到什么：</b>$P,Q$ 是任意连续函数，不可能算出一个数 ⇒ 考的是恒等变形；四个选项都是 $\displaystyle\iint_\Sigma(\cdots)\,dx\,dy$，只差正负号 ⇒ 考的是法向量各分量的符号。曲面 $z=\sqrt{1-x^2-y^2}$ 是单位球面在第一卦限的那块，$z_x=-\dfrac xz$，$z_y=-\dfrac yz$。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>由两类曲面积分的关系（本篇「两类曲面积分之间的关系」定理）的微元形式 $dy\,dz=\cos\alpha\,dS$，$dz\,dx=\cos\beta\,dS$，$dx\,dy=\cos\gamma\,dS$，在 $\cos\gamma\ne0$ 处 $$dy\,dz=\frac{\cos\alpha}{\cos\gamma}\,dx\,dy,\qquad dz\,dx=\frac{\cos\beta}{\cos\gamma}\,dx\,dy .$$ 这两个比值与取哪一侧无关：换侧时分子分母同时变号。</li>
+<li>法向量：$\mathbf n\parallel(-z_x,-z_y,1)=\Big(\dfrac xz,\dfrac yz,1\Big)$（上侧，第三分量为正），所以 $\dfrac{\cos\alpha}{\cos\gamma}=\dfrac xz$，$\dfrac{\cos\beta}{\cos\gamma}=\dfrac yz$。直观核对：上半球面的上侧就是外侧，外法向量与 $(x,y,z)$ 同向，而 $\big(\frac xz,\frac yz,1\big)=\frac1z(x,y,z)$，$z>0$，方向一致。</li>
+<li>代入： $$\iint_\Sigma P\,dy\,dz+Q\,dz\,dx=\iint_\Sigma\Big(\frac xzP+\frac yzQ\Big)dx\,dy ,$$ 选 (A)。</li>
+<li>特例检验（选择题利器）：结论对一切连续的 $P,Q$ 成立，取 $P\equiv1,\ Q\equiv0$。左边 $=\displaystyle\iint_\Sigma dy\,dz$：$\Sigma$ 在 $x\ge0$ 处法向量的 $x$ 分量非负（前侧），它等于 $\Sigma$ 在 $yOz$ 面上投影——四分之一单位圆——的面积 $\dfrac{\pi}{4}$。(A) 的右边化到 $D=\{x^2+y^2\le1,\ x\ge0,\ y\ge0\}$ 上（上侧取正）： $$\iint_D\frac{x}{\sqrt{1-x^2-y^2}}\,dx\,dy=\int_0^{\pi/2}\cos\theta\,d\theta\int_0^1\frac{r^2}{\sqrt{1-r^2}}\,dr=1\cdot\frac{\pi}{4}=\frac{\pi}{4}$$（令 $r=\sin u$，$\displaystyle\int_0^1\frac{r^2}{\sqrt{1-r^2}}dr=\int_0^{\pi/2}\sin^2u\,du=\frac{\pi}{4}$），吻合；(B)(D) 的右边是 $-\dfrac{\pi}{4}$，排除。再取 $P\equiv0,\ Q\equiv1$ 排除 (C)。</li>
+</ol>
+<p><b>答案：</b>(A)。</p>
+<p><b>这道题告诉我们：</b>考的是理解不是计算。记向量形式 $(P,Q,R)\cdot(-z_x,-z_y,1)$ 最保险——公式里的两个负号与 $z_x=-\frac xz$ 自带的负号相消，得到 $+\frac xz$；写成 $(z_x,z_y,-1)$ 或算 $-z_x$ 时丢负号，就会错选 (D)。还要看清：选项里的积分仍是 $\Sigma$ 上的第二类曲面积分，侧的信息已经在 $\Sigma$ 上的 $dx\,dy$ 里，<b>不需要</b>再按"上侧"添符号；"上侧取正"是把它化成 $D_{xy}$ 上的普通二重积分时才做的事。</p>
+
+<p><b>真题 8</b>　<span class="qref" data-q="2020-18">2020 年第 18 题</span>（解答，10 分）</p>
+<blockquote><p>设 $\Sigma$ 为曲面 $z=\sqrt{x^2+y^2}\ (1\leqslant x^2+y^2\leqslant4)$ 的下侧，$f(x)$ 是连续函数，计算$$I=\iint_\Sigma\bigl[xf(xy)+2x-y\bigr]\mathrm{d}y\,\mathrm{d}z+\bigl[yf(xy)+2y+x\bigr]\mathrm{d}z\,\mathrm{d}x+\bigl[zf(xy)+z\bigr]\mathrm{d}x\,\mathrm{d}y.$$</p></blockquote>
+<p><b>这题考什么：</b>含抽象函数的第二类曲面积分——合一投影法（或两类关系），以及锥面的几何特点。</p>
+<p><b>从题面看到什么：</b>$f$ <b>只说连续</b>。高斯公式要求 $P,Q,R$ 有连续偏导数，而 $\dfrac{\partial}{\partial x}\big[xf(xy)\big]=f(xy)+xyf'(xy)$ 需要 $f'$，题目没给 ⇒ 不能对整个被积式用高斯公式（本篇「高斯公式」条件（c））。这个条件其实是出题人的暗示：含 $f$ 的部分一定会自己消掉。把含 $f$ 的部分单独看，是 $f(xy)\cdot(x,y,z)$——位置向量的倍数；而顶点在原点的锥面上，位置向量沿母线、躺在切平面内，与法向量垂直，这部分通量为 $0$（见下图）。曲面是显式 $z=z(x,y)$，投影是圆环 ⇒ 合一投影法一次解决三项（本篇「合一投影法」定理），下侧取负号。</p>
+<svg viewBox="0 0 420 262" width="100%" style="max-width:420px" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="s2arE" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<polygon points="130,150 290,150 370,70 50,70" fill="currentColor" fill-opacity="0.08" stroke="none"/>
+<line x1="10" y1="230" x2="410" y2="230" stroke="currentColor" stroke-width="1" marker-end="url(#s2arE)"/>
+<line x1="210" y1="230" x2="210" y2="24" stroke="currentColor" stroke-width="1" marker-end="url(#s2arE)"/>
+<line x1="210" y1="230" x2="290" y2="150" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3" stroke-opacity="0.7"/>
+<line x1="210" y1="230" x2="130" y2="150" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3" stroke-opacity="0.7"/>
+<line x1="290" y1="150" x2="370" y2="70" stroke="currentColor" stroke-width="2.4"/>
+<line x1="130" y1="150" x2="50" y2="70" stroke="currentColor" stroke-width="2.4"/>
+<line x1="50" y1="70" x2="370" y2="70" stroke="currentColor" stroke-width="1.3" stroke-dasharray="6 3"/>
+<line x1="130" y1="150" x2="290" y2="150" stroke="currentColor" stroke-width="1.3" stroke-dasharray="6 3"/>
+<line x1="250" y1="70" x2="250" y2="42" stroke="currentColor" stroke-width="1.5" marker-end="url(#s2arE)"/>
+<line x1="170" y1="150" x2="170" y2="178" stroke="currentColor" stroke-width="1.5" marker-end="url(#s2arE)"/>
+<line x1="210" y1="230" x2="324.0" y2="116.0" stroke="currentColor" stroke-width="2.6" marker-end="url(#s2arE)"/>
+<line x1="330.0" y1="110.0" x2="356.9" y2="136.9" stroke="currentColor" stroke-width="1.8" marker-end="url(#s2arE)"/>
+<polyline points="335.7,104.3 341.3,110.0 335.7,115.7" fill="none" stroke="currentColor" stroke-width="1"/>
+<circle cx="330.0" cy="110.0" r="3" fill="currentColor"/>
+<circle cx="50" cy="70" r="2" fill="currentColor"/><circle cx="370" cy="70" r="2" fill="currentColor"/>
+<circle cx="130" cy="150" r="2" fill="currentColor"/><circle cx="290" cy="150" r="2" fill="currentColor"/>
+<text x="404" y="246" font-size="13" fill="currentColor">x</text>
+<text x="218" y="30" font-size="13" fill="currentColor">z</text>
+<text x="200" y="247" font-size="13" fill="currentColor">O</text>
+<text x="286" y="247" font-size="12" fill="currentColor">1</text><text x="366" y="247" font-size="12" fill="currentColor">2</text>
+<text x="122" y="247" font-size="12" fill="currentColor">−1</text><text x="42" y="247" font-size="12" fill="currentColor">−2</text>
+<text x="14" y="24" font-size="13" fill="currentColor">Σ：锥面 z=√(x²+y²)，下侧</text>
+<text x="258" y="52" font-size="12" fill="currentColor">Σ₁：z=2，上侧</text>
+<text x="40" y="172" font-size="12" fill="currentColor">Σ₂：z=1，下侧</text>
+<text x="158" y="118" font-size="15" fill="currentColor">Ω</text>
+<text x="314" y="104" font-size="13" fill="currentColor">M</text>
+<text x="361" y="151" font-size="12" fill="currentColor">n（下侧）</text>
+<text x="238" y="212" font-size="12" fill="currentColor">r = OM 沿母线，r ⊥ n</text>
+</svg>
+<p>图是 $y=0$ 的截面：$\Omega$ 是锥面介于 $z=1$ 与 $z=2$ 之间围成的锥台，$\Sigma$ 是它的侧面；锥面的"下侧"法向量 $\mathbf n$ 指向轴外且向下，正是锥台的外法向。位置向量 $\mathbf r=\overrightarrow{OM}$ 沿母线，母线整条在锥面上，所以 $\mathbf r\perp\mathbf n$——这就是 $f(xy)\,\mathbf r$ 通量为零的几何原因。$\Sigma_1$、$\Sigma_2$ 是另解里补的两个圆盘。</p>
+<p><b>分步解答：</b></p>
+<ol>
+<li>记 $\rho=\sqrt{x^2+y^2}$，$\Sigma:\ z=\rho$，投影区域 $D:\ 1\le x^2+y^2\le4$，$z_x=\dfrac x\rho$，$z_y=\dfrac y\rho$。$\Sigma$ 取下侧，合一投影公式取负号： $$I=-\iint_D\Big[P\cdot(-z_x)+Q\cdot(-z_y)+R\Big]_{z=\rho}dx\,dy .$$</li>
+<li>算括号（关键化简，$f$ 简记 $f(xy)$，并把 $z$ 换成 $\rho$）： $$-\frac x\rho\big[xf+2x-y\big]-\frac y\rho\big[yf+2y+x\big]+\big[\rho f+\rho\big]=-\frac1\rho\Big[(x^2+y^2)f+2(x^2+y^2)-xy+xy\Big]+\rho f+\rho=-\rho f-2\rho+\rho f+\rho=-\rho .$$ 含 $f$ 的项全部抵消，与几何判断一致。</li>
+<li>化为二重积分，用极坐标： $$I=-\iint_D(-\rho)\,dx\,dy=\iint_D\sqrt{x^2+y^2}\,dx\,dy=\int_0^{2\pi}d\theta\int_1^2r\cdot r\,dr=2\pi\cdot\frac{8-1}{3}=\frac{14}{3}\pi .$$</li>
+</ol>
+<p><b>答案：</b>$I=\dfrac{14}{3}\pi$。</p>
+<p><b>另解（拆分 + 高斯）</b>　把向量场拆成 $\mathbf F_1=f(xy)\,(x,y,z)$ 与 $\mathbf F_2=(2x-y,\ 2y+x,\ z)$。锥面下侧的法向量与 $(x,y,-z)$ 同向，而 $(x,y,z)\cdot(x,y,-z)=x^2+y^2-z^2=0$，所以 $\mathbf F_1$ 的通量为 $0$。$\mathbf F_2$ 光滑，补 $\Sigma_1:\ z=2\ (x^2+y^2\le4)$ 取上侧、$\Sigma_2:\ z=1\ (x^2+y^2\le1)$ 取下侧，与 $\Sigma$ 一起是锥台 $\Omega=\{1\le z\le2,\ x^2+y^2\le z^2\}$ 的外侧。$\operatorname{div}\mathbf F_2=2+2+1=5$，$V(\Omega)=\displaystyle\int_1^2\pi z^2\,dz=\frac{7\pi}{3}$，闭曲面上总通量 $\dfrac{35\pi}{3}$；两个水平圆盘上 $dy\,dz=dz\,dx=0$，只剩 $z\,dx\,dy$：$\Sigma_1$ 上 $\displaystyle\iint2\,dx\,dy=8\pi$，$\Sigma_2$ 上 $-\displaystyle\iint1\,dx\,dy=-\pi$。于是 $I=\dfrac{35\pi}{3}-8\pi+\pi=\dfrac{14\pi}{3}$。</p>
+<p><b>这道题告诉我们：</b>"抽象函数只连续"是不能用高斯公式的明确信号，正道是合一投影或两类关系，并预期 $f$ 会抵消；抵消的前提是老老实实把 $z=\rho$ 代进 $R$，少代一步就消不掉。下侧的负号漏掉会得到 $-\frac{14}{3}\pi$；极坐标别漏雅可比因子 $r$；投影区域是圆环，别写成整个圆盘。锥面与位置向量垂直、球面与位置向量平行，这两个几何事实在真题 5（2025 年）的另解里也用到了。</p>`
+      },
+
+      /* ───────── 21. 误区 ───────── */
       {
         kind: 'pitfall', title: '常见误区',
         html: R`<ul>
@@ -424,10 +590,12 @@ registerLesson(function (R) {
 <li><b>误区 7：竖直柱面上所有项都为零。</b>母线平行于 $z$ 轴的柱面上只有 $dx\,dy$ 项为零，$dy\,dz$、$dz\,dx$ 项一般不为零（见自测第 4 题）。</li>
 <li><b>误区 8：法向量取错方向。</b>用两类关系或合一投影时，$(-z_x,-z_y,1)$ 是上侧方向，下侧要整体变号；闭曲面要按外侧或内侧确定，例如球面外侧 $\mathbf n=\dfrac1a(x,y,z)$，在下半球面上它是朝下的，不能一律取"$z$ 分量为正"。</li>
 <li><b>误区 9：以为"散度为零 ⇒ 任何闭曲面积分为零"。</b>需要区域二维单连通（或者闭曲面所围区域内没有奇点）。$\dfrac{(x,y,z)}{r^3}$ 就是反例。</li>
+<li><b>误区 10：被积函数含抽象函数 $f$ 且 $f$ 只连续，却照用高斯公式。</b>高斯公式要求 $P,Q,R$ 有一阶连续偏导数，而 $\dfrac{\partial}{\partial x}\big[xf(xy)\big]$ 需要 $f'$。这种题（<span class="qref" data-q="2020-18">2020 年第 18 题</span>）要用合一投影或两类关系，含 $f$ 的项会自己抵消；若非要用高斯公式，只能对不含 $f$ 的光滑部分用。</li>
+<li><b>误区 11：用曲面方程化简时把 $\sqrt{y^2}$ 写成 $y$。</b>$\sqrt{y^2}=|y|$；<span class="qref" data-q="2019-12">2019 年第 12 题</span>中写成 $y$ 就会"由奇偶性"得到错误答案 $0$。开偶次方根之类的化简要盯紧符号。</li>
 </ul>`
       },
 
-      /* ───────── 20. 方法 ───────── */
+      /* ───────── 22. 方法 ───────── */
       {
         kind: 'method', title: '题型识别：看到什么，想到什么',
         html: R`<table>
@@ -443,18 +611,21 @@ registerLesson(function (R) {
 <tr><td>被积函数在曲面上可化简（如 $x^2+y^2+z^2=a^2$）</td><td>先代入曲面方程</td><td>只在曲面积分里代入</td></tr>
 <tr><td>曲面关于坐标面对称</td><td>先用对称性砍项</td><td>对 $z$："偶零奇倍"；对 $x,y$："奇零偶倍"（以 $dx\,dy$ 项为例）</td></tr>
 <tr><td>"对区域内任意闭曲面积分为零"</td><td>散度 $\equiv0$ → 列出关于未知函数的方程</td><td>由散度为零反推积分为零，需要二维单连通</td></tr>
+<tr><td>被积向量场含 $f(\cdots)\cdot(x,y,z)$ 或"$(x,y,z)+$常向量"，曲面是顶点在原点的锥面</td><td>位置向量沿母线、与法向量垂直，这部分通量为 $0$（<span class="qref" data-q="2020-18">2020 年第 18 题</span>、<span class="qref" data-q="2025-20">2025 年第 20 题</span>）</td><td>球面（球心在原点）上位置向量反而与法向量平行</td></tr>
+<tr><td>抽象函数 $f$ 只连续</td><td>不能用高斯公式；合一投影或两类关系，预期 $f$ 抵消</td><td>代入曲面方程之后才会抵消</td></tr>
+<tr><td>曲面由"直线绕直线旋转"给出</td><td>先用纬圆法求旋转曲面方程，认出圆锥 / 圆柱，再补面（<span class="qref" data-q="2025-20">2025 年第 20 题</span>）</td><td>两直线相交得圆锥，平行得圆柱</td></tr>
 </tbody>
 </table>
 <p><b>一般的决策顺序</b></p>
 <ol>
 <li><b>化简</b>：能用曲面方程代入的先代入；能用对称性砍掉的先砍掉；竖直面上的 $dx\,dy$、水平面上的 $dy\,dz,dz\,dx$ 直接为零。</li>
-<li><b>判封闭</b>：封闭 → 查奇点 → 高斯或挖洞；不封闭 → 看散度是否简单、缺口是否是平面 → 补面法。</li>
+<li><b>判封闭</b>：封闭 → 查奇点 → 高斯或挖洞；不封闭 → 看散度是否简单、缺口是否是平面 → 补面法。高斯之后的三重积分，先用 $\Omega$ 的对称性砍掉散度里的奇函数项（<span class="qref" data-q="2021-14">2021 年第 14 题</span>、<span class="qref" data-q="2023-19">2023 年第 19 题</span>都靠这一步），再选截面法、柱面坐标或球面坐标。</li>
 <li><b>否则直接算</b>：显式曲面用合一投影；单项用分项投影；平面或含抽象函数用两类转换。</li>
 </ol>
 <p><b>口诀</b>：闭面高斯查奇点，开面补面再减掉；一投二代三定号，合一投影省分片；抽象函数平面上，两类转换靠法向；曲面方程先代入，三重积分不能代。</p>`
       },
 
-      /* ───────── 21. 对照表 ───────── */
+      /* ───────── 23. 对照表 ───────── */
       {
         kind: 'text', title: '两类曲面积分对照',
         html: R`<table>
@@ -471,29 +642,26 @@ registerLesson(function (R) {
 </table>`
       },
 
-      /* ───────── 22. 考法 ───────── */
+      /* ───────── 24. 考法 ───────── */
       {
-        kind: 'exam', title: '数学一怎么考',
-        html: R`<p>多元函数积分学是数学一独有的重点，第二类曲面积分与高斯公式是其中出现频率最高的考点之一，常以 10 分左右的解答题出现，也会在选择题、填空题中考查对称性、两类关系和高斯公式的直接应用。</p>
-<p><b>常见题型</b></p>
-<ol>
-<li><b>补面 + 高斯（最高频）</b>：曲面是半球面、锥面、抛物面或旋转曲面的一部分。有时要先由"曲线绕坐标轴旋转"求出旋转曲面方程；补面上的积分用投影法；高斯之后的三重积分用球坐标、柱坐标或截面法（先二后一）。</li>
-<li><b>闭曲面 + 奇点</b>：分母形如 $(x^2+y^2+z^2)^{3/2}$ 或 $(ax^2+by^2+cz^2)^{3/2}$。先判断原点在不在曲面内，再决定是直接用高斯、先代入还是挖洞。</li>
-<li><b>先代入曲面方程再高斯</b>：被积函数在曲面上可化简，化简后再补面或直接用高斯。</li>
-<li><b>直接投影 / 合一投影</b>：曲面是显式的、只有一两项，或者散度并不简单时。常与对称性结合。</li>
-<li><b>两类曲面积分的转换</b>：曲面是平面、被积函数含抽象函数，或题目以方向余弦的形式给出。选择题也常问"下列关系式哪个正确"。</li>
-<li><b>与微分方程综合</b>：已知在某区域内对任意闭曲面积分为零，推出散度为零，解出未知函数。</li>
-<li><b>与其他考点综合</b>：与斯托克斯公式（曲线积分化为曲面积分后再计算）、物理应用（求流体流过曲面的流量）、三重积分的计算技巧综合。</li>
-</ol>
-<p><b>设问方式</b>："计算曲面积分 $I=\cdots$，其中 $\Sigma$ 为……的上侧（外侧）"；"求向量场 $\mathbf A$ 穿过曲面 $\Sigma$ 流向指定侧的通量"；选择题中比较几个曲面积分、判断哪个为零。</p>
-<p><b>得分要点</b>：侧的判断（尤其是补面的侧）、高斯公式条件的检查（封闭、外侧、无奇点）、补面上积分的计算、三重积分的计算。很多同学会用高斯公式，却在补面定侧或三重积分上丢分，所以三重积分的球坐标、柱坐标与截面法必须练熟。</p>`
+        kind: 'exam', title: '考研怎么考',
+        html: R`<p>第二类曲面积分与高斯公式是数学一多元积分学里<b>出现频率最高</b>的考点：2016–2025 十年中有 8 年把它作为主考点（只有 2017、2022 两年没有，而 <span class="qref" data-q="2022-19">2022 年第 19 题</span>以斯托克斯公式为主考点，把曲线积分化成曲面积分之后，算的仍是本篇的内容）。下面每条结论都来自这些真题。</p>
+<ul>
+<li><b>题型与分值。</b>解答题 5 道：<span class="qref" data-q="2016-18">2016 年第 18 题</span>、<span class="qref" data-q="2018-17">2018 年第 17 题</span>、<span class="qref" data-q="2020-18">2020 年第 18 题</span>、<span class="qref" data-q="2025-20">2025 年第 20 题</span>各 10 分，<span class="qref" data-q="2023-19">2023 年第 19 题</span> 12 分；填空题 2 道：<span class="qref" data-q="2019-12">2019 年第 12 题</span>（4 分）、<span class="qref" data-q="2021-14">2021 年第 14 题</span>（5 分）；选择题 1 道：<span class="qref" data-q="2024-2">2024 年第 2 题</span>（5 分）。这 8 道题在上面两节"近十年真题精讲"中已逐题讲完，读完它们就把近十年本考点的主考点真题全部过了一遍。</li>
+<li><b>考法一：闭曲面 + 外侧 + 光滑场 → 直接高斯公式</b>（<span class="qref" data-q="2016-18">2016 年第 18 题</span>、<span class="qref" data-q="2021-14">2021 年第 14 题</span>、<span class="qref" data-q="2023-19">2023 年第 19 题</span>）。三道题的共同模式：散度比原被积函数简单得多（$2x+1$、$2x+2y+1$、$2z-xz\sin y+3y\sin x$），然后靠 $\Omega$ 的对称性砍掉奇函数项（2021、2023 两题），剩下体积（2021）或一个简单的三重积分（截面法：2016；先一后二 + 极坐标：2023）。得分点是写明条件、算对散度（常数项求导为零、负号别丢）、三重积分算对。</li>
+<li><b>考法二：不封闭曲面 → 补面 + 高斯公式</b>（<span class="qref" data-q="2018-17">2018 年第 17 题</span>：半个旋转椭球面，补 $x=0$ 上的圆盘取后侧；<span class="qref" data-q="2025-20">2025 年第 20 题</span>：圆锥面，补斜平面 $x+y+z=1$ 上的圆盘）。更早的 <span class="qref" data-q="2004-17">2004 年第 17 题</span>、<span class="qref" data-q="2006-3">2006 年第 3 题</span>、<span class="qref" data-q="2007-18">2007 年第 18 题</span>、<span class="qref" data-q="2014-18">2014 年第 18 题</span>都是抛物面或锥面补一个水平圆盘，可见"补面 + 高斯"是本考点二十年来最稳定的解答题模板。补面上的积分要么为 $0$（2018：一项因 $x=0$、两项因投影面积为零），要么是"常数 × 面积"（2025：平面上 $\mathbf F\cdot\mathbf n$ 为常数）。</li>
+<li><b>考法三：不能或不必用高斯公式。</b>只有一项 $dx\,dy$ 时直接"一投二代三定号"，并先用曲面方程化简被积函数（<span class="qref" data-q="2019-12">2019 年第 12 题</span>，$\sqrt{4-x^2-4z^2}=|y|$）；被积函数含<b>只连续</b>的抽象函数 $f$ 时高斯公式条件不满足，用合一投影法，$f$ 的项会抵消（<span class="qref" data-q="2020-18">2020 年第 18 题</span>）；选择题直接考合一投影公式 $dy\,dz=-z_x\,dx\,dy$、$dz\,dx=-z_y\,dx\,dy$ 的符号（<span class="qref" data-q="2024-2">2024 年第 2 题</span>）。这类题分值不大，但概念一错就全错。</li>
+<li><b>与其他考点的综合。</b>与旋转曲面方程综合（<span class="qref" data-q="2025-20">2025 年第 20 题</span>要先用纬圆法认出圆锥面）；与斯托克斯公式综合（<span class="qref" data-q="2022-19">2022 年第 19 题</span>）；与三重积分的各种算法综合——截面法（<span class="qref" data-q="2016-18">2016 年第 18 题</span>、<span class="qref" data-q="2018-17">2018 年第 17 题</span>）、以 $x$ 轴为轴的柱面坐标（<span class="qref" data-q="2018-17">2018 年第 17 题</span>）、先一后二（<span class="qref" data-q="2023-19">2023 年第 19 题</span>）、形心公式（<span class="qref" data-q="2016-18">2016 年第 18 题</span>）。锥面上"位置向量与法向量垂直"这个几何事实，在 <span class="qref" data-q="2020-18">2020 年第 18 题</span>与 <span class="qref" data-q="2025-20">2025 年第 20 题</span>的另解中都能用上。</li>
+<li><b>近十年没有直接考、但不能放松的两类。</b>闭曲面内有奇点的"先代入 / 挖洞"型，上一次是 <span class="qref" data-q="2009-19">2009 年第 19 题</span>（椭球面 $2x^2+2y^2+z^2=4$ 的外侧，被积式分母为 $(x^2+y^2+z^2)^{3/2}$，挖小球面得 $4\pi$）；"对区域内任意闭曲面积分为零 ⇒ 散度为零 ⇒ 解微分方程求未知函数"型，见 <span class="qref" data-q="2000-6">2000 年第六题</span>。本篇「点源通量与挖洞法」「闭曲面积分为零的条件」两节正是为它们准备的。</li>
+<li><b>得分要点与备考建议。</b>失分最多的不是"不会用高斯公式"，而是：侧的判断（补面的侧要与原曲面配成同一外侧；$x=x(y,z)$ 型曲面按 $\cos\alpha$ 判断前后侧）、高斯公式条件的检查（封闭、外侧、无奇点、有连续偏导——抽象函数只连续就不能用）、补面上积分的计算，以及高斯之后的三重积分。所以三重积分的截面法、柱面坐标、球面坐标与对称性必须练熟；每做一道题都按本篇「题型识别」的决策顺序走一遍：先化简，再判封闭，最后决定用高斯、补面还是直接投影。</li>
+</ul>`
       },
 
-      /* ───────── 23. 自测 ───────── */
+      /* ───────── 25. 自测 ───────── */
       {
         kind: 'check', title: '自测',
         items: [
-          { q: R`<p>判断对错并说明理由：$\displaystyle\iint_\Sigma dx\,dy$ 等于 $\Sigma$ 在 $xOy$ 面上投影区域的面积。</p>`, a: R`<p><b>错。</b>$dx\,dy$ 是带号投影。例如单位球面外侧：上半球面贡献 $+\pi$，下半球面贡献 $-\pi$，总和为 $0$；平面 $z=0$ 上单位圆盘取下侧，结果是 $-\pi$。只有当 $\Sigma$ 是单值显式曲面 $z=z(x,y)$ 且取上侧时，它才等于投影面积。</p>` },
+          { q: R`<p>判断对错并说明理由：$\displaystyle\iint_\Sigma dx\,dy$ 等于 $\Sigma$ 在 $xOy$ 面上投影区域的面积。</p>`, a: R`<p><b>错。</b>$dx\,dy$ 是带号投影。例如单位球面外侧：上半球面贡献 $+\pi$，下半球面贡献 $-\pi$，总和为 $0$；平面 $z=0$ 上单位圆盘取下侧，结果是 $-\pi$。当 $\Sigma$ 是单值显式曲面 $z=z(x,y)$ 且取上侧时，它等于投影面积；一般情况下两者不相等。</p>` },
           { q: R`<p>设 $\Sigma$ 为球面 $x^2+y^2+z^2=a^2$ 的外侧，则 $\displaystyle\iint_\Sigma z\,dx\,dy=$</p>`, options: [R`<p>$0$</p>`, R`<p>$\dfrac43\pi a^3$</p>`, R`<p>$4\pi a^2$</p>`, R`<p>$\dfrac23\pi a^3$</p>`], correct: 1, explain: R`<p>高斯公式：$R=z$，$\dfrac{\partial R}{\partial z}=1$，积分等于球的体积 $\dfrac43\pi a^3$。也可用对称性：$z$ 关于 $z$ 为奇函数，两片侧互为镜像，"奇倍"：$2\displaystyle\iint_{x^2+y^2\le a^2}\sqrt{a^2-x^2-y^2}\,dx\,dy=2\cdot\frac23\pi a^3$。选 $0$ 是照搬了第一类的对称性。</p>` },
           { q: R`<p>设 $\Sigma$ 为平面 $z=3$ 上 $x^2+y^2\le1$ 部分的下侧，求 $\displaystyle\iint_\Sigma(x^2+z)\,dx\,dy$。</p>`, a: R`<p>一投：$D:\ x^2+y^2\le1$；二代：$z=3$；三定号：下侧取负。结果为 $-\displaystyle\iint_D(x^2+3)\,dx\,dy=-\Big(\frac{\pi}{4}+3\pi\Big)=-\frac{13\pi}{4}$，其中 $\displaystyle\iint_Dx^2\,dx\,dy=\frac12\iint_D(x^2+y^2)\,dx\,dy=\frac12\cdot\frac{\pi}{2}=\frac{\pi}{4}$。</p>` },
           { q: R`<p>$\Sigma$ 为圆柱面 $x^2+y^2=1$ 介于 $z=0$ 与 $z=1$ 之间的部分，取外侧。$\displaystyle\iint_\Sigma z\,dx\,dy$ 与 $\displaystyle\iint_\Sigma x\,dy\,dz$ 各等于多少？</p>`, a: R`<p>柱面母线平行于 $z$ 轴，$\cos\gamma\equiv0$，所以 $\displaystyle\iint_\Sigma z\,dx\,dy=0$。但 $\cos\alpha=x\ne0$，由两类关系 $\displaystyle\iint_\Sigma x\,dy\,dz=\iint_\Sigma x\cdot x\,dS=\iint_\Sigma x^2\,dS=\frac12\iint_\Sigma(x^2+y^2)\,dS=\frac12\cdot2\pi=\pi$（由对称性 $\displaystyle\iint x^2dS=\iint y^2dS$，在 $\Sigma$ 上 $x^2+y^2=1$，侧面积为 $2\pi$）。竖直柱面上只有 $dx\,dy$ 项为零。</p>` },
@@ -502,7 +670,9 @@ registerLesson(function (R) {
           { q: R`<p>$\Sigma$ 为上半球面 $z=\sqrt{1-x^2-y^2}$ 的上侧，用两种方法求 $\displaystyle I=\iint_\Sigma x\,dy\,dz+y\,dz\,dx+z\,dx\,dy$。</p>`, a: R`<p><b>方法一（补面）</b>：补 $z=0$ 的单位圆盘取下侧，合成上半球体的外侧，$\displaystyle\iiint3\,dV=3\cdot\frac23\pi=2\pi$；圆盘上 $dy\,dz=dz\,dx=0$ 且 $z=0$，积分为 $0$，故 $I=2\pi$。<b>方法二（两类关系）</b>：外法向量 $\mathbf n=(x,y,z)$，$\mathbf A\cdot\mathbf n=x^2+y^2+z^2=1$，$I=\displaystyle\iint_\Sigma dS=2\pi$。</p>` },
           { q: R`<p>判断对错：$\Sigma$ 是关于 $xOy$ 面对称的闭曲面，取外侧，则 $\displaystyle\iint_\Sigma z^2\,dx\,dy=0$。</p>`, a: R`<p><b>对。</b>闭曲面外侧时，关于 $xOy$ 面对称的两片侧互为镜像；$z^2$ 关于 $z$ 为偶函数，"偶零"。也可用高斯公式验证：积分等于 $\displaystyle\iiint_\Omega2z\,dV$，$\Omega$ 关于 $xOy$ 面对称，$z$ 为奇函数，结果为 $0$。</p>` },
           { q: R`<p>$\Sigma$ 为平面 $x+y+z=1$ 在第一卦限部分的<b>下侧</b>，$D$ 为它在 $xOy$ 面上的投影，则 $\displaystyle\iint_\Sigma P\,dy\,dz+Q\,dz\,dx+R\,dx\,dy=$</p>`, options: [R`<p>$\displaystyle\frac{1}{\sqrt3}\iint_\Sigma(P+Q+R)\,dS$</p>`, R`<p>$\displaystyle-\frac{1}{\sqrt3}\iint_\Sigma(P+Q+R)\,dS$</p>`, R`<p>$\displaystyle-\iint_\Sigma(P+Q+R)\,dS$</p>`, R`<p>$\displaystyle\iint_D(P+Q+R)\big|_{z=1-x-y}\,dx\,dy$</p>`], correct: 1, explain: R`<p>下侧单位法向量为 $-\dfrac{1}{\sqrt3}(1,1,1)$，由两类关系得 B。也可用合一投影：$z_x=z_y=-1$，下侧取负，结果为 $-\displaystyle\iint_D(P+Q+R)\big|_{z=1-x-y}dx\,dy$，D 选项漏掉了负号；C 选项漏掉了因子 $\dfrac{1}{\sqrt3}$。</p>` },
-          { q: R`<p>判断对错：若在 $G=\mathbb R^3\setminus\{O\}$ 内处处有 $\dfrac{\partial P}{\partial x}+\dfrac{\partial Q}{\partial y}+\dfrac{\partial R}{\partial z}=0$，则对 $G$ 内任意闭曲面 $\Sigma$，$\displaystyle\iint_\Sigma P\,dy\,dz+Q\,dz\,dx+R\,dx\,dy=0$。</p>`, a: R`<p><b>错。</b>$G$ 不是二维单连通的：包住原点的球面在 $G$ 内，它所围的球体却含有不属于 $G$ 的原点。反例是 $(P,Q,R)=\dfrac{(x,y,z)}{r^3}$，包住原点的闭曲面上积分为 $4\pi$。对于<b>不</b>包住原点的闭曲面，结论才成立。</p>` }
+          { q: R`<p>判断对错：若在 $G=\mathbb R^3\setminus\{O\}$ 内处处有 $\dfrac{\partial P}{\partial x}+\dfrac{\partial Q}{\partial y}+\dfrac{\partial R}{\partial z}=0$，则对 $G$ 内任意闭曲面 $\Sigma$，$\displaystyle\iint_\Sigma P\,dy\,dz+Q\,dz\,dx+R\,dx\,dy=0$。</p>`, a: R`<p><b>错。</b>$G$ 不是二维单连通的：包住原点的球面在 $G$ 内，它所围的球体却含有不属于 $G$ 的原点。反例是 $(P,Q,R)=\dfrac{(x,y,z)}{r^3}$，包住原点的闭曲面上积分为 $4\pi$。对于<b>不</b>包住原点的闭曲面，结论才成立。</p>` },
+          { q: R`<p>设 $\Sigma$ 为锥面 $z=\sqrt{x^2+y^2}\ (0\le z\le1)$ 的下侧，$f$ 为连续函数，则 $\displaystyle\iint_\Sigma f(x^2+y^2)\big(x\,dy\,dz+y\,dz\,dx+z\,dx\,dy\big)=$</p>`, options: [R`<p>$0$</p>`, R`<p>$\pi$</p>`, R`<p>$-\pi$</p>`, R`<p>与 $f$ 有关，无法确定</p>`], correct: 0, explain: R`<p>$f$ 只连续，不能用高斯公式；用合一投影：$z_x=\dfrac x\rho,\ z_y=\dfrac y\rho$（$\rho=\sqrt{x^2+y^2}$），下侧取负，被积式 $=-\displaystyle\iint_Df(\rho^2)\Big[x\cdot\Big(-\frac x\rho\Big)+y\cdot\Big(-\frac y\rho\Big)+\rho\Big]dx\,dy=-\iint_Df(\rho^2)\cdot0\,dx\,dy=0$。几何上：顶点在原点的锥面上，位置向量 $(x,y,z)$ 沿母线、与法向量垂直，所以无论 $f$ 是什么，通量都是 $0$（2020 年第 18 题、2025 年第 20 题的另解都用了这一点）。</p>` },
+          { q: R`<p>把 2024 年第 2 题的"上侧"改成"下侧"：$\Sigma$ 为 $z=\sqrt{1-x^2-y^2}\ (x\ge0,\ y\ge0)$ 的<b>下侧</b>，$P,Q$ 连续，则 $\displaystyle\iint_\Sigma P\,dy\,dz+Q\,dz\,dx=\iint_\Sigma\Big(\frac xzP+\frac yzQ\Big)dx\,dy$ 还成立吗？把右边化成 $D_{xy}$ 上的二重积分又是什么？</p>`, a: R`<p><b>仍然成立。</b>$dy\,dz=\dfrac{\cos\alpha}{\cos\gamma}\,dx\,dy$ 中的比值 $\dfrac{\cos\alpha}{\cos\gamma}=-z_x=\dfrac xz$ 与取哪一侧无关（换侧时 $\cos\alpha,\cos\gamma$ 同时变号），所以这个 $\Sigma$ 上的恒等式对上侧、下侧都对。侧的信息在化成 $D_{xy}$ 上的普通二重积分时才出现：下侧取负，右边 $=-\displaystyle\iint_{D_{xy}}\Big(\frac xzP+\frac yzQ\Big)\Big|_{z=\sqrt{1-x^2-y^2}}dx\,dy$，$D_{xy}$ 为第一象限的四分之一单位圆盘。</p>` }
         ]
       }
     ]
